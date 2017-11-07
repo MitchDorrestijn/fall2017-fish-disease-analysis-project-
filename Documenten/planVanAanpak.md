@@ -155,3 +155,13 @@ Natuurlijk hebben wij binnen onze groep een aantal regels opgesteld. Op deze man
 ##### Planning
 In figuur 4 is de globale planning te zien. Hierbij wordt voorlopig alleen gekeken naar wat we in elke scrum fase gaan doen. De PreGame en PostGame zijn allebei 1 week, de Sprints (Game’s) zijn 2 weken achter elkaar.
 <br><b style="color:red">[GANTT CHART hier plaatsen]</b>
+
+### Risico's
+Geen enkel project zonder risico. Daarom is het van belang dat wij ons ervan bewust zijn dat deze risico’s worden ingeschat. Hierbij moeten wij ook kijken naar wat we kunnen doen als we ergens tegenaan lopen. In figuur 5 is daarom onze risico-analysetabel te zien.
+<br><b style="color:red">[risico analyse tabel hier plaatsen]</b>
+
+### Slot
+<b style="color:red">[Slot hier plaatsen]</b>
+
+### Literatuurlijst
+<b style="color:red">[Literatuurlijst hier plaatsen]</b>
