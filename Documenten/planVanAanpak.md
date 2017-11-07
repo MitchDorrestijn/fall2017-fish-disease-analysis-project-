@@ -93,3 +93,9 @@ Het probleem dat onze oprachtgever heeft met de fish-disease-analysis tool is da
 <b style="color:red">[MoSCoW lijst hier plaatsen]</b><br>
 <b style="color:red">[RACI lijst hier plaatsen]</b><br>
 <b style="color:red">[Definition of Done]</b>
+
+### Ontwikkelmethodes
+
+Tijdens dit project maken wij gebruik van de scrum methode. Dit houdt in dat we om de twee weken werkende producten opleveren.
+
+We beginnen met een startweek, ook wel PreGame genoemd, waarin we vooral onderzoeken verrichten. Vervolgens hebben we 4 sprints van 2 weken, ook wel Game genoemd, waarin we delen van de op te leveren producten maken. Als afsluiting hebben we de afsluitweek, ook wel PostGame genoemd, waarin we de producten testen, opleveren en presenteren. Het project is in totaal dus 10 weken. Aan het begin van elke week discussiëren we over de producten die gemaakt moeten worden en aan het eind van de week de voortgang van ieders gemaakte werk. Tevens is er ook een korte dagelijkse teamsessie om eventuele problemen te bespreken.
