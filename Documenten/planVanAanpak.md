@@ -99,3 +99,59 @@ Het probleem dat onze oprachtgever heeft met de fish-disease-analysis tool is da
 Tijdens dit project maken wij gebruik van de scrum methode. Dit houdt in dat we om de twee weken werkende producten opleveren.
 
 We beginnen met een startweek, ook wel PreGame genoemd, waarin we vooral onderzoeken verrichten. Vervolgens hebben we 4 sprints van 2 weken, ook wel Game genoemd, waarin we delen van de op te leveren producten maken. Als afsluiting hebben we de afsluitweek, ook wel PostGame genoemd, waarin we de producten testen, opleveren en presenteren. Het project is in totaal dus 10 weken. Aan het begin van elke week discussiëren we over de producten die gemaakt moeten worden en aan het eind van de week de voortgang van ieders gemaakte werk. Tevens is er ook een korte dagelijkse teamsessie om eventuele problemen te bespreken.
+
+### Werkwijze en communicatie
+Coen Burgers kan zich inhoudelijk niet bezig houden met de details. Ook heeft hij niet de technische kennis om zeer inhoudelijk op implementatie in te gaan. Om toch tot een goed eindresultaat te komen gaan wij, met onze groep, de Scrum methode toepassen. Dit houdt in dat we in korte tijdsintervallen van 2 weken (zgn. Sprints) werkende producten opleveren. Vanuit de hogeschool van Arnhem en Nijmegen is er een product-owner aan ons gekoppeld die de eisen en wensen van verschillende stakeholders meeneemt en prioriteert. Bij de product-owner kunnen we functionele en technische vragen stellen.
+
+##### Communicatie
+Wij werken 5 dagen per week aan het op te leveren systeem. Wij werken aan dit systeem in lokaal [lokaalnummer]. In princiepe werkt ieder groepslid minimaal 7,5 uur per dag aan het systeem. Dit urenaantal kan voor sommige mensen wat afwijken in verband met het openbaar vervoer.
+Onderdelen van de gemaakte producten delen we op GitHub, hiervoor maken we git-branches aan volgens de gitflow. Ook hebben wij als team een Whatsapp groep aangemaakt die 24/7 bereikbaar is. Daarnaast houden wij dagelijks een logboek bij en notulen van elke vergadering. Op deze manier kunnen er geen misverstanden ontstaan.
+
+##### Ontwikkelomgeving
+Op het moment van schrijven is er nog geen ontwikkelomgeving beschikbaar. Daarom maken wij als team de producten eerst lokaal op onze laptop. Als het tijd wordt voor een ontwikkelomeving zullen wij dit vroegtijdig aangeven bij onze product-owner.
+
+##### Groepsleden
+Voor vragen of opmerkingen aan groepsleden of begeleidende docenten hebben we hieronder de contactgegevens van onze projectgroep neergezet.
+
+Groepsleden:
+
+| Naam:             | Email:      | Telefoon:       |
+| ----------------- |-------------|-----------------|
+| Mitch Dorrestijn  | M.Dorrestijn1@student.han.nl | +31 6 81043855  |
+| Ruud Mullenman    | [mail hier] | [telefoon hier] |
+| Sjoerd Scheffer   | [mail hier] | [telefoon hier] |
+| Jaap Weijland     | [mail hier] | [telefoon hier] |
+| Coen              | [mail hier] | [telefoon hier] |
+| Roy               | [mail hier] | [telefoon hier] |
+
+Figuur 2: groepsleden overzicht
+
+Contactpersonen:
+
+| Naam:             | Email:      | Telefoon:       | Functie   |
+| ------------- | ------------- | ----------------- | ----------- |
+| Coen Burgers      | [mail hier] | [telefoon hier] | [functie] |
+| Robert            | [mail hier] | [telefoon hier] | [functie] |
+| Pfs               | [mail hier] | [telefoon hier] | [functie] |
+
+Figuur 3: Contactpersonen overzicht
+
+#### Overige groepsregels
+Natuurlijk hebben wij binnen onze groep een aantal regels opgesteld. Op deze manier weet iedereen waar hij aan toe is en wordt het niet zo gaotisch. De regels die wij hebben opgesteld zijn:
+1. Kom op tijd,
+2. Gebruik tabs en geen spaties bij het schrijven van code,
+3. We zijn minimaal aanwezig van 8:45 t/m 16:45,
+4. De dagelijkse Scrum meeting start om 9:30,
+5. We gebruiken Word voor het opleveren van documenten,
+6. Pauzes zijn van 12:00 uur tot ongeveer 13:00 uur,
+7. We gebruiken een laag streepje in plaats van spaties in namen van documenten,
+8. Ruud houdt de opdrachtgever op de hoogte over de voortgang,
+9. Sjoerd doet de spellingscontrole,
+10. We maken als team Git-brances aan volgens de git-flow,
+11. Elke teamgenoot mag niet meer dan twee items in progress hebben,
+12. Elke teamgenoot wordt geacht het Scrum-bord bij te houden,
+13. De onderlinge Whatsapp gesprekken houden we zakelijk.
+
+##### Planning
+In figuur 4 is de globale planning te zien. Hierbij wordt voorlopig alleen gekeken naar wat we in elke scrum fase gaan doen. De PreGame en PostGame zijn allebei 1 week, de Sprints (Game’s) zijn 2 weken achter elkaar.
+<br><b style="color:red">[GANTT CHART hier plaatsen]</b>
