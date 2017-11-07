@@ -42,3 +42,10 @@ Daarnaast krijgen wij dit project om verschillende vaardigheden, die wij de afge
 5. De student test de werking van het systeem op een gestructureerde en geautomatiseerde manier.
 6. De student documenteert de technische aspecten van de applicatie ten behoeve van opvolgers.
 7. De student opereert op professionele wijze qua communicatie, samenwerking en projectmatig werk.
+
+### Doelstelling
+Het doel is om een systeem te maken voor Coen Burgers waarbij je makkelijk, snel en op een overzichtelijke manier informatie kan vinden over verschillende vissenziektes. Mocht je persoonlijk advies willen hebben moet er de mogelijkheid zijn om een chat op te kunnen starten met een expert waarbij foto’s en video’s verzonden kunnen worden.
+
+Het probleem wat hiermee opgelost moet worden is dat mensen die voorheen niet goed nadachten over de leefomgeving van hun vis dit nu wel gaan doen.
+
+Het CMS voor dit systeem is waarin in dit project de nadruk op wordt gelegd. Deze moet flexibel en gebruiksvriendelijk zijn. Via dit CMS systeem moet een eventueel toekomstige projectgroep de site verder kunnen uitbreiden met bijvoorbeeld een extra taal.
