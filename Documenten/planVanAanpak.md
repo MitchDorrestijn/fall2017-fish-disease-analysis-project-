@@ -49,3 +49,12 @@ Het doel is om een systeem te maken voor Coen Burgers waarbij je makkelijk, snel
 Het probleem wat hiermee opgelost moet worden is dat mensen die voorheen niet goed nadachten over de leefomgeving van hun vis dit nu wel gaan doen.
 
 Het CMS voor dit systeem is waarin in dit project de nadruk op wordt gelegd. Deze moet flexibel en gebruiksvriendelijk zijn. Via dit CMS systeem moet een eventueel toekomstige projectgroep de site verder kunnen uitbreiden met bijvoorbeeld een extra taal.
+
+### Projectgrenzen
+Hieronder volgen de grenzen van het project. De grenzen zorgen ervoor dat de het voor de opdrachtgever duidelijk is wat hij wel en wat hij niet kan verwachten.
+
+Organisatie grenzen:
+<br><b style="color:red">[Content hier beschrijven]</b>
+
+Project grenzen (wat niet gevisualiseerd wordt gedurende dit project):
+<br><b style="color:red">[Content hier beschrijven]</b>
