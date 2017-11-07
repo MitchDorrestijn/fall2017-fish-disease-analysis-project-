@@ -58,3 +58,23 @@ Organisatie grenzen:
 
 Project grenzen (wat niet gevisualiseerd wordt gedurende dit project):
 <br><b style="color:red">[Content hier beschrijven]</b>
+
+
+### Randvoorwaarden
+Om dit project successvol af te ronden moeten er aan een aantal eisen voldaan worden, dit zijn:
+
+1. Er moet een lokaal beschikbaar zijn om in te werken.
+2. Er moet een server beschikbaar zijn.
+3. De begeleidende docent moet beschikbaar zijn om eventuele vragen te beantwoorden.
+4. Er is vooraf duidelijk gecommuniceerd wat er wel en wat er niet gemaakt wordt.
+
+Zaken die voor dit project gaan zijn:
+1. Overige schoolopdrachten/herkansingen/assegements. Hierbij gaat de herkansing voor maak het leren voor de herkansing niet.
+2. Lessen die gepland staan tijdens dit project.
+
+Eisen voor het succesvol afronden van het project:
+1. De wensen van Coen Burgers en de school moeten duidelijk geformuleerd worden.
+2. Vragen moeten gesteld kunnen worden aa de begeleidende docenten.
+3. Er is een ruimte beschikbaar gesteld voor het maken van het product.
+4. Er moet een rustige werksfeer zijn zonder teveel overlast.
+5. Coen Burgers moet ons de materialen aanleveren die nodig zijn om het systeem te kunnen visualiseren (denk aan foto’s etc).
