@@ -160,9 +160,43 @@ Natuurlijk hebben wij binnen onze groep een aantal regels opgesteld. Op deze man
 12. Elke teamgenoot wordt geacht het Scrum-bord bij te houden,
 13. De onderlinge Whatsapp gesprekken houden we zakelijk.
 
-##### Planning
-In figuur 4 is de globale planning te zien. Hierbij wordt voorlopig alleen gekeken naar wat we in elke scrum fase gaan doen. De PreGame en PostGame zijn allebei 1 week, de Sprints (Game’s) zijn 2 weken achter elkaar.
-<br><b style="color:red">[GANTT CHART hier plaatsen]</b>
+### Planning
+Aanvankelijk van de ontwikkelingsmethode kan er een planning worden gemaakt. Dit project wordt gemaakt door middel van de scrum methode dit houdt voor de planning in dat er een pre-game, game en postgame is. Scrum is een methode die, in tegenstelling tot de waterfall methode, van dag tot dag veranderd kan worden. Een concrete planning is dus ook niet mogelijk. Echter kunnen vaste gebeurtenissen worden gedocumenteerd. 
+
+##### Pre-game. 
+
+In de pre-game zal het Plan van Aanpak en de product backlog worden gerealiseerd. De pre-game is week 1 van het project en loopt van 06-11-2017 t/m 10-11-2017.
+
+##### Game. 
+
+De game bestaat uit meerdere sprints, in het geval van dit project zijn er dat vier. De sprints starten met een sprint planning meeting met de product owner. Elke sprint zijn er 2 momenten voor overleg met de project coach. Deze momenten staan momenteel op: de helft van week 1 van de sprint, de helft van week 2 van de sprint. Voordat deze gesprekken met de project coach gebeuren is het de bedoeling dat de personal retrospectieve word ingeleverd. Aan het einde van de sprint is de sprint review meeting met de product owner.
+
+* Sprint 1: 13-11-2017 t/m 27-11-2017. 
+* Sprint 2: 28-11-2017 t/m 11-12-2017. 
+* Sprint 3: 12-12-2017 t/m 08-12-2017. 
+* Sprint 4: 09-01-2018 t/m 22-01-2018. 
+
+
+##### Postgame. 
+Voorlopig is het nog niet duidelijk of er echt een postgame is.
+//navragen
+
+##### Deadline project plan en product backlog. 
+De deadline is voor 10-11-2017. Zowel het project plan en de product backlog moeten worden ingeleverd via de mail bij zowel de product owner en de project coach.
+
+##### Deadline laatste versie project plan. 
+De deadline is voor 17-11-2017. De op feedback bijgewerkte project plan moet nog een keer worden ingeleverd op deze datum.
+
+##### Deadline software guidebook, version 1. 
+De deadline is voor 08-12-2017. De eerste versie van het software guidebook moet worden ingeleverd. 
+
+##### Deadline software guidebook, version 2. 
+De deadline is voor 22-12-2017. De tweede versie van het software guidebook moet worden ingeleverd.
+Deadline voltooide software guidebook. De deadline is voor 19-01-2018. Het voltooide software guidebook moet worden ingeleverd voor 16:00 uur.
+
+##### Deadline project. 
+De deadline is voor 19-01-2018. Al het werk van ons zal individueel moeten worden ingeleverd op deze dag voor 16:00 uur op ISAS.
+
 
 ### Risico's
 Geen enkel project zonder risico. Daarom is het van belang dat wij ons ervan bewust zijn dat deze risico’s worden ingeschat. Hierbij moeten wij ook kijken naar wat we kunnen doen als we ergens tegenaan lopen. In figuur 5 is daarom onze risico-analysetabel te zien.
