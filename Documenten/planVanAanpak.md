@@ -78,3 +78,18 @@ Eisen voor het succesvol afronden van het project:
 3. Er is een ruimte beschikbaar gesteld voor het maken van het product.
 4. Er moet een rustige werksfeer zijn zonder teveel overlast.
 5. Coen Burgers moet ons de materialen aanleveren die nodig zijn om het systeem te kunnen visualiseren (denk aan foto’s etc).
+
+
+### Op te leveren producten
+Het probleem dat onze oprachtgever heeft met de fish-disease-analysis tool is dat er nog geen complete, dergelijke basis is voor de code waarbij, in een later stadium, het systeem mee aangepast kan worden. Om deze redenen moeten er een aantal producten worden opgeleverd om de fish-disease-analysis succesvol in zijn eerste fase te laten draaien. Hieronder is te lezen om welke producten dit gaat en wat ze inhouden.
+
+##### op te leveren producten voor de opdrachtgever:
+<b style="color:red">[Content hier beschrijven]</b>
+##### op te leveren producten voor de onderwijsinstelling:
+<b style="color:red">[Content hier beschrijven]</b>
+
+
+<b style="color:red">[Hieronder WBS plaatsen waar alle op te leveren producten worden opgebroken]</b><br>
+<b style="color:red">[MoSCoW lijst hier plaatsen]</b><br>
+<b style="color:red">[RACI lijst hier plaatsen]</b><br>
+<b style="color:red">[Definition of Done]</b>
