@@ -16,12 +16,19 @@ Voor onze opdrcahtgever moet er een analyse systeem gemaakt worden waarin mensen
 In dit document beschrijven wij hoe wij dit systeem willen visualiseren en hoe wij dit gaan aanpakken.
 
 ### Context
-<b style="color:red">[Content hier beschrijven]</b>
+Coen Burgers, onze opdrachtgever wil samen met Gerald Bassleer een applicatie realiseren die viseigenaren in staat stelt visziektes vast te stellen. Dit project wordt uitgevoerd door Sjoerd Scheffer, Ruud Mulleman, Mitch Dorrestijn, Coen Severein, Roy Meijer en Jaap Weijland. Wij zijn tweedejaars studenten en verantwoordelijk voor het opleveren van het eindproduct. De uitvoer en het eindresultaat van het project zal ook door deze school worden beoordeeld samen met de opdrachtgever. 
+
+#### Gerald Bassleer
+Meer dan 38 jaar ervaring in de siervissen industrie als bioloog, vispathobioloog , eigenaar , directeur , CEO , groothandel, importeur / exporteur van siervissen , visgezondheidsmanager , trainer van het aquarium personeel, snelle toepassing van microscopisch onderzoek en diagnostische instrumenten , consultant voor verschillende bedrijven in verschillende landen , auteur, spreker , ontwikkelaar van Dr. Bassleers Biofish Food met Nutrikamenten , ex-President van OFI ( Ornamental Fish International, 2006-2016) . Publiceerde app. Fish Ziekten iOS en Android. Alsook de nieuwe e-course Aquariology (bij Global Pets Academy)
+
+Momenteel besteedt hij veel tijd met reizen rond de wereld als ” The Flying Fish Doctor” en het geven van diensten aan de industrie om het welzijn en de gezondheid van siervissen te verbeteren!
+
+Recent werkt hij met contracten in Nederland , Kenia , Spanje, Duitsland, Polen, Zimbabwe, Congo en Brazilië; alsook bij visbeurs Aquarama.
 
 ### Aanleiding
-De fish-disease-analysis tool wordt gemaakt in opdracht van Coen Burgers. Coen heeft in het verleden veel geld kwijtgeraakt aan vissenziekten in zijn eigen aquarium. Deze kennis wil hij delen met de buitenwereld.
+De fish-disease-analysis tool wordt gemaakt in opdracht van Coen Burgers. Coen is in het verleden veel geld kwijtgeraakt door vissenziekten in zijn eigen aquarium. Zijn kennis over vissenziekten wil hij delen met de buitenwereld.
 
-Volgens Coen gaan mensen vaak niet goed met hun vissen om. Dit door bijvoorbeeld een vis van duizend euro te kopen en te bezuinigen op visvoer waardoor de vis zich niet op zijn gemak voelt. Met dit systeem wil onze klant voorkomen dat mensen deze fouten (opnieuw) maken. Wat daarbij vooral belangrijk is is dat het systeem makkelijk te gebruiken is en dat je alle facetten van vissenziektes samen krijgt op één platform.
+Volgens Burgers gaan mensen vaak niet goed met hun vissen om. Mensen kopen bijvoorbeeld een vis van duizend euro en bezuinigen vervolgens op visvoer waardoor de vis zich niet op zijn gemak voelt. Met de fish disease analysis tool wil Burgers voorkomen dat mensen deze fouten opnieuw maken. Wat daarbij vooral belangrijk is is dat het systeem makkelijk te gebruiken is en dat alle facetten van vissenziektes inzichtelijk zijn op één platform.
 
 In het volgende figuur maken wij duidelijk wat er mogelijk moet zijn binnen het systeem:
 
@@ -31,9 +38,10 @@ In het volgende figuur maken wij duidelijk wat er mogelijk moet zijn binnen het 
 | Alle facetten van vissenziekten samen krijgen in één platform.| Een flexibel beheerssysteem.                           |
 | Image classifiers zien om vissen te herkennen.                | Een meertalig systeem.                                 |
 | Producten zien die nuttig zijn in mijn aquarium.              | Kunnen chatten met klanten.                            |
+
 Figuur 1: kort overzicht van de wensen.
 
-Daarnaast krijgen wij dit project om verschillende vaardigheden, die wij de afgelopen periode geleerd hebben, te testen in een groot project. Daarbij komen de volgende competenties te pas:
+Daarnaast zullen wij verschillende vaardigheden, die wij de afgelopen periode geleerd hebben, testen in een groot project. Daarbij komen de volgende competenties aan bod:
 
 1. De student maakt op basis van een klantvraag, een product backlog, en onderhoudt die tijdens het project.
 2. De student onderzoekt nieuwe ontwikkelingen m.b.t. (web)technieken en/of methoden op hun toepasbaarheid in het project.
@@ -44,7 +52,7 @@ Daarnaast krijgen wij dit project om verschillende vaardigheden, die wij de afge
 7. De student opereert op professionele wijze qua communicatie, samenwerking en projectmatig werk.
 
 ### Doelstelling
-Het doel is om een systeem te maken voor Coen Burgers waarbij je makkelijk, snel en op een overzichtelijke manier informatie kan vinden over verschillende vissenziektes. Mocht je persoonlijk advies willen hebben moet er de mogelijkheid zijn om een chat op te kunnen starten met een expert waarbij foto’s en video’s verzonden kunnen worden.
+Het doel is om een systeem te maken voor Coen Burgers waarmee makkelijk, snel en op een overzichtelijke manier informatie kan worden gevonden over verschillende vissenziektes. Mocht persoonlijk advies gewenst zijn moet er de mogelijkheid zijn om een chat op te kunnen starten met een expert waarbij foto’s en video’s verzonden kunnen worden.
 
 Het probleem wat hiermee opgelost moet worden is dat mensen die voorheen niet goed nadachten over de leefomgeving van hun vis dit nu wel gaan doen.
 
