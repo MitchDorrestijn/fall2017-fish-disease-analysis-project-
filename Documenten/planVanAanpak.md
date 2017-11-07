@@ -126,7 +126,7 @@ Groepsleden:
 | Naam:             | Email:      | Telefoon:       |
 | ----------------- |-------------|-----------------|
 | Mitch Dorrestijn  | M.Dorrestijn1@student.han.nl | +31 6 81043855  |
-| Ruud Mullenman    | [mail hier] | [telefoon hier] |
+| Ruud Mullenman    | ruud.mulleman@hotmail.com | +31 6 10269844 |
 | Sjoerd Scheffer   | [mail hier] | [telefoon hier] |
 | Jaap Weijland     | [mail hier] | [telefoon hier] |
 | Coen              | [mail hier] | [telefoon hier] |
