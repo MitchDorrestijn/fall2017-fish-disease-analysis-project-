@@ -61,11 +61,24 @@ Het CMS voor dit systeem is waarin in dit project de nadruk op wordt gelegd. Dez
 ### Projectgrenzen
 Hieronder volgen de grenzen van het project. De grenzen zorgen ervoor dat de het voor de opdrachtgever duidelijk is wat hij wel en wat hij niet kan verwachten.
 
-Organisatie grenzen:
-<br><b style="color:red">[Content hier beschrijven]</b>
+##### Tijd
 
-Project grenzen (wat niet gevisualiseerd wordt gedurende dit project):
-<br><b style="color:red">[Content hier beschrijven]</b>
+Formeel begint de sprint op 6 November, in deze week wordt het projectplan en de product backlog gemaakt. Vanaf 13 November begint de eerste sprint, op 19 januari 16:00 is de deadline voor het inleveren van het project. Op 22 januari is de laatste sprint review.
+
+##### Ontwikkeling
+
+De applicatie zal getest worden op de volgende browsers. Andere browsers zullen niet ondersteund worden.
+
+- Microsoft Edge 14+
+- Google Chrome 54+
+- Mozilla Firefox 50+
+- Safari 11+
+
+##### Oplevering
+
+- Het installeren van de applicatie op een server valt buiten de opdracht
+- Deze versie van de applicatie is een prototype
+- Documentatie eisen zijn relatief laag, er wordt een Software Guidebook gemaakt dit bevat de informatie die toekomstige software developers nodig hebben om het product te onderhouden of uitbreiden
 
 
 ### Randvoorwaarden
@@ -123,24 +136,24 @@ Voor vragen of opmerkingen aan groepsleden of begeleidende docenten hebben we hi
 
 Groepsleden:
 
-| Naam:             | Email:      | Telefoon:       |
-| ----------------- |-------------|-----------------|
-| Mitch Dorrestijn  | M.Dorrestijn1@student.han.nl | +31 6 81043855  |
-| Ruud Mullenman    | ruud.mulleman@hotmail.com | +31 6 10269844 |
-| Sjoerd Scheffer   | [mail hier] | [telefoon hier] |
-| Jaap Weijland     | [mail hier] | [telefoon hier] |
-| Coen              | [mail hier] | [telefoon hier] |
-| Roy               | [mail hier] | [telefoon hier] |
+| Naam:            | Email:                       | Telefoon:       |
+| ---------------- | ---------------------------- | --------------- |
+| Mitch Dorrestijn | M.Dorrestijn1@student.han.nl | +31 6 81043855  |
+| Ruud Mullenman   | ruud.mulleman@hotmail.com    | +31 6 10269844  |
+| Sjoerd Scheffer  | [mail hier]                  | [telefoon hier] |
+| Jaap Weijland    | [mail hier]                  | [telefoon hier] |
+| Coen             | [mail hier]                  | [telefoon hier] |
+| Roy              | [mail hier]                  | [telefoon hier] |
 
 Figuur 2: groepsleden overzicht
 
 Contactpersonen:
 
-| Naam:             | Email:      | Telefoon:       | Functie   |
-| ------------- | ------------- | ----------------- | ----------- |
-| Coen Burgers      | [mail hier] | [telefoon hier] | [functie] |
-| Robert            | [mail hier] | [telefoon hier] | [functie] |
-| Pfs               | [mail hier] | [telefoon hier] | [functie] |
+| Naam:        | Email:      | Telefoon:       | Functie   |
+| ------------ | ----------- | --------------- | --------- |
+| Coen Burgers | [mail hier] | [telefoon hier] | [functie] |
+| Robert       | [mail hier] | [telefoon hier] | [functie] |
+| Pfs          | [mail hier] | [telefoon hier] | [functie] |
 
 Figuur 3: Contactpersonen overzicht
 
