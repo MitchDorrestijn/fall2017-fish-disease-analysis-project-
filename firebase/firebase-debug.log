@@ -1,40 +1,57 @@
-[debug] [2017-11-15T10:18:20.098Z] ----------------------------------------------------------------------
-[debug] [2017-11-15T10:18:20.100Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only functions,hosting
-[debug] [2017-11-15T10:18:20.101Z] CLI Version:   3.15.0
-[debug] [2017-11-15T10:18:20.101Z] Platform:      darwin
-[debug] [2017-11-15T10:18:20.101Z] Node Version:  v8.2.1
-[debug] [2017-11-15T10:18:20.101Z] Time:          Wed Nov 15 2017 11:18:20 GMT+0100 (CET)
-[debug] [2017-11-15T10:18:20.101Z] ----------------------------------------------------------------------
+[debug] [2017-11-15T11:43:28.694Z] ----------------------------------------------------------------------
+[debug] [2017-11-15T11:43:28.696Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only hosting,functions
+[debug] [2017-11-15T11:43:28.696Z] CLI Version:   3.15.0
+[debug] [2017-11-15T11:43:28.696Z] Platform:      darwin
+[debug] [2017-11-15T11:43:28.696Z] Node Version:  v8.2.1
+[debug] [2017-11-15T11:43:28.697Z] Time:          Wed Nov 15 2017 12:43:28 GMT+0100 (CET)
+[debug] [2017-11-15T11:43:28.697Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2017-11-15T10:18:20.115Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2017-11-15T10:18:20.115Z] > authorizing via signed-in user
-[debug] [2017-11-15T10:18:20.117Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/fishproject-47cfd  
- Wed Nov 15 2017 11:18:20 GMT+0100 (CET)
-[debug] [2017-11-15T10:18:20.801Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-15T10:18:20.802Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/fishproject-47cfd/tokens  
- Wed Nov 15 2017 11:18:20 GMT+0100 (CET)
-[debug] [2017-11-15T10:18:21.329Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-15T11:43:28.711Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-15T11:43:28.711Z] > authorizing via signed-in user
+[debug] [2017-11-15T11:43:28.713Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/fishproject-47cfd  
+ Wed Nov 15 2017 12:43:28 GMT+0100 (CET)
+[debug] [2017-11-15T11:43:29.423Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-15T11:43:29.424Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/fishproject-47cfd/tokens  
+ Wed Nov 15 2017 12:43:29 GMT+0100 (CET)
+[debug] [2017-11-15T11:43:30.055Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Serving from '/Users/Weijland/Documents/Studie/DWA/fall2017-project-fish-disease-analysis/firebase'...
 [info] 
 [info] i  functions: Preparing to emulate functions.
-[debug] [2017-11-15T10:18:21.752Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/fishproject-47cfd  
- Wed Nov 15 2017 11:18:21 GMT+0100 (CET)
-[debug] [2017-11-15T10:18:21.753Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/fishproject-47cfd/apiKeys  
- Wed Nov 15 2017 11:18:21 GMT+0100 (CET)
-[debug] [2017-11-15T10:18:21.753Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/fishproject-47cfd  
- Wed Nov 15 2017 11:18:21 GMT+0100 (CET)
-[debug] [2017-11-15T10:18:22.654Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-15T10:18:22.656Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-15T10:18:22.657Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/324776878982/clients/_:getWebAppConfig  
- Wed Nov 15 2017 11:18:22 GMT+0100 (CET)
-[debug] [2017-11-15T10:18:22.688Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-15T10:18:23.031Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-15T11:43:30.455Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/fishproject-47cfd  
+ Wed Nov 15 2017 12:43:30 GMT+0100 (CET)
+[debug] [2017-11-15T11:43:30.456Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/fishproject-47cfd/apiKeys  
+ Wed Nov 15 2017 12:43:30 GMT+0100 (CET)
+[debug] [2017-11-15T11:43:30.456Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/fishproject-47cfd  
+ Wed Nov 15 2017 12:43:30 GMT+0100 (CET)
+[debug] [2017-11-15T11:43:31.092Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-15T11:43:31.093Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/324776878982/clients/_:getWebAppConfig  
+ Wed Nov 15 2017 12:43:31 GMT+0100 (CET)
+[debug] [2017-11-15T11:43:31.127Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-15T11:43:31.237Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-15T11:43:31.515Z] <<< HTTP RESPONSE 200
 [info] i  hosting: Serving hosting files from: public
 [info] ✔  hosting: Local server: http://localhost:5000
 
 [info] ✔  functions: app: http://localhost:5001/fishproject-47cfd/us-central1/app
-[info] [hosting] Rewriting / to local function app
-[info] [hosting] Rewriting /robots.txt to local function app
-[info] [hosting] Rewriting /user to local function app
-[info] [hosting] Rewriting /user/other to local function app
+[info] [hosting] Rewriting /authentication/token/ to local function app
+[info] [hosting] Rewriting /authentication/token/Ta7y5j3cbqOlmg0nIEH1cIghbaS2/ to local function app
+[info] [hosting] Rewriting /lol to local function app
+[info] [hosting] Rewriting /authentication/token/Ta7y5j3cbqOlmg0nIEH1cIghbaS2/ to local function app
+[info] [hosting] Rewriting /authentication/token/Ta7y5j3cbqOlmg0nIEH1cIghbaS2/ to local function app
+[info] [hosting] Rewriting /authentication/token/ to local function app
+[info] [hosting] Rewriting /authentication/token/Ta7y5j3cbqOlmg0nIEH1cIghbaS2 to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /authentication/token/Ta7y5j3cbqOlmg0nIEH1cIghbaS2 to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /home to local function app
+[info] [hosting] Rewriting /authentication/token/Ta7y5j3cbqOlmg0nIEH1cIghbaS2 to local function app
+[info] [hosting] Rewriting /authentication/token/Ta7y5j3cbqOlmg0nIEH1cIghbaS2 to local function app

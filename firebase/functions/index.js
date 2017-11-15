@@ -1,17 +1,29 @@
 const functions = require('firebase-functions');
 const express = require('express');
 const userRoutes = require('./routes/user.js');
+const authRoutes = require('./routes/authentication.js');
+const authenticate = require('./middleware/authenticate.js');
+
+const admin = require("firebase-admin");
+const serviceAccount = require("./private-key.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://fishproject-47cfd.firebaseio.com"
+});
 
 /* Express */
 const app = express();
 
 app.use('', userRoutes);
+app.use('', authRoutes);
+//app.use('*', authenticate)
 
 app.get("/", (request, response) => {
   response.send("Hello from root!");
 })
 
-app.get("/home", (request, response) => {
+app.get("/home", authenticate, (request, response) => {
   response.send("Hello from Express on Firebase!");
 })
 
