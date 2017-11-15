@@ -1,6 +1,2 @@
-@import "./component.scss";
-
-body {
-	background: green;
-	font-size: 100px;
-}
+@import "base.scss";
+@import "homepage/homepage.scss";

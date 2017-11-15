@@ -1,0 +1,33 @@
+$supportColor: #FFFFFF;
+$alternativeTextColor: #333333;
+$defaultBorderWidth: 2px;
+
+.white {
+	color:$supportColor;
+}
+
+body {
+	font-size: 15px;
+}
+
+h2 {
+	font-size: 40px;
+}
+
+.btn-outline-primary {
+	width: 200px;
+	color: $supportColor !important;
+	border-color: $supportColor !important;
+	border-radius: 0px !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+	background-color: $supportColor !important;
+	color: $alternativeTextColor !important;
+	cursor: pointer;
+}
+
+.btn-outline-primary:focus {
+	box-shadow: none !important;
+}
