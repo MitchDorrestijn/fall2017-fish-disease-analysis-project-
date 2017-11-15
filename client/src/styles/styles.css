@@ -4,9 +4,6 @@
 body {
   font-size: 15px; }
 
-h2 {
-  font-size: 40px; }
-
 .btn-outline-primary {
   width: 200px;
   color: #FFFFFF !important;
@@ -21,6 +18,19 @@ h2 {
 
 .btn-outline-primary:focus {
   box-shadow: none !important; }
+
+h2 {
+  font-size: 40px; }
+
+a:hover {
+  text-decoration: none;
+  color: #333333 !important; }
+
+.footer {
+  padding: 15px 0px;
+  text-align: center; }
+  .footer a {
+    color: #333333; }
 
 .block-wrapper {
   margin-left: 0 !important;

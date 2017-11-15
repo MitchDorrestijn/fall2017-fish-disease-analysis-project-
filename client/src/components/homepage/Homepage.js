@@ -1,5 +1,6 @@
 import React from 'react';
 import SingleBlock from './SingleBlock';
+import Footer from '../base/Footer';
 
 export default class Homepage extends React.Component {
 		render(){
@@ -19,6 +20,7 @@ export default class Homepage extends React.Component {
 						btnText="test"
 						link="/eenLink"
 					/>
+					<Footer />
 				</div>
 			);
 		}
