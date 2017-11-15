@@ -1,16 +1,17 @@
 const functions = require('firebase-functions');
 const express = require('express');
-const userRoutes = require('./routes/user.js');
-const registrationRoutes = require('./routes/registration.js');
-const authenticate = require('./middleware/authenticate.js');
 
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 const serviceAccount = require("./private-key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
+
+const userRoutes = require('./routes/user.js');
+const registrationRoutes = require('./routes/registration.js');
+const authenticate = require('./middleware/authenticate.js');
 
 /* Express */
 const app = express();
