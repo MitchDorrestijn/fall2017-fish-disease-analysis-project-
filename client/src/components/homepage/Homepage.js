@@ -10,14 +10,14 @@ export default class Homepage extends React.Component {
 						text="The Bassleer Biofish analysis can help you identify the disease of your fish and give advice for a possible treatment."
 						background="recources/homepage-achtergrond.jpg"
 						btnText="test"
-						link="http://www.google.nl/"
+						link="/nogEenLink"
 					/>
 					<SingleBlock
 						title="My Aquarium"
 						text="‘My aquarium’ is a way to save all the data of your aquarium, so diseases can be prevented and causes can be found."
 						background="recources/homepage-achtergrond-2.jpg"
 						btnText="test"
-						link="http://www.google.nl/"
+						link="/eenLink"
 					/>
 				</div>
 			);

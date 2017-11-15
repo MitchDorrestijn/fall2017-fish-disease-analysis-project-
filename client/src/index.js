@@ -4,6 +4,4 @@ import './styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import App from './components/App';
 
-import Homepage from './components/homepage/Homepage';
-
-ReactDOM.render(<Homepage/>, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
