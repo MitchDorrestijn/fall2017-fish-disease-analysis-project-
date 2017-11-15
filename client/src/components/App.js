@@ -4,6 +4,7 @@ import '../styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavigationBar from './navigation/NavigationBar';
 import Homepage from './homepage/Homepage';
+import Modal from './modal/ModalBase';
 
 export default class App extends React.Component {
 	render() {
@@ -13,6 +14,7 @@ export default class App extends React.Component {
 				<BrowserRouter>
 					<Route exact path="/" component={Homepage}/>
 				</BrowserRouter>
+				<Modal/>
 			</div>
 		);
 	}
