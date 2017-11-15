@@ -13,7 +13,7 @@ class Register extends React.Component {
 				<ModalHeader toggle={() => this.props.toggleModal()}>Register</ModalHeader>
 				<ModalBody>
 					<Button color="primary" onClick={() => this.props.changeContent(this.props.Login)}>Login</Button><br/>
-					<Button color="primary" onClick={() => this.props.changeContent(this.props.ForgetPassword)}>Forget password</Button>
+					<Button color="primary" onClick={() => this.props.changeContent(this.props.ForgotPassword)}>Forget password</Button>
 				</ModalBody>
 				<ModalFooter>
 					<Button color="primary" onClick={() => this.props.toggleModal()}>Close</Button>

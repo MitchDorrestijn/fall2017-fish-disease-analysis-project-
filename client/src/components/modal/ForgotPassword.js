@@ -6,7 +6,7 @@ import {
 	Button
 } from 'reactstrap';
 
-class ForgetPassword extends React.Component {
+class ForgotPassword extends React.Component {
 	render() {
 		return (
 			<div>
@@ -23,4 +23,4 @@ class ForgetPassword extends React.Component {
 	}
 }
 
-export default ForgetPassword;
+export default ForgotPassword;

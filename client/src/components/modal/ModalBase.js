@@ -4,7 +4,7 @@ import {
 } from 'reactstrap';
 import Login from './Login';
 import Register from './Register';
-import ForgetPassword from './ForgetPassword';
+import ForgotPassword from './ForgotPassword';
 
 class ModalBase extends React.Component {
 	constructor(props) {
@@ -31,7 +31,7 @@ class ModalBase extends React.Component {
 		const ModalContent = this.state.modalContent;
 		return (
 			<Modal isOpen={this.state.modal} toggle={() => this.toggleModal()}>
-				<ModalContent Login={Login} Register={Register} ForgetPassword={ForgetPassword} changeContent={this.changeContent.bind(this)} toggleModal={this.toggleModal}/>
+				<ModalContent Login={Login} Register={Register} ForgotPassword={ForgotPassword} changeContent={this.changeContent.bind(this)} toggleModal={this.toggleModal.bind(this)}/>
 			</Modal>
 		);
 	}
