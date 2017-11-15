@@ -1,7 +1,6 @@
 const functions = require('firebase-functions');
 const express = require('express');
 const userRoutes = require('./routes/user.js');
-const authRoutes = require('./routes/authentication.js');
 const authenticate = require('./middleware/authenticate.js');
 
 const admin = require("firebase-admin");
@@ -16,8 +15,7 @@ admin.initializeApp({
 const app = express();
 
 app.use('', userRoutes);
-app.use('', authRoutes);
-//app.use('*', authenticate)
+app.use('*', authenticate)
 
 app.get("/", (request, response) => {
   response.send("Hello from root!");
