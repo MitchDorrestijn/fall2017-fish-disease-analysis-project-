@@ -7,6 +7,10 @@ import {
 	NavbarToggler,
 	Collapse,
 	NavLink,
+	Input,
+	Button,
+	Form,
+	FormGroup
 } from 'reactstrap';
 
 export default class NavigationBar extends React.Component {
@@ -25,8 +29,8 @@ export default class NavigationBar extends React.Component {
 
 	render() {
 		return (
-			<Navbar color="light" light expand="md" className="fixed-top">
-				<NavbarBrand>Logo hier</NavbarBrand>
+			<Navbar color="light" style={{height: '80px', paddingTop: '20px'}} light expand="md" className="fixed-top">
+				<NavbarBrand><img src="/images/logo.png" alt="Logo" className="logo"/></NavbarBrand>
 				<NavbarToggler onClick={this.toggle}/>
 				<Collapse isOpen={this.state.isOpen} navbar>
 					<Nav className="ml-auto" navbar>
@@ -39,9 +43,20 @@ export default class NavigationBar extends React.Component {
 						<NavItem>
 							<NavLink href="" onClick={e => e.preventDefault()}>Login</NavLink>
 						</NavItem>
-						<NavItem>
-							{/* Hier komt een tekstveld! */}
-						</NavItem>
+						<Form>
+							<FormGroup>
+								<NavItem>
+									<span className="input-group">
+										<Input type="text" placeholder="Search..."/>
+										<span className="input-group-btn">
+											<Button>
+												<i className="fa fa-search"/>
+											</Button>
+										</span>
+									</span>
+								</NavItem>
+							</FormGroup>
+						</Form>
 					</Nav>
 				</Collapse>
 			</Navbar>
