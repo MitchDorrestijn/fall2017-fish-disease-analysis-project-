@@ -3,6 +3,7 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import '../styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavigationBar from './navigation/NavigationBar';
+import Homepage from './homepage/Homepage';
 
 export default class App extends React.Component {
 	render() {
@@ -16,5 +17,3 @@ export default class App extends React.Component {
 		);
 	}
 }
-
-export default Header;
