@@ -21,8 +21,8 @@ Praat hier tegenaan om een gebruiker te registreren. Geef de volgende JSON mee:
 ```json
 {
     user: {
-        id: "123",
-        emailAddress: "",
+        email: "",
+        password: "",
         firstName: "",
         lastName: "",
         country: // DocumentReference naar country
