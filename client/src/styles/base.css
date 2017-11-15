@@ -31,14 +31,3 @@ a:hover {
   text-align: center; }
   .footer a {
     color: #333333; }
-
-.block-wrapper {
-  margin-left: 0 !important;
-  margin-right: 0 !important; }
-  .block-wrapper .singleBlock {
-    background-size: cover;
-    background-position: center right;
-    padding: 200px 50px; }
-    @media screen and (max-width: 768px) {
-      .block-wrapper .singleBlock {
-        padding: 10vh 20px; } }
