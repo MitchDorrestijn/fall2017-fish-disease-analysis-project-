@@ -29,9 +29,9 @@ export default class NavigationBar extends React.Component {
 
 	render() {
 		return (
-			<Navbar style={{height: '80px', paddingTop: '20px'}} light expand="md" className="fixed-top">
+			<Navbar light expand="md" className="fixed-top">
 				<NavbarBrand><img src="/images/logo.png" alt="Logo" className="logo"/></NavbarBrand>
-				<NavbarToggler onClick={this.toggle}/>
+				<NavbarToggler className="test" onClick={this.toggle}/>
 				<Collapse isOpen={this.state.isOpen} navbar>
 					<Nav className="ml-auto" navbar>
 						<NavItem>
@@ -45,11 +45,11 @@ export default class NavigationBar extends React.Component {
 						</NavItem>
 						<Form>
 							<FormGroup>
-								<NavItem>
-									<span className="input-group">
-										<Input type="text" placeholder="Search..."/>
-										<span className="input-group-btn">
-											<Button>
+								<NavItem className="search-wrap">
+									<span className="input-group searchBox-wrapper">
+										<Input className="search-field" type="text" placeholder="Search..."/>
+										<span className="input-group-btn searchBtn-wrap">
+											<Button className="search-btn">
 												<i className="fa fa-search"/>
 											</Button>
 										</span>

@@ -4,7 +4,7 @@
 $supportColor: #FFFFFF;
 $alternativeTextColor: #333333;
 $defaultBorderWidth: 2px;
-$deafultPadding: 15px;
+$defaultPadding: 15px;
 
 //GENERAL STYLING
 .white {
@@ -13,6 +13,7 @@ $deafultPadding: 15px;
 body {
 	font-family: 'Open Sans', sans-serif !important;
 	font-size: 15px !important;
+	padding-top: 80px; //Same height as the navbar
 }
 
 //BUTTON STYLING
@@ -48,7 +49,7 @@ a:hover{
 	a {
 		color: $alternativeTextColor;
 	}
-	padding: ($deafultPadding*2)/2 0px;
+	padding: ($defaultPadding*2)/2 0px;
 	text-align: center;
 }
 
@@ -56,12 +57,88 @@ a:hover{
 nav {
 	background-color: $supportColor;
 	.nav-item {
-		padding: $deafultPadding;
+		padding: $defaultPadding;
+	}
+	@media screen and(max-width: 768px){
+		.navbar-collapse {
+			background: $supportColor;
+			text-align: center;
+		}
+		.nav-item:hover {
+			background: gainsboro;
+			text-decoration: none;
+			a:hover {
+				text-decoration: none;
+			}
+		}
+		img.logo {
+			 margin-top:$defaultPadding;
+		 }
+		 button.test.navbar-toggler {
+			 border:none;
+			 margin-top: $defaultPadding;
+		 }
+		 button.test.navbar-toggler:focus,
+		 button.test.navbar-toggler:active {
+			 box-shadow: none;
+			 outline:none;
+		 }
+		 button.test.navbar-toggler:hover {
+			 cursor: pointer;
+		 }
+	}
+	img.logo {
+	 	max-height: 50px;
+	 }
+	.search-wrap:hover {
+		background: none;
 	}
 }
 .navbar-light .navbar-nav .nav-link {
 	color: $alternativeTextColor !important;
 }
-.navbar-light:hover .navbar-nav:hover .nav-link:hover {
-	text-decoration: underline;
+.navbar.fixed-top {
+	padding-top: 20px;
+}
+@media screen and(min-width: 768px){
+ .navbar-light:hover .navbar-nav:hover .nav-link:hover {
+ 	text-decoration: underline;
+ }
+ .navbar.fixed-top {
+ 	height: 80px;
+ }
+}
+@media screen and(max-width: 768px){
+	.navbar.fixed-top{
+		top: -$defaultPadding - 5;
+		right: -$defaultPadding+1;
+		left: -$defaultPadding;
+	}
+	.navbar-brand {
+		padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+		padding: 0px $defaultPadding 0px $defaultPadding;
+	}
+}
+.searchBox-wrapper{
+	.search-field {
+		border:none !important;
+		border-radius:0px !important;
+	}
+	.search-field:active,
+	.search-field:focus {
+		box-shadow: none !important;
+		outline: none !important;
+	}
+	.form-control {
+		border-bottom: 1px solid $alternativeTextColor !important;
+	}
+	.searchBtn-wrap{
+		border-bottom: 1px solid $alternativeTextColor;
+		.search-btn {
+			background: none !important;
+			border:none !important;
+			color: $alternativeTextColor !important;
+		}
+	}
 }

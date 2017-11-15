@@ -4,7 +4,8 @@
 
 body {
   font-family: 'Open Sans', sans-serif !important;
-  font-size: 15px !important; }
+  font-size: 15px !important;
+  padding-top: 80px; }
 
 .btn-outline-primary {
   width: 200px;
@@ -38,12 +39,71 @@ nav {
   background-color: #FFFFFF; }
   nav .nav-item {
     padding: 15px; }
+  @media screen and (max-width: 768px) {
+    nav .navbar-collapse {
+      background: #FFFFFF;
+      text-align: center; }
+    nav .nav-item:hover {
+      background: gainsboro;
+      text-decoration: none; }
+      nav .nav-item:hover a:hover {
+        text-decoration: none; }
+    nav img.logo {
+      margin-top: 15px; }
+    nav button.test.navbar-toggler {
+      border: none;
+      margin-top: 15px; }
+    nav button.test.navbar-toggler:focus,
+    nav button.test.navbar-toggler:active {
+      box-shadow: none;
+      outline: none; }
+    nav button.test.navbar-toggler:hover {
+      cursor: pointer; } }
+  nav img.logo {
+    max-height: 50px; }
+  nav .search-wrap:hover {
+    background: none; }
 
 .navbar-light .navbar-nav .nav-link {
   color: #333333 !important; }
 
-.navbar-light:hover .navbar-nav:hover .nav-link:hover {
-  text-decoration: underline; }
+.navbar.fixed-top {
+  padding-top: 20px; }
+
+@media screen and (min-width: 768px) {
+  .navbar-light:hover .navbar-nav:hover .nav-link:hover {
+    text-decoration: underline; }
+  .navbar.fixed-top {
+    height: 80px; } }
+
+@media screen and (max-width: 768px) {
+  .navbar.fixed-top {
+    top: -20px;
+    right: -14px;
+    left: -15px; }
+  .navbar-brand {
+    padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+    padding: 0px 15px 0px 15px; } }
+
+.searchBox-wrapper .search-field {
+  border: none !important;
+  border-radius: 0px !important; }
+
+.searchBox-wrapper .search-field:active,
+.searchBox-wrapper .search-field:focus {
+  box-shadow: none !important;
+  outline: none !important; }
+
+.searchBox-wrapper .form-control {
+  border-bottom: 1px solid #333333 !important; }
+
+.searchBox-wrapper .searchBtn-wrap {
+  border-bottom: 1px solid #333333; }
+  .searchBox-wrapper .searchBtn-wrap .search-btn {
+    background: none !important;
+    border: none !important;
+    color: #333333 !important; }
 
 .block-wrapper {
   margin-left: 0 !important;
@@ -67,11 +127,3 @@ nav {
           position: relative;
           top: 0;
           margin-top: 0; } }
-
-body {
-  background: green;
-  font-size: 100px;
-  padding-top: 80px; }
-
-img.logo {
-  max-height: 60px; }
