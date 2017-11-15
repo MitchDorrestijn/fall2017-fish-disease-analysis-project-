@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
 .white {
   color: #FFFFFF; }
 
 body {
-  font-size: 15px; }
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 15px !important; }
 
 .btn-outline-primary {
   width: 200px;
@@ -32,16 +34,39 @@ a:hover {
   .footer a {
     color: #333333; }
 
+nav {
+  background-color: #FFFFFF; }
+  nav .nav-item {
+    padding: 15px; }
+
+.navbar-light .navbar-nav .nav-link {
+  color: #333333 !important; }
+
+.navbar-light:hover .navbar-nav:hover .nav-link:hover {
+  text-decoration: underline; }
+
 .block-wrapper {
   margin-left: 0 !important;
   margin-right: 0 !important; }
   .block-wrapper .singleBlock {
+    position: relative;
     background-size: cover;
     background-position: center right;
-    padding: 200px 50px; }
+    padding: 50px 50px;
+    min-height: calc(100vh - 132px); }
     @media screen and (max-width: 768px) {
       .block-wrapper .singleBlock {
-        padding: 10vh 20px; } }
+        padding: 10vh 20px;
+        min-height: auto; } }
+    .block-wrapper .singleBlock .singleBlock-content {
+      position: absolute;
+      top: 50%;
+      margin-top: -50px; }
+      @media screen and (max-width: 768px) {
+        .block-wrapper .singleBlock .singleBlock-content {
+          position: relative;
+          top: 0;
+          margin-top: 0; } }
 
 body {
   background: green;

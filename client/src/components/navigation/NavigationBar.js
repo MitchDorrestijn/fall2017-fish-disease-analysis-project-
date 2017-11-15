@@ -29,7 +29,7 @@ export default class NavigationBar extends React.Component {
 
 	render() {
 		return (
-			<Navbar color="light" style={{height: '80px', paddingTop: '20px'}} light expand="md" className="fixed-top">
+			<Navbar style={{height: '80px', paddingTop: '20px'}} light expand="md" className="fixed-top">
 				<NavbarBrand><img src="/images/logo.png" alt="Logo" className="logo"/></NavbarBrand>
 				<NavbarToggler onClick={this.toggle}/>
 				<Collapse isOpen={this.state.isOpen} navbar>

@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
 .white {
   color: #FFFFFF; }
 
 body {
-  font-size: 15px; }
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 15px !important; }
 
 .btn-outline-primary {
   width: 200px;
@@ -31,3 +33,14 @@ a:hover {
   text-align: center; }
   .footer a {
     color: #333333; }
+
+nav {
+  background-color: #FFFFFF; }
+  nav .nav-item {
+    padding: 15px; }
+
+.navbar-light .navbar-nav .nav-link {
+  color: #333333 !important; }
+
+.navbar-light:hover .navbar-nav:hover .nav-link:hover {
+  text-decoration: underline; }
