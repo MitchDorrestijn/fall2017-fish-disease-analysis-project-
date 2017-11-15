@@ -1,13 +1,17 @@
 import React from 'react';
 import '../styles/styles.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import NavigationBar from './navigation/NavigationBar';
 
-class App extends React.Component {
+export default class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
+				<div className="container-fluid">
+					<NavigationBar/>
+				</div>
 			</div>
 		);
 	}
 }
 
-export default Header;
