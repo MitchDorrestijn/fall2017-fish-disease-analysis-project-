@@ -25,16 +25,22 @@ export default class NavigationBar extends React.Component {
 
 	render() {
 		return (
-			<Navbar color="faded" light expand="md">
+			<Navbar color="light" light expand="md" className="fixed-top">
 				<NavbarBrand>Logo hier</NavbarBrand>
 				<NavbarToggler onClick={this.toggle}/>
 				<Collapse isOpen={this.state.isOpen} navbar>
 					<Nav className="ml-auto" navbar>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}>Components</NavLink>
+							<NavLink href="" onClick={e => e.preventDefault()}>Analysis</NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}>Components</NavLink>
+							<NavLink href="" onClick={e => e.preventDefault()}>Request Consult</NavLink>
+						</NavItem>
+						<NavItem>
+							<NavLink href="" onClick={e => e.preventDefault()}>Login</NavLink>
+						</NavItem>
+						<NavItem>
+							{/* Hier komt een tekstveld! */}
 						</NavItem>
 					</Nav>
 				</Collapse>
