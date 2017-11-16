@@ -43,6 +43,12 @@ a:hover {
       .block-wrapper .singleBlock {
         padding: 10vh 20px; } }
 
+.center {
+  text-align: center; }
+
+.modalLink {
+  cursor: pointer; }
+
 body {
   background: green;
   font-size: 100px;
