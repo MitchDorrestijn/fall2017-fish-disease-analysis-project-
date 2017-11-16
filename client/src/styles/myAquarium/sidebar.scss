@@ -2,7 +2,7 @@
 
 .sidebar-wrap {
   height: 100vh;
-	@media screen and(max-width: 768px){
+	@media screen and(max-width: $responsiveBreakPoint){
 		height: auto;
 	}
 	.aquarium-sidebar {
@@ -11,7 +11,7 @@
 		color: $supportColor;
 		position: fixed;
 		z-index: 1;
-		@media screen and(max-width: 768px){
+		@media screen and(max-width: $responsiveBreakPoint){
 			position: relative;
 			min-height: auto;
 		}

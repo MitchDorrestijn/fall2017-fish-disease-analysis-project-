@@ -1,6 +1,8 @@
+@import "../settings.scss";
+
 .outer-container{
 	width: 75%;
-	@media screen and(max-width: 768px){
+	@media screen and(max-width: $responsiveBreakPoint){
 		width: 100%;
 	}
 	.aquarium-content-container {
@@ -9,6 +11,9 @@
 		color: #fff;
 		min-height: 100vh;
 		overflow: auto;
-		padding: 20px 20px 20px 40px !important;
+		padding: 20px 20px 20px 40px;
+		@media screen and(max-width: $responsiveBreakPoint){
+			padding: 20px 20px 20px 20px;
+		}
 	}
 }

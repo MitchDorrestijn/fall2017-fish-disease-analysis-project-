@@ -7,8 +7,9 @@ export default class MyFish extends React.Component {
 	render() {
 		return (
 			<div className="container">
-				<h2>My fish</h2>
+
 				<div className="row inner-content">
+					<h2>My fish</h2>
 					<div className="card-columns">
 						<Card image="/recources/emerald-catfish.jpg">
 							<CardTitle>Flyingfish</CardTitle>
