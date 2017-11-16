@@ -1,42 +1,47 @@
-[debug] [2017-11-15T15:39:08.750Z] ----------------------------------------------------------------------
-[debug] [2017-11-15T15:39:08.752Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only hosting,functions
-[debug] [2017-11-15T15:39:08.752Z] CLI Version:   3.15.0
-[debug] [2017-11-15T15:39:08.752Z] Platform:      darwin
-[debug] [2017-11-15T15:39:08.752Z] Node Version:  v8.2.1
-[debug] [2017-11-15T15:39:08.753Z] Time:          Wed Nov 15 2017 16:39:08 GMT+0100 (CET)
-[debug] [2017-11-15T15:39:08.753Z] ----------------------------------------------------------------------
+[debug] [2017-11-16T08:14:31.713Z] ----------------------------------------------------------------------
+[debug] [2017-11-16T08:14:31.716Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only hosting,functions
+[debug] [2017-11-16T08:14:31.716Z] CLI Version:   3.15.0
+[debug] [2017-11-16T08:14:31.716Z] Platform:      darwin
+[debug] [2017-11-16T08:14:31.716Z] Node Version:  v8.2.1
+[debug] [2017-11-16T08:14:31.717Z] Time:          Thu Nov 16 2017 09:14:31 GMT+0100 (CET)
+[debug] [2017-11-16T08:14:31.717Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2017-11-15T15:39:08.767Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2017-11-15T15:39:08.767Z] > authorizing via signed-in user
-[debug] [2017-11-15T15:39:08.769Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/fishproject-47cfd  
- Wed Nov 15 2017 16:39:08 GMT+0100 (CET)
-[debug] [2017-11-15T15:39:09.395Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-15T15:39:09.396Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/fishproject-47cfd/tokens  
- Wed Nov 15 2017 16:39:09 GMT+0100 (CET)
-[debug] [2017-11-15T15:39:10.209Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T08:14:31.734Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-16T08:14:31.735Z] > authorizing via signed-in user
+[debug] [2017-11-16T08:14:31.736Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-11-16T08:14:31.737Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/d7V9JOi4OP8CRKsQoMOiSQVOLcFHdKPNWYMDPO11e0s',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Thu Nov 16 2017 09:14:31 GMT+0100 (CET)
+[debug] [2017-11-16T08:14:31.865Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T08:14:31.882Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/fishproject-47cfd  
+ Thu Nov 16 2017 09:14:31 GMT+0100 (CET)
+[debug] [2017-11-16T08:14:32.503Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T08:14:32.504Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/fishproject-47cfd/tokens  
+ Thu Nov 16 2017 09:14:32 GMT+0100 (CET)
+[debug] [2017-11-16T08:14:33.212Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Serving from '/Users/Weijland/Documents/Studie/DWA/fall2017-project-fish-disease-analysis/firebase'...
 [info] 
 [info] i  functions: Preparing to emulate functions.
-[debug] [2017-11-15T15:39:10.629Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/fishproject-47cfd  
- Wed Nov 15 2017 16:39:10 GMT+0100 (CET)
-[debug] [2017-11-15T15:39:10.630Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/fishproject-47cfd/apiKeys  
- Wed Nov 15 2017 16:39:10 GMT+0100 (CET)
-[debug] [2017-11-15T15:39:10.630Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/fishproject-47cfd  
- Wed Nov 15 2017 16:39:10 GMT+0100 (CET)
-[debug] [2017-11-15T15:39:11.335Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-15T15:39:11.336Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/324776878982/clients/_:getWebAppConfig  
- Wed Nov 15 2017 16:39:11 GMT+0100 (CET)
-[debug] [2017-11-15T15:39:11.341Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-15T15:39:11.430Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-15T15:39:11.770Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T08:14:33.719Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/fishproject-47cfd  
+ Thu Nov 16 2017 09:14:33 GMT+0100 (CET)
+[debug] [2017-11-16T08:14:33.719Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/fishproject-47cfd/apiKeys  
+ Thu Nov 16 2017 09:14:33 GMT+0100 (CET)
+[debug] [2017-11-16T08:14:33.719Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/fishproject-47cfd  
+ Thu Nov 16 2017 09:14:33 GMT+0100 (CET)
+[debug] [2017-11-16T08:14:34.356Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T08:14:34.356Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/324776878982/clients/_:getWebAppConfig  
+ Thu Nov 16 2017 09:14:34 GMT+0100 (CET)
+[debug] [2017-11-16T08:14:34.398Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T08:14:34.505Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T08:14:34.946Z] <<< HTTP RESPONSE 200
 [info] i  hosting: Serving hosting files from: public
 [info] ✔  hosting: Local server: http://localhost:5000
 
 [info] ✔  functions: app: http://localhost:5001/fishproject-47cfd/us-central1/app
-[info] [hosting] Rewriting /register/ to local function app
-[info] [hosting] Rewriting /register/ to local function app
-[info] [hosting] Rewriting /register/ to local function app
 [info] [hosting] Rewriting /register/ to local function app
 [info] [hosting] Rewriting /register/ to local function app
 [info] [hosting] Rewriting /register/ to local function app

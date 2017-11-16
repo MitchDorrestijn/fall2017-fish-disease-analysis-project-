@@ -7,20 +7,22 @@ const db = admin.firestore();
 
 // route for a user to register.
 router.post('/register/', function (req, res) {
+	// if no input, then return 400.
     if(!req.body.user){
         return res.sendStatus(400);
 	}
 
 	const user = req.body.user;
 	
-	// if(	//!validator.isEmail(user.email) || 
-	// 	//!validator.isAlpha(user.firstName) ||
-	// 	//!validator.isAlpha(user.lastName) ||
-	// 	//!validator.isAlpha(user.country) ||
-	// 	validator.isEmpty(user.password)
-	// ){
-	// 	return res.status(400).send("Input validation failed");
-	// }
+	// Validate input
+	if(	!validator.isEmail(user.email) || 
+		!validator.isAlpha(user.firstName) ||
+		!validator.isAlpha(user.lastName) ||
+		!validator.isAlpha(user.country) ||
+		validator.isEmpty(user.password)
+	){
+		return res.status(400).send("Input validation failed");
+	}
 
     admin.auth().createUser({
         email: user.email,
@@ -40,7 +42,7 @@ router.post('/register/', function (req, res) {
 
 				// If succeeded == there is a result
 				if(result) {
-					return res.sendStatus(201);
+					return res.send({user: user}).status(201);
 				}
 				return res.sendStatus(500);
 			});
@@ -48,10 +50,6 @@ router.post('/register/', function (req, res) {
 			return res.sendStatus(500);
 		}
 	});
-})
-
-const validateEmail = function(email){
-	return true;
-}
+});
 
 module.exports = router
