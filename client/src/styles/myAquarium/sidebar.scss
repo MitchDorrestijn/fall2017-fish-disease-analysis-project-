@@ -1,63 +1,51 @@
 @import "../settings.scss";
 
 .sidebar-wrap {
-	//overflow: hidden;
   height: 100vh;
 	@media screen and(max-width: 768px){
 		height: auto;
 	}
-.aquarium-sidebar {
-	background-color: $mainColor;
-	min-height: calc(100vh - 80px);
-	color: $supportColor;
-	position: fixed;
-	z-index: 1;
-	@media screen and(max-width: 768px){
-		position: relative;
-		min-height: auto;
+	.aquarium-sidebar {
+		background-color: $mainColor;
+		min-height: calc(100vh - 80px);
+		color: $supportColor;
+		position: fixed;
+		z-index: 1;
+		@media screen and(max-width: 768px){
+			position: relative;
+			min-height: auto;
+		}
+		h2 {
+			padding-top: $defaultPadding;
+			padding-bottom: 10px;
+			padding-left: 55px;
+			font-size: 40px;
+		}
+		a:first-of-type {
+			border-top: 1px solid $alternativeColor;
+		}
+		a {
+			color: $supportColor !important;
+			border-bottom: 1px solid $alternativeColor;
+			display: block;
+			padding-top: $defaultPadding;
+			padding-bottom: $defaultPadding;
+			position: relative;
+		}
+		a.selected:after {
+			content: '';
+	    position: absolute;
+	    right: 0;
+	    top: 1px;
+	    border-bottom: 25px solid transparent;
+	    border-top: 25px solid transparent;
+	    border-left: 25px solid $mainColor;
+	    margin-right: -25px;
+		}
+		img {
+			width: $defaultPadding + 5px;
+			margin-left: $defaultPadding + 5px;
+			margin-right: $defaultPadding*2;
+		}
 	}
-	h2 {
-		padding-top: $defaultPadding;
-		padding-bottom: 10px;
-		padding-left: 55px;
-		font-size: 40px;
-	}
-	a:first-of-type {
-		border-top: 1px solid $alternativeColor;
-	}
-	a {
-		color: $supportColor !important;
-		border-bottom: 1px solid $alternativeColor;
-		display: block;
-		padding-top: $defaultPadding;
-		padding-bottom: $defaultPadding;
-		position: relative;
-	}
-	a.selected:after {
-		content: '';
-    position: absolute;
-    right: 0;
-    top: 1px;
-    border-bottom: 25px solid transparent;
-    border-top: 25px solid transparent;
-    border-left: 35px solid $mainColor;
-    margin-right: -35px;
-	}
-	img {
-		width: $defaultPadding + 5px;
-		margin-left: $defaultPadding + 5px;
-		margin-right: $defaultPadding*2;
-	}
-}
-	// .arrow-right {
-	// 	width: 0;
-	// 	height: 0;
-	// 	border-top: $defaultPadding*2 solid transparent;
-	// 	border-bottom: $defaultPadding*2 solid transparent;
-	// 	border-left: $defaultPadding*2 solid $mainColor;
-	// 	margin-left: 100%;
-	// 	top: $defaultPadding*2 + 6px;
-	// 	position: absolute;
-	// 	z-index: 1;
-	// }
 }
