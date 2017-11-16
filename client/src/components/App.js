@@ -15,7 +15,7 @@ export default class App extends React.Component {
 					<BrowserRouter>
 						<Switch>
 							<Route exact path="/" component={Homepage}/>
-							<Route exact path="/myAquarium" component={MyAquarium}/>
+							<Route path="/myAquarium" component={MyAquarium}/>
 						</Switch>
 					</BrowserRouter>
 				</div>

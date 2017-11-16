@@ -9,7 +9,7 @@ export default class SidebarLink extends React.Component {
 			firstClassName = 'first';
 		}
 		return (
-			<Link to={this.props.target} className={firstClassName} onClick={e => e.preventDefault()}>
+			<Link to={this.props.target} className={firstClassName}>
 				<img src={this.props.img} alt="icon"/>
 				{this.props.children}
 			</Link>

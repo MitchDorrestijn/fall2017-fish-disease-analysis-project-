@@ -43,6 +43,9 @@ export default class NavigationBar extends React.Component {
 						<NavItem>
 							<NavLink href="" onClick={e => e.preventDefault()}>Login</NavLink>
 						</NavItem>
+						<NavItem>
+							<NavLink href="/myAquarium">My Aquarium (tmp)</NavLink>
+						</NavItem>
 						<Form>
 							<FormGroup>
 								<NavItem>
