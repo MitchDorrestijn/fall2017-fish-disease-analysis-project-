@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
-
-//SETTINGS
-$supportColor: #FFFFFF;
-$alternativeTextColor: #333333;
-$defaultBorderWidth: 2px;
-$defaultPadding: 15px;
-$mainColor: #1f344a;
+@import 'settings.scss';
 
 //GENERAL STYLING
 .white {
