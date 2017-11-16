@@ -14,6 +14,7 @@ import {
 } from 'reactstrap';
 import Translate from 'translate-components';
 import PickLanguage from '../base/PickLanguage';
+import Login from '../modal/Login';
 
 export default class NavigationBar extends React.Component {
 	constructor(props) {
@@ -22,6 +23,11 @@ export default class NavigationBar extends React.Component {
 			isOpen: false,
 		};
 	}
+
+	showLogin = (evt) => {
+		evt.preventDefault ();
+		this.props.openModal(Login);
+	};
 
 	toggle = () => {
 		this.setState({
@@ -43,7 +49,7 @@ export default class NavigationBar extends React.Component {
 							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Request Consult</Translate></NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Login</Translate></NavLink>
+							<NavLink href="" onClick={this.showLogin}><Translate>Login</Translate></NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink href="/myAquarium">My Aquarium (tmp)</NavLink>
