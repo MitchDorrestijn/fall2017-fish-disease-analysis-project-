@@ -1,6 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/styles.css';
-import Header from './components/Header';
+import 'bootstrap/dist/css/bootstrap.css';
+import App from './components/App';
+import { TranslateProvider } from 'translate-components'
+import translations from './translations.json'
 
-ReactDOM.render(<Header/>, document.getElementById('root'));
+ReactDOM.render(
+  <TranslateProvider translations={translations} defaultLanguage={'en'}>
+    <App />
+  </TranslateProvider>,
+  document.getElementById('root')
+);
