@@ -32,6 +32,14 @@ class Register extends React.Component {
 						</InputGroup>
 					</FormGroup>
 					<FormGroup>
+						<Label for="repeatpassword">Repeat password</Label>
+						<InputGroup>
+							<InputGroupAddon><i className="fa fa-lock"/></InputGroupAddon>
+							<Input type="repeatpassword" id="password" placeholder="Repeat password"/>
+						</InputGroup>
+					</FormGroup>
+					<hr/>
+					<FormGroup>
 						<Label for="firstname">Firstname</Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-address-card"/></InputGroupAddon>
@@ -58,6 +66,7 @@ class Register extends React.Component {
 							</Input>
 						</InputGroup>
 					</FormGroup>
+					<hr/>
 					<Button outline className="modalLink" color="secondary" onClick={() => this.props.changeContent(this.props.Register)} block>Create account</Button>
 					
 					<p className="center">
