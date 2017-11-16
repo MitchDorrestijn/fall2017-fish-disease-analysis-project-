@@ -142,3 +142,22 @@ nav {
 		}
 	}
 }
+.flags {
+	padding: 0;
+	list-style: none;
+	overflow: auto;
+	margin-top: $defaultPadding + 5px;
+	display: inline-block;
+	li{
+		float: left;
+		button {
+			padding: 0;
+			img {
+				width: 30px;
+			}
+			img:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}

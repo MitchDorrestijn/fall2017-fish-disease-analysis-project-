@@ -104,3 +104,18 @@ nav {
     background: none !important;
     border: none !important;
     color: #333333 !important; }
+
+.flags {
+  padding: 0;
+  list-style: none;
+  overflow: auto;
+  margin-top: 20px;
+  display: inline-block; }
+  .flags li {
+    float: left; }
+    .flags li button {
+      padding: 0; }
+      .flags li button img {
+        width: 30px; }
+      .flags li button img:hover {
+        cursor: pointer; }
