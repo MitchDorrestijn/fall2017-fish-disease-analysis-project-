@@ -2,7 +2,6 @@ import React from 'react';
 import {
 	ModalHeader,
 	ModalBody,
-	ModalFooter,
 	Alert
 } from 'reactstrap';
 
