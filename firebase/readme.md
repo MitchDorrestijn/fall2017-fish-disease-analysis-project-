@@ -30,6 +30,25 @@ Praat hier tegenaan om een gebruiker te registreren. Geef de volgende JSON mee:
 }
 ```
 
+Je kan meerdere statuscodes terugkrijgen:
+- **400**: Input is leeg of ongeldig. Zorg ervoor dat ```email``` ook daadwerkelijk een emailadres is.
+- **500**: Iets ging intern verkeerd.
+- **201**: Proces gelukt.
+
+Bij statuscode 201 wordt de user in json teruggestuurd. Hierbij is id toegevoegd maar password verwijderd:
+
+```
+{
+    user: {
+        id: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        country: // DocumentReference naar country
+    }
+}
+```
+
 ## Species
 #### Gegevens van een enkele species
 Hieronder de endpoints behorende by species.
@@ -39,7 +58,7 @@ Hieronder de endpoints behorende by species.
 ```
 
 ##### Vereisten
-Gebruiker is moet toegang hebben tot de API van FishTool. Kan zijn dat iedereen toegang heeft.
+Gebruiker moet toegang hebben tot de API van FishTool. Kan zijn dat iedereen toegang heeft.
 ##### GET
 Een enkele species wordt getoond.
 Return JSON:
