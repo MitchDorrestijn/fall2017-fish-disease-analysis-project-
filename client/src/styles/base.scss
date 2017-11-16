@@ -169,7 +169,17 @@ nav {
 }
 
 //CARDS
-.card {
-	background: $mainColor;
-	border-radius:0;
+.inner-content {
+	margin-top: $defaultPadding*2;
+	.card {
+		background: $mainColor;
+		border:none;
+		.card-text {
+			margin-top: $defaultPadding;
+			span {
+				display: block;
+				margin: $defaultPadding/2 0;
+			}
+		}
+	}
 }
