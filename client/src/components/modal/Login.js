@@ -36,7 +36,8 @@ class Login extends React.Component {
 							Remember me
 						</Label>
 					</FormGroup>
-					<Button outline className="modalLink" color="secondary" onClick={() => this.props.changeContent(this.props.Register)} block>Login</Button>
+					<hr/>
+					<Button outline className="modalLink" color="secondary" onClick={() => alert("login")} block>Login</Button>
 					
 					<p className="center">
 						Not registered? <u><a className="modalLink" onClick={() => this.props.changeContent(this.props.Register)}>Create an account</a></u>

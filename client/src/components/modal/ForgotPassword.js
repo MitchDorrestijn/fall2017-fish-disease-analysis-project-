@@ -27,7 +27,8 @@ class ForgotPassword extends React.Component {
 							<Input type="email" id="email" placeholder="Email address"/>
 						</InputGroup>
 					</FormGroup>
-					<Button outline className="modalLink" color="secondary" onClick={() => this.props.changeContent(this.props.Register)} block>Continue</Button>
+					<hr/>
+					<Button outline className="modalLink" color="secondary" onClick={() => this.props.changeContent(this.props.ForgotPasswordSend)} block>Continue</Button>
 					
 					<p className="center">
 						Remembered your password? <u><a className="modalLink" onClick={() => this.props.changeContent(this.props.Login)}>Login</a></u>
