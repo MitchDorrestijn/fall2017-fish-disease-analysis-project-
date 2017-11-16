@@ -10,7 +10,7 @@ const db = admin.firestore();
 router.post('/register/', function (req, res) {
 	// if no input, then return 400.
     if(!req.body.user){
-        return res.sendStatus(400);
+		return res.sendStatus(400);
 	}
 
 	const user = req.body.user;
@@ -22,7 +22,7 @@ router.post('/register/', function (req, res) {
 		!validator.isAlpha(user.country) ||
 		validator.isEmpty(user.password)
 	){
-		return res.status(400).send("Input validation failed");
+		return res.status(400).send("Input validation failed.");
 	}
 
     admin.auth().createUser({
@@ -31,30 +31,29 @@ router.post('/register/', function (req, res) {
         password: user.password,
         displayName: user.firstName + " " + user.lastName,
         disabled: false
-    }).then(function(creationResult){
+	})
+	.then(function(creationResult){
 		if(creationResult){
-			console.log("Creation result:");
-			console.log(creationResult);
 			// Alter input data for privacy reasons
 			user.id = creationResult.uid;
 			delete user.password;
-
+	
 			// Create user in database
-			db.collection("users").doc(creationResult.uid).set(user).then(function(result){
-
-				// If succeeded == there is a result
-				if(result) {
-					// TODO: Send email verification
-
-					return res.send({user: user}).status(201);
-				}
-				return res.sendStatus(500);
-			});
+			return db.collection("users").doc(creationResult.uid).set(user)
 		} else {
-			return res.sendStatus(500);
+			res.sendStatus(500);
+			Promise.reject('Internal error.');
 		}
-	});
-});
+	})
+	.then((result) => {
+		// If succeeded == there is a result
+		if(result) {
+			// TODO: Send email verification
+			res.send({user: user}).status(201);
+		}
+		res.sendStatus(500);
+	})
+})
 
 // VERIFICATION MAILER
 
