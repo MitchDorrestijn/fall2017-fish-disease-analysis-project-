@@ -1,0 +1,44 @@
+.notifications {
+	.notification {
+		margin-top: 20px;
+		margin-bottom: 20px;
+		height: 150px;
+		.icon-container {
+			background-color: #1f344a;
+			display: table;
+			height: 100%;
+			width: 100%;
+			.icon {
+				display: table-cell;
+				text-align: center;
+				vertical-align: middle;
+				height: 100%;
+				img {
+					height: 60px;
+				}
+			}
+		}
+		.info {
+			height: 100%;
+			overflow-y: scroll;
+			padding: 20px;
+			color: #000;
+			background-color: #fff;
+		}
+		.data {
+			background-color: #494949;
+			padding: 20px;
+			height: 100%;
+		}
+		.close {
+			position: absolute;
+			top: 6px;
+			right: 30px;
+			height: 0;
+			width: 0;
+			a {
+				color: #fff !important;
+			}
+		}
+	}
+}
