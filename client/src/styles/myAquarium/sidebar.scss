@@ -25,3 +25,15 @@
 		}
 	}
 }
+
+.arrow-right {
+	width: 0;
+	height: 0;
+	border-top: 30px solid transparent;
+	border-bottom: 30px solid transparent;
+	border-left: 30px solid #1f344a;
+	margin-left: 100%;
+	top: 36px;
+	position: absolute;
+	z-index: 1;
+}

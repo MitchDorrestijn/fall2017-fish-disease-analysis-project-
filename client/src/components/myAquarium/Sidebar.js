@@ -8,6 +8,7 @@ export default class Sidebar extends React.Component {
 				<div className="aquarium-sidebar">
 					<h2>{this.props.title}</h2>
 					{this.props.children}
+					<div className="arrow-right"/>
 				</div>
 			</Col>
 		);
