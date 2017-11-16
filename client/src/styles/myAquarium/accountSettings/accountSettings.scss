@@ -1,0 +1,30 @@
+.account-settings {
+	.settings-box {
+		margin-top: 20px;
+		margin-bottom: 20px;
+		padding: 10px 10px 10px 10px;
+		background-color: #1f344a;
+		h4 {
+			margin-top: 10px;
+			margin-bottom: 20px;
+		}
+		input {
+			border-radius: 0;
+			border: none;
+			height: 50px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		.custom-select {
+			border-radius: 0;
+			border: none;
+			height: 50px !important;
+			margin-top: 10px;
+			margin-bottom: 20px;
+		}
+		.row {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+	}
+}
