@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
 const validator = require('validator');
+var path = require('path');
 
 const db = admin.firestore();
 
@@ -32,7 +33,8 @@ router.post('/register/', function (req, res) {
         disabled: false
     }).then(function(creationResult){
 		if(creationResult){
-
+			console.log("Creation result:");
+			console.log(creationResult);
 			// Alter input data for privacy reasons
 			user.id = creationResult.uid;
 			delete user.password;
@@ -42,6 +44,8 @@ router.post('/register/', function (req, res) {
 
 				// If succeeded == there is a result
 				if(result) {
+					// TODO: Send email verification
+
 					return res.send({user: user}).status(201);
 				}
 				return res.sendStatus(500);
@@ -50,6 +54,40 @@ router.post('/register/', function (req, res) {
 			return res.sendStatus(500);
 		}
 	});
+});
+
+// VERIFICATION MAILER
+
+router.get('/verify/:id/:token', (req, res) => {
+	const id = req.params.id;
+	const token = req.params.token;
+
+	admin.auth().getUser(id)
+	.then((userRecord) => {
+		return db.collection("users").where("id", "==", id).where("verificationToken", "==", token).get();
+	})
+	.then((snapshot) => {
+		if(snapshot.size == 0){
+			throw new Error("Token incorrect.");
+			return;
+		}
+		snapshot.forEach((doc) => {
+			return admin.auth().updateUser(id, {
+				emailVerified: true,
+			});
+		})
+	})
+	.then((result) => {
+		return db.collection("users").doc(id).update({
+			verificationToken: admin.firestore.FieldValue.delete()
+		})
+	})
+	.catch((error) => {
+		return res.status(400).send(error.message);
+  	})
+	.then((result) => {
+		return res.redirect('/?verification=success');
+	})
 });
 
 module.exports = router

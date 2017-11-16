@@ -16,6 +16,9 @@ const authenticate = require('./middleware/authenticate.js');
 /* Express */
 const app = express();
 
+/* Settings for serving files */
+app.use(express.static('../public'))
+
 /* Routes to different API endpoints */
 app.use('', userRoutes);
 app.use('', registrationRoutes);
