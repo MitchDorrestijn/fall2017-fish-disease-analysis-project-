@@ -8,7 +8,7 @@ export default class ModalBase extends React.Component {
 		const ModalContent = this.props.children;
 		return (
 			<Modal isOpen={this.props.isVisible} toggle={this.props.closeModal}>
-				<ModalContent toggleModal={this.props.closeModal}/>
+				{ModalContent ? <ModalContent toggleModal={this.props.closeModal}/> : null}
 			</Modal>
 		);
 	}

@@ -36,7 +36,9 @@ export default class App extends React.Component {
 				<div className="block-wrapper">
 					<BrowserRouter>
 						<Switch>
-							<Route exact path="/" component={Homepage}/>
+							<Route exact path="/" render={(props) => {
+								return <Homepage {...props} openModal={this.openModal}/>
+							}}/>
 							<Route path="/myAquarium" component={MyAquarium}/>
 						</Switch>
 					</BrowserRouter>

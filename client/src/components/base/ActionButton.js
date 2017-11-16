@@ -9,13 +9,15 @@ export default class ActionButton extends React.Component {
 			redirect: null
 		}
 	}
-	onClickAction = (props) => {
-		if(this.props.link){
-	    this.setState ({redirect: <Redirect to={this.props.linkTo} />});
-		} else {
-			console.log('Hier kan een functie komen.');
+
+	onClickAction = () => {
+		if (this.props.linkTo){
+	        this.setState ({redirect: <Redirect to={this.props.linkTo} />});
+		} else if (this.props.onClickAction) {
+			this.props.onClickAction();
 		}
-	}
+	};
+
 	render(){
 		return(
 			<div>
