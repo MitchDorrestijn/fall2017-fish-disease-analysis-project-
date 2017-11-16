@@ -9,6 +9,7 @@ import {
 	InputGroupAddon,
 	Input
 } from 'reactstrap';
+import Login from './Login';
 
 class Register extends React.Component {
 	render() {
@@ -66,10 +67,10 @@ class Register extends React.Component {
 						</InputGroup>
 					</FormGroup>
 					<hr/>
-					<Button outline className="modalLink" color="secondary" onClick={() => this.props.changeContent(this.props.Register)} block>Create account</Button>
+					<Button outline className="modalLink" color="secondary" onClick={(e) => e.preventDefault ()} block>Create account</Button>
 					
 					<p className="center">
-						Already have an account? <u><a className="modalLink" onClick={() => this.props.changeContent(this.props.Login)}>Login</a></u>
+						Already have an account? <u><a className="modalLink" onClick={() => this.props.openModal(Login)}>Login</a></u>
 					</p>
 				</ModalBody>
 			</div>

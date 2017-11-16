@@ -9,6 +9,8 @@ import {
 	InputGroupAddon,
 	Input
 } from 'reactstrap';
+import Register from './Register';
+import ForgotPassword from './ForgotPassword';
 
 class Login extends React.Component {
 	render() {
@@ -40,9 +42,9 @@ class Login extends React.Component {
 					<Button outline className="modalLink" color="secondary" onClick={() => alert("login")} block>Login</Button>
 					
 					<p className="center">
-						Not registered? <u><a className="modalLink" onClick={() => this.props.changeContent(this.props.Register)}>Create an account</a></u>
+						Not registered? <u><a className="modalLink" onClick={() => this.props.openModal(Register)}>Create an account</a></u>
 						<br/>
-						<u><a className="modalLink" onClick={() => this.props.changeContent(this.props.ForgotPassword)}>Forgot password?</a></u>
+						<u><a className="modalLink" onClick={() => this.props.openModal(ForgotPassword)}>Forgot password?</a></u>
 					</p>
 				</ModalBody>
 			</div>
