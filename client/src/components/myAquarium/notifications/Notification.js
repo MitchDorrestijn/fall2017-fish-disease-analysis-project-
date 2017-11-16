@@ -15,15 +15,22 @@ export default class Notification extends React.Component {
 				</Col>
 				<Col lg="7" className="no-gutter">
 					<div className="info">
-						<strong>The fish you added is not welcome in your aquarium.</strong><br/>
-						Angels and bettas are both notorious fin nippers, and if you end up with angel fish that decide to pair up, it will probably end up pretty ugly for the betta.
+						<p>
+							<strong>The fish you added is not welcome in your aquarium.</strong><br/>
+							Angels and bettas are both notorious fin nippers,
+							and if you end up with angel fish that decide to
+							pair up, it will probably end up pretty ugly for the
+							betta.
+						</p>
 					</div>
 				</Col>
 				<Col lg="3" className="no-gutter">
 					<div className="data">
-						Conflicting fish<br/>
-						- Angel Fish<br/>
-						- Betta
+						<p>
+							Conflicting fish<br/>
+							- Angel Fish<br/>
+							- Betta
+						</p>
 						<div className="close text-right">
 							<a href="" onClick={e => e.preventDefault()}><span className="fa fa-close"/></a>
 						</div>

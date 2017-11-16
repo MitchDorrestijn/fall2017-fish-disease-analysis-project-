@@ -1,34 +1,45 @@
 .notifications {
 	.notification {
+		$height: 150px;
 		margin-top: 20px;
 		margin-bottom: 20px;
-		height: 150px;
+		height: $height;
 		.icon-container {
 			background-color: #1f344a;
 			display: table;
-			height: 100%;
+			height: $height;
 			width: 100%;
 			.icon {
 				display: table-cell;
 				text-align: center;
 				vertical-align: middle;
-				height: 100%;
+				height: $height;
 				img {
 					height: 60px;
 				}
 			}
 		}
 		.info {
-			height: 100%;
-			overflow-y: scroll;
-			padding: 20px;
+			height: $height;
 			color: #000;
 			background-color: #fff;
+			p {
+				display: inline-block;
+				height: $height - 40px;
+				margin: 20px;
+				overflow-y: scroll;
+			}
 		}
 		.data {
+			height: $height;
+			color: #fff;
 			background-color: #494949;
-			padding: 20px;
-			height: 100%;
+			p {
+				display: inline-block;
+				height: $height - 40px;
+				margin: 20px;
+				overflow-y: scroll;
+			}
 		}
 		.close {
 			position: absolute;
