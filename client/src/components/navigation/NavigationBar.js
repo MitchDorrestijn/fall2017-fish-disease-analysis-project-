@@ -12,6 +12,8 @@ import {
 	Form,
 	FormGroup
 } from 'reactstrap';
+import Translate from 'translate-components';
+import PickLanguage from '../base/PickLanguage';
 
 export default class NavigationBar extends React.Component {
 	constructor(props) {
@@ -29,27 +31,27 @@ export default class NavigationBar extends React.Component {
 
 	render() {
 		return (
-			<Navbar color="light" style={{height: '80px', paddingTop: '20px'}} light expand="md" className="fixed-top">
+			<Navbar light expand="md" className="fixed-top">
 				<NavbarBrand><img src="/images/logo.png" alt="Logo" className="logo"/></NavbarBrand>
-				<NavbarToggler onClick={this.toggle}/>
+				<NavbarToggler className="test" onClick={this.toggle}/>
 				<Collapse isOpen={this.state.isOpen} navbar>
 					<Nav className="ml-auto" navbar>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}>Analysis</NavLink>
+							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Analysis</Translate></NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}>Request Consult</NavLink>
+							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Request Consult</Translate></NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}>Login</NavLink>
+							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Login</Translate></NavLink>
 						</NavItem>
 						<Form>
 							<FormGroup>
-								<NavItem>
-									<span className="input-group">
-										<Input type="text" placeholder="Search..."/>
-										<span className="input-group-btn">
-											<Button>
+								<NavItem className="search-wrap">
+									<span className="input-group searchBox-wrapper">
+										<Input className="search-field" type="text" placeholder="Search..."/>
+										<span className="input-group-btn searchBtn-wrap">
+											<Button className="search-btn">
 												<i className="fa fa-search"/>
 											</Button>
 										</span>
@@ -57,6 +59,7 @@ export default class NavigationBar extends React.Component {
 								</NavItem>
 							</FormGroup>
 						</Form>
+						<PickLanguage />
 					</Nav>
 				</Collapse>
 			</Navbar>
