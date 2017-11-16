@@ -14,7 +14,7 @@ class Login extends React.Component {
 	render() {
 		return (
 			<div>
-				<ModalHeader toggle={() => this.props.toggleModal()}><h4 className="center">Login</h4></ModalHeader>
+				<ModalHeader toggle={() => this.props.toggleModal()}>Login</ModalHeader>
 				<ModalBody>
 					<FormGroup>
 						<Label for="email">Email address</Label>
