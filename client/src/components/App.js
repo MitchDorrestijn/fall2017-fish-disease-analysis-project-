@@ -43,7 +43,7 @@ export default class App extends React.Component {
 						</Switch>
 					</BrowserRouter>
 				</div>
-				<ModalBase isVisible={this.state.showModal} closeModal={this.closeModal}>
+				<ModalBase isVisible={this.state.showModal} openModal={this.openModal} closeModal={this.closeModal}>
 					{this.state.modalContent}
 				</ModalBase>
 			</div>
