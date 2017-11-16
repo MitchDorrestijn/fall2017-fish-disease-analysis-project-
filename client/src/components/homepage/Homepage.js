@@ -2,6 +2,7 @@ import React from 'react';
 import SingleBlock from './SingleBlock';
 import Footer from '../base/Footer';
 import Translate from 'translate-components';
+import Register from '../modal/Register';
 
 export default class Homepage extends React.Component {
 		render(){
@@ -19,7 +20,7 @@ export default class Homepage extends React.Component {
 						text={<Translate>‘My aquarium’ is a way to save all the data of your aquarium, so diseases can be prevented and causes can be found.</Translate>}
 						background="recources/homepage-achtergrond-2.jpg"
 						btnText={<Translate>Register</Translate>}
-						link="/eenLink"
+						onClickAction={() => this.props.openModal (Register)}
 					/>
 					<Footer />
 				</div>
