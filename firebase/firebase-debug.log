@@ -1,0 +1,37 @@
+[debug] [2017-11-16T14:34:32.665Z] ----------------------------------------------------------------------
+[debug] [2017-11-16T14:34:32.667Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only hosting,functions
+[debug] [2017-11-16T14:34:32.667Z] CLI Version:   3.15.0
+[debug] [2017-11-16T14:34:32.667Z] Platform:      darwin
+[debug] [2017-11-16T14:34:32.667Z] Node Version:  v8.2.1
+[debug] [2017-11-16T14:34:32.668Z] Time:          Thu Nov 16 2017 15:34:32 GMT+0100 (CET)
+[debug] [2017-11-16T14:34:32.668Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-11-16T14:34:32.682Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-16T14:34:32.682Z] > authorizing via signed-in user
+[debug] [2017-11-16T14:34:32.684Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/fishproject-47cfd  
+ Thu Nov 16 2017 15:34:32 GMT+0100 (CET)
+[debug] [2017-11-16T14:34:33.349Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T14:34:33.350Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/fishproject-47cfd/tokens  
+ Thu Nov 16 2017 15:34:33 GMT+0100 (CET)
+[debug] [2017-11-16T14:34:33.905Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/Weijland/Documents/Studie/DWA/fall2017-project-fish-disease-analysis/firebase'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2017-11-16T14:34:34.306Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/fishproject-47cfd  
+ Thu Nov 16 2017 15:34:34 GMT+0100 (CET)
+[debug] [2017-11-16T14:34:34.307Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/fishproject-47cfd/apiKeys  
+ Thu Nov 16 2017 15:34:34 GMT+0100 (CET)
+[debug] [2017-11-16T14:34:34.307Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/fishproject-47cfd  
+ Thu Nov 16 2017 15:34:34 GMT+0100 (CET)
+[debug] [2017-11-16T14:34:35.057Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T14:34:35.058Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/324776878982/clients/_:getWebAppConfig  
+ Thu Nov 16 2017 15:34:35 GMT+0100 (CET)
+[debug] [2017-11-16T14:34:35.063Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T14:34:35.164Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-16T14:34:35.441Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] ✔  hosting: Local server: http://localhost:5000
+
+[info] ✔  functions: app: http://localhost:5001/fishproject-47cfd/us-central1/app
+[info] [hosting] Rewriting /api/home to local function app

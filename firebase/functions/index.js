@@ -24,24 +24,25 @@ app.use('', userRoutes);
 app.use('', registrationRoutes);
 
 /* Middlewares */
-app.use('*', authenticate)
+//app.use('*', authenticate)
 
 /* Main route */
-app.get("/", (request, response) => {
-  response.send("Hello from root!");
+// app.get("/", (request, response) => {
+// 	response.sendFile("start.html", {root: '../public'});
+// })
+
+// /* Test routes for development */
+app.get("/api/home", (request, response) => {
+	console.log("recognized!");
+	response.send("Hello from Express on Firebase!");
 })
 
-/* Test routes for development */
-app.get("/home", authenticate, (request, response) => {
-  response.send("Hello from Express on Firebase!");
-})
+// app.get("/other", (request, response) => {
+//   response.send("Hello from Express on other!");
+// })
 
-app.get("/other", (request, response) => {
-  response.send("Hello from Express on other!");
-})
-
-app.get("/user/", (request, response) => {
-  response.send("Hello from Express on other!");
-})
+// app.get("/user/", (request, response) => {
+//   response.send("Hello from Express on other!");
+// })
 
 exports.app = functions.https.onRequest(app);
