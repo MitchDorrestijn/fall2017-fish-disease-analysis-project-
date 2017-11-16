@@ -168,6 +168,7 @@ nav {
 	.card {
 		background: $mainColor;
 		border:none;
+		margin-bottom: $defaultPadding*2;
 		.card-text {
 			margin-top: $defaultPadding;
 			span {
