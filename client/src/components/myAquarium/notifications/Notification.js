@@ -1,41 +1,23 @@
 import React from 'react';
-import {Col, Row} from 'reactstrap';
+import {Row} from 'reactstrap';
+import NotificationIcon from './NotificationIcon';
 
 export default class Notification extends React.Component {
+	deleteNotification = (evt) => {
+		evt.preventDefault();
+		this.props.deleteNotification(this.props.id);
+	};
+
 	render() {
 		return (
 			<Row className="notification">
-				<Col lg="2" className="no-gutter">
-					<div className="icon-container">
-						<div className="icon">
-							<img src="/images/myAquarium/notifications/danger-icon.png" alt="icon"/><br/>
-							15-11-2017
-						</div>
+				<NotificationIcon icon={this.props.icon} date={this.props.date}/>
+				{this.props.children}
+				<div className="close-container">
+					<div className="close text-right">
+						<a href="" onClick={this.deleteNotification}><span className="fa fa-close"/></a>
 					</div>
-				</Col>
-				<Col lg="7" className="no-gutter">
-					<div className="info">
-						<p>
-							<strong>The fish you added is not welcome in your aquarium.</strong><br/>
-							Angels and bettas are both notorious fin nippers,
-							and if you end up with angel fish that decide to
-							pair up, it will probably end up pretty ugly for the
-							betta.
-						</p>
-					</div>
-				</Col>
-				<Col lg="3" className="no-gutter">
-					<div className="data">
-						<p>
-							Conflicting fish<br/>
-							- Angel Fish<br/>
-							- Betta
-						</p>
-						<div className="close text-right">
-							<a href="" onClick={e => e.preventDefault()}><span className="fa fa-close"/></a>
-						</div>
-					</div>
-				</Col>
+				</div>
 			</Row>
 		);
 	}

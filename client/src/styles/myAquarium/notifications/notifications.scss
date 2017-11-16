@@ -41,14 +41,17 @@
 				overflow-y: scroll;
 			}
 		}
-		.close {
-			position: absolute;
-			top: 6px;
-			right: 30px;
-			height: 0;
-			width: 0;
-			a {
-				color: #fff !important;
+		.close-container {
+			position: relative;
+			.close {
+				position: absolute;
+				top: 6px;
+				right: 30px;
+				height: 0;
+				width: 0;
+				a {
+					color: #fff !important;
+				}
 			}
 		}
 	}

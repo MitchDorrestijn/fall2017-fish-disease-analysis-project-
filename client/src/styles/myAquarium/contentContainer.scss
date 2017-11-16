@@ -1,6 +1,8 @@
 .aquarium-content-container {
 	background: url('/images/myAquarium/achtergrond.jpg');
 	background-size: cover;
+	background-position: bottom;
+	background-attachment: fixed;
 	color: #fff;
 	padding: 20px 20px 20px 50px !important;
 }
