@@ -12,6 +12,8 @@ import {
 	Form,
 	FormGroup
 } from 'reactstrap';
+import Translate from 'translate-components';
+import PickLanguage from '../base/PickLanguage';
 
 export default class NavigationBar extends React.Component {
 	constructor(props) {
@@ -35,13 +37,13 @@ export default class NavigationBar extends React.Component {
 				<Collapse isOpen={this.state.isOpen} navbar>
 					<Nav className="ml-auto" navbar>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}>Analysis</NavLink>
+							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Analysis</Translate></NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}>Request Consult</NavLink>
+							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Request Consult</Translate></NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}>Login</NavLink>
+							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Login</Translate></NavLink>
 						</NavItem>
 						<Form>
 							<FormGroup>
@@ -57,6 +59,7 @@ export default class NavigationBar extends React.Component {
 								</NavItem>
 							</FormGroup>
 						</Form>
+						<PickLanguage />
 					</Nav>
 				</Collapse>
 			</Navbar>

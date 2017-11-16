@@ -1,0 +1,74 @@
+{
+  "Bassleer": {
+    "nl": "Bassleer",
+    "de": "Bassleer",
+		"fy": "Bassleer",
+		"es": "Bassleer"
+  },
+  "Terms & conditions": {
+    "nl": "Algemene voorwaarden",
+    "de": "Geschäftsbedingungen",
+		"fy": "Algemiene betingsten",
+		"es": "Términos y condiciones"
+  },
+  "Contact": {
+    "nl": "Contact",
+    "de": "Kontakt",
+		"fy": "Kontakt",
+		"es": "Contacto"
+  },
+	"Analyse your fish": {
+		"nl": "Analyseer je vis",
+    "de": "Analysiere deine Fisch",
+		"fy": "Analysear do fisk ",
+		"es": "Analiza tus peces"
+	},
+	"The Bassleer Biofish analysis can help you identify the disease of your fish and give advice for a possible treatment.": {
+		"nl": "De Bassleer Biofish-analyse kan u helpen de ziekte van uw vissen te identificeren en advies te geven voor een mogelijke behandeling.",
+    "de": "Die Bassleer Biofish Analyse kann Ihnen helfen, die Krankheit Ihres Fisches zu identifizieren und Ratschläge für eine mögliche Behandlung geben.",
+		"fy": "De Bassleer Biofish-analyse kin jo helpe de sykte fan jo fisken te identifisearje en advys te jaan foar in mooglike behanneling.",
+		"es": "El análisis de Bassleer Biofish puede ayudarlo a identificar la enfermedad de su pez y aconsejarle sobre un posible tratamiento."
+	},
+	"Start Analysis": {
+		"nl": "Start analyse",
+    "de": "Analyse starten",
+		"fy": "Start analyse",
+		"es": "Iniciar análisis"
+	},
+	"Register": {
+		"nl": "Registreren",
+		"de": "Neu registrieren",
+		"fy": "Registreren",
+		"es": "Registro"
+	},
+	"‘My aquarium’ is a way to save all the data of your aquarium, so diseases can be prevented and causes can be found.": {
+		"nl": "'Mijn aquarium' is een manier om alle gegevens van uw aquarium te bewaren, zodat ziekten kunnen worden voorkomen en oorzaken kunnen worden gevonden.",
+		"de": "'Mein Aquarium' ist eine Möglichkeit, alle Daten Ihres Aquariums zu speichern, damit Krankheiten verhindert und Ursachen gefunden werden können.",
+		"fy": "'Myn akwarium' is in manier om alle gegevens fan jo akwarium te bewarjen, sadat ziektes wurde kinne foarkomme en oarsaken wurde kinne fûn.",
+		"es": "'Mi acuario' es una forma de guardar todos los datos de su acuario, para que las enfermedades se puedan prevenir y se puedan encontrar las causas."
+	},
+	"My Aquarium": {
+		"nl": "Mijn aquarium",
+		"de": "Mein Aquarium",
+		"fy": "Myn akwarium",
+		"es": "Mi acuario"
+	},
+	"Analysis": {
+		"nl": "Analyse",
+		"de": "Analyse",
+		"fy": "Analyse",
+		"es": "Análisis"
+	},
+	"Request Consult": {
+		"nl": "Advies aanvragen",
+		"de": "Beratung anfordern",
+		"fy": "Advies oanfreegje",
+		"es": "Pedir consejo"
+	},
+	"Login": {
+		"nl": "Inloggen",
+		"de": "Anmelden",
+		"fy": "Inloggen",
+		"es": "Iniciar sesión"
+	}
+}
