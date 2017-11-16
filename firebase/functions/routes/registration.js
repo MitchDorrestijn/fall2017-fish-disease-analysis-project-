@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
 const validator = require('validator');
-var path = require('path');
+const path = require('path');
+const mailer = require('../mailer/mailer.js');
 
 const db = admin.firestore();
 
@@ -49,11 +50,16 @@ router.post('/register/', function (req, res) {
 		// If succeeded == there is a result
 		if(result) {
 			// TODO: Send email verification
+			sendWelcomeMail(user);
 			res.send({user: user}).status(201);
 		}
 		res.sendStatus(500);
 	})
 })
+
+const sendWelcomeMail = (user) => {
+	mailer.mail("jaapweijland@gmail.com", "Welcome to Bassleer.com!", "Great html!");
+}
 
 // VERIFICATION MAILER
 
@@ -88,5 +94,14 @@ router.get('/verify/:id/:token', (req, res) => {
 		return res.redirect('/?verification=success');
 	})
 });
+
+router.get('/mailtest', (req, res) => {
+	mailer.testMail("","","");
+})
+
+router.get('/mail', (req, res) => {
+	mailer.mail("coen_severein@hotmail.com","Hoi","Content");
+	res.sendStatus(200);
+})
 
 module.exports = router
