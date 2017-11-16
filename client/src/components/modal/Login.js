@@ -17,10 +17,10 @@ class Login extends React.Component {
 				<ModalHeader toggle={() => this.props.toggleModal()}><h4 className="center">Login</h4></ModalHeader>
 				<ModalBody>
 					<FormGroup>
-						<Label for="email">Email adress</Label>
+						<Label for="email">Email address</Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-user"/></InputGroupAddon>
-							<Input type="email" id="email" placeholder="Email adress"/>
+							<Input type="email" id="email" placeholder="Email address"/>
 						</InputGroup>
 					</FormGroup>
 					<FormGroup>
