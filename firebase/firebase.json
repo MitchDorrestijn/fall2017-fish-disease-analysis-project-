@@ -15,12 +15,11 @@
     ],
     "rewrites": [
       {
+        "source": "/api/*",
+        "function": "app"
+      },{
         "source": "**",
-        "function": "app"
-      },
-      {
-        "source": "/",
-        "function": "app"
+        "destination": "/index.html"
       }
     ]
   },

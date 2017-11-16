@@ -1,9 +1,7 @@
 const functions = require('firebase-functions');
 const express = require('express');
-const userRoutes = require('./routes/user.js');
-const authenticate = require('./middleware/authenticate.js');
 
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 const serviceAccount = require("./private-key.json");
 
 admin.initializeApp({
@@ -11,26 +9,28 @@ admin.initializeApp({
   databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
 
+const userRoutes = require('./routes/user.js');
+const registrationRoutes = require('./routes/registration.js');
+const authenticate = require('./middleware/authenticate.js');
+
 /* Express */
 const app = express();
 
-app.use('', userRoutes);
-app.use('*', authenticate)
+/* Settings for serving files */
+app.use(express.static('../public'))
 
-app.get("/", (request, response) => {
-  response.send("Hello from root!");
-})
+/* Routes to different API endpoints */
+app.use('/api', userRoutes);
+app.use('/api', registrationRoutes);
 
-app.get("/home", authenticate, (request, response) => {
-  response.send("Hello from Express on Firebase!");
-})
+/* Middlewares */
+//app.use('*', authenticate)
 
-app.get("/other", (request, response) => {
-  response.send("Hello from Express on other!");
-})
+/* Main route */
 
-app.get("/user/", (request, response) => {
-  response.send("Hello from Express on other!");
+// /* Test routes for development */
+app.get("/api/home", (request, response) => {
+	response.send("Hello from Express on Firebase!");
 })
 
 exports.app = functions.https.onRequest(app);
