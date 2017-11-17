@@ -6,14 +6,22 @@ export default class DataAccess {
 
 	_fetchApi (request, cb) {
 		fetch (request).then ((res) => {
-			return res.text ();
+			return res;
 		}).then ((res) => {
-			let parsedMessage = JSON.parse (res);
-			if (parsedMessage.error) {
-				cb (parsedMessage.error, null);
+			if (res.status >= 200 && res.status < 300) {
+				return res.text ();
 			} else {
-				cb (null, parsedMessage)
+				return Promise.reject (res);
 			}
+		}).then ((res) => {
+			cb (null, JSON.parse (res));
+		}).catch ((res) => {
+			return res.text ()
+				.then ((res1) => {
+					return res1;
+				}).then ((res1) => {
+					cb ({status: res.status, message: res1}, null);
+				});
 		});
 	}
 

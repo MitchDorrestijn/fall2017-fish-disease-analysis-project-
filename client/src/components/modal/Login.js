@@ -11,6 +11,7 @@ import {
 } from 'reactstrap';
 import Register from './Register';
 import ForgotPassword from './ForgotPassword';
+import Error from './Error';
 
 class Login extends React.Component {
 	render() {
@@ -18,6 +19,10 @@ class Login extends React.Component {
 			<div>			
 				<ModalHeader toggle={() => this.props.toggleModal()}>Login</ModalHeader>
 				<ModalBody>
+					{ this.props.isErrorVisible ?
+						<Error errorContent={this.props.errorContent} /> :
+						null
+					}
 					<FormGroup>
 						<Label for="email">Email address</Label>
 						<InputGroup>
@@ -40,7 +45,7 @@ class Login extends React.Component {
 					</FormGroup>
 					<hr/>
 					<Button outline className="modalLink" color="secondary" onClick={() => this.props.userLogin(document.getElementById("email").value, document.getElementById("password").value)} block>Login</Button>
-					
+					<br/>
 					<p className="center">
 						Not registered? <u><a className="modalLink" onClick={() => this.props.openModal(Register)}>Create an account</a></u>
 						<br/>

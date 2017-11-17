@@ -41,8 +41,7 @@ router.post('/register/', function (req, res) {
 		if(creationResult){
 			// Alter input data for privacy reasons
 			user.id = creationResult.uid;
-			user.verificationToken = hasher('md5', user.id);
-			console.log(user.verificationToken);
+			user.verificationToken = hasher('md5', user.id + Date.now());
 			delete user.password;
 	
 			// Create user in database
@@ -54,15 +53,14 @@ router.post('/register/', function (req, res) {
 	})
 	.then((result) => {
 		// If succeeded == there is a result
-		console.log(result);
 		if(result) {
-			// TODO: Send email verification
-			console.log("mailing");
 			sendWelcomeMail(user);
 			res.send({user: user}).status(201);
 			return;
 		}
 		res.sendStatus(500);
+	}).catch((error) => {
+		res.status(500).send(error.message);
 	})
 })
 
