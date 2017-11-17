@@ -6,6 +6,20 @@ import NavigationBar from './navigation/NavigationBar';
 import Homepage from './homepage/Homepage';
 import MyAquarium from './myAquarium/MyAquarium';
 import ModalBase from './modal/ModalBase';
+import DataAccess from '../scripts/DataAccess';
+import * as firebase from 'firebase';
+
+const config = {
+	apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
+    authDomain: "fishproject-47cfd.firebaseapp.com",
+    databaseURL: "https://fishproject-47cfd.firebaseio.com",
+    projectId: "fishproject-47cfd",
+    storageBucket: "fishproject-47cfd.appspot.com",
+    messagingSenderId: "324776878982"
+}
+
+const app = firebase.initializeApp(config);
+let da = new DataAccess ();
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -14,6 +28,30 @@ export default class App extends React.Component {
 			showModal: false,
 			modalContent: null
 		}
+	}
+	
+	userLogin(email, password){
+		//const user = {
+		//	user: {
+		//		email: "c.severein98@gmail.com",
+		//		password: "abcdefg",
+		//		firstName: "Coen",
+		//		lastName: "Severein",
+		//		country: "Belgium"
+		//	}
+		//}
+		
+		//da.postData (`/register`, user, (err, res) => {
+		//	if (!err) {
+		//		console.log(res);
+		//	}
+		//});
+		
+		app.auth().signInWithEmailAndPassword(email, password).then(() => {
+			console.log("Ingelogd");
+		}).catch((error) => {
+			console.log(error);	
+		});
 	}
 
 	openModal = (content) => {
@@ -43,7 +81,7 @@ export default class App extends React.Component {
 						</Switch>
 					</BrowserRouter>
 				</div>
-				<ModalBase isVisible={this.state.showModal} openModal={this.openModal} closeModal={this.closeModal}>
+				<ModalBase isVisible={this.state.showModal} userLogin={this.userLogin} openModal={this.openModal} closeModal={this.closeModal}>
 					{this.state.modalContent}
 				</ModalBase>
 			</div>
