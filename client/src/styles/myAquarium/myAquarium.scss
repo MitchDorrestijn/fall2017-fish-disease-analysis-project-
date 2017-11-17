@@ -1,8 +1,12 @@
 @import './contentContainer.scss';
 @import './sidebar.scss';
 @import './accountSettings/accountSettings.scss';
+@import '../settings.scss';
 
 .row-no-gutter {
 	width: 100%;
 	margin: 0 !important;
+	@media screen and(max-width: $responsiveBreakPoint){
+		overflow-x: hidden;
+	}
 }

@@ -1,17 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
-
-//SETTINGS
-$supportColor: #FFFFFF;
-$alternativeTextColor: #333333;
-$defaultBorderWidth: 2px;
-$defaultPadding: 15px;
+@import 'settings.scss';
 
 //GENERAL STYLING
 .white {
 	color:$supportColor;
 }
 body {
-	font-family: 'Open Sans', sans-serif !important;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 15px !important;
 	padding-top: 80px; //Same height as the navbar
 }
@@ -19,18 +14,18 @@ body {
 //BUTTON STYLING
 .btn-outline-primary {
 	width: 200px;
-	color: $supportColor !important;
+	color: $supportColor;
 	border-color: $supportColor !important;
-	border-radius: 0px !important;
+	border-radius: 0px;
 }
 .btn-outline-primary:hover,
 .btn-outline-primary:active {
-	background-color: $supportColor !important;
+	background-color: $supportColor;
 	color: $alternativeTextColor !important;
 	cursor: pointer;
 }
 .btn-outline-primary:focus {
-	box-shadow: none !important;
+	box-shadow: none;
 }
 
 //HEADER STYLING
@@ -41,7 +36,7 @@ h2 {
 //LINK STYLING
 a:hover{
 	text-decoration: none;
-	color: $alternativeTextColor !important;
+	color: $alternativeTextColor;
 }
 
 //FOOTER
@@ -54,8 +49,8 @@ a:hover{
 }
 
 .no-gutter {
-	padding-left: 0 !important;
-	padding-right: 0 !important;
+	padding-left: 0;
+	padding-right: 0;
 }
 
 //NAVIGATION
@@ -64,7 +59,7 @@ nav {
 	.nav-item {
 		padding: $defaultPadding;
 	}
-	@media screen and(max-width: 768px){
+	@media screen and(max-width: $responsiveBreakPoint){
 		.navbar-collapse {
 			background: $supportColor;
 			text-align: center;
@@ -100,12 +95,12 @@ nav {
 	}
 }
 .navbar-light .navbar-nav .nav-link {
-	color: $alternativeTextColor !important;
+	color: $alternativeTextColor;
 }
 .navbar.fixed-top {
 	padding-top: 20px;
 }
-@media screen and(min-width: 768px){
+@media screen and(min-width: $responsiveBreakPoint){
  .navbar-light:hover .navbar-nav:hover .nav-link:hover {
  	text-decoration: underline;
  }
@@ -113,27 +108,27 @@ nav {
  	height: 80px;
  }
 }
-@media screen and(max-width: 768px){
+@media screen and(max-width: $responsiveBreakPoint){
 	.navbar.fixed-top{
 		top: -$defaultPadding - 5;
 		right: -$defaultPadding+1;
 		left: -$defaultPadding;
 	}
 	.navbar-brand {
-		padding-top: 0rem !important;
-    padding-bottom: 0rem !important;
+		padding-top: 0rem;
+    padding-bottom: 0rem;
 		padding: 0px $defaultPadding 0px $defaultPadding;
 	}
 }
 .searchBox-wrapper{
 	.search-field {
-		border:none !important;
-		border-radius:0px !important;
+		border:none;
+		border-radius:0px;
 	}
 	.search-field:active,
 	.search-field:focus {
-		box-shadow: none !important;
-		outline: none !important;
+		box-shadow: none;
+		outline: none;
 	}
 	.form-control {
 		border-bottom: 1px solid $alternativeTextColor !important;
@@ -141,9 +136,9 @@ nav {
 	.searchBtn-wrap{
 		border-bottom: 1px solid $alternativeTextColor;
 		.search-btn {
-			background: none !important;
-			border:none !important;
-			color: $alternativeTextColor !important;
+			background: none;
+			border:none;
+			color: $alternativeTextColor;
 		}
 	}
 }
@@ -162,6 +157,25 @@ nav {
 			}
 			img:hover {
 				cursor: pointer;
+			}
+		}
+	}
+}
+
+//CARDS
+.inner-content {
+	h2 {
+		margin-bottom: $defaultPadding*2;
+	}
+	.card {
+		background: $mainColor;
+		border:none;
+		margin-bottom: $defaultPadding*2;
+		.card-text {
+			margin-top: $defaultPadding;
+			span {
+				display: block;
+				margin: $defaultPadding/2 0;
 			}
 		}
 	}

@@ -1,13 +1,15 @@
+@import "../settings.scss";
+
 .block-wrapper {
-	margin-left: 0 !important;
-	margin-right: 0 !important;
+	margin-left: 0;
+	margin-right: 0;
 	.singleBlock {
 		position: relative;
 		background-size: cover;
 		background-position: center right;
 		padding: 50px 50px;
 		min-height: calc(100vh - 132px);
-		@media screen and(max-width:768px){
+		@media screen and(max-width: $responsiveBreakPoint){
 			padding: 10vh 20px;
 			min-height: auto;
 		}
@@ -15,7 +17,7 @@
 			position: absolute;
   		top: 50%;
   		margin-top: -50px;
-			@media screen and(max-width:768px){
+			@media screen and(max-width: $responsiveBreakPoint){
 				position: relative;
 				top: 0;
 				margin-top: 0;

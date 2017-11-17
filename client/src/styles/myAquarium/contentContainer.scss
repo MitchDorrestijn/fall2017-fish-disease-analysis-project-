@@ -1,6 +1,19 @@
-.aquarium-content-container {
-	background: url('/images/myAquarium/achtergrond.jpg');
-	background-size: cover;
-	color: #fff;
-	padding: 20px 20px 20px 50px !important;
+@import "../settings.scss";
+
+.outer-container{
+	width: 75%;
+	@media screen and(max-width: $responsiveBreakPoint){
+		width: 100%;
+	}
+	.aquarium-content-container {
+		background: url('/images/myAquarium/achtergrond.jpg');
+		background-size: cover;
+		color: #fff;
+		min-height: 100vh;
+		overflow: auto;
+		padding: 20px 20px 20px 40px;
+		@media screen and(max-width: $responsiveBreakPoint){
+			padding: 20px 20px 20px 20px;
+		}
+	}
 }
