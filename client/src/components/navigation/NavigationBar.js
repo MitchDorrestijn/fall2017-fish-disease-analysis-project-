@@ -38,7 +38,7 @@ export default class NavigationBar extends React.Component {
 	render() {
 		return (
 			<Navbar light expand="md" className="fixed-top">
-				<NavbarBrand><img src="/images/logo.png" alt="Logo" className="logo"/></NavbarBrand>
+				<NavbarBrand><NavLink href="/"><img src="/images/logo.png" alt="Logo" className="logo"/></NavLink></NavbarBrand>
 				<NavbarToggler className="test" onClick={this.toggle}/>
 				<Collapse isOpen={this.state.isOpen} navbar>
 					<Nav className="ml-auto" navbar>
