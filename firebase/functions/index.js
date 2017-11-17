@@ -35,3 +35,8 @@ app.get("/api/home", (request, response) => {
 })
 
 exports.app = functions.https.onRequest(app);
+
+exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event => {
+	const user = event.data;
+	return admin.firestore().collection("users").doc(user.uid).delete()
+});
