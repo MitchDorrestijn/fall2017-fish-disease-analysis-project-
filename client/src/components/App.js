@@ -26,11 +26,13 @@ export default class App extends React.Component {
 		super(props);
 		this.state = {
 			showModal: false,
+			showError: false,
+			errorContent: "",
 			modalContent: null
 		}
 	}
 	
-	userLogin(email, password){
+	userLogin = (email, password) => {
 		//const user = {
 		//	user: {
 		//		email: "c.severein98@gmail.com",
@@ -46,11 +48,31 @@ export default class App extends React.Component {
 		//		console.log(res);
 		//	}
 		//});
-		
 		app.auth().signInWithEmailAndPassword(email, password).then(() => {
-			console.log("Ingelogd");
+			alert("Succesvol ingelogd. Redirect naar /myAquarium");
 		}).catch((error) => {
-			console.log(error);	
+			this.showError(true, error.message);
+		});
+	}
+	
+	userRegister = (email, password, firstName, lastName, country) => {
+		const user = {
+			user: {
+				email: email,
+				password: password,
+				firstName: firstName,
+				lastName: lastName,
+				country: country
+			}
+		}
+		
+		da.postData (`/register`, user, (err, res) => {
+			if (!err) {
+				alert("Succesvol geregistreerd");
+			}else{
+				console.log(err);
+				this.showError(true, err.message);
+			}
 		});
 	}
 
@@ -59,7 +81,16 @@ export default class App extends React.Component {
 			showModal: true,
 			modalContent: content
 		});
+		
+		this.showError(false, "");
 	};
+	
+	showError = (show, content) => {
+		this.setState ({
+			showError: show,
+			errorContent: content
+		});
+	}
 
 	closeModal = () => {
 		this.setState ({
@@ -81,7 +112,16 @@ export default class App extends React.Component {
 						</Switch>
 					</BrowserRouter>
 				</div>
-				<ModalBase isVisible={this.state.showModal} userLogin={this.userLogin} openModal={this.openModal} closeModal={this.closeModal}>
+				<ModalBase 
+					errorContent={this.state.errorContent}
+					isErrorVisible={this.state.showError}
+					showError={this.showError}
+					isVisible={this.state.showModal}
+					userLogin={this.userLogin}
+					userRegister={this.userRegister}
+					openModal={this.openModal}
+					closeModal={this.closeModal}
+				>
 					{this.state.modalContent}
 				</ModalBase>
 			</div>

@@ -10,7 +10,11 @@ export default class ModalBase extends React.Component {
 			<Modal isOpen={this.props.isVisible} toggle={this.props.closeModal}>
 				{ModalContent ?
 					<ModalContent
+						isErrorVisible={this.props.isErrorVisible}
+						errorContent={this.props.errorContent}
+						showError={this.props.showError}
 						userLogin={this.props.userLogin}
+						userRegister={this.props.userRegister}
 						toggleModal={this.props.closeModal}
 						openModal={this.props.openModal}
 					/> : null}
