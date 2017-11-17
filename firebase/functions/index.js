@@ -1,8 +1,8 @@
 const functions = require('firebase-functions');
 const express = require('express');
-
 const admin = require('firebase-admin');
 const serviceAccount = require("./private-key.json");
+const cors = require('cors');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -16,8 +16,9 @@ const authenticate = require('./middleware/authenticate.js');
 /* Express */
 const app = express();
 
-/* Settings for serving files */
-app.use(express.static('../public'))
+/* Settings for express */
+app.use(express.static('../public'));
+app.use(cors());
 
 /* Routes to different API endpoints */
 app.use('/api', userRoutes);
