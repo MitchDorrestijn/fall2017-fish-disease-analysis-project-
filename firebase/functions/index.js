@@ -18,7 +18,7 @@ const app = express();
 
 /* Settings for express */
 app.use(express.static('../public'));
-app.use(cors());
+app.use(cors({origin: '*'}));
 
 /* Routes to different API endpoints */
 app.use('/api', userRoutes);
