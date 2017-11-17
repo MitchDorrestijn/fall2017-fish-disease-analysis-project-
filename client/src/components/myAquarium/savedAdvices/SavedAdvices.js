@@ -3,7 +3,9 @@ import React from 'react';
 export default class SavedAdvices extends React.Component {
 	render() {
 		return (
-			<h1>Hier komt content voor SavedAdvices</h1>
+			<div className="saved-advices">
+				<h1 className="text-center">Saved advices</h1>
+			</div>
 		);
 	}
 }
