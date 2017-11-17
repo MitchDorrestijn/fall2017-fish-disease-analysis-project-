@@ -102,13 +102,57 @@ router.get('/verify/:id/:token', (req, res) => {
   	})
 });
 
-router.get('/mailtest', (req, res) => {
-	mailer.testMail("","","");
+router.post('/forgot-password', (req, res) => {
+	const email = req.body.email;
+	console.log(email);
+	if(!validator.isEmail(email)) {
+		return res.send(400);
+	}
+	var passwordForgotToken;
+	admin.auth().getUserByEmail(email).then((user)=>{
+		passwordForgotToken = hasher('md5', email + Date.now());
+		return db.collection("users").doc(user.uid).update({ passwordForgotToken: passwordForgotToken });
+	}).then(()=>{
+		return mailer.mail(email, "Forgot password?",
+		"Hi there! We heard you forgot your password.<br/><br/><a href='https://bassleer.nl/forgot-password/" + passwordForgotToken + "'>Please click here to reset it.</a>"
+		)
+	}).then(() => {
+		res.sendStatus(200);
+	}).catch((error)=>{
+		console.log(error);
+		res.send(500);
+	});
 })
 
-router.get('/mail', (req, res) => {
-	mailer.mail("coen_severein@hotmail.com","Hoi","Content");
-	res.sendStatus(200);
+router.post('/forgot-password/:token', (req, res) => {
+	const password = req.body.password;
+
+	if(req.body.password == null || validator.isEmpty(password) || validator.isEmpty(req.params.token)) {
+		return res.sendStatus(400);
+	}
+
+	var passwordForgotToken;
+	var user;
+
+	db.collection("users").where("passwordForgotToken", "==", req.params.token).get().then((snapshot) => {
+		if(snapshot.size == 0){
+			return Promise.reject(new Error("Token incorrect."));
+		}
+		snapshot.forEach((doc) => {
+			user = doc;
+			return admin.auth().updateUser(doc.id, {
+				password: password
+			});
+		});
+	}).then(() => {
+		return db.collection("users").doc(user.id).update({
+			passwordForgotToken: admin.firestore.FieldValue.delete()
+		}) 
+	}).then(() => {
+		res.send(200);
+	}).catch((error) => {
+		res.status(500).send(error.message);
+	});
 })
 
 module.exports = router
