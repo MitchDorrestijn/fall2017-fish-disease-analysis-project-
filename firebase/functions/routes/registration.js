@@ -3,6 +3,9 @@ const router = express.Router();
 const admin = require('firebase-admin');
 const validator = require('validator');
 const path = require('path');
+const hasher = require ('node-hasher');
+
+// Custom dependencies
 const mailer = require('../mailer/mailer.js');
 
 const db = admin.firestore();
@@ -15,6 +18,7 @@ router.post('/register/', function (req, res) {
 	}
 
 	const user = req.body.user;
+	console.log("register");
 	
 	// Validate input
 	if(	!validator.isEmail(user.email) || 
@@ -37,6 +41,8 @@ router.post('/register/', function (req, res) {
 		if(creationResult){
 			// Alter input data for privacy reasons
 			user.id = creationResult.uid;
+			user.verificationToken = hasher('md5', user.id);
+			console.log(user.verificationToken);
 			delete user.password;
 	
 			// Create user in database
@@ -48,17 +54,20 @@ router.post('/register/', function (req, res) {
 	})
 	.then((result) => {
 		// If succeeded == there is a result
+		console.log(result);
 		if(result) {
 			// TODO: Send email verification
+			console.log("mailing");
 			sendWelcomeMail(user);
 			res.send({user: user}).status(201);
+			return;
 		}
 		res.sendStatus(500);
 	})
 })
 
 const sendWelcomeMail = (user) => {
-	mailer.mail("jaapweijland@gmail.com", "Welcome to Bassleer.com!", "Great html!");
+	mailer.mail(user.email, "Welcome to Bassleer.nl!", "Welcome to Bassleer! We hope your fish get well fast!<br /><br /><a href='https://bassleer.nl/api/verify/" + user.id + "/" + user.verificationToken + "'>Please verify your emailaddress by click on this link.</a>");
 }
 
 // VERIFICATION MAILER
@@ -68,7 +77,7 @@ router.get('/verify/:id/:token', (req, res) => {
 	const token = req.params.token;
 
 	admin.auth().getUser(id)
-	.then((userRecord) => {
+	.then(() => {
 		return db.collection("users").where("id", "==", id).where("verificationToken", "==", token).get();
 	})
 	.then((snapshot) => {
@@ -82,17 +91,17 @@ router.get('/verify/:id/:token', (req, res) => {
 			});
 		})
 	})
-	.then((result) => {
+	.then(() => {
 		return db.collection("users").doc(id).update({
 			verificationToken: admin.firestore.FieldValue.delete()
 		})
 	})
+	.then(() => {
+		return res.redirect('/?verification=success');
+	})
 	.catch((error) => {
 		return res.status(400).send(error.message);
   	})
-	.then((result) => {
-		return res.redirect('/?verification=success');
-	})
 });
 
 router.get('/mailtest', (req, res) => {
