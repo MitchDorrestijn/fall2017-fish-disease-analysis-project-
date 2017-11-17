@@ -15,7 +15,7 @@ import ForgotPassword from './ForgotPassword';
 class Login extends React.Component {
 	render() {
 		return (
-			<div>
+			<div>			
 				<ModalHeader toggle={() => this.props.toggleModal()}>Login</ModalHeader>
 				<ModalBody>
 					<FormGroup>
@@ -39,7 +39,7 @@ class Login extends React.Component {
 						</Label>
 					</FormGroup>
 					<hr/>
-					<Button outline className="modalLink" color="secondary" onClick={() => alert("login")} block>Login</Button>
+					<Button outline className="modalLink" color="secondary" onClick={() => this.props.userLogin(document.getElementById("email").value, document.getElementById("password").value)} block>Login</Button>
 					
 					<p className="center">
 						Not registered? <u><a className="modalLink" onClick={() => this.props.openModal(Register)}>Create an account</a></u>
