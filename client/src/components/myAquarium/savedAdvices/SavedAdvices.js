@@ -1,5 +1,7 @@
 import React from 'react';
-import {Col} from 'reactstrap';
+import {Col, Row} from 'reactstrap';
+import AdviceDate from './AdviceDate';
+import AdviceMatch from './AdviceMatch';
 import AdvicePicture from './AdvicePicture';
 import AdviceInfo from './AdviceInfo';
 import AdviceSymptoms from './AdviceSymptoms';
@@ -9,15 +11,26 @@ export default class SavedAdvices extends React.Component {
 		return (
 			<div className="saved-advices">
 				<h1 className="text-center">Saved advices</h1>
-				<Col lg={{size: 8, offset: 2}}>
-					<AdvicePicture src="plaatje.jpg"/>
-					<AdviceInfo>
-						Hoi
-					</AdviceInfo>
-					<AdviceSymptoms>
-						Hoi
-					</AdviceSymptoms>
-				</Col>
+					<Col lg="12">
+						<Row className="advice">
+							<AdviceDate>17-11-2017</AdviceDate>
+							<AdviceMatch>87</AdviceMatch>
+							<AdvicePicture src="schimmel3"/>
+							<AdviceInfo title="White spot disease - Ichthyophthirius multifiliis">
+								The white spot disease is one of the most common
+								fish diseases. Infected fish have small white spots
+								on the skin and gills.It can lead to the loss of
+								skin and ulcers. These wounds can harm the ability
+								of a fish to control the movement of water into its body.
+							</AdviceInfo>
+							<AdviceSymptoms>
+								<li>White spots</li>
+								<li>Wobbling</li>
+								<li>No appetite</li>
+								<li>Skin disease</li>
+							</AdviceSymptoms>
+						</Row>
+					</Col>
 			</div>
 		);
 	}

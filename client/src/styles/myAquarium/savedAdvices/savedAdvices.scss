@@ -1,29 +1,32 @@
 // Dit kan grotendeels overgenomen worden van notifications, alleen ik weet niet hoe, dus als Mitch ff kijkt
 .saved-advices {
 	.advice {
-		$height: 150px;
+		$height: 180px;
 		margin-top: 20px;
 		margin-bottom: 20px;
 		height: $height;
+		.header {
+			font-size: 18px;
+			background: linear-gradient(#1f344a, #494949);
+		}
 		.image-container {
-			background-color: #1f344a;
-			display: table;
+			background-color: #494949;
+			position: relative;
 			height: $height;
 			width: 100%;
 			.image {
-				display: table-cell;
-				text-align: center;
-				vertical-align: middle;
+				position: absolute;
 				height: $height;
+				overflow: hidden;
 				img {
-					width: 60px;
+					max-width: 100%;
 				}
 			}
 		}
 		.info {
 			height: $height;
-			color: #000;
-			background-color: #fff;
+			color: #fff;
+			background-color: #494949;
 			p {
 				display: inline-block;
 				height: $height - 40px;
@@ -40,6 +43,12 @@
 				height: $height - 40px;
 				margin: 20px;
 				overflow-y: scroll;
+			}
+			ul {
+				padding-left: 16px;
+				li {
+					//padding: 0px;
+				}
 			}
 		}
 		.close-container {
