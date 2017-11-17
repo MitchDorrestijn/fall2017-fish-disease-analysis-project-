@@ -59,6 +59,8 @@ router.post('/register/', function (req, res) {
 			return;
 		}
 		res.sendStatus(500);
+	}).catch((error) => {
+		res.status(500).send(error.message);
 	})
 })
 
