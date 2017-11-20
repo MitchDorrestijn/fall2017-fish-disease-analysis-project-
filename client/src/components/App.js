@@ -115,17 +115,19 @@ export default class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
-				<NavigationBar openModal={this.openModal}/>
-				<div className="block-wrapper">
-					<BrowserRouter>
-						<Switch>
-							<Route exact path="/" render={(props) => {
-								return <Homepage {...props} openModal={this.openModal}/>
-							}}/>
-							<Route path="/myAquarium" component={MyAquarium}/>
-						</Switch>
-					</BrowserRouter>
-				</div>
+				<BrowserRouter>
+					<div>
+						<NavigationBar openModal={this.openModal}/>
+						<div className="block-wrapper">
+							<Switch>
+								<Route exact path="/" render={(props) => {
+									return <Homepage {...props} openModal={this.openModal}/>
+								}}/>
+								<Route path="/myAquarium" component={MyAquarium}/>
+							</Switch>
+						</div>
+					</div>
+				</BrowserRouter>
 				<ModalBase
 					errorContent={this.state.errorContent}
 					isErrorVisible={this.state.showError}
