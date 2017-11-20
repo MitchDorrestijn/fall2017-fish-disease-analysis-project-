@@ -9,16 +9,6 @@ import ModalBase from './modal/ModalBase';
 import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
 
-const config = {
-	apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
-    authDomain: "fishproject-47cfd.firebaseapp.com",
-    databaseURL: "https://fishproject-47cfd.firebaseio.com",
-    projectId: "fishproject-47cfd",
-    storageBucket: "fishproject-47cfd.appspot.com",
-    messagingSenderId: "324776878982"
-}
-
-const app = firebase.initializeApp(config);
 let da = new DataAccess ();
 
 export default class App extends React.Component {
@@ -30,11 +20,20 @@ export default class App extends React.Component {
 			errorContent: "",
 			modalContent: null,
 			redirect: null
-		}
+		};
+		this.config = {
+			apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
+			authDomain: "fishproject-47cfd.firebaseapp.com",
+			databaseURL: "https://fishproject-47cfd.firebaseio.com",
+			projectId: "fishproject-47cfd",
+			storageBucket: "fishproject-47cfd.appspot.com",
+			messagingSenderId: "324776878982"
+		};
+		this.app = firebase.initializeApp(this.config);
 	}
 	
 	userLogin = (email, password) => {
-		app.auth().signInWithEmailAndPassword(email, password).then(() => {
+		this.app.auth().signInWithEmailAndPassword(email, password).then(() => {
 			this.closeModal();
 			this.setState ({
 				redirect: <Route render={() => {
@@ -57,11 +56,12 @@ export default class App extends React.Component {
 				country: country
 			}
 		};
-		
-		da.postData (`/register`, user, (err, res) => {
+
+		let da = new DataAccess ();
+		da.postData(`/register`, user, (err, res) => {
 			if (!err) {
 				alert("Succesvol geregistreerd");
-			}else{
+			} else {
 				console.log(err);
 				this.showError(true, err.message);
 			}

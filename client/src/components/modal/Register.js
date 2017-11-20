@@ -37,7 +37,7 @@ class Register extends React.Component {
 		}else{
 			this.props.showError(true, "Password is not the same");
 		}
-	}
+	};
 	
 	render() {
 		return (
