@@ -18,7 +18,6 @@ router.post('/register/', function (req, res) {
 	}
 
 	const user = req.body.user;
-	console.log("register");
 	
 	// Validate input
 	if(	!validator.isEmail(user.email) || 
@@ -62,6 +61,20 @@ router.post('/register/', function (req, res) {
 	}).catch((error) => {
 		res.status(500).send(error.message);
 	})
+})
+
+router.delete('/user/:id', (req, res) => {
+	if(!req.user.uid != req.params.id) {
+		return res.status(401).send("Unauthorized");
+	}
+
+	admin.auth().deleteUser(req.user.uid)
+	.then(function() {
+	  	res.send(204);
+	})
+	.catch(function(error) {
+	  	res.status(500).send(error.message);
+	});
 })
 
 const sendWelcomeMail = (user) => {
