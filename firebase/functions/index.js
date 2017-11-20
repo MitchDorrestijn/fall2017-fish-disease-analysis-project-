@@ -32,7 +32,7 @@ app.use('/api', registrationRoutes);
 // /* Test routes for development */
 app.get("/api/home", (request, response) => {
 	response.send("Hello from Express on Firebase!");
-})
+});
 
 exports.app = functions.https.onRequest(app);
 

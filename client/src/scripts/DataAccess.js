@@ -9,14 +9,14 @@ export default class DataAccess {
 			return res;
 		}).then ((res) => {
 			if (res.status >= 200 && res.status < 300) {
-				return res.text ();
+				return res.text();
 			} else {
 				return Promise.reject (res);
 			}
 		}).then ((res) => {
 			cb (null, JSON.parse (res));
 		}).catch ((res) => {
-			return res.text ()
+			return res.text()
 				.then ((res1) => {
 					return res1;
 				}).then ((res1) => {
@@ -26,11 +26,10 @@ export default class DataAccess {
 	}
 
 	getData (url, cb) {
-		//let headers = new Headers ();
+		// let headers = new Headers ();
 		let requestParams = {
 			method: 'GET',
 			// headers: headers,
-			mode: 'cors',
 			cache: 'default'
 		};
 		let request = new Request (this.api + url, requestParams);

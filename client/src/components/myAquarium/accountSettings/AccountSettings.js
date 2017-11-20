@@ -3,13 +3,14 @@ import {Col, Input, InputGroup} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import Setting from './Setting';
 import SettingsBox from './SettingsBox';
+import UserService from '../../../provider/user-data-service';
 
 export default class AccountSettings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			name: "",
-			salutation: "Mr.",
+			country: "The Netherlands",
 			surname: "",
 			birthDay: "",
 			birthMonth: "",
@@ -20,13 +21,47 @@ export default class AccountSettings extends React.Component {
 		};
 	}
 
+	componentDidMount(){
+		let userService = new UserService();
+		const user = {
+			id: 'z47rzcf3RyfRjNoJRk7yCkdO1hm1'
+		};
+		userService.getUserData(user,(err,res) => {
+			this.updateInfo({
+				name: res.firstName,
+				surname: res.lastName,
+				email: res.email,
+				country: res.country
+			})
+		});
+	}
+
+	submit = (evt) => {
+		// evt.preventDefault();
+		//TODO: maybe export date conversion to new file
+		const birthDate = new Date(this.state.birthYear,this.state.birthMonth,this.state.birthDay);
+		console.log(birthDate);
+		const profile = {
+			name: this.state.name,
+			country: this.state.country,
+			surname: this.state.surname,
+			email: this.state.email,
+			password: this.state.password,
+			confirmPassword: this.state.confirmPassword
+		}
+	};
+
+	updateInfo = (data) => {
+		this.setState(data);
+	};
+
 	changeName = (evt) => {
 		this.setState({
 			name: evt.target.value
 		});
 	};
 
-	changeSalutation = (evt) => {
+	changeCountry = (evt) => {
 		this.setState({
 			salutation: evt.target.value
 		});
@@ -92,15 +127,18 @@ export default class AccountSettings extends React.Component {
 								onChange={this.changeName}
 							/>
 						</Setting>
-						<Setting title="Salutation">
+						<Setting title="Country">
 							<Input
 								type="select"
 								className="custom-select"
-								value={this.state.salutation}
-								onChange={this.changeSalutation}
+								value={this.state.country}
+								onChange={this.changeCountry}
 							>
-								<option value="Mr.">Mr.</option>
-								<option value="Mrs.">Mrs.</option>
+								<option>Netherlands</option>
+								<option>London</option>
+								<option>Test</option>
+								<option>England</option>
+								<option>Amsterdam</option>
 							</Input>
 						</Setting>
 						<Setting title="Surname">
@@ -156,7 +194,7 @@ export default class AccountSettings extends React.Component {
 						</Setting>
 					</SettingsBox>
 					<div className="text-right">
-						<ActionButton buttonText="Save changes" color="primary btn-transperant"/>
+						<ActionButton buttonText="Save changes" onClickAction={this.submit} color="primary btn-transperant"/>
 					</div>
 				</Col>
 			</div>
