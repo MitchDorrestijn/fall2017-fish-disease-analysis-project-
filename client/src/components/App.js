@@ -9,8 +9,6 @@ import ModalBase from './modal/ModalBase';
 import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
 
-let da = new DataAccess ();
-
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
