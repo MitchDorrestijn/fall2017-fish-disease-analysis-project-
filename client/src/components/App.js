@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import '../styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavigationBar from './navigation/NavigationBar';
@@ -28,32 +28,24 @@ export default class App extends React.Component {
 			showModal: false,
 			showError: false,
 			errorContent: "",
-			modalContent: null
+			modalContent: null,
+			redirect: null
 		}
 	}
 	
 	userLogin = (email, password) => {
-		//const user = {
-		//	user: {
-		//		email: "c.severein98@gmail.com",
-		//		password: "abcdefg",
-		//		firstName: "Coen",
-		//		lastName: "Severein",
-		//		country: "Belgium"
-		//	}
-		//}
-		
-		//da.postData (`/register`, user, (err, res) => {
-		//	if (!err) {
-		//		console.log(res);
-		//	}
-		//});
 		app.auth().signInWithEmailAndPassword(email, password).then(() => {
-			alert("Succesvol ingelogd. Redirect naar /myAquarium");
+			this.closeModal();
+			this.setState ({
+				redirect: <Route render={() => {
+					this.setState ({redirect: null});
+					return <Redirect to="/myAquarium"/>
+				}}/>
+			});
 		}).catch((error) => {
 			this.showError(true, error.message);
 		});
-	}
+	};
 	
 	userRegister = (email, password, firstName, lastName, country) => {
 		const user = {
@@ -64,7 +56,7 @@ export default class App extends React.Component {
 				lastName: lastName,
 				country: country
 			}
-		}
+		};
 		
 		da.postData (`/register`, user, (err, res) => {
 			if (!err) {
@@ -74,7 +66,7 @@ export default class App extends React.Component {
 				this.showError(true, err.message);
 			}
 		});
-	}
+	};
 
 	openModal = (content) => {
 		this.setState ({
@@ -90,7 +82,7 @@ export default class App extends React.Component {
 			showError: show,
 			errorContent: content
 		});
-	}
+	};
 
 	closeModal = () => {
 		this.setState ({
@@ -105,6 +97,7 @@ export default class App extends React.Component {
 				<div className="block-wrapper">
 					<BrowserRouter>
 						<Switch>
+							{this.state.redirect}
 							<Route exact path="/" render={(props) => {
 								return <Homepage {...props} openModal={this.openModal}/>
 							}}/>
