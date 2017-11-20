@@ -13,8 +13,6 @@ export default class SavedAdvices extends React.Component {
 				<h1 className="text-center">Saved advices</h1>
 					<Col lg="12">
 						<Row className="advice">
-							<AdviceDate>17-11-2017</AdviceDate>
-							<AdviceMatch>87</AdviceMatch>
 							<AdvicePicture src="schimmel3"/>
 							<AdviceInfo title="White spot disease - Ichthyophthirius multifiliis">
 								The white spot disease is one of the most common
@@ -29,6 +27,8 @@ export default class SavedAdvices extends React.Component {
 								<li>No appetite</li>
 								<li>Skin disease</li>
 							</AdviceSymptoms>
+							<AdviceDate>17-11-2017</AdviceDate>
+							<AdviceMatch>87</AdviceMatch>
 						</Row>
 					</Col>
 			</div>

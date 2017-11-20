@@ -1,4 +1,6 @@
 // Dit kan grotendeels overgenomen worden van notifications, alleen ik weet niet hoe, dus als Mitch ff kijkt
+@import '../../settings.scss';
+
 .saved-advices {
 	.advice {
 		$height: 180px;
@@ -7,10 +9,10 @@
 		height: $height;
 		.header {
 			font-size: 18px;
-			background: linear-gradient(#1f344a, #494949);
+			background: $mainColor;
 		}
 		.image-container {
-			background-color: #494949;
+			background-color: $grey;
 			position: relative;
 			height: $height;
 			width: 100%;
@@ -26,7 +28,7 @@
 		.info {
 			height: $height;
 			color: #fff;
-			background-color: #494949;
+			background-color: $grey;
 			p {
 				display: inline-block;
 				height: $height - 40px;
@@ -37,7 +39,7 @@
 		.data {
 			height: $height;
 			color: #fff;
-			background-color: #494949;
+			background-color: $grey;
 			p {
 				display: inline-block;
 				height: $height - 40px;
