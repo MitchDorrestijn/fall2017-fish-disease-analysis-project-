@@ -1,0 +1,70 @@
+// Dit kan grotendeels overgenomen worden van notifications, alleen ik weet niet hoe, dus als Mitch ff kijkt
+@import '../../settings.scss';
+
+.saved-advices {
+	.advice {
+		$height: 180px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		height: $height;
+		.header {
+			font-size: 18px;
+			background: $mainColor;
+		}
+		.image-container {
+			background-color: $grey;
+			position: relative;
+			height: $height;
+			width: 100%;
+			.image {
+				position: absolute;
+				height: $height;
+				overflow: hidden;
+				img {
+					max-width: 100%;
+				}
+			}
+		}
+		.info {
+			height: $height;
+			color: #fff;
+			background-color: $grey;
+			p {
+				display: inline-block;
+				height: $height - 40px;
+				margin: 20px;
+				overflow-y: scroll;
+			}
+		}
+		.data {
+			height: $height;
+			color: #fff;
+			background-color: $grey;
+			p {
+				display: inline-block;
+				height: $height - 40px;
+				margin: 20px;
+				overflow-y: scroll;
+			}
+			ul {
+				padding-left: 16px;
+				li {
+					//padding: 0px;
+				}
+			}
+		}
+		.close-container {
+			position: relative;
+			.close {
+				position: absolute;
+				top: 6px;
+				right: 30px;
+				height: 0;
+				width: 0;
+				a {
+					color: #fff !important;
+				}
+			}
+		}
+	}
+}
