@@ -19,8 +19,29 @@ router.get('/aquaria/', (req, res) => {
 	});
 })
 
+// returns an aquarium if owned by user
+router.get('/aquaria/:id', (req, res) => {
+	if(!req.user) {
+		return res.status(401).send("Unauthorized");
+	}
+	db.collection("aquaria").where("id", "==", req.params.id).where("userId", "==", req.user.uid).get()
+	.then((snapshot) => {
+		if(snapshot.size == 0){
+			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
+		}
+		snapshot.forEach((doc) => {
+			return res.status(200).send({
+				aquarium: doc.data()
+			});
+		})
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	})
+})
+
 // creates an aquarium for logged in user
-router.post('/aquarium/', (req, res) => {
+router.post('/aquaria/', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
@@ -41,7 +62,7 @@ router.post('/aquarium/', (req, res) => {
 })
 
 // Updates aquarium if owned by user
-router.post('/aquarium/:id', (req, res) => {
+router.post('/aquaria/:id', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
@@ -67,6 +88,36 @@ router.post('/aquarium/:id', (req, res) => {
 	})
 	.then(() => {
 		res.sendStatus(200);
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	})
+})
+
+// returns all fish within an aquarium
+router.get('/aquaria/:id/fish', (req, res) => {
+	if(!req.user) {
+		return res.status(401).send("Unauthorized");
+	}
+	db.collection("aquaria").where("id", "==", req.params.id).where("userId", "==", req.user.uid).get()
+	.then((snapshot) => {
+		if(snapshot.size == 0){
+			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
+		}
+		snapshot.forEach((doc) => {
+			return db.collection("aquaria").where("aquariumId", "==", doc.id).where("userId", "==", req.user.uid).get()
+		})
+	})
+	.then((snapshot) => {
+		if(snapshot.size == 0){
+			return Promise.reject(new Error("No fish found in aquarium."));
+		}
+
+		var fish = []
+		snapshot.forEach((doc) => {
+			fish.push(doc.data())
+		})
+		res.send({fish : fish});
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
