@@ -123,7 +123,9 @@ export default class App extends React.Component {
 								<Route exact path="/" render={(props) => {
 									return <Homepage {...props} openModal={this.openModal}/>
 								}}/>
-								<Route path="/myAquarium" component={MyAquarium}/>
+								<Route path="/myAquarium" render={(props) => {
+									return <MyAquarium {...props} app={app}/>
+								}}/>
 							</Switch>
 						</div>
 					</div>
