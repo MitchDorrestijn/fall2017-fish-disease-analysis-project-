@@ -8,6 +8,7 @@ import MyAquarium from './myAquarium/MyAquarium';
 import ModalBase from './modal/ModalBase';
 import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
+import { reactTranslateChangeLanguage } from 'translate-components';
 
 const config = {
 	apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
@@ -31,7 +32,10 @@ export default class App extends React.Component {
 			modalContent: null
 		}
 	}
-	
+
+
+
+
 	userLogin = (email, password) => {
 		//const user = {
 		//	user: {
@@ -42,7 +46,7 @@ export default class App extends React.Component {
 		//		country: "Belgium"
 		//	}
 		//}
-		
+
 		//da.postData (`/register`, user, (err, res) => {
 		//	if (!err) {
 		//		console.log(res);
@@ -54,7 +58,7 @@ export default class App extends React.Component {
 			this.showError(true, error.message);
 		});
 	}
-	
+
 	userRegister = (email, password, firstName, lastName, country) => {
 		const user = {
 			user: {
@@ -65,7 +69,7 @@ export default class App extends React.Component {
 				country: country
 			}
 		}
-		
+
 		da.postData (`/register`, user, (err, res) => {
 			if (!err) {
 				alert("Succesvol geregistreerd");
@@ -81,10 +85,10 @@ export default class App extends React.Component {
 			showModal: true,
 			modalContent: content
 		});
-		
+
 		this.showError(false, "");
 	};
-	
+
 	showError = (show, content) => {
 		this.setState ({
 			showError: show,
@@ -97,6 +101,16 @@ export default class App extends React.Component {
 			showModal: false
 		});
 	};
+
+	getLanguage = () => {
+		const currentLanguage = localStorage.getItem('language');
+		reactTranslateChangeLanguage (currentLanguage);
+		console.log (currentLanguage);
+	}
+
+	componentDidMount() {
+		this.getLanguage();
+	}
 
 	render() {
 		return (
@@ -112,7 +126,7 @@ export default class App extends React.Component {
 						</Switch>
 					</BrowserRouter>
 				</div>
-				<ModalBase 
+				<ModalBase
 					errorContent={this.state.errorContent}
 					isErrorVisible={this.state.showError}
 					showError={this.showError}
