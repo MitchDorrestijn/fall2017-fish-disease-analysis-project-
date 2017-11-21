@@ -26,7 +26,7 @@ router.get('/aquaria/:id', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-	db.collection("aquaria").where("id", "==", req.params.id).where("userId", "==", req.user.uid).get()
+	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		if(snapshot.empty){
 			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
