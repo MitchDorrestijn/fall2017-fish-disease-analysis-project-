@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import '../styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavigationBar from './navigation/NavigationBar';
@@ -10,18 +10,6 @@ import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
 
-const config = {
-	apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
-    authDomain: "fishproject-47cfd.firebaseapp.com",
-    databaseURL: "https://fishproject-47cfd.firebaseio.com",
-    projectId: "fishproject-47cfd",
-    storageBucket: "fishproject-47cfd.appspot.com",
-    messagingSenderId: "324776878982"
-}
-
-const app = firebase.initializeApp(config);
-let da = new DataAccess ();
-
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -29,36 +17,34 @@ export default class App extends React.Component {
 			showModal: false,
 			showError: false,
 			errorContent: "",
-			modalContent: null
-		}
+			modalContent: null,
+			redirect: null
+		};
+		this.config = {
+			apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
+			authDomain: "fishproject-47cfd.firebaseapp.com",
+			databaseURL: "https://fishproject-47cfd.firebaseio.com",
+			projectId: "fishproject-47cfd",
+			storageBucket: "fishproject-47cfd.appspot.com",
+			messagingSenderId: "324776878982"
+		};
+		this.app = firebase.initializeApp(this.config);
 	}
 
-
-
-
 	userLogin = (email, password) => {
-		//const user = {
-		//	user: {
-		//		email: "c.severein98@gmail.com",
-		//		password: "abcdefg",
-		//		firstName: "Coen",
-		//		lastName: "Severein",
-		//		country: "Belgium"
-		//	}
-		//}
-
-		//da.postData (`/register`, user, (err, res) => {
-		//	if (!err) {
-		//		console.log(res);
-		//	}
-		//});
-		app.auth().signInWithEmailAndPassword(email, password).then(() => {
-			alert("Succesvol ingelogd. Redirect naar /myAquarium");
+		this.app.auth().signInWithEmailAndPassword(email, password).then(() => {
+			this.closeModal();
+			this.setState ({
+				redirect: <Route render={() => {
+					this.setState ({redirect: null});
+					return <Redirect to="/myAquarium"/>
+				}}/>
+			});
 		}).catch((error) => {
 			this.showError(true, error.message);
 		});
-	}
-
+	};
+	
 	userRegister = (email, password, firstName, lastName, country) => {
 		const user = {
 			user: {
@@ -68,17 +54,18 @@ export default class App extends React.Component {
 				lastName: lastName,
 				country: country
 			}
-		}
+		};
 
-		da.postData (`/register`, user, (err, res) => {
+		let da = new DataAccess ();
+		da.postData(`/register`, user, (err, res) => {
 			if (!err) {
 				alert("Succesvol geregistreerd");
-			}else{
+			} else {
 				console.log(err);
 				this.showError(true, err.message);
 			}
 		});
-	}
+	};
 
 	openModal = (content) => {
 		this.setState ({
@@ -94,7 +81,7 @@ export default class App extends React.Component {
 			showError: show,
 			errorContent: content
 		});
-	}
+	};
 
 	closeModal = () => {
 		this.setState ({
@@ -120,6 +107,7 @@ export default class App extends React.Component {
 						<NavigationBar openModal={this.openModal}/>
 						<div className="block-wrapper">
 							<Switch>
+								{this.state.redirect}
 								<Route exact path="/" render={(props) => {
 									return <Homepage {...props} openModal={this.openModal}/>
 								}}/>
