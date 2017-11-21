@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>Authentication - Proof of Concept<</title>
+        <script
+        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+        crossorigin="anonymous"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+        <script>
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
+            authDomain: "fishproject-47cfd.firebaseapp.com",
+            databaseURL: "https://fishproject-47cfd.firebaseio.com",
+            projectId: "fishproject-47cfd",
+            storageBucket: "fishproject-47cfd.appspot.com",
+            messagingSenderId: "324776878982"
+          };
+          firebase.initializeApp(config);
+        </script>
+    </head>
+    <body>
+        <input type="text" name="email" placeholder="Emailadres" id="email" />
+        <input type="password" name="password" placeholder="Wachtwoord" id="password" />
+        <button type="submit" id="knop">Log in!</button>
+        <span id="message"></span>
+        <script>
+            $('#knop').click(function(e){
+                const email = $('#email').val();
+                const password = $('#password').val();
+                firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    // ...
+                    $('#message').html("Error...");
+                }).then(function(result){
+                    console.log(result);
+                    if(result){
+                        $('#message').html("Gelukt! Userid: " + result.uid);
+                        Auth = firebase.auth();
+                        Auth.currentUser.getIdToken().then(function(data) {
+                            console.log(data)
+                        });
+                        return;
+                    }
+                    $('#message').html("Fail...");
+                });
+            });
+        </script>
+    </body>
+</html>

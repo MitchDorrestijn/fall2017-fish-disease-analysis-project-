@@ -3,3 +3,6 @@ package-lock.json
 .DS_Store
 .DS_Store
 .idea
+/client/src/styles/*.css
+/client/src/styles/**/*.css
+firebase/firebase-debug\.log

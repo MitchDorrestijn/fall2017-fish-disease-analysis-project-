@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+@import 'settings.scss';
+
+//GENERAL STYLING
+.white {
+	color:$supportColor;
+}
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 15px !important;
+	padding-top: 80px; //Same height as the navbar
+	overflow-x:hidden;
+}
+
+//BUTTON STYLING
+.btn-outline-primary {
+	width: 200px;
+	color: $supportColor;
+	border-color: $supportColor !important;
+	border-radius: 0px;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+	background-color: $supportColor;
+	color: $alternativeTextColor !important;
+	cursor: pointer;
+}
+.btn-outline-primary:focus {
+	box-shadow: none;
+}
+
+//HEADER STYLING
+h2 {
+	font-size: 40px;
+}
+
+//LINK STYLING
+a:hover{
+	text-decoration: none;
+	color: $alternativeTextColor;
+}
+
+//FOOTER
+.footer {
+	a {
+		color: $alternativeTextColor;
+	}
+	padding: ($defaultPadding*2)/2 0px;
+	text-align: center;
+}
+
+.no-gutter {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+//NAVIGATION
+nav {
+	background-color: $supportColor;
+	.nav-item {
+		padding: $defaultPadding;
+	}
+	@media screen and(max-width: $responsiveBreakPoint){
+		.navbar-collapse {
+			background: $supportColor;
+			text-align: center;
+		}
+		.nav-item:hover {
+			background: gainsboro;
+			text-decoration: none;
+			a:hover {
+				text-decoration: none;
+			}
+		}
+		img.logo {
+			 margin-top:$defaultPadding;
+		 }
+		 button.test.navbar-toggler {
+			 border:none;
+			 margin-top: $defaultPadding;
+		 }
+		 button.test.navbar-toggler:focus,
+		 button.test.navbar-toggler:active {
+			 box-shadow: none;
+			 outline:none;
+		 }
+		 button.test.navbar-toggler:hover {
+			 cursor: pointer;
+		 }
+	}
+	img.logo {
+	 	max-height: 50px;
+	 }
+	.search-wrap:hover {
+		background: none;
+	}
+}
+.navbar-light .navbar-nav .nav-link {
+	color: $alternativeTextColor;
+}
+.navbar.fixed-top {
+	padding-top: 20px;
+}
+@media screen and(min-width: $responsiveBreakPoint){
+ .navbar-light:hover .navbar-nav:hover .nav-link:hover {
+ 	text-decoration: underline;
+ }
+ .navbar.fixed-top {
+ 	height: 80px;
+ }
+}
+@media screen and(max-width: $responsiveBreakPoint){
+	.navbar.fixed-top{
+		top: -$defaultPadding - 5;
+		right: -$defaultPadding+1;
+		left: -$defaultPadding;
+	}
+	.navbar-brand {
+		padding-top: 0rem;
+    padding-bottom: 0rem;
+		padding: 0px $defaultPadding 0px $defaultPadding;
+	}
+}
+.searchBox-wrapper{
+	.search-field {
+		border:none;
+		border-radius:0px;
+	}
+	.search-field:active,
+	.search-field:focus {
+		box-shadow: none;
+		outline: none;
+	}
+	.form-control {
+		border-bottom: 1px solid $alternativeTextColor !important;
+	}
+	.searchBtn-wrap{
+		border-bottom: 1px solid $alternativeTextColor;
+		.search-btn {
+			background: none;
+			border:none;
+			color: $alternativeTextColor;
+		}
+	}
+}
+.flags {
+	padding: 0;
+	list-style: none;
+	overflow: auto;
+	margin-top: $defaultPadding + 5px;
+	display: inline-block;
+	li{
+		float: left;
+		button {
+			padding: 0;
+			img {
+				width: 30px;
+			}
+			img:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}
+
+//CARDS
+.inner-content {
+	h2 {
+		margin-bottom: $defaultPadding*2;
+	}
+	.card {
+		background: $mainColor;
+		border:none;
+		margin-bottom: $defaultPadding*2;
+		.card-text {
+			margin-top: $defaultPadding;
+			span {
+				display: block;
+				margin: $defaultPadding/2 0;
+			}
+		}
+	}
+}
