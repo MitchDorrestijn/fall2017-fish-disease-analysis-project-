@@ -31,7 +31,7 @@ export default class App extends React.Component {
 			modalContent: null
 		}
 	}
-	
+
 	userLogin = (email, password) => {
 		//const user = {
 		//	user: {
@@ -42,7 +42,7 @@ export default class App extends React.Component {
 		//		country: "Belgium"
 		//	}
 		//}
-		
+
 		//da.postData (`/register`, user, (err, res) => {
 		//	if (!err) {
 		//		console.log(res);
@@ -54,7 +54,7 @@ export default class App extends React.Component {
 			this.showError(true, error.message);
 		});
 	}
-	
+
 	userRegister = (email, password, firstName, lastName, country) => {
 		const user = {
 			user: {
@@ -65,7 +65,7 @@ export default class App extends React.Component {
 				country: country
 			}
 		}
-		
+
 		da.postData (`/register`, user, (err, res) => {
 			if (!err) {
 				alert("Succesvol geregistreerd");
@@ -81,10 +81,10 @@ export default class App extends React.Component {
 			showModal: true,
 			modalContent: content
 		});
-		
+
 		this.showError(false, "");
 	};
-	
+
 	showError = (show, content) => {
 		this.setState ({
 			showError: show,
@@ -108,11 +108,13 @@ export default class App extends React.Component {
 							<Route exact path="/" render={(props) => {
 								return <Homepage {...props} openModal={this.openModal}/>
 							}}/>
-							<Route path="/myAquarium" component={MyAquarium}/>
+							<Route path="/myAquarium" render={(props) => {
+								return <MyAquarium {...props} openModal={this.openModal}/>
+							}}/>
 						</Switch>
 					</BrowserRouter>
 				</div>
-				<ModalBase 
+				<ModalBase
 					errorContent={this.state.errorContent}
 					isErrorVisible={this.state.showError}
 					showError={this.showError}

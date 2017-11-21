@@ -33,7 +33,9 @@ export default class MyAquarium extends React.Component {
 						</SidebarLink>
 					</Sidebar>
 					<ContentContainer size="12" img="/images/myAquarium/achtergrond.jpg">
-						<Route exact path="/myAquarium/myFish" component={MyFish}/>
+						<Route exact path="/myAquarium/myFish" render={(props) => {
+							return <MyFish {...props} openModal={this.props.openModal}/>
+						}}/>
 						<Route exact path="/myAquarium/todaysData" component={TodaysData}/>
 						<Route exact path="/myAquarium/savedAdvices" component={SavedAdvices}/>
 						<Route exact path="/myAquarium/notifications" component={Notifications}/>
