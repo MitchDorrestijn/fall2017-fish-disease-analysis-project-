@@ -71,7 +71,6 @@ describe('Registration', function() {
         });
 
         it('should return 204 when user is deleted', () => {
-
             admin.auth().getUserByEmail("test@address.com")
             .then(function(userRecord) {
                 request
