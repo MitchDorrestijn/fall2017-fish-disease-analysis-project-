@@ -9,7 +9,7 @@ router.get('/aquaria/', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-	db.collection("aquaria").where("id", "==", req.user.uid).get()
+	db.collection("aquaria").where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		var aquaria = [];
 		snapshot.forEach((doc) => {
@@ -26,7 +26,7 @@ router.get('/aquaria/:id', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-	db.collection("aquaria").where("id", "==", req.params.id).where("userId", "==", req.user.uid).get()
+	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		if(snapshot.empty){
 			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
@@ -45,12 +45,17 @@ router.post('/aquaria/', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-	db.collection("aquaria").add({
-		name: "Name of aquarium",
-		userId: req.user.uid
-	})
+
+	const allowedDataKeys = ["name"];
+	const data = req.body.data;
+
+	req.removeIllegalKeys(allowedDataKeys, data);
+
+	data.user = req.user.ref
+
+	db.collection("aquaria").add(data)
 	.then((newDoc) => {
-		return db.collection("aquaria").doc(newDoc.id).update({id: newDoc.id});
+		return newDoc.update({id: newDoc.id});
 	})
 	.then(() => {
 		res.sendStatus(201);
@@ -76,7 +81,7 @@ router.post('/aquaria/:id', (req, res) => {
 
 	req.removeIllegalKeys(allowedDataKeys, data);
 
-	db.collection("aquaria").where("id", "==", req.params.id).where("userId", "==", req.user.uid).get()
+	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		if(snapshot.empty){
 			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
@@ -121,10 +126,45 @@ router.get('/aquaria/:id/fish', (req, res) => {
 	})
 })
 
+// Adds a fish to aquarium
+router.post('/aquaria/:id/fish', (req, res) => {
+	if(!req.user) {
+		return res.status(401).send("Unauthorized");
+	}
+
+	if(!req.body.data){
+		return res.status(400).send("Payload expected. Serve a object with root key *data*");
+	}
+
+	const allowedDataKeys = ["species"];
+	const data = req.body.data;
+
+	req.removeIllegalKeys(allowedDataKeys, data);
+
+	const aquariumRef = db.collection("aquaria").doc(req.params.id);
+
+	data.user = req.user.ref;
+	data.aquarium = aquariumRef;
+
+	db.collection("fish").add(data)
+	.then((newDoc) => {
+		return newDoc.update({id: newDoc.id});
+	})
+	.then(() => {
+		res.sendStatus(201);
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	})
+});
+
+// Edits a fish in aquarium
 router.post('/aquaria/:id/fish/:fid', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
+
+	res.status(500).send("fish edit - not yet implemented");
 });
 
 module.exports = router
