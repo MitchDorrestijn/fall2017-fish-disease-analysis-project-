@@ -1,4 +1,5 @@
 import React from 'react';
+import DataAccess from '../../../scripts/DataAccess';
 import * as firebase from 'firebase';
 
 export default class TodaysData extends React.Component {
@@ -10,9 +11,31 @@ export default class TodaysData extends React.Component {
 		}
 	}
 
-	verifyLogin = () => {
+	verifyLogin = (user) => {
 		if (user) {
-			this.setData(user.displayName);
+			firebase.auth().currentUser.getIdToken().then((result) => {
+				console.log (result);
+				let da = new DataAccess (result);
+				da.getData ('/aquaria/3V3kij8a0XN6eW3GEfHF', (err, res) => {
+					if (!err) {
+						let result = [];
+						delete res.aquarium.user;
+						for (let elem in res.aquarium) {
+							let entry = (
+								<tr>
+									<td>{elem}</td>
+									<td>{res.aquarium[elem]}</td>
+								</tr>
+							);
+							result.push (entry);
+						}
+						this.setState({
+							data: result,
+							error: null
+						});
+					}
+				});
+			});
 		} else {
 			this.setError("You are not logged in");
 		}
@@ -20,7 +43,7 @@ export default class TodaysData extends React.Component {
 
 	setData = (data) => {
 		this.setState({
-			data: user.displayName,
+			data: data,
 			error: null
 		});
 	};
@@ -28,7 +51,7 @@ export default class TodaysData extends React.Component {
 	setError = (error) => {
 		this.setState ({
 			data: null,
-			error: "You are not logged in"
+			error: error
 		});
 	};
 
@@ -36,7 +59,8 @@ export default class TodaysData extends React.Component {
 		firebase.auth().onAuthStateChanged((user) => {
 			this.verifyLogin(user);
 		});
-		this.verifyLogin();
+		let user = firebase.auth().currentUser;
+		this.verifyLogin(user);
 	}
 
 	render() {
