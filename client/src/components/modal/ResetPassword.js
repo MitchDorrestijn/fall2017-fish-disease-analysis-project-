@@ -11,6 +11,7 @@ import {
 	Alert
 } from 'reactstrap';
 import Error from './Error';
+import Translate from 'translate-components';
 
 class ResetPassword extends React.Component {
 	resetPassword = () => {

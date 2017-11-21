@@ -6,6 +6,7 @@ import NavigationBar from './navigation/NavigationBar';
 import Homepage from './homepage/Homepage';
 import MyAquarium from './myAquarium/MyAquarium';
 import ModalBase from './modal/ModalBase';
+import Login from './modal/Login';
 import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
@@ -59,7 +60,13 @@ export default class App extends React.Component {
 		let da = new DataAccess ();
 		da.postData(`/register`, user, (err, res) => {
 			if (!err) {
-				alert("Succesvol geregistreerd");
+				this.closeModal();
+				this.setState ({
+					redirect: <Route render={() => {
+						this.setState ({redirect: null});
+						return <Redirect to=""/>
+					}}/>
+				});
 			} else {
 				this.showError(true, err.message);
 			}
@@ -74,7 +81,13 @@ export default class App extends React.Component {
 		let da = new DataAccess ();
 		da.postData(`/forgot-password`, emailObj, (err, res) => {
 			if (!err) {
-				alert("Succesvol aangevraagd");
+				this.closeModal();
+				this.setState ({
+					redirect: <Route render={() => {
+						this.setState ({redirect: null});
+						return <Redirect to=""/>
+					}}/>
+				});
 			} else {
 				this.showError(true, err.message);
 			}
@@ -90,7 +103,7 @@ export default class App extends React.Component {
 		let da = new DataAccess ();
 		da.postData(`/forgot-password/` + token, passwordObj, (err, res) => {
 			if (!err) {
-				alert("Succesvol Gereset");
+				this.openModal(Login);
 			} else {
 				this.showError(true, err.message);
 			}

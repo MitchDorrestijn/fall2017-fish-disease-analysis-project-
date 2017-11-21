@@ -4,15 +4,16 @@ import {
 	ModalBody,
 	Alert
 } from 'reactstrap';
+import Translate from 'translate-components';
 
 class ForgotPasswordSend extends React.Component {
 	render() {
 		return (
 			<div>
-				<ModalHeader toggle={() => this.props.toggleModal()}>Forgot Password</ModalHeader>
+				<ModalHeader toggle={() => this.props.toggleModal()}><Translate>Forgot Password</Translate></ModalHeader>
 				<ModalBody>
 					<Alert color="secondary">
-						An email has been sent to <i>*Emailaddress*</i>.
+						<Translate>An email has been sent to the given email address. Please follow the instructions given in the mail.</Translate>
 					</Alert>
 				</ModalBody>
 			</div>
