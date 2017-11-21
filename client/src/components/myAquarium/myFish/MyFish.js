@@ -2,14 +2,20 @@ import React from 'react';
 import Card from '../../base/Card';
 import {CardText, CardTitle, CardSubtitle} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
+import {Link} from 'react-router-dom';
 
 export default class MyFish extends React.Component {
 	render() {
 		return (
 			<div className="container">
-
 				<div className="row inner-content">
 					<h2>My fish</h2>
+					<div className="addBtns">
+						<ActionButton link={true} linkTo="/" color="primary btn-transparent" buttonText="Aquarium 1" />
+						<ActionButton link={true} linkTo="/" color="primary btn-transparent" buttonText="Aquarium 2" />
+						<ActionButton link={true} linkTo="/" color="primary btn-transparent" buttonText="Aquarium 3" />
+						<Link to="/">+ Add aquarium</Link>
+					</div>
 					<div className="card-columns">
 						<Card image="/recources/emerald-catfish.jpg">
 							<CardTitle>Flyingfish</CardTitle>
