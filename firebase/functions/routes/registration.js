@@ -106,7 +106,7 @@ router.post('/forgot-password', (req, res) => {
 	const email = req.body.email;
 	console.log(email);
 	if(!validator.isEmail(email)) {
-		return res.send(400);
+		return res.status(400).send("Invalid email");
 	}
 	var passwordForgotToken;
 	admin.auth().getUserByEmail(email).then((user)=>{
@@ -117,10 +117,10 @@ router.post('/forgot-password', (req, res) => {
 		"Hi there! We heard you forgot your password.<br/><br/><a href='https://bassleer.nl/forgot-password/" + passwordForgotToken + "'>Please click here to reset it.</a>"
 		)
 	}).then(() => {
-		res.sendStatus(200);
+		res.status(200).send("Mail send");
 	}).catch((error)=>{
 		console.log(error);
-		res.send(500);
+		res.status(500).send("Email does not exist");
 	});
 })
 

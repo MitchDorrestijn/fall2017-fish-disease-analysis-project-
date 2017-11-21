@@ -61,11 +61,41 @@ export default class App extends React.Component {
 			if (!err) {
 				alert("Succesvol geregistreerd");
 			} else {
-				console.log(err);
 				this.showError(true, err.message);
 			}
 		});
 	};
+	
+	userForgotPassword = (email) => {
+		const emailObj = {
+			email: email
+		};
+
+		let da = new DataAccess ();
+		da.postData(`/forgot-password`, emailObj, (err, res) => {
+			if (!err) {
+				alert("Succesvol aangevraagd");
+			} else {
+				this.showError(true, err.message);
+			}
+		});
+	}
+	
+	userResetPassword = (password) => {		
+		const passwordObj = {
+			password: password
+		};
+		const token = window.location.pathname.replace("/forgot-password/", "");
+
+		let da = new DataAccess ();
+		da.postData(`/forgot-password/` + token, passwordObj, (err, res) => {
+			if (!err) {
+				alert("Succesvol Gereset");
+			} else {
+				this.showError(true, err.message);
+			}
+		});
+	}
 
 	openModal = (content) => {
 		this.setState ({
@@ -112,6 +142,9 @@ export default class App extends React.Component {
 									return <Homepage {...props} openModal={this.openModal}/>
 								}}/>
 								<Route path="/myAquarium" component={MyAquarium}/>
+								<Route path="/forgot-password" render={(props) => {
+									return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
+								}}/>
 							</Switch>
 						</div>
 					</div>
@@ -123,6 +156,8 @@ export default class App extends React.Component {
 					isVisible={this.state.showModal}
 					userLogin={this.userLogin}
 					userRegister={this.userRegister}
+					userForgotPassword={this.userForgotPassword}
+					userResetPassword={this.userResetPassword}
 					openModal={this.openModal}
 					closeModal={this.closeModal}
 				>

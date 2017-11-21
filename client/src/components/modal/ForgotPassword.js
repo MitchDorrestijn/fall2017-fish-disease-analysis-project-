@@ -10,8 +10,8 @@ import {
 	Input,
 	Alert
 } from 'reactstrap';
-import ForgotPasswordSend from './ForgotPasswordSend';
 import Login from './Login';
+import Error from './Error';
 
 class ForgotPassword extends React.Component {
 	render() {
@@ -22,6 +22,10 @@ class ForgotPassword extends React.Component {
 					<Alert color="secondary">
 						Information about recover password
 					</Alert>
+					{ this.props.isErrorVisible ?
+						<Error errorContent={this.props.errorContent} /> :
+						null
+					}
 					<FormGroup>
 						<Label for="email">Email address</Label>
 						<InputGroup>
@@ -30,7 +34,7 @@ class ForgotPassword extends React.Component {
 						</InputGroup>
 					</FormGroup>
 					<hr/>
-					<Button outline className="modalLink" color="secondary" onClick={() => this.props.openModal(ForgotPasswordSend)} block>Continue</Button>
+					<Button outline className="modalLink" color="secondary" onClick={() => this.props.userForgotPassword(document.getElementById("email").value)} block>Continue</Button>
 					
 					<p className="center">
 						Remembered your password? <u><a className="modalLink" onClick={() => this.props.openModal(Login)}>Login</a></u>

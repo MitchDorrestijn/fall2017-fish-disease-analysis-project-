@@ -23,7 +23,7 @@ class Register extends React.Component {
 		
 		
 		if(password === repeatpassword){
-			if(email){
+			if(email && password && repeatpassword && firstName && lastName && country){
 				this.props.userRegister(
 										email,
 										password,
