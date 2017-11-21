@@ -9,7 +9,7 @@ router.get('/aquaria/', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-	db.collection("aquaria").where("id", "==", req.user.uid).get()
+	db.collection("aquaria").where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		var aquaria = [];
 		snapshot.forEach((doc) => {
