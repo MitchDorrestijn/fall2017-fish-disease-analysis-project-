@@ -35,7 +35,7 @@ dependency.mail = (to, subject, html) => {
                 return reject(error);
             }
             console.log('Message sent: %s', info.messageId);
-            return resolve(info);
+            resolve(info);
         });
     });
 }
