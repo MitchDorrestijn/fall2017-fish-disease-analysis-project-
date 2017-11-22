@@ -25,11 +25,11 @@ export default class DataAccess {
 		}).catch ((res) => {
 			if (res.text) {
 				return res.text ()
-				.then ((res1) => {
-					return res1;
-				}).then ((res1) => {
-					cb ({status: res.status, message: res1}, null);
-				});
+					.then ((res1) => {
+						return res1;
+					}).then ((res1) => {
+						cb ({status: res.status, message: res1}, null);
+					});
 			} else {
 				cb ({status: res.status, message: null}, null);
 			}
