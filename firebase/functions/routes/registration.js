@@ -113,7 +113,7 @@ router.get('/verify/:id/:token', (req, res) => {
 
 router.post('/forgot-password', (req, res) => {
 	const email = req.body.email;
-	console.log(email);
+	if(!validator.isEmail(email)){
 		return res.status(400).send("Invalid email");
 	}
 	let passwordForgotToken;
