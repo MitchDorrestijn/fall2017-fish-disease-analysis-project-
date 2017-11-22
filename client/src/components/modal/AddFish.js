@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModalHeader, ModalBody, Button, FormGroup, Label, InputGroup } from 'reactstrap';
+import { ModalHeader, ModalBody, Button, FormGroup, Label, InputGroup} from 'reactstrap';
 import Error from './Error';
 import 'react-select/dist/react-select.css';
 import Select from "react-select";
@@ -12,11 +12,13 @@ class AddFish extends React.Component {
 			fishSpecies: [
 	  		{ value: 'Goldfish', label: 'Goldfish' },
 	  		{ value: 'Catfish', label: 'Catfish' }
-			]
+			],
+			selectedFish: ""
 		}
 	}
-	selectedFishSpecies = (val) => {
-  	console.log('Selected fish: ', val);
+	selectFishSpecies = (val) => {
+  	console.log('Selected: ', val);
+		this.setState({selectedFish: val})
 	}
 	render() {
 		return (
@@ -31,13 +33,12 @@ class AddFish extends React.Component {
 						<Label for="addfish">Name of fish:</Label>
 						<InputGroup>
 							<Select
-								name="form-field-name"
 								simpleValue={true}
-								value="one"
-								placeholder="Type your fish species here."
+								name="form-field-name"
+								value={this.state.selectedFish}
 								className="selectField"
 								options={this.state.fishSpecies}
-								onChange={this.selectedFishSpecies}
+								onChange={this.selectFishSpecies}
 							/>
 						</InputGroup>
 					</FormGroup>
