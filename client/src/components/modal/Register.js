@@ -101,7 +101,10 @@ class Register extends React.Component {
 					</FormGroup>
 					<FormGroup>
 						<Label for="country"><Translate>Country</Translate></Label>
-						<CountrySelect function={this.changeCountry} country={this.state.country}/>
+						<InputGroup>
+							<InputGroupAddon><i className="fa fa-globe"/></InputGroupAddon>
+							<CountrySelect function={this.changeCountry} country={this.state.country}/>
+						</InputGroup>
 					</FormGroup>
 					<hr/>
 					<Button outline className="modalLink" color="secondary" onClick={() => this.registerUser()} block><Translate>Create account</Translate></Button>
