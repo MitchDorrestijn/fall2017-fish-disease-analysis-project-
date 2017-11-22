@@ -1,36 +1,24 @@
 import React from 'react';
-import {
-	ModalHeader,
-	ModalBody,
-	Button,
-	FormGroup,
-	Label,
-	InputGroup,
-	InputGroupAddon,
-	Input
-} from 'reactstrap';
+import { ModalHeader, ModalBody, Button, FormGroup, Label, InputGroup } from 'reactstrap';
 import Error from './Error';
-import fuzzyFilterFactory from 'react-fuzzy-filter';
-
+import 'react-select/dist/react-select.css';
+import Select from "react-select";
 
 
 class AddFish extends React.Component {
 	constructor(props){
 		super(props);
-		this.InputFilter = fuzzyFilterFactory().InputFilter;
-		this.FilterResults = fuzzyFilterFactory().FilterResults;
+		this.state = {
+			fishSpecies: [
+	  		{ value: 'Goldfish', label: 'Goldfish' },
+	  		{ value: 'Catfish', label: 'Catfish' }
+			]
+		}
+	}
+	selectedFishSpecies = (val) => {
+  	console.log('Selected fish: ', val);
 	}
 	render() {
-
-		const items = [
-      { name: 'first', meta: 'first|123', tag: 'a' },
-      { name: 'second', meta: 'second|443', tag: 'b' },
-      { name: 'third', meta: 'third|623', tag: 'a' },
-    ];
-    const fuseConfig = {
-      keys: ['meta', 'tag']
-    };
-
 		return (
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Add fish</ModalHeader>
@@ -42,22 +30,15 @@ class AddFish extends React.Component {
 					<FormGroup>
 						<Label for="addfish">Name of fish:</Label>
 						<InputGroup>
-
-
-							<this.InputFilter debounceTime={200} />
-			 				<div>Any amount of content between</div>
-			 				<this.FilterResults items={items} fuseConfig={fuseConfig}>
-								{filteredItems => {
-					 				return(
-						 				<div>
-							 				{filteredItems.forEach(item => <div>{item.name}</div>)}
-						 				</div>
-					 				)
-				 				}}
-			 				</this.FilterResults>
-
-
-
+							<Select
+								name="form-field-name"
+								simpleValue={true}
+								value="one"
+								placeholder="Type your fish species here."
+								className="selectField"
+								options={this.state.fishSpecies}
+								onChange={this.selectedFishSpecies}
+							/>
 						</InputGroup>
 					</FormGroup>
 					<hr/>
