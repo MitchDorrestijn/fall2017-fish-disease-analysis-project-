@@ -11,6 +11,8 @@ import {
 } from 'reactstrap';
 import Login from './Login';
 import Error from './Error';
+import CountrySelect from './CountrySelect';
+import Translate from 'translate-components';
 
 class Register extends React.Component {
 	registerUser = () => {
@@ -21,9 +23,8 @@ class Register extends React.Component {
 		const lastName = document.getElementById("lastName").value;
 		const country = document.getElementById("country").value;
 		
-		
-		if(password === repeatpassword){
-			if(email){
+		if(email && password && repeatpassword && firstName && lastName && country){
+			if(password === repeatpassword){
 				this.props.userRegister(
 										email,
 										password,
@@ -32,17 +33,17 @@ class Register extends React.Component {
 										country
 				);
 			}else{
-				this.props.showError(true, "Not all fields are filled in");
+				this.props.showError(true, "Password is not the same");
 			}
 		}else{
-			this.props.showError(true, "Password is not the same");
+			this.props.showError(true, "Not all fields are filled in");
 		}
 	};
 	
 	render() {
 		return (
 			<div>
-				<ModalHeader toggle={() => this.props.toggleModal()}>Create an account</ModalHeader>
+				<ModalHeader toggle={() => this.props.toggleModal()}><Translate>Create an account</Translate></ModalHeader>
 				<ModalBody>
 					{ this.props.isErrorVisible ?
 						<Error errorContent={this.props.errorContent} /> :
@@ -50,21 +51,21 @@ class Register extends React.Component {
 					}
 					
 					<FormGroup>
-						<Label for="email">Email address</Label>
+						<Label for="email"><Translate>Email address</Translate></Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-user"/></InputGroupAddon>
 							<Input type="email" id="email" placeholder="Email address"/>
 						</InputGroup>
 					</FormGroup>
 					<FormGroup>
-						<Label for="password">Password</Label>
+						<Label for="password"><Translate>Password</Translate></Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-lock"/></InputGroupAddon>
 							<Input type="password" id="password" placeholder="Password"/>
 						</InputGroup>
 					</FormGroup>
 					<FormGroup>
-						<Label for="repeatpassword">Repeat password</Label>
+						<Label for="repeatpassword"><Translate>Repeat password</Translate></Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-lock"/></InputGroupAddon>
 							<Input type="password" id="repeatpassword" placeholder="Repeat password"/>
@@ -72,37 +73,28 @@ class Register extends React.Component {
 					</FormGroup>
 					<hr/>
 					<FormGroup>
-						<Label for="firstName">Firstname</Label>
+						<Label for="firstName"><Translate>Firstname</Translate></Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-address-card"/></InputGroupAddon>
 							<Input id="firstName" placeholder="Firstname"/>
 						</InputGroup>
 					</FormGroup>
 					<FormGroup>
-						<Label for="lastName">Lastname</Label>
+						<Label for="lastName"><Translate>Lastname</Translate></Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-address-card"/></InputGroupAddon>
 							<Input id="lastName" placeholder="Lastname"/>
 						</InputGroup>
 					</FormGroup>
 					<FormGroup>
-						<Label for="country">Country</Label>
-						<InputGroup>
-							<InputGroupAddon><i className="fa fa-globe"/></InputGroupAddon>
-							<Input type="select" name="select" id="country">
-								<option value="Netherlands">Netherlands</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</Input>
-						</InputGroup>
+						<Label for="country"><Translate>Country</Translate></Label>
+						<CountrySelect/>
 					</FormGroup>
 					<hr/>
-					<Button outline className="modalLink" color="secondary" onClick={() => this.registerUser()} block>Create account</Button>
+					<Button outline className="modalLink" color="secondary" onClick={() => this.registerUser()} block><Translate>Create account</Translate></Button>
 					
 					<p className="center">
-						Already have an account? <u><a className="modalLink" onClick={() => this.props.openModal(Login)}>Login</a></u>
+						<Translate>Already have an account?</Translate> <u><a className="modalLink" onClick={() => this.props.openModal(Login)}><Translate>Login</Translate></a></u>
 					</p>
 				</ModalBody>
 			</div>
