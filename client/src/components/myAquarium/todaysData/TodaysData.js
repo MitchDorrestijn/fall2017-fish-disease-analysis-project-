@@ -33,6 +33,11 @@ export default class TodaysData extends React.Component {
 							data: result,
 							error: null
 						});
+					} else {
+						this.setState({
+							data: null,
+							error: err
+						});
 					}
 				});
 			});
