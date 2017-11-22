@@ -110,7 +110,7 @@ export default class MyFish extends React.Component {
 					<div className="addBtns">
 						{this.createFilterButtons()}
 						<Link to="/">+ Add aquarium</Link>
-						<NavLink to="" onClick={this.showAddFishModel}>+ add fish</NavLink>
+						<NavLink to="" onClick={this.showAddFishModel}>+ Add fish</NavLink>
 					</div>
 					<div className="card-columns">
 						{this.filterFish()}
