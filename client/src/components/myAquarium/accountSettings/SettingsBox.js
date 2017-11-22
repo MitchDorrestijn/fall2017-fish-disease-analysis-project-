@@ -5,7 +5,7 @@ export default class SettingsBox extends React.Component{
 	render() {
 		return (
 			<div className="settings-box">
-				<Col lg="12">
+				<Col sm="12">
 					<h4>{this.props.title}</h4>
 				</Col>
 				<Row>

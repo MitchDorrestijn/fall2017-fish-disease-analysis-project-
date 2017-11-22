@@ -198,7 +198,7 @@ export default class AccountSettings extends React.Component {
 		return (
 			<div className="account-settings">
 				<h1 className="center">Account settings</h1>
-				<Col lg={{size: 8, offset: 2}}>
+				<Col md={{size:12}} lg={{size: 8, offset: 2}}>
 					<SettingsBox title="User information">
 						<Setting title="Name">
 							<Input
@@ -257,6 +257,7 @@ export default class AccountSettings extends React.Component {
 								type="password"
 								value={this.state.password}
 								onChange={this.changePassword}
+								placeholder='********'
 							/>
 						</Setting>
 						<Setting/>
@@ -265,6 +266,7 @@ export default class AccountSettings extends React.Component {
 								type="password"
 								value={this.state.confirmPassword}
 								onChange={this.changeConfirmPassword}
+								placeholder='********'
 							/>
 						</Setting>
 					</SettingsBox>
