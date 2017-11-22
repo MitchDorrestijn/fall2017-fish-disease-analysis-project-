@@ -9,6 +9,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 15px !important;
 	padding-top: 80px; //Same height as the navbar
+	overflow-x:hidden;
 }
 
 //BUTTON STYLING
@@ -27,7 +28,9 @@ body {
 .btn-outline-primary:focus {
 	box-shadow: none;
 }
-
+.btn-outline-primary:not([disabled]):not(.disabled):active, .btn-outline-primary:not([disabled]):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {
+	background: $supportColor;
+}
 //HEADER STYLING
 h2 {
 	font-size: 40px;
@@ -179,4 +182,9 @@ nav {
 			}
 		}
 	}
+}
+
+//MODAL ICON
+.modal-icon {
+	width: $defaultPadding;
 }

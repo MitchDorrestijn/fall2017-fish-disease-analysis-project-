@@ -18,7 +18,6 @@ router.post('/register/', function (req, res) {
 	}
 
 	const user = req.body.user;
-	console.log("register");
 	
 	// Validate input
 	if(	!validator.isEmail(user.email) ||
@@ -64,6 +63,19 @@ router.post('/register/', function (req, res) {
 	})
 })
 
+router.delete('/user/:id', (req, res) => {
+	if(!req.user.uid != req.params.id) {
+		return res.status(401).send("Unauthorized");
+	}
+	admin.auth().deleteUser(req.user.uid)
+	.then(function() {
+	  	res.send(204);
+	})
+	.catch(function(error) {
+	  	res.status(500).send(error.message);
+	});
+})
+
 const sendWelcomeMail = (user) => {
 	mailer.mail(user.email, "Welcome to Bassleer.nl!", "Welcome to Bassleer! We hope your fish get well fast!<br /><br /><a href='https://bassleer.nl/api/verify/" + user.id + "/" + user.verificationToken + "'>Please verify your emailaddress by click on this link.</a>");
 }
@@ -83,11 +95,9 @@ router.get('/verify/:id/:token', (req, res) => {
 			throw new Error("Token incorrect.");
 			return;
 		}
-		snapshot.forEach((doc) => {
-			return admin.auth().updateUser(id, {
-				emailVerified: true,
-			});
-		})
+		return admin.auth().updateUser(id, {
+			emailVerified: true,
+		});
 	})
 	.then(() => {
 		return db.collection("users").doc(id).update({
@@ -106,7 +116,7 @@ router.post('/forgot-password', (req, res) => {
 	const email = req.body.email;
 	console.log(email);
 	if(!validator.isEmail(email)) {
-		return res.send(400);
+		return res.status(400).send("Invalid email");
 	}
 	var passwordForgotToken;
 	admin.auth().getUserByEmail(email).then((user)=>{
@@ -117,10 +127,10 @@ router.post('/forgot-password', (req, res) => {
 		"Hi there! We heard you forgot your password.<br/><br/><a href='https://bassleer.nl/forgot-password/" + passwordForgotToken + "'>Please click here to reset it.</a>"
 		)
 	}).then(() => {
-		res.sendStatus(200);
+		res.status(200).send("Mail send");
 	}).catch((error)=>{
 		console.log(error);
-		res.send(500);
+		res.status(500).send("Email does not exist");
 	});
 })
 
@@ -134,15 +144,14 @@ router.post('/forgot-password/:token', (req, res) => {
 	var passwordForgotToken;
 	var user;
 
-	db.collection("users").where("passwordForgotToken", "==", req.params.token).get().then((snapshot) => {
+	db.collection("users").where("passwordForgotToken", "==", req.params.token).get()
+	.then((snapshot) => {
 		if(snapshot.size == 0){
 			return Promise.reject(new Error("Token incorrect."));
 		}
-		snapshot.forEach((doc) => {
-			user = doc;
-			return admin.auth().updateUser(doc.id, {
-				password: password
-			});
+		user = snapshot.docs[0];
+		return admin.auth().updateUser(user.id, {
+			password: password
 		});
 	}).then(() => {
 		return db.collection("users").doc(user.id).update({

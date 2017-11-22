@@ -9,9 +9,14 @@ admin.initializeApp({
   databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
 
+// Import routes
 const userRoutes = require('./routes/user.js');
 const registrationRoutes = require('./routes/registration.js');
+const aquariumRoutes = require('./routes/aquarium.js');
+
+// Import middleware
 const authenticate = require('./middleware/authenticate.js');
+const functionsMiddleware = require('./middleware/functions.js');
 
 /* Express */
 const app = express();
@@ -20,12 +25,14 @@ const app = express();
 app.use(express.static('../public'));
 app.use(cors({origin: '*'}));
 
+/* Middlewares */
+app.use('*', authenticate);
+app.use('*', functionsMiddleware)
+
 /* Routes to different API endpoints */
 app.use('/api', userRoutes);
 app.use('/api', registrationRoutes);
-
-/* Middlewares */
-//app.use('*', authenticate)
+app.use('/api', aquariumRoutes);
 
 /* Main route */
 

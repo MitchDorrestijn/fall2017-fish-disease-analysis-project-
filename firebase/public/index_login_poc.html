@@ -38,6 +38,10 @@
                     console.log(result);
                     if(result){
                         $('#message').html("Gelukt! Userid: " + result.uid);
+                        Auth = firebase.auth();
+                        Auth.currentUser.getIdToken().then(function(data) {
+                            console.log(data)
+                        });
                         return;
                     }
                     $('#message').html("Fail...");

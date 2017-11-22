@@ -1,17 +1,16 @@
 import React from 'react';
 import {
 	Navbar,
-	NavbarBrand,
 	Nav,
 	NavItem,
 	NavbarToggler,
 	Collapse,
-	NavLink,
 	Input,
 	Button,
 	Form,
 	FormGroup
 } from 'reactstrap';
+import {Link} from 'react-router-dom';
 import Translate from 'translate-components';
 import PickLanguage from '../base/PickLanguage';
 import Login from '../modal/Login';
@@ -38,21 +37,21 @@ export default class NavigationBar extends React.Component {
 	render() {
 		return (
 			<Navbar light expand="md" className="fixed-top">
-				<NavbarBrand><NavLink href="/"><img src="/images/logo.png" alt="Logo" className="logo"/></NavLink></NavbarBrand>
+				<Link to="/" className="nav-link"><img src="/images/logo.png" alt="Logo" className="logo"/></Link>
 				<NavbarToggler className="test" onClick={this.toggle}/>
 				<Collapse isOpen={this.state.isOpen} navbar>
 					<Nav className="ml-auto" navbar>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Analysis</Translate></NavLink>
+							<Link className="nav-link" to="" onClick={e => e.preventDefault()}><Translate>Analysis</Translate></Link>
 						</NavItem>
 						<NavItem>
-							<NavLink href="" onClick={e => e.preventDefault()}><Translate>Request Consult</Translate></NavLink>
+							<Link className="nav-link" to="" onClick={e => e.preventDefault()}><Translate>Request Consult</Translate></Link>
 						</NavItem>
 						<NavItem>
-							<NavLink href="" onClick={this.showLogin}><Translate>Login</Translate></NavLink>
+							<Link className="nav-link" to="" onClick={this.showLogin}><Translate>Login</Translate></Link>
 						</NavItem>
 						<NavItem>
-							<NavLink href="/myAquarium">My Aquarium (tmp)</NavLink>
+							<Link className="nav-link" to="/myAquarium">My Aquarium (tmp)</Link>
 						</NavItem>
 						<Form>
 							<FormGroup>

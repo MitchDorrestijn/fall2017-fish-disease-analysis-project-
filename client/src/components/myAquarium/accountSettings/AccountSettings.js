@@ -5,11 +5,12 @@ import Setting from './Setting';
 import SettingsBox from './SettingsBox';
 import UserService from '../../../provider/user-data-service';
 import Error from '../../modal/Error'
+import * as firebase from 'firebase';
+import CountrySelect from '../../modal/CountrySelect';
 
 export default class AccountSettings extends React.Component {
 	constructor(props) {
 		super(props);
-		this.userService = new UserService();
 		this.state = {
 			name: "",
 			country: "The Netherlands",
@@ -26,23 +27,37 @@ export default class AccountSettings extends React.Component {
 	}
 
 	componentDidMount(){
-		//TODO: get via current authentication session
-		const user = {
-			id: 'z47rzcf3RyfRjNoJRk7yCkdO1hm1'
-		};
-		this.userService.getUserData(user,(err,res) => {
-			this.updateInfo({
-				name: res.message.firstName,
-				surname: res.message.lastName,
-				email: res.message.email,
-				country: res.message.country
-			})
+		firebase.auth().onAuthStateChanged((user) => {
+			this.verifyLogin(user);
 		});
+		let user = firebase.auth().currentUser;
+		this.verifyLogin(user);
+
 	}
+
+	verifyLogin = (user) => {
+		if (user) {
+			firebase.auth().currentUser.getIdToken().then((token) => {
+				let userService = new UserService(token);
+				userService.getUserData(user,(err,res) => {
+					this.updateInfo({
+						name: res.message.firstName,
+						surname: res.message.lastName,
+						email: res.message.email,
+						country: res.message.country
+					})
+				});
+				this.showError(false,"");
+			});
+		} else {
+			this.showError(true,"You are not logged in");
+		}
+	};
 
 	submit = (evt) => {
 		evt.preventDefault();
-		//TODO: maybe export date conversion function so it can be reused
+		//TODO: maybe export date conversion function so it can be reused -1
+
 		const birthDate = new Date(`${this.state.birthYear}/${this.state.birthMonth}/${this.state.birthDay}`);
 		const profile = {
 			firstName: this.state.name,
@@ -53,19 +68,24 @@ export default class AccountSettings extends React.Component {
 			password: this.state.password,
 			confirmPassword: this.state.confirmPassword
 		};
-		if(this.verifyInput(profile)) {
-			this.userService.updateUserData('z47rzcf3RyfRjNoJRk7yCkdO1hm1',profile,(err,res) => {
-				if(!err){
-					//TODO: alert is not pretty
-					alert('Account has been updated');
-				} else {
-					console.log(err);
-					alert('Something went wrong: ' + err);
-				}
-			});
-		} else {
-			alert('Not all values have been entered correctly');
-		};
+		let user = firebase.auth().currentUser;
+		firebase.auth().currentUser.getIdToken().then((token) => {
+			let userService = new UserService(token);
+			if (this.verifyInput(profile)) {
+				userService.updateUserData(user.uid,
+					profile, (err, res) => {
+						if (!err) {
+							//TODO: alert is not pretty
+							alert('Account has been updated');
+						} else {
+							console.log(err);
+							alert('Something went wrong: ' + err);
+						}
+					});
+			} else {
+				alert('Not all values have been entered correctly');
+			};
+		});
 	};
 
 	// Stole this from modal/login
@@ -166,18 +186,13 @@ export default class AccountSettings extends React.Component {
 							/>
 						</Setting>
 						<Setting title="Country">
-							<Input
-								type="select"
-								className="custom-select"
-								value={this.state.country}
-								onChange={this.changeCountry}
-							>
-								<option>Netherlands</option>
-								<option>London</option>
-								<option>Test</option>
-								<option>England</option>
-								<option>Amsterdam</option>
-							</Input>
+							{/*<Input*/}
+								{/*type="select"*/}
+								{/*className="custom-select"*/}
+								{/*value={this.state.country}*/}
+								{/*onChange={this.changeCountry}*/}
+							{/*>*/}
+								<CountrySelect/>
 						</Setting>
 						<Setting title="Surname">
 							<Input

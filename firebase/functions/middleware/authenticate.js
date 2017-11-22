@@ -5,18 +5,27 @@ const admin = require("firebase-admin");
 
 module.exports = function(req, res, next){
     // When there is no header given, continue
-    if(!req.headers.idToken){
+    if(!req.headers.authorization){
         next();
         return;
     }
 
     // Decode idToken
-    admin.auth().verifyIdToken(req.headers.idToken)
+    const token = req.headers.authorization.split(" ")[1];
+    if(!token){
+        next();
+        return;
+    }
+
+    admin.auth().verifyIdToken(token)
     .then(function(decodedToken) {
         const uid = decodedToken.uid;
         admin.auth().getUser(uid)
         .then(function(userRecord) {
-            req.user = userRecord.toJSON();
+            req.user = userRecord;
+
+            // The following is used to save the reference for easy querying and editing
+            req.user.ref = admin.firestore().collection("users").doc(req.user.uid);
             next();
         })
         .catch(function(error) {
@@ -24,6 +33,7 @@ module.exports = function(req, res, next){
         });
     }).catch(function(error) {
         // Not a valid idToken
+        console.log(error);
         next();
     });
 }

@@ -12,7 +12,11 @@ router.get('/user/:id/', (req, res) => {
 	const userId = req.params.id;
 	const userRef = db.collection('users').doc(userId);
 	userRef.get().then( profileObject => {
-		res.send(profileObject.data()).status(200);
+		if (profileObject.empty){
+			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
+		}
+		console.log(profileObject.data());
+		return res.send(profileObject.data()).status(200);
 	}).catch(err => {
 		res.send(err).status(400);
 	});
