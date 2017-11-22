@@ -1,35 +1,49 @@
 import 'whatwg-fetch';
 export default class DataAccess {
-	constructor (authString) {
+	constructor (token) {
+		this.token = token;
 		this.api = "http://localhost:5000/api";
 	}
 
 	_fetchApi (request, cb) {
+		let status;
 		fetch (request).then ((res) => {
 			return res;
 		}).then ((res) => {
 			if (res.status >= 200 && res.status < 300) {
+				status = res.status;
 				return res.text ();
 			} else {
 				return Promise.reject (res);
 			}
 		}).then ((res) => {
-			cb (null, JSON.parse (res));
+			try {
+				cb (null, {status: status, message: JSON.parse (res)});
+			} catch (e) {
+				cb (null, {status: status, message: res});
+			}
 		}).catch ((res) => {
-			return res.text ()
+			if (res.text) {
+				return res.text ()
 				.then ((res1) => {
 					return res1;
 				}).then ((res1) => {
 					cb ({status: res.status, message: res1}, null);
 				});
+			} else {
+				cb ({status: res.status, message: null}, null);
+			}
 		});
 	}
 
 	getData (url, cb) {
-		//let headers = new Headers ();
+		let headers = new Headers ();
+		if (this.token) {
+			headers.append ("Authorization", "Token "+this.token);
+		}
 		let requestParams = {
 			method: 'GET',
-			// headers: headers,
+			headers: headers,
 			mode: 'cors',
 			cache: 'default'
 		};
@@ -40,6 +54,9 @@ export default class DataAccess {
 	postData (url, body, cb) {
 		let headers = new Headers ();
 		headers.append ("Content-Type", "application/json");
+		if (this.token) {
+			headers.append ("Authorization", "Token "+this.token);
+		}
 		let requestParams = {
 			method: 'POST',
 			headers: headers,
@@ -52,6 +69,9 @@ export default class DataAccess {
 	putData (url, body, cb) {
 		let headers = new Headers ();
 		headers.append ("Content-Type", "application/json");
+		if (this.token) {
+			headers.append ("Authorization", "Token "+this.token);
+		}
 		let requestParams = {
 			method: 'PUT',
 			headers: headers,
@@ -63,6 +83,9 @@ export default class DataAccess {
 
 	deleteData (url, cb) {
 		let headers = new Headers ();
+		if (this.token) {
+			headers.append ("Authorization", "Token "+this.token);
+		}
 		let requestParams = {
 			method: 'DELETE',
 			headers: headers,
