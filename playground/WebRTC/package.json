@@ -4,7 +4,7 @@
   "description": "",
   "main": "videochat.js",
   "scripts": {
-    "start": "budo videochat.js:bundle.js"
+    "start": "budo videochat.js:bundle.js --ssl --cors"
   },
   "author": "",
   "license": "ISC",
