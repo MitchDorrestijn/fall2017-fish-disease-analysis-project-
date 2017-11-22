@@ -15,7 +15,7 @@ describe('Registration', function() {
             .send()
             .end((err, res) => {
                 assert.equal(res.status == 400);
-            })
+            });
         });
 
         it('should return 400 when the email is badly formatted', () => {
@@ -32,7 +32,7 @@ describe('Registration', function() {
             })
             .end((err, res) => {
                 assert.equal(res.status == 400);
-            })
+            });
         });
 
         it('should return 400 when a name has a number in it', () => {
@@ -50,7 +50,7 @@ describe('Registration', function() {
             .end((err, res) => {
                 console.log(res);
                 assert.equal(res.status == 400);
-            })
+            });
         });
 
         it('should return 201 when user is created', () => {
@@ -67,7 +67,7 @@ describe('Registration', function() {
             })
             .end((err, res) => {
                 assert.equal(res.status == 201);
-            })
+            });
         });
 
         it('should return 204 when user is deleted', () => {
@@ -86,7 +86,7 @@ describe('Registration', function() {
                 })
                 .end((err, res) => {
                     assert.equal(res.status == 201);
-                })
+                });
             })
             .catch(function(error) {
                 console.log("Error fetching user data:", error);

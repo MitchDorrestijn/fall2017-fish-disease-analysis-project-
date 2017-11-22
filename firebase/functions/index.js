@@ -27,7 +27,7 @@ app.use(cors({origin: '*'}));
 
 /* Middlewares */
 app.use('*', authenticate);
-app.use('*', functionsMiddleware)
+app.use('*', functionsMiddleware);
 
 /* Routes to different API endpoints */
 app.use('/api', userRoutes);
@@ -39,11 +39,11 @@ app.use('/api', aquariumRoutes);
 // /* Test routes for development */
 app.get("/api/home", (request, response) => {
 	response.send("Hello from Express on Firebase!");
-})
+});
 
 exports.app = functions.https.onRequest(app);
 
 exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event => {
 	const user = event.data;
-	return admin.firestore().collection("users").doc(user.uid).delete()
+	return admin.firestore().collection("users").doc(user.uid).delete();
 });

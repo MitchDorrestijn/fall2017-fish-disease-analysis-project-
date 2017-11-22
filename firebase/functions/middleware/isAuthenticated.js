@@ -1,4 +1,4 @@
-module.exports = isAuthenticated(req, res, next) {
+module.exports = isAuthenticated = (req, res, next) => {
     
     // Checks whether the authentication middleware is succesfully detected and parsed an idToken.
     if (req.user)
@@ -6,4 +6,4 @@ module.exports = isAuthenticated(req, res, next) {
 
     // When not, send the appropriate status code.
     res.send(403);
-}
+};
