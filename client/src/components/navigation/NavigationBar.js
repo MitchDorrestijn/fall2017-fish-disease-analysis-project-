@@ -70,7 +70,7 @@ export default class NavigationBar extends React.Component {
 								<NavItem><Link className="nav-link" to="" onClick={this.showLogin}><Translate>Login</Translate></Link></NavItem>
 							)
 						}
-						<Form>
+						<Form onSubmit={(e) => this.search(e)}>
 							<FormGroup>
 								<NavItem className="search-wrap">
 									<span className="input-group searchBox-wrapper">
