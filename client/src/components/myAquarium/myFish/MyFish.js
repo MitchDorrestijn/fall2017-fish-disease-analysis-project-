@@ -2,69 +2,118 @@ import React from 'react';
 import Card from '../../base/Card';
 import {CardText, CardTitle, CardSubtitle} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
+import {Link, NavLink} from 'react-router-dom';
+import AddFish from '../../modal/AddFish';
 
 export default class MyFish extends React.Component {
+	constructor(props){
+		super(props);
+		this.state = {
+				fishData: [
+					{
+						"inAquarium":"aquarium1",
+						"imageURL":"/recources/emerald-catfish.jpg",
+						"title":"Flyingfish",
+						"subtitle":"Flies away",
+						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
+						"firstAdded":"09 - 07 - 2016",
+						"linkTo":"/"
+					},
+					{
+						"inAquarium":"aquarium2",
+						"imageURL":"/recources/catfish.jpg",
+						"title":"Platfish",
+						"subtitle":"Swims quickly",
+						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
+						"firstAdded":"09 - 07 - 2016",
+						"linkTo":"/"
+					},
+					{
+						"inAquarium":"aquarium3",
+						"imageURL":"/recources/loach-catfish.jpg",
+						"title":"Potfish",
+						"subtitle":"Swims slow",
+						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
+						"firstAdded":"09 - 07 - 2016",
+						"linkTo":"/"
+					},
+					{
+						"inAquarium":"aquarium1",
+						"imageURL":"/recources/loach-catfish.jpg",
+						"title":"Potfish",
+						"subtitle":"Swims slow",
+						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
+						"firstAdded":"09 - 07 - 2016",
+						"linkTo":"/"
+					},
+					{
+						"inAquarium":"aquarium2",
+						"imageURL":"/recources/loach-catfish.jpg",
+						"title":"Potfish",
+						"subtitle":"Swims slow",
+						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
+						"firstAdded":"09 - 07 - 2016",
+						"linkTo":"/"
+					}
+			],
+			createdAquariums: ["aquarium1", "aquarium2", "aquarium3"],
+			currentAquarium: "aquarium1"
+		}
+	}
+	createFilterButtons = () => {
+		let buttons = this.state.createdAquariums.map((button, index) => {
+			return (
+				<ActionButton key={index} color="primary btn-transparent" buttonText={button} onClickAction={(arr) => this.showSelectedCategory(button)} />
+			);
+		});
+		return (
+			<div>
+				{buttons}
+			</div>
+		)
+	}
+	showSelectedCategory = (button) => {
+    this.setState({ currentAquarium: button });
+  }
+	filterFish = () => {
+		let currentVisibleAquarium = this.state.currentAquarium;
+		let filteredFish = this.state.fishData.filter(function(fish){
+			return fish.inAquarium === currentVisibleAquarium;
+		}).map(function(fish, index){
+			return (
+				<Card key={index} inAquarium={fish.inAquarium} image={fish.imageURL}>
+					<CardTitle>{fish.title}</CardTitle>
+					<CardSubtitle>{fish.subtitle}</CardSubtitle>
+					<CardText>
+						{fish.description}
+						<span>First time this specie was added:<br/>{fish.firstAdded}</span>
+					</CardText>
+					<ActionButton link={true} linkTo={fish.linkTo} color="primary btn-transparent" buttonText="Analyseer vis"/>
+				</Card>
+			);
+		});
+		return (
+			<div>
+				{filteredFish}
+			</div>
+		);
+	}
+	showAddFishModel = (e) => {
+		e.preventDefault ();
+		this.props.openModal(AddFish);
+	};
 	render() {
 		return (
 			<div className="container">
-
 				<div className="row inner-content">
 					<h2>My fish</h2>
+					<div className="addBtns">
+						{this.createFilterButtons()}
+						<Link to="/">+ Add aquarium</Link>
+						<NavLink to="" onClick={this.showAddFishModel}>+ add fish</NavLink>
+					</div>
 					<div className="card-columns">
-						<Card image="/recources/emerald-catfish.jpg">
-							<CardTitle>Flyingfish</CardTitle>
-		        	<CardSubtitle>Flies away</CardSubtitle>
-		        	<CardText>
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								<span>First time this specie was added:<br/>09 - 07 - 2016</span>
-							</CardText>
-							<ActionButton link={true} linkTo="/" color="primary btn-transparent" buttonText="Analyseer vis"/>
-						</Card>
-
-						<Card image="/recources/catfish.jpg">
-							<CardTitle>Platfish</CardTitle>
-		        	<CardSubtitle>Swims quickly</CardSubtitle>
-		        	<CardText>
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								<span>First time this specie was added:<br/>09 - 07 - 2016</span>
-							</CardText>
-							<ActionButton link={true} linkTo="/" color="primary btn-transparent" buttonText="Analyseer vis"/>
-						</Card>
-
-						<Card image="/recources/loach-catfish.jpg">
-							<CardTitle>Potfish</CardTitle>
-		        	<CardSubtitle>Swims slow</CardSubtitle>
-		        	<CardText>
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								<span>First time this specie was added:<br/>09 - 07 - 2016</span>
-							</CardText>
-							<ActionButton link={true} linkTo="/" color="primary btn-transparent" buttonText="Analyseer vis"/>
-						</Card>
-
-						<Card image="/recources/loach-catfish.jpg">
-							<CardTitle>Potfish</CardTitle>
-							<CardSubtitle>Swims slow</CardSubtitle>
-							<CardText>
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								<span>First time this specie was added:<br/>09 - 07 - 2016</span>
-							</CardText>
-							<ActionButton link={true} linkTo="/" color="primary btn-transparent" buttonText="Analyseer vis"/>
-						</Card>
-
-						<Card image="/recources/loach-catfish.jpg">
-							<CardTitle>Potfish</CardTitle>
-							<CardSubtitle>Swims slow</CardSubtitle>
-							<CardText>
-								Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.
-								<span>First time this specie was added:<br/>09 - 07 - 2016</span>
-							</CardText>
-							<ActionButton link={true} linkTo="/" color="primary btn-transparent" buttonText="Analyseer vis"/>
-						</Card>
+						{this.filterFish()}
 					</div>
 				</div>
 			</div>
