@@ -15,6 +15,13 @@ import CountrySelect from './CountrySelect';
 import Translate from 'translate-components';
 
 class Register extends React.Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			country: ""
+		};
+	}
+
 	registerUser = () => {
 		const email = document.getElementById("email").value;
 		const password = document.getElementById("password").value;
@@ -39,7 +46,13 @@ class Register extends React.Component {
 			this.props.showError(true, "Not all fields are filled in");
 		}
 	};
-	
+
+	changeCountry = (evt) => {
+		this.setState({
+			country: evt.target.value
+		});
+	};
+
 	render() {
 		return (
 			<div>
@@ -88,7 +101,7 @@ class Register extends React.Component {
 					</FormGroup>
 					<FormGroup>
 						<Label for="country"><Translate>Country</Translate></Label>
-						<CountrySelect/>
+						<CountrySelect function={this.changeCountry} country={this.state.country}/>
 					</FormGroup>
 					<hr/>
 					<Button outline className="modalLink" color="secondary" onClick={() => this.registerUser()} block><Translate>Create account</Translate></Button>

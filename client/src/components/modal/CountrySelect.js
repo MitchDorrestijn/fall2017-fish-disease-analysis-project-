@@ -10,7 +10,7 @@ class CountrySelect extends React.Component {
 		return (
 			<InputGroup>
 				<InputGroupAddon><i className="fa fa-globe"/></InputGroupAddon>
-				<Input type="select" name="select" id="country">
+				<Input value={this.props.country} onChange={this.props.function} type="select" name="select" id="country">
 					<option value="">Country...</option>
 					<option value="Afganistan">Afghanistan</option>
 					<option value="Albania">Albania</option>

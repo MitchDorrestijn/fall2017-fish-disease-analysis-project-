@@ -8,12 +8,13 @@ import Error from '../../modal/Error'
 import * as firebase from 'firebase';
 import CountrySelect from '../../modal/CountrySelect';
 
+//TODO: refactor country select to controlled component
 export default class AccountSettings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			name: "",
-			country: "The Netherlands",
+			country: "",
 			surname: "",
 			birthDay: "2",
 			birthMonth: "2",
@@ -56,12 +57,12 @@ export default class AccountSettings extends React.Component {
 
 	submit = (evt) => {
 		evt.preventDefault();
-		//TODO: maybe export date conversion function so it can be reused -1
-
-		const birthDate = new Date(`${this.state.birthYear}/${this.state.birthMonth}/${this.state.birthDay}`);
+		const birthMonth = parseInt(this.state.birthMonth) -1;
+		const birthDate = new Date(`${this.state.birthYear}-${this.state.birthMonth}-${this.state.birthDay}`);
+		const country = document.getElementById("country").value;
 		const profile = {
 			firstName: this.state.name,
-			country: this.state.country,
+			country: country,
 			lastName: this.state.surname,
 			email: this.state.email,
 			birthDate: birthDate,
@@ -104,6 +105,8 @@ export default class AccountSettings extends React.Component {
 
 	updateInfo = (data) => {
 		this.setState(data);
+		let countryValue = '';
+		const country = document.getElementById("country");
 	};
 
 	showError = (show, content) => {
@@ -134,7 +137,7 @@ export default class AccountSettings extends React.Component {
 	changeBirthDay = (evt) => {
 		if (evt.target.value > 0 && evt.target.value < 31) {
 			this.setState({
-				birthDay: evt.target.value,
+				birthDay: evt.target.value
 			});
 		}
 	};
@@ -142,7 +145,7 @@ export default class AccountSettings extends React.Component {
 	changeBirthMonth = (evt) => {
 		if (evt.target.value > 0 && evt.target.value < 13) {
 			this.setState({
-				birthMonth: evt.target.value,
+				birthMonth: evt.target.value
 			});
 		}
 	};
@@ -192,7 +195,7 @@ export default class AccountSettings extends React.Component {
 								{/*value={this.state.country}*/}
 								{/*onChange={this.changeCountry}*/}
 							{/*>*/}
-								<CountrySelect/>
+								<CountrySelect country={this.state.country} function={this.changeCountry}/>
 						</Setting>
 						<Setting title="Surname">
 							<Input
