@@ -9,14 +9,16 @@ router.get('/aquaria/', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-	db.collection("aquaria").where("id", "==", req.user.uid).get()
+	db.collection("aquaria").where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		var aquaria = [];
 		snapshot.forEach((doc) => {
 			aquaria.push(doc.data());
 		});
 		res.send(aquaria);
-	});
+	}).catch((err) => {
+		res.status(500).send(err.message)
+	})
 })
 
 // returns an aquarium if owned by user
@@ -24,16 +26,14 @@ router.get('/aquaria/:id', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-	db.collection("aquaria").where("id", "==", req.params.id).where("userId", "==", req.user.uid).get()
+	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
-		if(snapshot.size == 0){
+		if(snapshot.empty){
 			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
 		}
-		snapshot.forEach((doc) => {
-			return res.status(200).send({
-				aquarium: doc.data()
-			});
-		})
+		return res.status(200).send({
+			aquarium: snapshot.docs[0].data()
+		});
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
@@ -45,7 +45,6 @@ router.post('/aquaria/', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-
 	db.collection("aquaria").add({
 		name: "Name of aquarium",
 		userId: req.user.uid
@@ -77,14 +76,12 @@ router.post('/aquaria/:id', (req, res) => {
 
 	req.removeIllegalKeys(allowedDataKeys, data);
 
-	db.collection("aquaria").where("id", "==", req.params.id).where("userId", "==", req.user.uid).get()
+	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
-		if(snapshot.size == 0){
+		if(snapshot.empty){
 			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
 		}
-		snapshot.forEach((doc) => {
-			return doc.ref.update(data);
-		})
+		return snapshot.docs[0].ref.update(data);
 	})
 	.then(() => {
 		res.sendStatus(200);
@@ -99,23 +96,23 @@ router.get('/aquaria/:id/fish', (req, res) => {
 	if(!req.user) {
 		return res.status(401).send("Unauthorized");
 	}
-	db.collection("aquaria").where("id", "==", req.params.id).where("userId", "==", req.user.uid).get()
+
+	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
-		if(snapshot.size == 0){
-			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
+		if(snapshot.empty){
+			reject(new Error("Aquarium non existent or not owned by user."));
 		}
-		snapshot.forEach((doc) => {
-			return db.collection("aquaria").where("aquariumId", "==", doc.id).where("userId", "==", req.user.uid).get()
-		})
+		const doc = snapshot.docs[0]
+		return db.collection("fish").where("aquarium", "==", doc.ref).where("user", "==", req.user.ref).get()
 	})
 	.then((snapshot) => {
-		if(snapshot.size == 0){
-			return Promise.reject(new Error("No fish found in aquarium."));
-		}
-
 		var fish = []
 		snapshot.forEach((doc) => {
-			fish.push(doc.data())
+			// Preventing firebase from sending the document reference over JSON. Replacing the references with ID's.
+			var data = doc.data();
+			data.user = data.user.id
+			data.aquarium = data.aquarium.id
+			fish.push(data);
 		})
 		res.send({fish : fish});
 	})
@@ -123,5 +120,11 @@ router.get('/aquaria/:id/fish', (req, res) => {
 		res.status(500).send(error.message);
 	})
 })
+
+router.post('/aquaria/:id/fish/:fid', (req, res) => {
+	if(!req.user) {
+		return res.status(401).send("Unauthorized");
+	}
+});
 
 module.exports = router

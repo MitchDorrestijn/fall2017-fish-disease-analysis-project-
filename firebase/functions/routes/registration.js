@@ -67,7 +67,6 @@ router.delete('/user/:id', (req, res) => {
 	if(!req.user.uid != req.params.id) {
 		return res.status(401).send("Unauthorized");
 	}
-
 	admin.auth().deleteUser(req.user.uid)
 	.then(function() {
 	  	res.send(204);
@@ -96,11 +95,9 @@ router.get('/verify/:id/:token', (req, res) => {
 			throw new Error("Token incorrect.");
 			return;
 		}
-		snapshot.forEach((doc) => {
-			return admin.auth().updateUser(id, {
-				emailVerified: true,
-			});
-		})
+		return admin.auth().updateUser(id, {
+			emailVerified: true,
+		});
 	})
 	.then(() => {
 		return db.collection("users").doc(id).update({
@@ -147,15 +144,14 @@ router.post('/forgot-password/:token', (req, res) => {
 	var passwordForgotToken;
 	var user;
 
-	db.collection("users").where("passwordForgotToken", "==", req.params.token).get().then((snapshot) => {
+	db.collection("users").where("passwordForgotToken", "==", req.params.token).get()
+	.then((snapshot) => {
 		if(snapshot.size == 0){
 			return Promise.reject(new Error("Token incorrect."));
 		}
-		snapshot.forEach((doc) => {
-			user = doc;
-			return admin.auth().updateUser(doc.id, {
-				password: password
-			});
+		user = snapshot.docs[0];
+		return admin.auth().updateUser(user.id, {
+			password: password
 		});
 	}).then(() => {
 		return db.collection("users").doc(user.id).update({
