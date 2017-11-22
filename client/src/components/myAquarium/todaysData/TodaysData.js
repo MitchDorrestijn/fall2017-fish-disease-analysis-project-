@@ -11,7 +11,7 @@ export default class TodaysData extends React.Component {
 		this.state = {
 			//date needs to be orderd on order of table
 			data: null,
-			error: null
+			error: null,
 			aquariumData: [
 				[
 					["22-10-19", 1, 0.1, 7, 4],
