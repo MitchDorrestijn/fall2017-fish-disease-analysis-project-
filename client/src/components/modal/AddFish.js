@@ -9,16 +9,31 @@ class AddFish extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			fishSpecies: [
+			fishSpecies: [ //Fishes from the database
 	  		{ value: 'Goldfish', label: 'Goldfish' },
 	  		{ value: 'Catfish', label: 'Catfish' }
 			],
-			selectedFish: ""
+			selectedFish: "", //To display the selected fish in the input field
+			availibleAquariums: [ //Aquaria from the database for this user
+	  		{ value: 'Aquarium1', label: 'Aquarium1' },
+	  		{ value: 'Aquarium2', label: 'Aquarium2' }
+			],
+			selectedAquarium: "", //To display the selected aquaria in the input field
+			dataToSendToDB: []
 		}
 	}
 	selectFishSpecies = (val) => {
-  	console.log('Selected: ', val);
-		this.setState({selectedFish: val})
+		const arrayToSendToDB = this.state.dataToSendToDB;
+		arrayToSendToDB.push(val);
+		this.setState({selectedFish: val, dataToSendToDB: arrayToSendToDB});
+	}
+	getSelectedAquarium = (val) => {
+		const arrayToSendToDB = this.state.dataToSendToDB;
+		arrayToSendToDB.push(val);
+		this.setState({selectedAquarium: val, dataToSendToDB: arrayToSendToDB})
+	}
+	addFish = () => {
+		console.log(this.state.dataToSendToDB);
 	}
 	render() {
 		return (
@@ -34,16 +49,27 @@ class AddFish extends React.Component {
 						<InputGroup>
 							<Select
 								simpleValue={true}
-								name="form-field-name"
+								name="addfish"
 								value={this.state.selectedFish}
 								className="selectField"
 								options={this.state.fishSpecies}
 								onChange={this.selectFishSpecies}
 							/>
 						</InputGroup>
+						<Label for="addfishtoaquarium">Add fish to aquarium:</Label>
+						<InputGroup>
+							<Select
+								simpleValue={true}
+								name="addfishtoaquarium"
+								value={this.state.selectedAquarium}
+								className="selectField"
+								options={this.state.availibleAquariums}
+								onChange={this.getSelectedAquarium}
+							/>
+						</InputGroup>
 					</FormGroup>
 					<hr/>
-					<Button outline className="modalLink" color="secondary" block>Add fish</Button>
+					<Button onClick={this.addFish} outline className="modalLink" color="secondary" block>Add fish</Button>
 				</ModalBody>
 			</div>
 		);
