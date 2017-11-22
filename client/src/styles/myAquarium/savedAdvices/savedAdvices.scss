@@ -8,7 +8,7 @@
 	}
 	to {
 		visibility: visible;
-		background-color: #fff;
+		background-color: $supportColor;
 	}
 }
 
@@ -18,23 +18,24 @@
 		margin-top: 20px;
 		margin-bottom: 20px;
 		.treatment-container {
+			color: $alternativeTextColor;
 			text-align: left;
-			padding: 20px;
+			padding: $defaultPadding;
 			h5 {
-				margin-top: 20px;
+				margin-top: $defaultPadding;
 			}
 		}
 		.white-bg {
-			background-color: white;
+			background-color: $supportColor;
 			animation-name: appear;
 			animation-duration: 0.25s;
 		}
 		.dropdown-link-down {
-			color: #fff;
+			color: $supportColor;
 			text-decoration: none;
 		}
 		.dropdown-link-up {
-			color: #000;
+			color: $alternativeTextColor;
 			text-decoration: none;
 		}
 		.header {
