@@ -95,12 +95,12 @@ export default class TodaysData extends React.Component {
 		this.verifyLogin(user);
 	}
 
-	updateCurrentAquarium(aquariumData){
+	updateCurrentAquarium = (aquariumData) => {
 		this.setState({currentAquarium: aquariumData});
 	}
 
 
-	drawAquariumTable(aquariumData){
+	drawAquariumTable = (aquariumData) => {
 		return(
 			<div className="table_card">
 				<thead>
@@ -121,11 +121,11 @@ export default class TodaysData extends React.Component {
 				</thead>
 				<tbody>
 					{
-						aquariumData.map(function(value, index){
+						aquariumData.map((value, index) => {
 							return(
 								<tr key={value}>
 									{
-										value.map(function(value, index){
+										value.map((value, index) => {
 											return(<td key={value}>{value}</td>)
 										})
 									}
@@ -142,7 +142,7 @@ export default class TodaysData extends React.Component {
 		return(
 			<div className="text-center">
 				{
-					aquariumNames.map(function(aquariumName){
+					aquariumNames.map((aquariumName) => {
 						return <ActionButton key={aquariumName} buttonText={aquariumName} color="primary btn-transperant"/>
 					})
 				}
