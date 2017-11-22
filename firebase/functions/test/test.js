@@ -1,4 +1,4 @@
-var assert = require('assert');
+let assert = require('assert');
 const request = require('superagent');
 
 const admin = require('firebase-admin');
