@@ -10,6 +10,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "algoliasearch": "^3.24.6",
     "cors": "^2.8.4",
     "express": "latest",
     "firebase-admin": "^5.5.0",

@@ -1,18 +1,27 @@
+/* Dependencies */
 const functions = require('firebase-functions');
 const express = require('express');
 const admin = require('firebase-admin');
 const serviceAccount = require("./private-key.json");
 const cors = require('cors');
+const algoliasearch = require('algoliasearch');
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://fishproject-47cfd.firebaseio.com"
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
+
+
+/* Algolia, used for search */
+const ALGOLIA_ID = "WPBUCLWL7Y";
+const ALGOLIA_ADMIN_KEY = "e587aaec3eec56edbf94efc42315ca9d";
+const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 
 // Import routes
 const userRoutes = require('./routes/user.js');
 const registrationRoutes = require('./routes/registration.js');
 const aquariumRoutes = require('./routes/aquarium.js');
+const diseaseRoutes = require('./routes/disease.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
@@ -33,6 +42,7 @@ app.use('*', functionsMiddleware);
 app.use('/api', userRoutes);
 app.use('/api', registrationRoutes);
 app.use('/api', aquariumRoutes);
+app.use('/api', diseaseRoutes);
 
 /* Main route */
 
@@ -46,4 +56,29 @@ exports.app = functions.https.onRequest(app);
 exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event => {
 	const user = event.data;
 	return admin.firestore().collection("users").doc(user.uid).delete();
+});
+
+// Update the search index every time a blog post is written.
+exports.onNoteCreated = functions.firestore.document("diseases/{id}").onCreate(event => {
+	// Get the note document
+	const disease = event.data.data();
+  
+	// Add an "objectID" field which Algolia requires
+	disease.objectID = event.params.id;
+  
+	// Write to the algolia index
+	const index = client.initIndex("diseases");
+	return index.saveObject(disease);
+});
+
+exports.onNoteCreated = functions.firestore.document("diseases/{id}").onUpdate(event => {
+	// Get the note document
+	const disease = event.data.data();
+  
+	// Add an "objectID" field which Algolia requires
+	disease.objectID = event.params.id;
+  
+	// Write to the algolia index
+	const index = client.initIndex("diseases");
+	return index.updateObject(disease);
 });

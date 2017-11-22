@@ -133,7 +133,7 @@ router.post('/aquaria/:id/fish', (req, res) => {
 	}
 
 	if (!req.body.data){
-		return res.status(400).send("Payload expected. Serve a object with root key *data*");
+		return res.status(400).send("Payload expected. Serve an object with root key *data*");
 	}
 
 	const allowedDataKeys = ["species"];

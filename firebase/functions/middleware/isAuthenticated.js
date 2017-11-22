@@ -5,5 +5,5 @@ module.exports = isAuthenticated = (req, res, next) => {
         return next();
 
     // When not, send the appropriate status code.
-    res.send(403);
+    res.status(403).send("Unauthorized");
 };
