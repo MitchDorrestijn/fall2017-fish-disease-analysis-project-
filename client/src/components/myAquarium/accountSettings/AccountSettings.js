@@ -1,58 +1,96 @@
 import React from 'react';
-import {Col, Input, InputGroup} from 'reactstrap';
-import ActionButton from '../../base/ActionButton';
+import {Col, Input, InputGroup, Button} from 'reactstrap';
+// import ActionButton from '../../base/ActionButton';
 import Setting from './Setting';
 import SettingsBox from './SettingsBox';
 import UserService from '../../../provider/user-data-service';
+import Error from '../../modal/Error'
 
 export default class AccountSettings extends React.Component {
 	constructor(props) {
 		super(props);
+		this.userService = new UserService();
 		this.state = {
 			name: "",
 			country: "The Netherlands",
 			surname: "",
-			birthDay: "",
-			birthMonth: "",
-			birthYear: "",
+			birthDay: "2",
+			birthMonth: "2",
+			birthYear: "2017",
 			email: "",
 			password: "",
-			confirmPassword: ""
+			confirmPassword: "",
+			isErrorVisible: false,
+			errorContent: ""
 		};
 	}
 
 	componentDidMount(){
-		let userService = new UserService();
+		//TODO: get via current authentication session
 		const user = {
 			id: 'z47rzcf3RyfRjNoJRk7yCkdO1hm1'
 		};
-		userService.getUserData(user,(err,res) => {
+		this.userService.getUserData(user,(err,res) => {
 			this.updateInfo({
-				name: res.firstName,
-				surname: res.lastName,
-				email: res.email,
-				country: res.country
+				name: res.message.firstName,
+				surname: res.message.lastName,
+				email: res.message.email,
+				country: res.message.country
 			})
 		});
 	}
 
 	submit = (evt) => {
-		// evt.preventDefault();
-		//TODO: maybe export date conversion to new file
-		const birthDate = new Date(this.state.birthYear,this.state.birthMonth,this.state.birthDay);
-		console.log(birthDate);
+		evt.preventDefault();
+		//TODO: maybe export date conversion function so it can be reused
+		const birthDate = new Date(`${this.state.birthYear}/${this.state.birthMonth}/${this.state.birthDay}`);
 		const profile = {
-			name: this.state.name,
+			firstName: this.state.name,
 			country: this.state.country,
-			surname: this.state.surname,
+			lastName: this.state.surname,
 			email: this.state.email,
+			birthDate: birthDate,
 			password: this.state.password,
 			confirmPassword: this.state.confirmPassword
+		};
+		if(this.verifyInput(profile)) {
+			this.userService.updateUserData('z47rzcf3RyfRjNoJRk7yCkdO1hm1',profile,(err,res) => {
+				if(!err){
+					//TODO: alert is not pretty
+					alert('Account has been updated');
+				} else {
+					console.log(err);
+					alert('Something went wrong: ' + err);
+				}
+			});
+		} else {
+			alert('Not all values have been entered correctly');
+		};
+	};
+
+	// Stole this from modal/login
+	verifyInput = (profile) => {
+		if(profile.password === profile.confirmPassword){
+			if(profile.email){
+				this.showError(false, "");
+				return true;
+			} else {
+				this.showError(true, "Not all fields are filled in");
+			}
+		} else {
+			this.showError(true, "Password is not the same");
 		}
 	};
 
 	updateInfo = (data) => {
 		this.setState(data);
+	};
+
+	showError = (show, content) => {
+		this.setState ({
+			isErrorVisible: show,
+			errorContent: content
+		});
 	};
 
 	changeName = (evt) => {
@@ -63,7 +101,7 @@ export default class AccountSettings extends React.Component {
 
 	changeCountry = (evt) => {
 		this.setState({
-			salutation: evt.target.value
+			country: evt.target.value
 		});
 	};
 
@@ -193,8 +231,16 @@ export default class AccountSettings extends React.Component {
 							/>
 						</Setting>
 					</SettingsBox>
+					<div className="center">
+						{ this.state.isErrorVisible ?
+							<Error errorContent={this.state.errorContent} /> :
+							null
+						}
+					</div>
 					<div className="text-right">
-						<ActionButton buttonText="Save changes" onClickAction={this.submit} color="primary btn-transperant"/>
+						<Button onClick={this.submit}>submit</Button>
+						{/*TODO: didn't get this working with the Actionbutton, change when example is provided*/}
+						{/*<ActionButton buttonText="Save changes" onClickAction={this.submit} color="primary btn-transperant"/>*/}
 					</div>
 				</Col>
 			</div>

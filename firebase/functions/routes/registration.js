@@ -21,7 +21,7 @@ router.post('/register/', function (req, res) {
 	console.log("register");
 	
 	// Validate input
-	if(	!validator.isEmail(user.email) || 
+	if(	!validator.isEmail(user.email) ||
 		!validator.isAlpha(user.firstName) ||
 		!validator.isAlpha(user.lastName) ||
 		!validator.isAlpha(user.country) ||

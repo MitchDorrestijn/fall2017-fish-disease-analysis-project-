@@ -9,7 +9,7 @@ export default class UserService{
 		this.da.getData(`/user/${user.id}` ,cb);
 	}
 
-	setUserData(user,cb) {
-		this.da.postData(`/user/${user.id}` ,cb);
+	updateUserData(userId,body,cb) {
+		this.da.postData(`/user/${userId}`,body,cb);
 	}
 }

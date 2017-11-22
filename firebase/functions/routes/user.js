@@ -1,37 +1,54 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
+const validator = require('validator');
 
 const db = admin.firestore();
-// define the home page route
-router.get('/user/:id/', function (req, res) {
+
+/**
+ * Get profile of user from id
+ */
+router.get('/user/:id/', (req, res) => {
 	const userId = req.params.id;
 	const userRef = db.collection('users').doc(userId);
 	userRef.get().then( profileObject => {
 		res.send(profileObject.data()).status(200);
 	}).catch(err => {
-		res.send('Error').status(400);
+		res.send(err).status(400);
 	});
 });
-
-router.post('user', function (req,res) {
-	if(!req.body.user){
+/**
+ * Update profile of user from id
+ */
+router.post('/user/:id/', (req,res) => {
+	const userId = req.params.id;
+	if(!req.body){
 		return res.sendStatus(400);
 	}
-	const user = req.body.user;
+	const user = req.body;
 
-	if(	!validator.isEmail(user.email) ||
-		!validator.isAlpha(user.firstName) ||
+	// TODO: validate date
+	if( !validator.isAlpha(user.firstName) ||
 		!validator.isAlpha(user.lastName) ||
-		!validator.isAlpha(user.country) ||
-		validator.isEmpty(user.password)
+		!validator.isAlpha(user.country)
 	){
 		return res.status(400).send("Input validation failed.");
 	}
-});
-// define the about route
-router.get('/user/other/', function (req, res) {
-	res.send('Other user page');
+	const userRef = db.collection('users').doc(userId);
+	console.log(userRef);
+	userRef.update({
+		firstName: user.firstName,
+		lastName: user.lastName,
+		country: user.country
+	}).then((user) => {
+		res.send('User updated').status(200);
+	}).catch((error) => {
+		console.log(error);
+		res.status(400).send('Error');
+	});
+	// admin.auth().updateUser(userId, {
+	//
+	//
 });
 
 module.exports = router;

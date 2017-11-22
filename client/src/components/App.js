@@ -90,7 +90,7 @@ export default class App extends React.Component {
 			showError: show,
 			errorContent: content
 		});
-	}
+	};
 
 	closeModal = () => {
 		this.setState ({
