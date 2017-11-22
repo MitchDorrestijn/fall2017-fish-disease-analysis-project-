@@ -19,7 +19,8 @@ export default class App extends React.Component {
 			showError: false,
 			errorContent: "",
 			modalContent: null,
-			redirect: null
+			redirect: null,
+			loggedIn: false
 		};
 		this.config = {
 			apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
@@ -41,6 +42,7 @@ export default class App extends React.Component {
 					return <Redirect to="/myAquarium"/>
 				}}/>
 			});
+			this.updateLoggedIn();
 		}).catch((error) => {
 			this.showError(true, error.message);
 		});
@@ -141,14 +143,48 @@ export default class App extends React.Component {
 
 	componentDidMount() {
 		this.getLanguage();
+		this.updateLoggedIn();
 	}
+	
+	updateLoggedIn = () => {
+		let user = this.app.auth().currentUser;
 
+		if (user) {
+			this.setState({loggedIn: true});
+		}else{
+			this.setState({loggedIn: false});
+		}
+		
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user) {
+				this.setState({loggedIn: true});
+			}else{
+				this.setState({loggedIn: false});
+			}
+			console.log(this.state.loggedIn);
+		});
+	};
+
+	logOut = () => {
+		firebase.auth().signOut().then(() => {
+			this.setState ({
+					redirect: <Route render={() => {
+						this.setState ({redirect: null});
+						return <Redirect to=""/>
+					}}/>
+				});
+			this.updateLoggedIn
+		}, function(error) {
+			console.log("Something went wrong: " + error);
+		});
+	};
+	
 	render() {
 		return (
 			<div className="App">
 				<BrowserRouter>
 					<div>
-						<NavigationBar openModal={this.openModal}/>
+						<NavigationBar loggedIn={this.state.loggedIn} logOut={this.logOut} openModal={this.openModal}/>
 						<div className="block-wrapper">
 							<Switch>
 								{this.state.redirect}
