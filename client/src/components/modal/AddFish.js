@@ -13,27 +13,31 @@ class AddFish extends React.Component {
 	  		{ value: 'Goldfish', label: 'Goldfish' },
 	  		{ value: 'Catfish', label: 'Catfish' }
 			],
-			selectedFish: "", //To display the selected fish in the input field
 			availibleAquariums: [ //Aquaria from the database for this user
 	  		{ value: 'Aquarium1', label: 'Aquarium1' },
 	  		{ value: 'Aquarium2', label: 'Aquarium2' }
 			],
 			selectedAquarium: "", //To display the selected aquaria in the input field
-			dataToSendToDB: []
+			selectedFish: "", //To display the selected fish in the input field
+			dataToSendToDB: {}
 		}
 	}
 	selectFishSpecies = (val) => {
-		const arrayToSendToDB = this.state.dataToSendToDB;
-		arrayToSendToDB.push(val);
-		this.setState({selectedFish: val, dataToSendToDB: arrayToSendToDB});
+		let selectedData = {
+			aquariumName: this.state.selectedAquarium,
+			fishName: val
+		}
+		this.setState({selectedFish: val, objectToSendToDB: selectedData});
 	}
 	getSelectedAquarium = (val) => {
-		const arrayToSendToDB = this.state.dataToSendToDB;
-		arrayToSendToDB.push(val);
-		this.setState({selectedAquarium: val, dataToSendToDB: arrayToSendToDB})
+		let selectedData = {
+			aquariumName: val,
+			fishName: this.state.selectedFish
+		}
+		this.setState({selectedAquarium: val, objectToSendToDB: selectedData})
 	}
 	addFish = () => {
-		console.log(this.state.dataToSendToDB);
+		console.log(this.state.objectToSendToDB);
 	}
 	render() {
 		return (
