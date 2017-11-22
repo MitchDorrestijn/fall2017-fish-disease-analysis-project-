@@ -44,7 +44,7 @@ export default class App extends React.Component {
 			this.showError(true, error.message);
 		});
 	};
-	
+
 	userRegister = (email, password, firstName, lastName, country) => {
 		const user = {
 			user: {
@@ -92,7 +92,6 @@ export default class App extends React.Component {
 	getLanguage = () => {
 		const currentLanguage = localStorage.getItem('language');
 		reactTranslateChangeLanguage (currentLanguage);
-		console.log (currentLanguage);
 	}
 
 	componentDidMount() {
