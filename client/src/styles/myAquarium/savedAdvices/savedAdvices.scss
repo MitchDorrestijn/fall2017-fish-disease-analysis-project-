@@ -1,19 +1,49 @@
 // Dit kan grotendeels overgenomen worden van notifications, alleen ik weet niet hoe, dus als Mitch ff kijkt
 @import '../../settings.scss';
 
+@keyframes appear {
+	from {
+		background-color: inherit;
+		visibility: hidden;
+	}
+	to {
+		visibility: visible;
+		background-color: $supportColor;
+	}
+}
+
 .saved-advices {
 	.advice {
 		$height: 180px;
 		margin-top: 20px;
 		margin-bottom: 20px;
-		height: $height;
+		.treatment-container {
+			color: $alternativeTextColor;
+			text-align: left;
+			padding: $defaultPadding;
+			h5 {
+				margin-top: $defaultPadding;
+			}
+		}
+		.white-bg {
+			background-color: $supportColor;
+			animation-name: appear;
+			animation-duration: 0.25s;
+		}
+		.dropdown-link-down {
+			color: $supportColor;
+			text-decoration: none;
+		}
+		.dropdown-link-up {
+			color: $alternativeTextColor;
+			text-decoration: none;
+		}
 		.header {
 			font-size: 18px;
 			background: $mainColor;
 		}
 		.image-container {
 			background-color: $grey;
-			position: relative;
 			height: $height;
 			width: 100%;
 			.image {
@@ -50,19 +80,6 @@
 				padding-left: 16px;
 				li {
 					//padding: 0px;
-				}
-			}
-		}
-		.close-container {
-			position: relative;
-			.close {
-				position: absolute;
-				top: 6px;
-				right: 30px;
-				height: 0;
-				width: 0;
-				a {
-					color: #fff !important;
 				}
 			}
 		}
