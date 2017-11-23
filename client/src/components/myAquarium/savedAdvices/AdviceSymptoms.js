@@ -6,11 +6,9 @@ export default class AdvicePicture extends Component {
 		return (
 			<Col lg="2" className="no-gutter">
 				<div className="data">
-					<p>
-						<ul>
-							{this.props.children}
-						</ul>
-					</p>
+					<ul>
+						{this.props.children}
+					</ul>
 				</div>
 			</Col>
 		);

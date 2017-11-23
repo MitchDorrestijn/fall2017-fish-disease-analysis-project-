@@ -2,8 +2,9 @@ import React from 'react';
 import Card from '../../base/Card';
 import {CardText, CardTitle, CardSubtitle} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
-import {Link, NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import AddFish from '../../modal/AddFish';
+import AddAquarium from '../../modal/AddAquarium';
 
 export default class MyFish extends React.Component {
 	constructor(props){
@@ -102,6 +103,10 @@ export default class MyFish extends React.Component {
 		e.preventDefault ();
 		this.props.openModal(AddFish);
 	};
+	showAddAquariumModel = (e) => {
+		e.preventDefault ();
+		this.props.openModal(AddAquarium);
+	}
 	render() {
 		return (
 			<div className="container">
@@ -109,8 +114,8 @@ export default class MyFish extends React.Component {
 					<h2>My fish</h2>
 					<div className="addBtns">
 						{this.createFilterButtons()}
-						<Link to="/">+ Add aquarium</Link>
-						<NavLink to="" onClick={this.showAddFishModel}>+ add fish</NavLink>
+						<Link to="" onClick={this.showAddAquariumModel}>+ Add aquarium</Link>
+						<Link to="" onClick={this.showAddFishModel}>+ Add fish</Link>
 					</div>
 					<div className="card-columns">
 						{this.filterFish()}

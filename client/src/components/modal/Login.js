@@ -12,26 +12,27 @@ import {
 import Register from './Register';
 import ForgotPassword from './ForgotPassword';
 import Error from './Error';
+import Translate from 'translate-components';
 
 class Login extends React.Component {
 	render() {
 		return (
 			<div>			
-				<ModalHeader toggle={() => this.props.toggleModal()}>Login</ModalHeader>
+				<ModalHeader toggle={() => this.props.toggleModal()}><Translate>Login</Translate></ModalHeader>
 				<ModalBody>
 					{ this.props.isErrorVisible ?
 						<Error errorContent={this.props.errorContent} /> :
 						null
 					}
 					<FormGroup>
-						<Label for="email">Email address</Label>
+						<Label for="email"><Translate>Email address</Translate></Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-user"/></InputGroupAddon>
 							<Input type="email" id="email" placeholder="Email address"/>
 						</InputGroup>
 					</FormGroup>
 					<FormGroup>
-						<Label for="password">Password</Label>
+						<Label for="password"><Translate>Password</Translate></Label>
 						<InputGroup>
 							<InputGroupAddon><i className="fa fa-lock"/></InputGroupAddon>
 							<Input type="password" id="password" placeholder="Password"/>
@@ -40,16 +41,16 @@ class Login extends React.Component {
 					<FormGroup check>
 						<Label check>
 							<Input type="checkbox" />
-							Remember me
+							<Translate>Remember me</Translate>
 						</Label>
 					</FormGroup>
 					<hr/>
-					<Button outline className="modalLink" color="secondary" onClick={() => this.props.userLogin(document.getElementById("email").value, document.getElementById("password").value)} block>Login</Button>
+					<Button outline className="modalLink" color="secondary" onClick={() => this.props.userLogin(document.getElementById("email").value, document.getElementById("password").value)} block><Translate>Login</Translate></Button>
 					<br/>
 					<p className="center">
-						Not registered? <u><a className="modalLink" onClick={() => this.props.openModal(Register)}>Create an account</a></u>
+						<Translate>Not registered?</Translate> <u><a className="modalLink" onClick={() => this.props.openModal(Register)}><Translate>Create an account</Translate></a></u>
 						<br/>
-						<u><a className="modalLink" onClick={() => this.props.openModal(ForgotPassword)}>Forgot password?</a></u>
+						<u><a className="modalLink" onClick={() => this.props.openModal(ForgotPassword)}><Translate>Forgot password?</Translate></a></u>
 					</p>
 				</ModalBody>
 			</div>
