@@ -29,14 +29,16 @@ router.get('/diseases/search', isAuthenticated, (req, res) => {
     const index = client.initIndex("diseases");
     const query = req.query.term;
 
+    if(!query){
+        return res.status(400).send("Please provide '?term=searchterm' in url");
+    }
+
     index
     .search({
         query
     })
     .then(responses => {
-        // Response from Algolia:
-        // https://www.algolia.com/doc/api-reference/api-methods/search/#response-format
-        console.log(responses.hits);
+        res.send(responses.hits);
     });
 })
 
