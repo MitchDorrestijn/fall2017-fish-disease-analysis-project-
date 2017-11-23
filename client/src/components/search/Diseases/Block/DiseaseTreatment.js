@@ -24,13 +24,13 @@ export default class AdviceTreatment extends Component {
 		}
 	};
 
-	getDropdownText = () => {
-		if (this.state.isOpen) {
-			return "Read less";
-		} else {
-			return "Read more";
-		}
-	};
+	// getDropdownText = () => {
+	// 	if (this.state.isOpen) {
+	// 		return "Read less";
+	// 	} else {
+	// 		return "Read more";
+	// 	}
+	// };
 
 	getColClass = () => {
 		if (this.state.isOpen) {
@@ -65,7 +65,7 @@ export default class AdviceTreatment extends Component {
 		return (
 			<Col lg="12" className={this.getColClass()}>
 				<a href="" onClick={this.toggleTreatment} className={this.getLinkClass()}>
-					{this.getDropdownText()}<br/>
+					{/* {this.getDropdownText()}<br/> */}
 					<span className={this.getArrowClass()}/>
 				</a>
 				{this.getContent()}

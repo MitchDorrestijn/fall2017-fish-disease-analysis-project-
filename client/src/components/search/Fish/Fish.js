@@ -9,7 +9,7 @@ export default class SavedAdvices extends React.Component {
 				<h1 className="text-center">Fishes</h1>
 				<hr/>
 				<Row>
-					<Col lg="12">
+					<Col xs="12">
 						<FishBlock
 							picture="catfish.jpg"
 							title="White spot disease - Ichthyophthirius multifiliis"

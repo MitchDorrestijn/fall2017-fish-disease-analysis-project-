@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Col} from 'reactstrap';
 
 export default class AdvicePicture extends Component {
-	
+
 	componentDidMount(){
 		let listEl = document.getElementById("symptomsList");
 		for(let i = 0; i < this.props.symptoms.length; i++){
@@ -10,10 +10,10 @@ export default class AdvicePicture extends Component {
 		}
 		document.getElementById("symptomsList").id = "";
 	}
-	
-	render() {		
+
+	render() {
 		return (
-			<Col lg="2" className="no-gutter">
+			<Col lg="2" xs="12" className="no-gutter">
 				<div className="data">
 					<ul id="symptomsList">
 					</ul>

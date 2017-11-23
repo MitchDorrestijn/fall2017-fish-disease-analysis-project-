@@ -9,7 +9,7 @@ export default class Diseases extends React.Component {
 				<h1 className="text-center">Diseases</h1>
 				<hr/>
 				<Row>
-					<Col lg="12">						
+					<Col xs="12">						
 						<DiseaseBlock
 							picture="schimmel3"
 							title="White spot disease - Ichthyophthirius multifiliis"
@@ -17,7 +17,7 @@ export default class Diseases extends React.Component {
 							symptoms={["White spots", "Wobbling", "No appetite", "Skin disease"]}
 							treatment="Treatment"
 						/>
-						
+
 						<DiseaseBlock
 							picture="schimmel3"
 							title="White spot disease - Ichthyophthirius multifiliis"

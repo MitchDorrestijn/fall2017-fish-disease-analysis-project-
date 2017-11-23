@@ -57,15 +57,27 @@
 		border-color: white;
 	}
 	.result {
-		$height: 180px;
+		$height: 182px;
 		margin: 20px;
 		.treatment-container {
 			color: $alternativeTextColor;
 			text-align: left;
-			padding: $defaultPadding;
+			padding: 0 $defaultPadding $defaultPadding*2 $defaultPadding;
 			h5 {
 				margin-top: $defaultPadding;
 			}
+		}
+		.dropdown-link-down,
+		.dropdown-link-up {
+			padding: $defaultPadding 19px;
+			border-radius: $defaultPadding*2;
+			color: $supportColor;
+			background: $alternativeTextColor;
+			display: table;
+			margin: -25px auto 0 auto;
+		}
+		.no-bg {
+			margin-top: -$defaultPadding - 2px;
 		}
 		.white-bg {
 			animation-name: pullDown;
@@ -78,55 +90,74 @@
 			-ms-transform-origin: 50% 0%;
 			-webkit-transform-origin: 50% 0%;
 			background: $supportColor;
+			margin-top: -$defaultPadding - 2px;
+			@media screen and(max-width: $responsiveBreakPoint){
+				margin-top: auto;
+			}
 		}
-		.dropdown-link-down {
-			color: $supportColor;
-			text-decoration: none;
-		}
-		.dropdown-link-up {
-			color: $alternativeTextColor;
-			text-decoration: none;
-		}
+
 		.header {
 			font-size: 18px;
 			background: $mainColor;
 		}
 		.image-container {
 			background-color: $grey;
-			height: $height;
-			height: 100%;
+			min-height: $height;
 			.image {
 				position: absolute;
-				height: $height;
+				min-height: $height;
 				overflow: hidden;
 				img {
 					max-width: 100%;
 				}
+				@media screen and(max-width: $responsiveBreakPoint){
+					position: relative;
+					height: auto;
+					img {
+						width: 100%;
+					}
+				}
 			}
 		}
 		.info {
-			height: $height;
+			min-height: $height;
 			color: $supportColor;
 			background-color: $grey;
+			@media screen and(max-width: $responsiveBreakPoint){
+				height: auto;
+			}
 			p {
 				display: inline-block;
-				height: $height - 40px;
+				min-height: $height - 40px;
 				margin: 20px;
-				overflow-y: scroll;
+				//overflow-y: scroll;
+				@media screen and(max-width: $responsiveBreakPoint){
+					height: auto;
+					margin: $defaultPadding $defaultPadding 0 $defaultPadding;
+				}
 			}
 		}
 		.data {
-			height: $height;
+			min-height: $height;
 			color: $supportColor;
 			background-color: $grey;
+			@media screen and(max-width: $responsiveBreakPoint){
+				height: auto;
+				padding-bottom: $defaultPadding;
+			}
 			p {
 				display: inline-block;
-				height: $height - 40px;
+				min-height: $height - 40px;
 				margin: 20px;
-				overflow-y: scroll;
+				//overflow-y: scroll;
 			}
 			ul {
-				padding-left: 16px;
+				padding-left: $defaultPadding;
+				padding-top: $defaultPadding;
+				@media screen and(max-width: $responsiveBreakPoint){
+					padding: auto;
+					margin-left: $defaultPadding;
+				}
 			}
 		}
 	}
