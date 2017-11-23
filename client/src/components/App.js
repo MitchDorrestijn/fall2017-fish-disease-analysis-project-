@@ -144,7 +144,7 @@ export default class App extends React.Component {
 		this.getLanguage();
 		this.updateLoggedIn();
 	}
-	
+
 	updateLoggedIn = () => {
 		let user = this.app.auth().currentUser;
 
@@ -153,7 +153,7 @@ export default class App extends React.Component {
 		}else{
 			this.setState({loggedIn: false});
 		}
-		
+
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({loggedIn: true});
@@ -176,7 +176,7 @@ export default class App extends React.Component {
 			console.log("Something went wrong: " + error);
 		});
 	};
-	
+
 	render() {
 		return (
 			<div className="App">
@@ -197,22 +197,22 @@ export default class App extends React.Component {
 								}}/>
 							</Switch>
 						</div>
+						<ModalBase
+							errorContent={this.state.errorContent}
+							isErrorVisible={this.state.showError}
+							showError={this.showError}
+							isVisible={this.state.showModal}
+							userLogin={this.userLogin}
+							userRegister={this.userRegister}
+							userForgotPassword={this.userForgotPassword}
+							userResetPassword={this.userResetPassword}
+							openModal={this.openModal}
+							closeModal={this.closeModal}
+						>
+							{this.state.modalContent}
+						</ModalBase>
 					</div>
 				</BrowserRouter>
-				<ModalBase
-					errorContent={this.state.errorContent}
-					isErrorVisible={this.state.showError}
-					showError={this.showError}
-					isVisible={this.state.showModal}
-					userLogin={this.userLogin}
-					userRegister={this.userRegister}
-					userForgotPassword={this.userForgotPassword}
-					userResetPassword={this.userResetPassword}
-					openModal={this.openModal}
-					closeModal={this.closeModal}
-				>
-					{this.state.modalContent}
-				</ModalBase>
 			</div>
 		);
 	}

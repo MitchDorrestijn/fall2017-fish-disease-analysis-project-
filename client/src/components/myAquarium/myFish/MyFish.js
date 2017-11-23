@@ -64,6 +64,9 @@ export default class MyFish extends React.Component {
 		}
 	}
 	componentWillMount(){
+		this.renderAquariums();
+	}
+	renderAquariums = () => {
 		let da = new DataAccess();
 		da.getData ('/aquaria', (err, res) => {
 			if (!err) {

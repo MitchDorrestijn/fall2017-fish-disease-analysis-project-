@@ -9,6 +9,7 @@ import {
 	InputGroupAddon,
 	Input
 } from 'reactstrap';
+import {Redirect} from 'react-router-dom';
 import Error from './Error';
 import DataAccess from '../../scripts/DataAccess';
 
@@ -17,7 +18,7 @@ class Login extends React.Component {
 		super(props);
 		this.state = {
 			aquariumName: "",
-			error: false,
+			error: false
 		}
 	}
 	handleChange = (e) => {
