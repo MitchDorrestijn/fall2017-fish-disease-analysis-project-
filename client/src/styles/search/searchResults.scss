@@ -1,0 +1,133 @@
+// Dit kan grotendeels overgenomen worden van notifications, alleen ik weet niet hoe, dus als Mitch ff kijkt
+@import '../settings.scss';
+
+
+@keyframes pullDown {
+	0% {
+		transform: scaleY(0.1);
+	}
+	40% {
+		transform: scaleY(1.02);
+	}
+	60% {
+		transform: scaleY(0.98);
+	}
+	80% {
+		transform: scaleY(1.01);
+	}
+	100% {
+		transform: scaleY(0.98);
+	}
+	80% {
+		transform: scaleY(1.01);
+	}
+	100% {
+		transform: scaleY(1);
+		background: $supportColor;
+	}
+}
+
+@-webkit-keyframes pullDown {
+	0% {
+		-webkit-transform: scaleY(0.1);
+	}
+	40% {
+		-webkit-transform: scaleY(1.02);
+	}
+	60% {
+		-webkit-transform: scaleY(0.98);
+	}
+	80% {
+		-webkit-transform: scaleY(1.01);
+	}
+	100% {
+		-webkit-transform: scaleY(0.98);
+	}
+	80% {
+		-webkit-transform: scaleY(1.01);
+	}
+	100% {
+		-webkit-transform: scaleY(1);
+		background: $supportColor;
+	}
+}
+
+.search-results {
+	hr {
+		border-color: white;
+	}
+	.result {
+		$height: 180px;
+		margin: 20px;
+		.treatment-container {
+			color: $alternativeTextColor;
+			text-align: left;
+			padding: $defaultPadding;
+			h5 {
+				margin-top: $defaultPadding;
+			}
+		}
+		.white-bg {
+			animation-name: pullDown;
+			-webkit-animation-name: pullDown;
+			animation-duration: 1.1s;
+			-webkit-animation-duration: 1.1s;
+			animation-timing-function: ease-out;
+			-webkit-animation-timing-function: ease-out;
+			transform-origin: 50% 0%;
+			-ms-transform-origin: 50% 0%;
+			-webkit-transform-origin: 50% 0%;
+			background: $supportColor;
+		}
+		.dropdown-link-down {
+			color: $supportColor;
+			text-decoration: none;
+		}
+		.dropdown-link-up {
+			color: $alternativeTextColor;
+			text-decoration: none;
+		}
+		.header {
+			font-size: 18px;
+			background: $mainColor;
+		}
+		.image-container {
+			background-color: $grey;
+			height: $height;
+			height: 100%;
+			.image {
+				position: absolute;
+				height: $height;
+				overflow: hidden;
+				img {
+					max-width: 100%;
+				}
+			}
+		}
+		.info {
+			height: $height;
+			color: $supportColor;
+			background-color: $grey;
+			p {
+				display: inline-block;
+				height: $height - 40px;
+				margin: 20px;
+				overflow-y: scroll;
+			}
+		}
+		.data {
+			height: $height;
+			color: $supportColor;
+			background-color: $grey;
+			p {
+				display: inline-block;
+				height: $height - 40px;
+				margin: 20px;
+				overflow-y: scroll;
+			}
+			ul {
+				padding-left: 16px;
+			}
+		}
+	}
+}

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Col} from 'reactstrap';
 
-export default class LeesMeer extends Component {
+export default class AdviceDate extends Component {
 	render() {
 		return (
-			<Col lg="12" className="header">
+			<Col lg="6" className="header">
 				{this.props.children}
 			</Col>
 		);
