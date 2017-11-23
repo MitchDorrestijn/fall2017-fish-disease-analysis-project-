@@ -178,10 +178,7 @@ router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const entry = req.body.entry;
 
 	// Warning: no model validation
-	db.collection("aquaria").doc(req.params.id).collection("entries").add(entry)
-	.then(() => {
-		return notifications.add(req.user.uid, "A entry has been added to the journal.", 1)
-	})
+	return db.collection("aquaria").doc(req.params.id).collection("entries").add(entry)
 	.then(() => {
 		res.send(201);
 	})
