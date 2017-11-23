@@ -11,8 +11,46 @@ import {
 import Error from './Error';
 import {Col, Row} from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
+import * as firebase from 'firebase';
 
 class AddTodaysData extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			userID: "",
+			createdAquariums: []
+		};
+	};
+	setUserID = (userID) => {
+		this.setState({
+			userID: userID
+		});
+	};
+	setCreatedAquariums = (aquariums) => {
+		this.setState({
+			createdAquariums: aquariums
+		});
+	};
+	setselectedAquariumID = (aquariumID) => {
+		this.setState({
+			selectedAquariumID: aquariumID
+		});
+	};
+	componentWillMount() {
+		this.initSetters();
+	};
+	initSetters = () => {
+		let da = new DataAccess ();
+		da.getData ('/aquaria', (err, res) => {
+			this.setCreatedAquariums(res.message);
+			if (!err) {
+
+			} else {
+				// error
+			};
+		});
+	};
+
 	registerTodaysData = () => {
 		let date = new Date ();
 		let day = date.getDate ();
@@ -20,7 +58,7 @@ class AddTodaysData extends React.Component {
 		let year = date.getFullYear ();
 
 		const todaysData = {
-			user: {
+			data: {
 				date: day + "-" + month + "-" + year,
 				phosphate: document.getElementById("phosphate").value,
 				nitrate: document.getElementById("nitrate").value,
@@ -32,30 +70,52 @@ class AddTodaysData extends React.Component {
 				carbon: document.getElementById("carbon").value,
 				dioxide: document.getElementById("dioxide").value,
 				kH: document.getElementById("kh").value,
-				chlorine: document.getElementById("chlorine").value,
-				aquarium: document.getElementById("aquarium").value
+				chlorine: document.getElementById("chlorine").value
 			}
 		};
-		this.todaysDataRegister(todaysData);
+		this.postTodaysData(todaysData);
 	};
 
+ fillAquariumSelect = (aquariums) => {
+	 let options = [];
+	 for(let key in this.state.createdAquariums) {
+		 if(this.state.createdAquariums.hasOwnProperty(key)) {
+			 options.push(<option key={key} value={this.state.createdAquariums[key].id}>{this.state.createdAquariums[key].name}</option>);
+		 }
+	 }
+	 return options;
+ }
 
-	todaysDataRegister = (dataObject) => {
+
+	postTodaysData = (dataObject) => {
 		let da = new DataAccess ();
-		da.postData(`/aquaria//entries`, dataObject, (err, res) => {
+		da.postData(`/aquaria/${document.getElementById("aquarium").value}/entries`, dataObject, (err, res) => {
 			if (!err) {
 				alert("Succesvol ingevoerd");
 			} else {
 				console.log(err);
-				this.showError(true, err.message);
+				// this.showError(true, err.message);
 			};
 		});
 	};
+  //
+	// getUserAquariums = (userID) => {
+	// 	let da = new DataAccess ();
+	// 	da.postData(`/aquaria//entries`, dataObject, (err, res) => {
+	// 		if (!err) {
+	// 			alert("Succesvol opgehaalt");
+	// 		} else {
+	// 			console.log(err);
+	// 			this.showError(true, err.message);
+	// 		};
+	// 	});
+	// };
 
 	render() {
+		console.log(this.state.selectedAquariumID);
 		return (
 			<div>
-				<ModalHeader toggle={() => this.props.toggleModal()}>Today's aquarium data</ModalHeader>
+				<ModalHeader toggle={this.props.toggleModal}>Today's aquarium data</ModalHeader>
 				<ModalBody>
 					{ this.props.isErrorVisible ?
 						<Error errorContent={this.props.errorContent} /> :
@@ -164,14 +224,16 @@ class AddTodaysData extends React.Component {
 							<FormGroup>
 								<Label for="aquarium">Aquarium</Label>
 								<InputGroup>
-									<Input type="number" id="aquarium" placeholder="Aquarium"/>
+									<Input type="select" name="select" id="aquarium">
+										{this.fillAquariumSelect(this.state.createdAquariums)}
+									</Input>
 								</InputGroup>
 							</FormGroup>
 						</Col>
 					</Row>
 
 					<hr/>
-					<Button outline className="modalLink" color="secondary" onClick={() => this.registerTodaysData()} block>Add data</Button>
+					<Button outline className="modalLink" color="secondary" onClick={this.registerTodaysData} block>Add data</Button>
 
 				</ModalBody>
 			</div>

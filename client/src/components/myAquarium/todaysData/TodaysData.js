@@ -2,9 +2,8 @@ import React from 'react';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import { Table } from 'reactstrap';
-import {Link, NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import AddTodaysData from '../../modal/AddTodaysData';
-import DataAccess from '../../../scripts/DataAccess';
 
 const todaysData = [{
 	inAquarium:"aquarium1",
@@ -200,7 +199,7 @@ export default class TodaysData extends React.Component {
 						<div className="addBtns">
 							{this.createFilterButtons()}
 							<Link to="/">+ Add aquarium</Link>
-							<NavLink to="" onClick={this.showAddTodaysData}>+ Add today's data</NavLink>
+							<a href="" onClick={this.showAddTodaysData}>+ Add today's data</a>
 						</div>
 					</Col>
 				</Row>
