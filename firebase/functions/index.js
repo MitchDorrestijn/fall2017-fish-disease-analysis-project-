@@ -11,7 +11,9 @@ admin.initializeApp({
 	databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
 
+// Custom helper modules
 const notifications = require('./notifications/notifications.js');
+const statusChecker = require('./status_checker/checker.js');
 
 /* Algolia, used for search */
 const ALGOLIA_ID = "WPBUCLWL7Y";
@@ -59,6 +61,23 @@ exports.app = functions.https.onRequest(app);
 exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event => {
 	const user = event.data;
 	return admin.firestore().collection("users").doc(user.uid).delete();
+});
+
+// Logic getting executed when an entry is submitted. It will check whether something is wrong with the water.
+exports.checkEntryDataForDangerousMutations = functions.firestore.document("aquaria/{aquarium}/entries/{entry}").onCreate(event => {
+	return admin.firestore().collection("aquaria").doc(event.params.aquarium).get()
+	.then((doc) => {
+		console.log(doc);
+		return doc.data().user.get()
+	})
+	.then((user) => {
+		console.log(user);
+		const entry = event.data.data()
+		statusChecker.check(user.id, entry)
+	})
+	.catch((error) => {
+		console.log(error.message);
+	})
 });
 
 // Add id to all documents
