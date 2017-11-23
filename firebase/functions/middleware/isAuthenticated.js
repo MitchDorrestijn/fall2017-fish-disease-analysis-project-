@@ -1,6 +1,6 @@
 /**
  * @apiDefine UserAuthenticated
- * @apiHeader {String} access-key Users unique token.
+ * @apiHeader {String} Authorisation Users unique token.
  * @apiError UserNotFound the authentication middleware did not successfully detect and parse an idToken
  *
  */
