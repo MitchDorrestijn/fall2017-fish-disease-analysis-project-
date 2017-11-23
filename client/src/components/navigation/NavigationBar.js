@@ -40,9 +40,9 @@ export default class NavigationBar extends React.Component {
 		const searchText = document.getElementById("search").value;
 		
 		if(!searchText){
-			window.location.href = "/mySearch/General";
+			window.location.href = "/search/General";
 		}else{
-			window.location.href = "/mySearch/General/" + searchText;
+			window.location.href = "/search/General/" + searchText;
 		}
 	};
 
