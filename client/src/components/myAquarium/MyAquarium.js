@@ -36,7 +36,9 @@ export default class MyAquarium extends React.Component {
 						<Route exact path="/myAquarium/myFish" render={(props) => {
 							return <MyFish {...props} openModal={this.props.openModal}/>
 						}}/>
-						<Route exact path="/myAquarium/todaysData" component={TodaysData}/>
+						<Route exact path="/myAquarium/todaysData" render={(props) => {
+							return <TodaysData {...props} openModal={this.props.openModal}/>
+						}}/>
 						<Route exact path="/myAquarium/savedAdvices" component={SavedAdvices}/>
 						<Route exact path="/myAquarium/notifications" component={Notifications}/>
 						<Route exact path="/myAquarium/accountSettings" component={AccountSettings}/>
