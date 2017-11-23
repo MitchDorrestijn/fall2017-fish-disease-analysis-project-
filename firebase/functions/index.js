@@ -58,6 +58,11 @@ exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event
 	return admin.firestore().collection("users").doc(user.uid).delete();
 });
 
+// Add id to all documents
+exports.addIDtoAllDocs = functions.firestore.document("{collection}/{docID}").onCreate(event => {
+	return event.data.ref.set({id: event.params.docID}, { merge: true });
+});
+
 const upsertDiseaseToAlgolia = (event) => {
 	// Get the disease document
 	const disease = event.data.data();
