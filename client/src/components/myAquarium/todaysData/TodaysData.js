@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Col, Row } from 'reactstrap';
+import { Card, CardBody, Col, Row } from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import { Table } from 'reactstrap';
 import DataAccess from '../../../scripts/DataAccess';
