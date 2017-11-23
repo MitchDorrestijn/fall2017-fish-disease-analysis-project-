@@ -1,10 +1,10 @@
 import React from 'react';
-import {Col, Input, InputGroup, Button} from 'reactstrap';
-import ActionButton from '../../base/ActionButton';
+import {Col, Input, InputGroup, Button, Alert} from 'reactstrap';
+// import ActionButton from '../../base/ActionButton';
 import Setting from './Setting';
 import SettingsBox from './SettingsBox';
 import UserService from '../../../provider/user-data-service';
-import Error from '../../modal/Error'
+import Error from '../../modal/Error';
 import * as firebase from 'firebase';
 import CountrySelect from '../../modal/CountrySelect';
 
@@ -13,35 +13,42 @@ export default class AccountSettings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			name: "",
-			country: "",
-			surname: "",
-			birthDay: "1",
-			birthMonth: "1",
-			birthYear: "2017",
-			email: "",
-			password: "",
-			confirmPassword: "",
-			isErrorVisible: false,
-			errorContent: ""
+			name: '',
+			country: '',
+			surname: '',
+			birthDay: '1',
+			birthMonth: '1',
+			birthYear: '2017',
+			password: '',
+			confirmPassword: '',
+			loginErrorVisible: false,
+			accountErrorVisible: false,
+			errorLoginContent: '',
+			errorAccountContent: '',
 		};
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		firebase.auth().onAuthStateChanged((user) => {
 			this.verifyLogin(user);
 		});
 		let user = firebase.auth().currentUser;
 		this.verifyLogin(user);
-
 	}
 
 	verifyLogin = (user) => {
 		if (user) {
 			firebase.auth().currentUser.getIdToken().then((token) => {
 				let userService = new UserService(token);
-				userService.getUserData(user,(err,res) => {
-					let birthDayList = this.splitDate(res.message.birthDate);
+				userService.getUserData(user, (err, res) => {
+					let birthDayList;
+					//If data of user is not set, put in default date
+					if (res.message.birthDate) {
+						birthDayList = this.formatDate(res.message.birthDate);
+					} else {
+						birthDayList = this.formatDate(
+							'1999-01-01T00:00:00.000Z');
+					}
 					this.updateInfo({
 						name: res.message.firstName,
 						surname: res.message.lastName,
@@ -49,13 +56,11 @@ export default class AccountSettings extends React.Component {
 						country: res.message.country,
 						birthDay: birthDayList.birthDay,
 						birthMonth: birthDayList.birthMonth,
-						birthYear: birthDayList.birthYear
-					})
+						birthYear: birthDayList.birthYear,
+					});
 				});
-				this.showError(false,"");
+				this.cleanErrors();
 			});
-		} else {
-			this.showError(true,"You are not logged in");
 		}
 	};
 
@@ -63,15 +68,15 @@ export default class AccountSettings extends React.Component {
 	 * @param date String
 	 * @return Object with birthDay,birthMonth and birthYear
 	 **/
-	splitDate = (date) => {
-		const birthDayList = date.split('-',3);
+	formatDate = (date) => {
+		const birthDayList = date.split('-', 3);
 		const birthYear = birthDayList[0];
 		const birthMonth = birthDayList[1];
-		const birthDay = birthDayList[2].slice(0,2);
+		const birthDay = birthDayList[2].slice(0, 2);
 		const birthDate = {
 			birthDay: birthDay,
 			birthMonth: birthMonth,
-			birthYear: birthYear
+			birthYear: birthYear,
 		};
 		return birthDate;
 	};
@@ -79,7 +84,8 @@ export default class AccountSettings extends React.Component {
 	submit = (evt) => {
 		evt.preventDefault();
 		//Javascript iso object
-		const birthDate = new Date(`${this.state.birthYear}-${this.state.birthMonth}-${this.state.birthDay}`);
+		const birthDate = new Date(
+			`${this.state.birthYear}-${this.state.birthMonth}-${this.state.birthDay}`);
 		const profile = {
 			firstName: this.state.name,
 			country: this.state.country,
@@ -87,7 +93,7 @@ export default class AccountSettings extends React.Component {
 			email: this.state.email,
 			birthDate: birthDate,
 			password: this.state.password,
-			confirmPassword: this.state.confirmPassword
+			confirmPassword: this.state.confirmPassword,
 		};
 		let user = firebase.auth().currentUser;
 		firebase.auth().currentUser.getIdToken().then((token) => {
@@ -96,30 +102,35 @@ export default class AccountSettings extends React.Component {
 				userService.updateUserData(user.uid,
 					profile, (err, res) => {
 						if (!err) {
-							//TODO: alert is not pretty
 							alert('Account has been updated');
 						} else {
-							console.log(err);
-							alert('Something went wrong');
+							this.showError('login', true, err.message);
 						}
 					});
-			} else {
-				alert('Not all values have been entered correctly');
-			};
+			}
 		});
 	};
 
-	// Stole this from modal/login
+	/**
+	 * If profile is valid return true, set ui errors
+	 * @param profile object
+	 * @return boolean
+	 **/
 	verifyInput = (profile) => {
-		if(profile.password === profile.confirmPassword){
-			if(profile.email) {
-				this.showError(false, "");
-				return true;
-			} else {
-				this.showError(true, "Not all fields are filled in");
-			}
+		if (!profile.firstName || !profile.lastName || !profile.birthDate) {
+			this.showError('account', true, 'Please fill in all fields');
+			return false;
+		}
+		if (!profile.firstName || !profile.lastName || !profile.birthDate) {
+			this.showError('login', true, 'Please fill in all fields');
+			return false;
+		}
+		if (profile.password === profile.confirmPassword) {
+			this.cleanErrors();
+			return true;
 		} else {
-			this.showError(true, "Password is not the same");
+			this.showError('login', true, 'Password is not the same');
+			return false;
 		}
 	};
 
@@ -127,35 +138,47 @@ export default class AccountSettings extends React.Component {
 		this.setState(data);
 	};
 
-	showError = (show, content) => {
-		this.setState ({
-			isErrorVisible: show,
-			errorContent: content
-		});
+	showError = (section, show, content) => {
+		if (section === 'login') {
+			this.setState({
+				loginErrorVisible: show,
+				errorLoginContent: content,
+			});
+		} else if (section === 'account') {
+			this.setState({
+				accountErrorVisible: show,
+				errorAccountContent: content,
+			});
+		}
+	};
+
+	cleanErrors = () => {
+		this.showError('account', false);
+		this.showError('login', false);
 	};
 
 	changeName = (evt) => {
 		this.setState({
-			name: evt.target.value
+			name: evt.target.value,
 		});
 	};
 
 	changeCountry = (evt) => {
 		this.setState({
-			country: evt.target.value
+			country: evt.target.value,
 		});
 	};
 
 	changeSurname = (evt) => {
 		this.setState({
-			surname: evt.target.value
+			surname: evt.target.value,
 		});
 	};
 
 	changeBirthDay = (evt) => {
 		if (evt.target.value > 0 && evt.target.value < 31) {
 			this.setState({
-				birthDay: evt.target.value
+				birthDay: evt.target.value,
 			});
 		}
 	};
@@ -163,7 +186,7 @@ export default class AccountSettings extends React.Component {
 	changeBirthMonth = (evt) => {
 		if (evt.target.value > 0 && evt.target.value < 13) {
 			this.setState({
-				birthMonth: evt.target.value
+				birthMonth: evt.target.value,
 			});
 		}
 	};
@@ -178,19 +201,19 @@ export default class AccountSettings extends React.Component {
 
 	changeEmail = (evt) => {
 		this.setState({
-			email: evt.target.value
+			email: evt.target.value,
 		});
 	};
 
 	changePassword = (evt) => {
 		this.setState({
-			password: evt.target.value
+			password: evt.target.value,
 		});
 	};
 
 	changeConfirmPassword = (evt) => {
 		this.setState({
-			confirmPassword: evt.target.value
+			confirmPassword: evt.target.value,
 		});
 	};
 
@@ -198,8 +221,15 @@ export default class AccountSettings extends React.Component {
 		return (
 			<div className="account-settings">
 				<h1 className="center">Account settings</h1>
-				<Col md={{size:12}} lg={{size: 8, offset: 2}}>
+				<Col md={{size: 12}} lg={{size: 8, offset: 2}}>
 					<SettingsBox title="User information">
+						<Col xs="12" md="12">
+							{this.state.accountErrorVisible ?
+								<Error
+									errorContent={this.state.errorAccountContent}/> :
+								null
+							}
+						</Col>
 						<Setting title="Name">
 							<Input
 								value={this.state.name}
@@ -208,12 +238,14 @@ export default class AccountSettings extends React.Component {
 						</Setting>
 						<Setting title="Country">
 							{/*<Input*/}
-								{/*type="select"*/}
-								{/*className="custom-select"*/}
-								{/*value={this.state.country}*/}
-								{/*onChange={this.changeCountry}*/}
+							{/*type="select"*/}
+							{/*className="custom-select"*/}
+							{/*value={this.state.country}*/}
+							{/*onChange={this.changeCountry}*/}
 							{/*>*/}
-							<CountrySelect classStyle='custom-select' country={this.state.country} function={this.changeCountry}/>
+							<CountrySelect classStyle='custom-select'
+							               country={this.state.country}
+							               function={this.changeCountry}/>
 						</Setting>
 						<Setting title="Surname">
 							<Input
@@ -245,6 +277,21 @@ export default class AccountSettings extends React.Component {
 						</Setting>
 					</SettingsBox>
 					<SettingsBox title="Login details">
+						<Col xs="12" md="12">
+							{this.state.loginErrorVisible ?
+								<Error
+									errorContent={this.state.errorLoginContent}/> :
+								null
+							}
+						</Col>
+						<Col xs="12" md="12">
+							{!this.state.loginErrorVisible ?
+								<Alert color="light">
+									If you don't want to change your password,
+									leave the fields empty
+								</Alert> : null
+							}
+						</Col>
 						<Setting title="E-mail">
 							<Input
 								disabled
@@ -270,12 +317,6 @@ export default class AccountSettings extends React.Component {
 							/>
 						</Setting>
 					</SettingsBox>
-					<div className="center">
-						{ this.state.isErrorVisible ?
-							<Error errorContent={this.state.errorContent} /> :
-							null
-						}
-					</div>
 					<div className="text-right">
 						<Button onClick={this.submit}>submit</Button>
 						{/*TODO: Not able to give event to the actionbutton, not sure if this is intended*/}
