@@ -7,6 +7,7 @@ import Homepage from './homepage/Homepage';
 import MyAquarium from './myAquarium/MyAquarium';
 import ModalBase from './modal/ModalBase';
 import Login from './modal/Login';
+import Search from './search/Search';
 import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
@@ -195,6 +196,7 @@ export default class App extends React.Component {
 								<Route path="/forgot-password" render={(props) => {
 									return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
 								}}/>
+								<Route path="/search" component={Search}/>
 							</Switch>
 						</div>
 					</div>
