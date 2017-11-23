@@ -5,6 +5,8 @@ import ActionButton from '../../base/ActionButton';
 import {Link} from 'react-router-dom';
 import AddFish from '../../modal/AddFish';
 import AddAquarium from '../../modal/AddAquarium';
+import DataAccess from '../../../scripts/DataAccess';
+import * as firebase from 'firebase';
 
 export default class MyFish extends React.Component {
 	constructor(props){
@@ -57,16 +59,27 @@ export default class MyFish extends React.Component {
 						"linkTo":"/"
 					}
 			],
-			createdAquariums: ["aquarium1", "aquarium2", "aquarium3"],
+			createdAquariums: "",
 			currentAquarium: "aquarium1"
 		}
 	}
-	createFilterButtons = () => {
-		let buttons = this.state.createdAquariums.map((button, index) => {
-			return (
-				<ActionButton key={index} color="primary btn-transparent" buttonText={button} onClickAction={(arr) => this.showSelectedCategory(button)} />
-			);
+	componentWillMount(){
+		let da = new DataAccess();
+		da.getData ('/aquaria', (err, res) => {
+			if (!err) {
+				this.setState({createdAquariums: res.message});
+			} else {
+				console.log("De error is: " + err.message);
+			}
 		});
+	}
+	createFilterButtons = () => {
+		let buttons = []
+		for(var key in this.state.createdAquariums) {
+    	if(this.state.createdAquariums.hasOwnProperty(key)) {
+				buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
+    	}
+		}
 		return (
 			<div>
 				{buttons}

@@ -10,12 +10,14 @@ import {
 	Input
 } from 'reactstrap';
 import Error from './Error';
+import DataAccess from '../../scripts/DataAccess';
 
 class Login extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			aquariumName: ""
+			aquariumName: "",
+			error: false,
 		}
 	}
 	handleChange = (e) => {
@@ -25,16 +27,22 @@ class Login extends React.Component {
 	aquariumNameForDB = (e) => {
 		e.preventDefault();
 		console.log(this.state.aquariumName);
+
+			let da = new DataAccess();
+			da.postData ('/aquaria/', {data: {name: this.state.aquariumName}}, (err, res) => {
+				if (!err) {
+					this.props.toggleModal();
+				} else {
+					this.setState({error: true});
+				}
+			});
 	}
 	render() {
 		return (
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Add aquarium</ModalHeader>
 				<ModalBody>
-					{ this.props.isErrorVisible ?
-						<Error errorContent={this.props.errorContent} /> :
-						null
-					}
+					{ this.state.error && "Something wnet wrong!"}
 					<FormGroup>
 						<Label for="email">Aquarium name:</Label>
 						<InputGroup>

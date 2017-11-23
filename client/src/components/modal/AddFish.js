@@ -3,7 +3,8 @@ import { ModalHeader, ModalBody, Button, FormGroup, Label, InputGroup} from 'rea
 import Error from './Error';
 import 'react-select/dist/react-select.css';
 import Select from "react-select";
-
+import DataAccess from '../../scripts/DataAccess';
+import * as firebase from 'firebase';
 
 class AddFish extends React.Component {
 	constructor(props){
@@ -22,6 +23,16 @@ class AddFish extends React.Component {
 			dataToSendToDB: {}
 		}
 	}
+	// componentDidMount(){
+	// 	let da = new DataAccess();
+	// 	da.getData ('/species', (err, res) => {
+	// 		if (!err) {
+	// 			console.log("Het resultaat is: " + res);
+	// 		} else {
+	// 			console.log("De error is: " + err);
+	// 		}
+	// 	});
+	// }
 	selectFishSpecies = (val) => {
 		let selectedData = {
 			aquariumName: this.state.selectedAquarium,
