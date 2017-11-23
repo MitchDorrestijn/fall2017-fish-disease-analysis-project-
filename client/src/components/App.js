@@ -7,6 +7,7 @@ import Homepage from './homepage/Homepage';
 import MyAquarium from './myAquarium/MyAquarium';
 import ModalBase from './modal/ModalBase';
 import Login from './modal/Login';
+import Search from './search/Search';
 import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
@@ -15,6 +16,7 @@ export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			show: false,
 			showModal: false,
 			showError: false,
 			errorContent: "",
@@ -59,7 +61,7 @@ export default class App extends React.Component {
 			}
 		};
 
-		let da = new DataAccess ();
+		let da = new DataAccess (true);
 		da.postData(`/register`, user, (err, res) => {
 			if (!err) {
 				this.closeModal();
@@ -81,7 +83,7 @@ export default class App extends React.Component {
 			email: email
 		};
 
-		let da = new DataAccess ();
+		let da = new DataAccess (true);
 		da.postData(`/forgot-password`, emailObj, (err, res) => {
 			if (!err) {
 				this.closeModal();
@@ -103,7 +105,7 @@ export default class App extends React.Component {
 		};
 		const token = window.location.pathname.replace("/forgot-password/", "");
 
-		let da = new DataAccess ();
+		let da = new DataAccess (true);
 		da.postData(`/forgot-password/` + token, passwordObj, (err, res) => {
 			if (!err) {
 				this.openModal(Login);
@@ -138,64 +140,62 @@ export default class App extends React.Component {
 	getLanguage = () => {
 		const currentLanguage = localStorage.getItem('language');
 		reactTranslateChangeLanguage (currentLanguage);
-	}
+	};
 
 	componentDidMount() {
 		this.getLanguage();
+	}
+
+	componentWillMount() {
 		this.updateLoggedIn();
 	}
 
 	updateLoggedIn = () => {
-		let user = this.app.auth().currentUser;
-
-		if (user) {
-			this.setState({loggedIn: true});
-		}else{
-			this.setState({loggedIn: false});
-		}
-
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({loggedIn: true});
 			}else{
 				this.setState({loggedIn: false});
 			}
+			this.setState({show: true});
 		});
 	};
 
 	logOut = () => {
 		firebase.auth().signOut().then(() => {
 			this.setState ({
-					redirect: <Route render={() => {
-						this.setState ({redirect: null});
-						return <Redirect to=""/>
-					}}/>
-				});
-			this.updateLoggedIn
+				redirect: <Route render={() => {
+					this.setState ({redirect: null});
+					return <Redirect to=""/>
+				}}/>
+			});
 		}, function(error) {
 			console.log("Something went wrong: " + error);
 		});
 	};
 
 	render() {
-		return (
-			<div className="App">
-				<BrowserRouter>
-					<div>
-						<NavigationBar loggedIn={this.state.loggedIn} logOut={this.logOut} openModal={this.openModal}/>
-						<div className="block-wrapper">
-							<Switch>
-								{this.state.redirect}
-								<Route exact path="/" render={(props) => {
-									return <Homepage {...props} openModal={this.openModal}/>
-								}}/>
-								<Route path="/myAquarium" render={(props) => {
-									return <MyAquarium {...props} openModal={this.openModal} app={this.app}/>
-								}}/>
-								<Route path="/forgot-password" render={(props) => {
-									return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
-								}}/>
-							</Switch>
+		if (this.state.show) {
+			return (
+				<div className="App">
+					<BrowserRouter>
+						<div>
+							<NavigationBar loggedIn={this.state.loggedIn} logOut={this.logOut} openModal={this.openModal}/>
+							<div className="block-wrapper">
+								<Switch>
+									{this.state.redirect}
+									<Route exact path="/" render={(props) => {
+										return <Homepage {...props} openModal={this.openModal}/>
+									}}/>
+									<Route path="/myAquarium" render={(props) => {
+										return <MyAquarium {...props} openModal={this.openModal} app={this.app}/>
+									}}/>
+									<Route path="/forgot-password" render={(props) => {
+										return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
+									}}/>
+									<Route path="/search" component={Search}/>
+								</Switch>
+							</div>
 						</div>
 						<ModalBase
 							errorContent={this.state.errorContent}

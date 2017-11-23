@@ -4,11 +4,13 @@ const admin = require('firebase-admin');
 
 const db = admin.firestore();
 
+const notifications = require('../notifications/notifications.js');
+
+/* Middleware */
+const isAuthenticated = require('../middleware/isAuthenticated.js');
+
 // returns all aquaria of current logged in user
-router.get('/aquaria/', (req, res) => {
-	if (!req.user) {
-		return res.status(401).send("Unauthorized");
-	}
+router.get('/aquaria/', isAuthenticated, (req, res) => {
 	db.collection("aquaria").where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		let aquaria = [];
@@ -22,10 +24,7 @@ router.get('/aquaria/', (req, res) => {
 });
 
 // returns an aquarium if owned by user
-router.get('/aquaria/:id', (req, res) => {
-	if (!req.user) {
-		return res.status(401).send("Unauthorized");
-	}
+router.get('/aquaria/:id', isAuthenticated, (req, res) => {
 	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		if (snapshot.empty){
@@ -41,11 +40,7 @@ router.get('/aquaria/:id', (req, res) => {
 });
 
 // creates an aquarium for logged in user
-router.post('/aquaria/', (req, res) => {
-	if (!req.user) {
-		return res.status(401).send("Unauthorized");
-	}
-
+router.post('/aquaria/', isAuthenticated, (req, res) => {
 	const allowedDataKeys = ["name"];
 	const data = req.body.data;
 
@@ -66,11 +61,7 @@ router.post('/aquaria/', (req, res) => {
 });
 
 // Updates aquarium if owned by user
-router.post('/aquaria/:id', (req, res) => {
-	if (!req.user) {
-		return res.status(401).send("Unauthorized");
-	}
-
+router.post('/aquaria/:id', isAuthenticated, (req, res) => {
 	if (!req.body.data){
 		res.sendStatus(422);
 	}
@@ -97,11 +88,7 @@ router.post('/aquaria/:id', (req, res) => {
 });
 
 // returns all fish within an aquarium
-router.get('/aquaria/:id/fish', (req, res) => {
-	if (!req.user) {
-		return res.status(401).send("Unauthorized");
-	}
-
+router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
 		if (snapshot.empty){
@@ -127,11 +114,7 @@ router.get('/aquaria/:id/fish', (req, res) => {
 });
 
 // Adds a fish to aquarium
-router.post('/aquaria/:id/fish', (req, res) => {
-	if (!req.user) {
-		return res.status(401).send("Unauthorized");
-	}
-
+router.post('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 	if (!req.body.data){
 		return res.status(400).send("Payload expected. Serve an object with root key *data*");
 	}
@@ -159,12 +142,52 @@ router.post('/aquaria/:id/fish', (req, res) => {
 });
 
 // Edits a fish in aquarium
-router.post('/aquaria/:id/fish/:fid', (req, res) => {
-	if (!req.user) {
-		return res.status(401).send("Unauthorized");
-	}
-
+router.put('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
 	res.status(500).send("fish edit - not yet implemented");
 });
+
+// Get all entries from aquarium
+router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
+	const aquarium = db.collection("aquaria").doc(req.params.id);
+
+	//db.collection("entries").where("aquarium", "==", aquarium).where("user", "==", req.user.ref).get()
+	db.collection("aquaria").doc(req.params.id).collection("entries").get()
+	.then((snapshot) => {
+		console.log(snapshot);
+		if(snapshot.empty){
+			res.send("Nothing found");
+		}
+
+		const diary = {};
+		diary.aquarium = aquarium;
+		diary.user = req.user.ref;
+		diary.entries = [];
+
+		snapshot.forEach((doc)=> {
+			diary.entries.push(doc.data());
+		})
+		res.send(diary);
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	})
+})
+
+// Add aquarium entry
+router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
+	const entry = req.body.entry;
+
+	// Warning: no model validation
+	db.collection("aquaria").doc(req.params.id).collection("entries").add(entry)
+	.then(() => {
+		return notifications.add(req.user.uid, "A entry has been added to the journal.", 1)
+	})
+	.then(() => {
+		res.send(201);
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	})
+})
 
 module.exports = router;

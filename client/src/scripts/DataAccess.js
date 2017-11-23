@@ -82,6 +82,7 @@ export default class DataAccess {
 			}
 			let requestParams = {
 				method: 'POST',
+				mode: 'cors',
 				headers: headers,
 				mode: 'cors',
 				body: JSON.stringify (body)
@@ -100,6 +101,7 @@ export default class DataAccess {
 			}
 			let requestParams = {
 				method: 'PUT',
+				mode: 'cors',
 				headers: headers,
 				body: JSON.stringify (body)
 			};
@@ -116,6 +118,7 @@ export default class DataAccess {
 			}
 			let requestParams = {
 				method: 'DELETE',
+				mode: 'cors',
 				headers: headers,
 			};
 			let request = new Request (this.api + url, requestParams);
