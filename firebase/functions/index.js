@@ -11,6 +11,7 @@ admin.initializeApp({
 	databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
 
+const notifications = require('./notifications/notifications.js');
 
 /* Algolia, used for search */
 const ALGOLIA_ID = "WPBUCLWL7Y";
@@ -22,6 +23,7 @@ const userRoutes = require('./routes/user.js');
 const registrationRoutes = require('./routes/registration.js');
 const aquariumRoutes = require('./routes/aquarium.js');
 const diseaseRoutes = require('./routes/disease.js');
+const notificationRoutes = require('./routes/notification.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
@@ -43,6 +45,7 @@ app.use('/api', userRoutes);
 app.use('/api', registrationRoutes);
 app.use('/api', aquariumRoutes);
 app.use('/api', diseaseRoutes);
+app.use('/api', notificationRoutes);
 
 /* Main route */
 
