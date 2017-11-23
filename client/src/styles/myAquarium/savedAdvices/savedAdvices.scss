@@ -1,14 +1,54 @@
 // Dit kan grotendeels overgenomen worden van notifications, alleen ik weet niet hoe, dus als Mitch ff kijkt
 @import '../../settings.scss';
 
-@keyframes appear {
-	from {
-		background-color: inherit;
-		visibility: hidden;
+
+@keyframes pullDown {
+	0% {
+		transform: scaleY(0.1);
 	}
-	to {
-		visibility: visible;
-		background-color: $supportColor;
+	40% {
+		transform: scaleY(1.02);
+	}
+	60% {
+		transform: scaleY(0.98);
+	}
+	80% {
+		transform: scaleY(1.01);
+	}
+	100% {
+		transform: scaleY(0.98);
+	}
+	80% {
+		transform: scaleY(1.01);
+	}
+	100% {
+		transform: scaleY(1);
+		background: $supportColor;
+	}
+}
+
+@-webkit-keyframes pullDown {
+	0% {
+		-webkit-transform: scaleY(0.1);
+	}
+	40% {
+		-webkit-transform: scaleY(1.02);
+	}
+	60% {
+		-webkit-transform: scaleY(0.98);
+	}
+	80% {
+		-webkit-transform: scaleY(1.01);
+	}
+	100% {
+		-webkit-transform: scaleY(0.98);
+	}
+	80% {
+		-webkit-transform: scaleY(1.01);
+	}
+	100% {
+		-webkit-transform: scaleY(1);
+		background: $supportColor;
 	}
 }
 
@@ -26,9 +66,16 @@
 			}
 		}
 		.white-bg {
-			background-color: $supportColor;
-			animation-name: appear;
-			animation-duration: 0.25s;
+			animation-name: pullDown;
+			-webkit-animation-name: pullDown;
+			animation-duration: 1.1s;
+			-webkit-animation-duration: 1.1s;
+			animation-timing-function: ease-out;
+			-webkit-animation-timing-function: ease-out;
+			transform-origin: 50% 0%;
+			-ms-transform-origin: 50% 0%;
+			-webkit-transform-origin: 50% 0%;
+			background: $supportColor;
 		}
 		.dropdown-link-down {
 			color: $supportColor;
@@ -57,7 +104,7 @@
 		}
 		.info {
 			height: $height;
-			color: #fff;
+			color: $supportColor;
 			background-color: $grey;
 			p {
 				display: inline-block;
@@ -68,7 +115,7 @@
 		}
 		.data {
 			height: $height;
-			color: #fff;
+			color: $supportColor;
 			background-color: $grey;
 			p {
 				display: inline-block;
@@ -78,9 +125,6 @@
 			}
 			ul {
 				padding-left: 16px;
-				li {
-					//padding: 0px;
-				}
 			}
 		}
 	}
