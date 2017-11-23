@@ -10,6 +10,15 @@ const notifications = require('../notifications/notifications.js');
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 
 // returns all aquaria of current logged in user
+/**
+ *  @api {get} /aquaria/ Request all aquaria of user
+ *  @apiName GetAquaria
+ *  @apiGroup Aquaria
+ *
+ *  @apiSuccess {Array} aquaria List of aquaria
+ *  @apiError Internal Server Error
+ *  @apiUse UserAuthenticated
+ */
 router.get('/aquaria/', isAuthenticated, (req, res) => {
 	db.collection("aquaria").where("user", "==", req.user.ref).get()
 	.then((snapshot) => {
@@ -23,7 +32,16 @@ router.get('/aquaria/', isAuthenticated, (req, res) => {
 	});
 });
 
-// returns an aquarium if owned by user
+
+/**
+ *  @api {get} /aquaria/:id returns an aquarium if owned by user
+ *  @apiName GetAquariaByID
+ *  @apiGroup Aquaria
+ *
+ *  @apiSuccess {Object} Aquarium data
+ *  @apiError Internal Server Error
+ *  @apiUse UserAuthenticated
+ */
 router.get('/aquaria/:id', isAuthenticated, (req, res) => {
 	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
 	.then((snapshot) => {

@@ -1,6 +1,12 @@
+/**
+ * @apiDefine UserAuthenticated
+ * @apiHeader {String} access-key Users unique token.
+ * @apiError UserNotFound the authentication middleware did not successfully detect and parse an idToken
+ *
+ */
 module.exports = isAuthenticated = (req, res, next) => {
     
-    // Checks whether the authentication middleware is succesfully detected and parsed an idToken.
+    // Checks whether the authentication middleware is successfully detected and parsed an idToken.
     if (req.user)
         return next();
 
