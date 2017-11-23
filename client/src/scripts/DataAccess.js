@@ -1,7 +1,27 @@
 import 'whatwg-fetch';
+import * as firebase from 'firebase';
+
 export default class DataAccess {
-	constructor (token) {
-		this.token = token;
+	constructor (bypass) {
+		this.token = null;
+		if (!bypass) {
+			this.waitForToken = () => new Promise ((resolve, reject) => {
+				if (!this.token) {
+					firebase.auth ().currentUser.getIdToken ().then ((result) => {
+						this.token = result;
+						resolve ();
+					}).catch ((error) => {
+						reject (error);
+					});
+				} else {
+					resolve ();
+				}
+			});
+		} else {
+			this.waitForToken = () => new Promise ((resolve) => {
+				resolve ();
+			});
+		}
 		this.api = "http://localhost:5000/api";
 	}
 
@@ -37,60 +57,68 @@ export default class DataAccess {
 	}
 
 	getData (url, cb) {
-		let headers = new Headers ();
-		if (this.token) {
-			headers.append ("Authorization", "Token "+this.token);
-		}
-		let requestParams = {
-			method: 'GET',
-			headers: headers,
-			mode: 'cors',
-			cache: 'default'
-		};
-		let request = new Request (this.api + url, requestParams);
-		this._fetchApi (request, cb);
+		this.waitForToken ().then (() => {
+			let headers = new Headers ();
+			if (this.token) {
+				headers.append ("Authorization", "Token "+this.token);
+			}
+			let requestParams = {
+				method: 'GET',
+				headers: headers,
+				mode: 'cors',
+				cache: 'default'
+			};
+			let request = new Request (this.api + url, requestParams);
+			this._fetchApi (request, cb);
+		});
 	}
 
 	postData (url, body, cb) {
-		let headers = new Headers ();
-		headers.append ("Content-Type", "application/json");
-		if (this.token) {
-			headers.append ("Authorization", "Token "+this.token);
-		}
-		let requestParams = {
-			method: 'POST',
-			headers: headers,
-			body: JSON.stringify (body)
-		};
-		let request = new Request (this.api + url, requestParams);
-		this._fetchApi (request, cb);
+		this.waitForToken ().then (() => {
+			let headers = new Headers ();
+			headers.append ("Content-Type", "application/json");
+			if (this.token) {
+				headers.append ("Authorization", "Token "+this.token);
+			}
+			let requestParams = {
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify (body)
+			};
+			let request = new Request (this.api + url, requestParams);
+			this._fetchApi (request, cb);
+		});
 	}
 
 	putData (url, body, cb) {
-		let headers = new Headers ();
-		headers.append ("Content-Type", "application/json");
-		if (this.token) {
-			headers.append ("Authorization", "Token "+this.token);
-		}
-		let requestParams = {
-			method: 'PUT',
-			headers: headers,
-			body: JSON.stringify (body)
-		};
-		let request = new Request (this.api + url, requestParams);
-		this._fetchApi (request, cb);
+		this.waitForToken ().then (() => {
+			let headers = new Headers ();
+			headers.append ("Content-Type", "application/json");
+			if (this.token) {
+				headers.append ("Authorization", "Token "+this.token);
+			}
+			let requestParams = {
+				method: 'PUT',
+				headers: headers,
+				body: JSON.stringify (body)
+			};
+			let request = new Request (this.api + url, requestParams);
+			this._fetchApi (request, cb);
+		});
 	}
 
 	deleteData (url, cb) {
-		let headers = new Headers ();
-		if (this.token) {
-			headers.append ("Authorization", "Token "+this.token);
-		}
-		let requestParams = {
-			method: 'DELETE',
-			headers: headers,
-		};
-		let request = new Request (this.api + url, requestParams);
-		this._fetchApi (request, cb);
+		this.waitForToken ().then (() => {
+			let headers = new Headers ();
+			if (this.token) {
+				headers.append ("Authorization", "Token "+this.token);
+			}
+			let requestParams = {
+				method: 'DELETE',
+				headers: headers,
+			};
+			let request = new Request (this.api + url, requestParams);
+			this._fetchApi (request, cb);
+		});
 	}
 }
