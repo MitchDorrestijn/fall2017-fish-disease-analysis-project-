@@ -58,10 +58,11 @@
 		margin-top: 20px;
 		margin-bottom: 20px;
 		.treatment-container {
+			color: $alternativeTextColor;
 			text-align: left;
-			padding: 20px;
+			padding: $defaultPadding;
 			h5 {
-				margin-top: 20px;
+				margin-top: $defaultPadding;
 			}
 		}
 		.white-bg {

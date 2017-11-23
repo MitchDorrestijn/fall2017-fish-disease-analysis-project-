@@ -67,8 +67,8 @@ export default class AdviceTreatment extends Component {
 				<a href="" onClick={this.toggleTreatment} className={this.getLinkClass()}>
 					{this.getDropdownText()}<br/>
 					<span className={this.getArrowClass()}/>
-					{this.getContent()}
 				</a>
+				{this.getContent()}
 			</Col>
 		);
 	}
