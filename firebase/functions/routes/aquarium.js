@@ -4,6 +4,8 @@ const admin = require('firebase-admin');
 
 const db = admin.firestore();
 
+const notifications = require('../notifications/notifications.js');
+
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 
@@ -177,6 +179,9 @@ router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 
 	// Warning: no model validation
 	db.collection("aquaria").doc(req.params.id).collection("entries").add(entry)
+	.then(() => {
+		return notifications.add(req.user.uid, "A entry has been added to the journal.", 1)
+	})
 	.then(() => {
 		res.send(201);
 	})
