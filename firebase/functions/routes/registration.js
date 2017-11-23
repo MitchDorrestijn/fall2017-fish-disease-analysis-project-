@@ -113,10 +113,10 @@ router.get('/verify/:id/:token', (req, res) => {
 
 router.post('/forgot-password', (req, res) => {
 	const email = req.body.email;
-	if(!validator.isEmail(email)){
+	if (!validator.isEmail(email)){
 		return res.status(400).send("Invalid email");
 	}
-	const passwordForgotToken = "";
+	let passwordForgotToken;
 	admin.auth().getUserByEmail(email).then((user)=>{
 		passwordForgotToken = hasher('md5', email + Date.now());
 		return db.collection("users").doc(user.uid).update({ passwordForgotToken: passwordForgotToken });

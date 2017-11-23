@@ -90,6 +90,7 @@ export default class TodaysData extends React.Component {
 			this.verifyLogin(user);
 		});
 		let user = firebase.auth().currentUser;
+		console.log(user);
 		this.verifyLogin(user);
 	}
 
