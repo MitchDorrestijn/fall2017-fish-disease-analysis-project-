@@ -8,7 +8,7 @@ const db = admin.firestore();
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 
 router.get("/notifications", isAuthenticated, (req, res) => {
-    db.collection("notifications").where("user", "==", req.user.ref).get()
+    db.collection("notifications").where("user", "==", req.user.ref).orderBy('date', 'desc').get()
     .then((snapshot) => {
         var notifications = []
         snapshot.forEach((doc) => {
@@ -17,7 +17,8 @@ router.get("/notifications", isAuthenticated, (req, res) => {
         res.send(notifications);
     })
     .catch((error) => {
-        res.status(500).send(error);
+        console.log(error);
+        res.status(500).send(error.message);
     })
 })
 
