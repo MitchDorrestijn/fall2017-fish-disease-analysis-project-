@@ -2,6 +2,7 @@ import React from 'react';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import '../styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import Adminscreen from '../admin/Admin';
 import NavigationBar from './navigation/NavigationBar';
 import Homepage from './homepage/Homepage';
 import MyAquarium from './myAquarium/MyAquarium';
@@ -10,6 +11,7 @@ import Login from './modal/Login';
 import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
+
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -47,7 +49,7 @@ export default class App extends React.Component {
 			this.showError(true, error.message);
 		});
 	};
-	
+
 	userRegister = (email, password, firstName, lastName, country) => {
 		const user = {
 			user: {
@@ -145,7 +147,7 @@ export default class App extends React.Component {
 		this.getLanguage();
 		this.updateLoggedIn();
 	}
-	
+
 	updateLoggedIn = () => {
 		let user = this.app.auth().currentUser;
 
@@ -154,7 +156,7 @@ export default class App extends React.Component {
 		}else{
 			this.setState({loggedIn: false});
 		}
-		
+
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({loggedIn: true});
@@ -177,7 +179,7 @@ export default class App extends React.Component {
 			console.log("Something went wrong: " + error);
 		});
 	};
-	
+
 	render() {
 		return (
 			<div className="App">
@@ -196,6 +198,7 @@ export default class App extends React.Component {
 								<Route path="/forgot-password" render={(props) => {
 									return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
 								}}/>
+								<Route path="/admin" component={Adminscreen} />
 							</Switch>
 						</div>
 					</div>
