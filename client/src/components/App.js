@@ -59,7 +59,7 @@ export default class App extends React.Component {
 			}
 		};
 
-		let da = new DataAccess ();
+		let da = new DataAccess (true);
 		da.postData(`/register`, user, (err, res) => {
 			if (!err) {
 				this.closeModal();
@@ -81,7 +81,7 @@ export default class App extends React.Component {
 			email: email
 		};
 
-		let da = new DataAccess ();
+		let da = new DataAccess (true);
 		da.postData(`/forgot-password`, emailObj, (err, res) => {
 			if (!err) {
 				this.closeModal();
@@ -103,7 +103,7 @@ export default class App extends React.Component {
 		};
 		const token = window.location.pathname.replace("/forgot-password/", "");
 
-		let da = new DataAccess ();
+		let da = new DataAccess (true);
 		da.postData(`/forgot-password/` + token, passwordObj, (err, res) => {
 			if (!err) {
 				this.openModal(Login);
