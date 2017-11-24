@@ -194,7 +194,16 @@ router.put('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
 	res.status(500).send('fish edit - not yet implemented');
 });
 
-// Get all entries from aquarium
+/**
+ *  @api {post} /aquaria/:id/entries  Get all aquarium entries
+ *  @apiName Get all entries from aquarium
+ *  @apiGroup Aquaria
+ *  @apiParam {String} id of aquarium
+ *
+ *  @apiSuccess {Object} Notification which has been added TODO: Not sure about this return, still needs example
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ */
 router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const aquarium = db.collection('aquaria').doc(req.params.id);
 
@@ -206,7 +215,7 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 		then((snapshot) => {
 			console.log(snapshot);
 			if (snapshot.empty) {
-				res.send('Nothing found');
+				res.status(204).send('Nothing found');
 			}
 
 			const diary = {};
@@ -233,6 +242,7 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
  *  @apiSuccess {Object} Notification which has been added TODO: Not sure about this return, still needs example
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
+ *  @apiUse HTTPCreated
  */
 router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const entry = req.body.entry;
@@ -247,7 +257,7 @@ router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 				'A entry has been added to the journal.', 1);
 		}).
 		then(() => {
-			res.send(201);
+			res.sendStatus(201);
 		}).
 		catch((error) => {
 			res.status(500).send(error.message);
