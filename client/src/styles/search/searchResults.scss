@@ -107,14 +107,27 @@
 				position: absolute;
 				min-height: $height;
 				overflow: hidden;
+				@media screen and(max-width: $responsiveBreakPoint){
+					min-height: auto;
+					position: relative;
+				}
 				img {
 					max-width: 100%;
+					@media screen and(max-width: $responsiveBreakPoint){
+						max-width: auto;
+						min-height: auto;
+						max-height: auto;
+					}
+					max-height: $height;
+					min-height: $height;
 				}
 				@media screen and(max-width: $responsiveBreakPoint){
 					position: relative;
 					height: auto;
 					img {
 						width: 100%;
+						max-height: $height;
+						min-height: $height;
 					}
 				}
 			}
