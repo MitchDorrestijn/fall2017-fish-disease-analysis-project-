@@ -20,10 +20,10 @@ router.post('/register/', (req, res) => {
 	const user = req.body.user;
 	
 	// Validate input
+	// TODO: country needs to be validated
 	if (!validator.isEmail(user.email) ||
 		!validator.isAlpha(user.firstName) ||
 		!validator.isAlpha(user.lastName) ||
-		!validator.isAlpha(user.country) ||
 		validator.isEmpty(user.password)
 	){
 		return res.status(400).send("Input validation failed.");

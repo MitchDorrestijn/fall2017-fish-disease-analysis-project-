@@ -2,4 +2,6 @@
 
 To run apidoc:
 
+npm install apidoc -g
+
 apidoc -e node_modules/ -i firebase/ -o apidoc/
