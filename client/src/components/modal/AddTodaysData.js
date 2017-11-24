@@ -48,18 +48,18 @@ class AddTodaysData extends React.Component {
 		let year = date.getFullYear ();
 
 		const todaysData = {
-			date: day + "-" + month + "-" + year,
-			phosphate: document.getElementById("phosphate").value,
-			nitrate: document.getElementById("nitrate").value,
-			nitrite: document.getElementById("nitrite").value,
-			iron: document.getElementById("iron").value,
+			Date: day + "-" + month + "-" + year,
+			Phosphate: document.getElementById("phosphate").value,
+			Nitrate: document.getElementById("nitrate").value,
+			Nitrite: document.getElementById("nitrite").value,
+			Iron: document.getElementById("iron").value,
 			gH: document.getElementById("gh").value,
-			temperature: document.getElementById("temperature").value,
-			oxygen: document.getElementById("oxygen").value,
-			carbon: document.getElementById("carbon").value,
-			dioxide: document.getElementById("dioxide").value,
+			Temperature: document.getElementById("temperature").value,
+			Oxygen: document.getElementById("oxygen").value,
+			Carbon: document.getElementById("carbon").value,
+			Dioxide: document.getElementById("dioxide").value,
 			kH: document.getElementById("kh").value,
-			chlorine: document.getElementById("chlorine").value
+			Chlorine: document.getElementById("chlorine").value
 		};
 		Object.keys(todaysData).forEach( (key) => {
 			if (todaysData[key] === "") {

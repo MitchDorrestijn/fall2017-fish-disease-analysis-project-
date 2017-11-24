@@ -15,7 +15,7 @@ export default class TodaysData extends React.Component {
 			currentAquarium: null
 		};
 		this.keyCounter  = 0;
-		this.tableHeaders = ["date", "phosphate", "nitrate", "nitrite", "iron", "gH", "temperature", "oxygen", "carbon", "dioxide", "kH", "chlorine"];
+		this.tableHeaders = ["Date", "Phosphate", "Nitrate", "Nitrite", "Iron", "gH", "Temperature", "Oxygen", "Carbon", "Dioxide", "kH", "Chlorine"];
 	};
 	//setState functions:
 	setAquariumData = (data) => {
@@ -80,12 +80,12 @@ export default class TodaysData extends React.Component {
 					rows.push(<td key={this.keyCounter}>{object[key]}</td>);
 				};
 				if (index > rows.length) {
-					rows.push(<td key={this.keyCounter}>NA</td>);
+					rows.push(<td key={this.keyCounter}>N/A</td>);
 				};
 			});
 		});
 		if (rows.length === 11){
-			rows.push(<td key={this.keyCounter}>NA</td>);
+			rows.push(<td key={this.keyCounter}>N/A</td>);
 		}
 		return rows;
 	};
@@ -149,7 +149,6 @@ export default class TodaysData extends React.Component {
 	};
 
 	render() {
-		console.log(this.keyCounter);
 		return (
 			<div>
 				<h1>Today's Data</h1>
