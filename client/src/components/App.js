@@ -196,22 +196,22 @@ export default class App extends React.Component {
 									<Route path="/search" component={Search}/>
 								</Switch>
 							</div>
+							<ModalBase
+								errorContent={this.state.errorContent}
+								isErrorVisible={this.state.showError}
+								showError={this.showError}
+								isVisible={this.state.showModal}
+								userLogin={this.userLogin}
+								userRegister={this.userRegister}
+								userForgotPassword={this.userForgotPassword}
+								userResetPassword={this.userResetPassword}
+								openModal={this.openModal}
+								closeModal={this.closeModal}
+							>
+								{this.state.modalContent}
+							</ModalBase>
 						</div>
 					</BrowserRouter>
-					<ModalBase
-						errorContent={this.state.errorContent}
-						isErrorVisible={this.state.showError}
-						showError={this.showError}
-						isVisible={this.state.showModal}
-						userLogin={this.userLogin}
-						userRegister={this.userRegister}
-						userForgotPassword={this.userForgotPassword}
-						userResetPassword={this.userResetPassword}
-						openModal={this.openModal}
-						closeModal={this.closeModal}
-					>
-						{this.state.modalContent}
-					</ModalBase>
 				</div>
 			);
 		} else {

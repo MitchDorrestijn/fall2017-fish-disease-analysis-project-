@@ -2,153 +2,144 @@ import React from 'react';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import { Table } from 'reactstrap';
+import {Link} from 'react-router-dom';
+import AddTodaysData from '../../modal/AddTodaysData';
+import AddAquarium from '../../modal/AddAquarium';
 import DataAccess from '../../../scripts/DataAccess';
-import * as firebase from 'firebase';
 
 export default class TodaysData extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			//date needs to be orderd on order of table
-			data: null,
-			error: null,
-			aquariumData: [
-				[
-					["22-10-19", 1, 0.1, 7, 4],
-					["24-10-19", 6, 0.4, 5, 4],
-					["27-10-19", 3.4, 0.3, 5, 4]
-				],
-				[
-					["22-10-19", 1, 0.1, 7, 4],
-					["24-10-19", 2, 0.4, 5, 4],
-					["27-10-19", 3.4, 0.3, 5, 4]
-				],
-				[
-					["22-10-19", 1, 0.1, 7, 4],
-					["24-10-19", 4, 0.4, 5, 4],
-					["27-10-19", 3.4, 0.3, 5, 4]
-				]
-			],
-			currentAquarium: [
-				["22-10-19", 1, 0.1, 7, 4],
-				["24-10-19", 6, 0.4, 5, 5],
-				["27-10-19", 3.4, 0.3, 5, 4]
-			],
-			aquariumNames: ["Aquarium 1", "Aquarium 2", "Aquarium 3"]
-		}
-	}
-
-	verifyLogin = (user) => {
-		if (user) {
-				let da = new DataAccess ();
-				da.getData ('/aquaria/3V3kij8a0XN6eW3GEfHF', (err, res) => {
-					if (!err) {
-						console.log(res);
-						let result = [];
-						delete res.aquarium.user;
-						for (let elem in res.aquarium) {
-							let entry = (
-								<tr>
-									<td>{elem}</td>
-									<td>{res.aquarium[elem]}</td>
-								</tr>
-							);
-							result.push (entry);
-						}
-						this.setState({
-							data: result,
-							error: null
-						});
-					} else {
-						this.setState({
-							data: null,
-							error: err
-						});
-					}
-				});
-		} else {
-			this.setError("You are not logged in");
-		}
+			aquariumData: [{}],
+			createdAquariums: [],
+			currentAquarium: null
+		};
+		this.tableHeaders = ["date", "phosphate", "nitrate", "nitrite", "iron", "gH", "temperature", "oxygen", "carbon", "dioxide", "kH", "chlorine"];
 	};
-
-	setData = (data) => {
+	setAquariumData = (data) => {
 		this.setState({
-			data: data,
-			error: null
+			aquariumData: data
 		});
 	};
-
-	setError = (error) => {
-		this.setState ({
-			data: null,
-			error: error
+	setCreatedAquariums = (aquariums) => {
+		this.setState({
+			createdAquariums: aquariums
 		});
 	};
-
+	setCurrentAquarium = (aquarium) => {
+		this.setState({
+			currentAquarium: aquarium
+		})
+	};
+	showAddTodaysData = (e) => {
+		e.preventDefault ();
+		this.props.openModal(AddTodaysData);
+	};
+	showAddAquariumModel = (e) => {
+		e.preventDefault ();
+		this.props.openModal(AddAquarium);
+	}
 	componentWillMount() {
-		firebase.auth().onAuthStateChanged((user) => {
-			this.verifyLogin(user);
+		this.initSetters();
+	};
+	initSetters = () => {
+		let da = new DataAccess ();
+		da.getData ('/aquaria', (err, res) => {
+			this.setCreatedAquariums(res.message);
+			if (!err) {
+			} else {
+			};
 		});
-		let user = firebase.auth().currentUser;
-		console.log(user);
-		this.verifyLogin(user);
+	};
+	getAquariumData = (currentAquariumID, currentAquariumName) => {
+				let da = new DataAccess ();
+				da.getData (`/aquaria/${currentAquariumID}/entries`, (err, res) => {
+					if (res.message.entries === undefined) {
+						this.setAquariumData([{}]);
+					} else {
+						this.setAquariumData(res.message.entries);
+					}
+					this.setCurrentAquarium(currentAquariumName);
+					if (!err) {
+					} else {
+				};
+			});
+	};
+	fillAquariumTable = (object) => {
+		let rows = [];
+		this.tableHeaders.forEach((value, index) => {
+			Object.keys(object).forEach( (key) => {
+				if (key === value) {
+					rows.push(<td key={index}>{object[key]}</td>);
+				};
+				if (index > rows.length) {
+					rows.push(<td key={index}>NA</td>);
+				};
+			});
+		});
+		if (rows.length === 11){
+			rows.push(<td key={12}>NA</td>);
+		}
+		return rows;
+	};
+	fillAquariumTableHeader = () => {
+		let rows = [];
+		this.tableHeaders.forEach((value, index) => {
+			rows.push(<th key={index}>{value}</th>);
+		})
+		return rows;
 	}
-
-	updateCurrentAquarium = (aquariumData) => {
-		this.setState({currentAquarium: aquariumData});
-	}
-
-
 	drawAquariumTable = (aquariumData) => {
 		return(
 			<div className="table_card">
 				<thead>
 					<tr>
-						<th>Date</th>
-						<th>Phosphate</th>
-						<th>Nitrate</th>
-						<th>Nitrite</th>
-						<th>Iron</th>
-						<th>gH</th>
-						<th>Temperature</th>
-						<th>Oxygen</th>
-						<th>Carbon</th>
-						<th>Dioxide</th>
-						<th>kH</th>
-						<th>Chlorine</th>
+						{this.fillAquariumTableHeader()}
 					</tr>
 				</thead>
 				<tbody>
 					{
-						aquariumData.map((value, index) => {
+						aquariumData.map( (value, index) => {
 							return(
-								<tr key={value}>
-									{
-										value.map((value, index) => {
-											return(<td key={value}>{value}</td>)
-										})
-									}
+								<tr key={index}>
+									{this.fillAquariumTable(value)}
 								</tr>
 							)
 						})
 					}
 				</tbody>
 			</div>
-		)
-	}
-
-	drawAquariumButtons = (aquariumNames) => {
+		);
+	};
+	drawAquariumButtons = (createdAquariums) => {
 		return(
 			<div className="text-center">
 				{
-					aquariumNames.map((aquariumName) => {
-						return <ActionButton key={aquariumName} buttonText={aquariumName} color="primary btn-transperant"/>
+					createdAquariums.map( (createdAquarium) => {
+						return <ActionButton	key={createdAquarium.id} buttonText={createdAquarium.name} color="primary btn-transperant"
+																	onClickAction={(arr) => this.getAquariumData(createdAquarium.id, createdAquarium.name)}/>
 					})
 				}
 			</div>
-		)
-	}
-
+		);
+	};
+	drawAquariumCard = () => {
+		let object = [];
+		if (this.state.currentAquarium !== null && this.state.currentAquarium !== undefined ) {
+			object.push(
+				<Card>
+					<CardBody>
+						<h4>Aquarium data from: {this.state.currentAquarium}</h4>
+						<Table responsive>
+							{this.drawAquariumTable(this.state.aquariumData)}
+						</Table>
+					</CardBody>
+				</Card>
+			)
+		};
+		return (object);
+	};
 
 	render() {
 		return (
@@ -156,21 +147,19 @@ export default class TodaysData extends React.Component {
 				<h1>Today's Data</h1>
 				<Row>
 					<Col>
-						{this.drawAquariumButtons(this.state.aquariumNames)}
+						<div className="addBtns">
+							{this.drawAquariumButtons(this.state.createdAquariums)}
+							<a href="" onClick={this.showAddAquariumModel}>+ Add aquarium</a>
+							<a href="" onClick={this.showAddTodaysData}>+ Add today's data</a>
+						</div>
 					</Col>
 				</Row>
 				<Row>
 					<Col>
 						<div className="container">
-								<div className="row inner-content">
-									<div className="col-md-12 no-gutter">
-									<Card>
-										<CardBody>
-											<Table responsive>
-												{this.drawAquariumTable(this.state.currentAquarium)}
-											</Table>
-										</CardBody>
-									</Card>
+							<div className="row inner-content">
+								<div className="col-md-12 no-gutter">
+									{this.drawAquariumCard()}
 								</div>
 							</div>
 						</div>
