@@ -1,0 +1,54 @@
+@import '../../settings.scss';
+
+.selectField {
+  width: 100%;
+	margin-bottom: $defaultPadding;
+}
+
+.Select-placeholder {
+  color:inherit;
+}
+
+.Select-arrow {
+  border: none;
+}
+
+.Select--multi .Select-value {
+  color: $alternativeTextColor;
+  border: 1px solid $alternativeTextColor;
+  background: $supportColor;
+}
+
+.Select--multi .Select-value-icon {
+  border-right: 1px solid $alternativeTextColor;
+}
+
+.Select-control {
+  border: none
+}
+
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.Select--multi .Select-value,
+.Select--multi a.Select-value-label {
+  color: $alternativeTextColor;
+}
+.Select-option.is-focused  {
+  background-color: $supportColor;
+}
+
+.Select-menu-outer {
+  margin-top: 10px;
+}
+
+.Select--multi .Select-value-icon:active,
+.Select--multi .Select-value-icon:hover {
+  background-color: $alternativeTextColor;
+  color: $supportColor;
+}
+
+.Select-arrow-zone {
+  padding-right: $defaultPadding;
+}

@@ -1,36 +1,45 @@
 import React from 'react';
-import {
-	ModalHeader,
-	ModalBody,
-	Button,
-	FormGroup,
-	Label,
-	InputGroup,
-	InputGroupAddon,
-	Input
-} from 'reactstrap';
+import { ModalHeader, ModalBody, Button, FormGroup, Label, InputGroup} from 'reactstrap';
 import Error from './Error';
-import fuzzyFilterFactory from 'react-fuzzy-filter';
-
+import 'react-select/dist/react-select.css';
+import Select from "react-select";
 
 
 class AddFish extends React.Component {
 	constructor(props){
 		super(props);
-		this.InputFilter = fuzzyFilterFactory().InputFilter;
-		this.FilterResults = fuzzyFilterFactory().FilterResults;
+		this.state = {
+			fishSpecies: [ //Fishes from the database
+	  		{ value: 'Goldfish', label: 'Goldfish' },
+	  		{ value: 'Catfish', label: 'Catfish' }
+			],
+			availibleAquariums: [ //Aquaria from the database for this user
+	  		{ value: 'Aquarium1', label: 'Aquarium1' },
+	  		{ value: 'Aquarium2', label: 'Aquarium2' }
+			],
+			selectedAquarium: "", //To display the selected aquaria in the input field
+			selectedFish: "", //To display the selected fish in the input field
+			dataToSendToDB: {}
+		}
+	}
+	selectFishSpecies = (val) => {
+		let selectedData = {
+			aquariumName: this.state.selectedAquarium,
+			fishName: val
+		}
+		this.setState({selectedFish: val, objectToSendToDB: selectedData});
+	}
+	getSelectedAquarium = (val) => {
+		let selectedData = {
+			aquariumName: val,
+			fishName: this.state.selectedFish
+		}
+		this.setState({selectedAquarium: val, objectToSendToDB: selectedData})
+	}
+	addFish = () => {
+		console.log(this.state.objectToSendToDB);
 	}
 	render() {
-
-		const items = [
-      { name: 'first', meta: 'first|123', tag: 'a' },
-      { name: 'second', meta: 'second|443', tag: 'b' },
-      { name: 'third', meta: 'third|623', tag: 'a' },
-    ];
-    const fuseConfig = {
-      keys: ['meta', 'tag']
-    };
-
 		return (
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Add fish</ModalHeader>
@@ -42,26 +51,29 @@ class AddFish extends React.Component {
 					<FormGroup>
 						<Label for="addfish">Name of fish:</Label>
 						<InputGroup>
-
-
-							<this.InputFilter debounceTime={200} />
-			 				<div>Any amount of content between</div>
-			 				<this.FilterResults items={items} fuseConfig={fuseConfig}>
-								{filteredItems => {
-					 				return(
-						 				<div>
-							 				{filteredItems.forEach(item => <div>{item.name}</div>)}
-						 				</div>
-					 				)
-				 				}}
-			 				</this.FilterResults>
-
-
-
+							<Select
+								simpleValue={true}
+								name="addfish"
+								value={this.state.selectedFish}
+								className="selectField"
+								options={this.state.fishSpecies}
+								onChange={this.selectFishSpecies}
+							/>
+						</InputGroup>
+						<Label for="addfishtoaquarium">Add fish to aquarium:</Label>
+						<InputGroup>
+							<Select
+								simpleValue={true}
+								name="addfishtoaquarium"
+								value={this.state.selectedAquarium}
+								className="selectField"
+								options={this.state.availibleAquariums}
+								onChange={this.getSelectedAquarium}
+							/>
 						</InputGroup>
 					</FormGroup>
 					<hr/>
-					<Button outline className="modalLink" color="secondary" block>Add fish</Button>
+					<Button onClick={this.addFish} outline className="modalLink" color="secondary" block>Add fish</Button>
 				</ModalBody>
 			</div>
 		);

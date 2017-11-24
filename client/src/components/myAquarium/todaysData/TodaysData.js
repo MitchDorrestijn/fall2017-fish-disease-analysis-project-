@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Col, Row } from 'reactstrap';
+import { Card, CardBody, Col, Row } from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import { Table } from 'reactstrap';
 import DataAccess from '../../../scripts/DataAccess';
@@ -40,11 +40,10 @@ export default class TodaysData extends React.Component {
 
 	verifyLogin = (user) => {
 		if (user) {
-			firebase.auth().currentUser.getIdToken().then((result) => {
-				console.log (result);
-				let da = new DataAccess (result);
+				let da = new DataAccess ();
 				da.getData ('/aquaria/3V3kij8a0XN6eW3GEfHF', (err, res) => {
 					if (!err) {
+						console.log(res);
 						let result = [];
 						delete res.aquarium.user;
 						for (let elem in res.aquarium) {
@@ -67,7 +66,6 @@ export default class TodaysData extends React.Component {
 						});
 					}
 				});
-			});
 		} else {
 			this.setError("You are not logged in");
 		}
@@ -92,6 +90,7 @@ export default class TodaysData extends React.Component {
 			this.verifyLogin(user);
 		});
 		let user = firebase.auth().currentUser;
+		console.log(user);
 		this.verifyLogin(user);
 	}
 

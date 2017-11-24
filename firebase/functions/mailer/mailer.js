@@ -14,7 +14,7 @@ dependency.getTransporter = (user, password) => {
             rejectUnauthorized: false
         }
     });
-}
+};
 
 dependency.mail = (to, subject, html) => {
     // setup email data with unicode symbols
@@ -38,6 +38,6 @@ dependency.mail = (to, subject, html) => {
             resolve(info);
         });
     });
-}
+};
 
 module.exports = dependency;
