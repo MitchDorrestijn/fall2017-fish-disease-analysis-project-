@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Col} from 'reactstrap';
 
-export default class AdviceTreatment extends Component {
+export default class FishAdditional extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Col} from 'reactstrap';
 
-export default class AdviceInfo extends Component {
+export default class FishesInfo extends Component {
 	render() {
 		return (
 			<Col lg="9" xs="12" className="no-gutter">
