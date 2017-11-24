@@ -1,8 +1,43 @@
 import React from 'react';
 import {Col, Row} from 'reactstrap';
-import DiseaseBlock from './Block/DiseaseBlock'
+import DiseaseBlock from './Block/DiseaseBlock';
+import DataAccess from '../../../scripts/DataAccess';
 
 export default class Diseases extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			blocks: []
+		};
+	}
+	
+	componentDidMount = () => {
+		if(this.props.searchTerm !== ""){
+			let da = new DataAccess ();
+			da.getData(`/diseases/search?term=` + this.props.searchTerm, (err, res) => {
+				if (!err) {
+					if(res.message.length > 0){
+						let blocks = [];
+						for(let i = 0; i < res.message.length; i++){					
+							blocks.push (<DiseaseBlock key={i} picture="schimmel3" title={res.message[i].name} info={res.message[i].description} symptoms={res.message[i].symptoms} treatment={res.message[i].treatment}/>);
+						}
+						this.setState({blocks: blocks});
+					}else{
+						let blocks = [];				
+						blocks.push(<p key={0}>No results found</p>);
+						this.setState({blocks: blocks});
+					}
+				} else {
+					console.log(err);
+				}
+			});
+		}else{
+			let blocks = [];				
+			blocks.push(<p key={0}>No results found</p>);
+			this.setState({blocks: blocks});
+		}
+	}
+	
 	render() {
 		return (
 			<div className="search-results">
@@ -10,21 +45,7 @@ export default class Diseases extends React.Component {
 				<hr/>
 				<Row>
 					<Col xs="12">						
-						<DiseaseBlock
-							picture="schimmel3"
-							title="White spot disease - Ichthyophthirius multifiliis"
-							info="The white spot disease is one of the most common fish diseases. Infected fish have small white spots on the skin and gills.It can lead to the loss of skin and ulcers. These wounds can harm the ability of a fish to control the movement of water into its body."
-							symptoms={["White spots", "Wobbling", "No appetite", "Skin disease"]}
-							treatment="Treatment"
-						/>
-
-						<DiseaseBlock
-							picture="schimmel3"
-							title="White spot disease - Ichthyophthirius multifiliis"
-							info="The white spot disease is one of the most common fish diseases. Infected fish have small white spots on the skin and gills.It can lead to the loss of skin and ulcers. These wounds can harm the ability of a fish to control the movement of water into its body."
-							symptoms={["White spots", "Wobbling", "No appetite", "Skin disease"]}
-							treatment="Treatment"
-						/>
+						{this.state.blocks}
 					</Col>
 				</Row>
 			</div>
