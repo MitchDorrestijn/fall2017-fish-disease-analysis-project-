@@ -4,11 +4,13 @@ import {Col} from 'reactstrap';
 export default class AdvicePicture extends Component {
 
 	componentDidMount(){
-		let listEl = document.getElementById("symptomsList");
-		for(let i = 0; i < this.props.symptoms.length; i++){
-			listEl.innerHTML += "<li>" + this.props.symptoms[i] + "</li>";
+		if(this.props.symptoms){
+			let listEl = document.getElementById("symptomsList");
+			for(let i = 0; i < this.props.symptoms.length; i++){
+				listEl.innerHTML += "<li>" + this.props.symptoms[i] + "</li>";
+			}
+			document.getElementById("symptomsList").id = "";
 		}
-		document.getElementById("symptomsList").id = "";
 	}
 
 	render() {

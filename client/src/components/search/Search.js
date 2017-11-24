@@ -13,7 +13,7 @@ export default class MyAquarium extends React.Component {
 		let title = <span>Search results</span>;
 		let search = window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1);
 		if(search === "search" || search === "Fish" || search === "Diseases"){
-				search = "All";
+				search = "";
 		}
 		return (
 				<div className="row row-no-gutter sidebar-wrap">
@@ -29,10 +29,18 @@ export default class MyAquarium extends React.Component {
 						</SidebarLink>
 					</Sidebar>
 					<ContentContainer size="12" img="/images/myAquarium/achtergrond.jpg">
-						<Route exact path="/search" component={All}/>
-						<Route exact path="/search/:searchTerms" component={All}/>
-						<Route exact path="/search/Fish/:searchTerms" component={Fish}/>
-						<Route exact path="/search/Diseases/:searchTerms" component={Diseases}/>
+						<Route exact path="/search" render={(props) => {
+							return <All {...props} searchTerm={search}/>
+						}}/>
+						<Route exact path="/search/:searchTerms" render={(props) => {
+							return <All {...props} searchTerm={search}/>
+						}}/>
+						<Route exact path="/search/Fish/:searchTerms" render={(props) => {
+							return <Fish {...props} searchTerm={search}/>
+						}}/>
+						<Route exact path="/search/Diseases/:searchTerms" render={(props) => {
+							return <Diseases {...props} searchTerm={search}/>
+						}}/>
 					</ContentContainer>
 				</div>
 		);
