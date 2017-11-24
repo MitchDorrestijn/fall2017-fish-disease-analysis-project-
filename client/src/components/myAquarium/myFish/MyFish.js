@@ -5,6 +5,7 @@ import ActionButton from '../../base/ActionButton';
 import {Link} from 'react-router-dom';
 import AddFish from '../../modal/AddFish';
 import AddAquarium from '../../modal/AddAquarium';
+import RemoveAquarium from '../../modal/RemoveAquarium';
 import DataAccess from '../../../scripts/DataAccess';
 import * as firebase from 'firebase';
 
@@ -123,6 +124,10 @@ export default class MyFish extends React.Component {
 		e.preventDefault ();
 		this.props.openModal(AddAquarium);
 	}
+	showRemoveAquariumModel = (e) => {
+		e.preventDefault ();
+		this.props.openModal(RemoveAquarium);
+	}
 	render() {
 		return (
 			<div className="container">
@@ -132,6 +137,7 @@ export default class MyFish extends React.Component {
 						{this.createFilterButtons()}
 						<Link to="" onClick={this.showAddAquariumModel}>+ Add aquarium</Link>
 						<Link to="" onClick={this.showAddFishModel}>+ Add fish</Link>
+						<Link to="" onClick={this.showRemoveAquariumModel}>- Remove aquarium</Link>
 					</div>
 					<div className="card-columns">
 						{this.filterFish()}
