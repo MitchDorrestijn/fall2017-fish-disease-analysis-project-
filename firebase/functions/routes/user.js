@@ -18,7 +18,7 @@ router.get('/users/:id/', (req, res) => {
 		}
 		return res.send(profileObject.data()).status(200);
 	}).catch(err => {
-		res.send(err.message).status(400);
+		res.status(400).send(err.message);
 	});
 });
 /**

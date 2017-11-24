@@ -38,9 +38,9 @@ export default class AccountSettings extends React.Component {
 
 	verifyLogin = (user) => {
 		if (user) {
-			firebase.auth().currentUser.getIdToken().then((token) => {
-				let userService = new UserService(token);
-				userService.getUserData(user, (err, res) => {
+			let userService = new UserService();
+			userService.getUserData(user, (err, res) => {
+				if (!err) {
 					let birthDayList;
 					//If data of user is not set, put in default date
 					if (res.message.birthDate) {
@@ -58,8 +58,8 @@ export default class AccountSettings extends React.Component {
 						birthMonth: birthDayList.birthMonth,
 						birthYear: birthDayList.birthYear,
 					});
-				});
-				this.cleanErrors();
+					this.cleanErrors();
+				}
 			});
 		}
 	};
