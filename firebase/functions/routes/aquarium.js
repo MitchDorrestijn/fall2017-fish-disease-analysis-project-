@@ -1,3 +1,4 @@
+// TODO: Add success scenarios examples
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
@@ -9,10 +10,9 @@ const notifications = require('../notifications/notifications.js');
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 
-// returns all aquaria of current logged in user
 /**
- *  @api {get} /aquaria/ Request all aquaria of user
- *  @apiName GetAquaria
+ *  @api {get} /aquaria/ Get All Aquaria
+ *  @apiName Returns all aquaria of current logged in user
  *  @apiGroup Aquaria
  *
  *  @apiSuccess {Array} aquaria List of aquaria
@@ -36,11 +36,11 @@ router.get('/aquaria/', isAuthenticated, (req, res) => {
 });
 
 /**
- *  @api {get} /aquaria/:id returns an aquarium if owned by user
- *  @apiName GetAquariaByID
+ *  @api {get} /aquaria/:id Get Aquaria By ID
+ *  @apiName Returns an aquarium if owned by user
  *  @apiGroup Aquaria
  *
- *  @apiSuccess {Object} Aquarium data
+ *  @apiSuccess {Object} aquarium with aquarium data
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
@@ -64,12 +64,12 @@ router.get('/aquaria/:id', isAuthenticated, (req, res) => {
 });
 
 /**
- *  @api {post} /aquaria/ Creates an aquarium for logged in user
- *  @apiName createAquarium
+ *  @api {post} /aquaria/ Create Aquarium
+ *  @apiName Creates an aquarium for logged in user
  *  @apiGroup Aquaria
  *  @apiParam {String} Name of aquarium
  *
- *  @apiSuccess {Object} Aquarium data TODO: Not sure about this return
+ *  @apiSuccess {Object} Aquarium
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
@@ -91,24 +91,23 @@ router.post('/aquaria/', isAuthenticated, (req, res) => {
 });
 
 /**
- *  @api {post} /aquaria/:id Updates aquarium if owned by user
- *  @apiName Update aquarium
+ *  @api {post} /aquaria/:id Update aquarium
+ *  @apiName Updates aquarium if owned by user
  *  @apiGroup Aquaria
- *  @apiParam {String} Id of aquarium
+ *  @apiParam {String} id id of aquarium
  *
- *  @apiSuccess {Object} Updated aquarium data object TODO: Not sure about this return
+ *  @apiSuccess {Object} Updated aquarium data object
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
+ *  @apiUse UnprocessableEntity
  */
-router.post('/aquaria/:id', isAuthenticated, (req, res) => {
+router.post('/aquaria/:id', isAuthenticated,(req, res) => {
 	if (!req.body.data) {
-		res.sendStatus(422);
+		return res.sendStatus(422);
 	}
-
 	// Specify the keys accepted by the process.
 	const allowedDataKeys = ['name'];
 	const data = req.body.data;
-
 	req.removeIllegalKeys(allowedDataKeys, data);
 
 	db.collection('aquaria').
@@ -130,7 +129,17 @@ router.post('/aquaria/:id', isAuthenticated, (req, res) => {
 		});
 });
 
-// returns all fish within an aquarium
+/**
+ *  @api {post} /aquaria/:id Return all fish
+ *  @apiName Returns all fish within an aquarium
+ *  @apiGroup Aquaria
+ *  @apiParam {String} id id of aquarium
+ *
+ *  @apiSuccess {Object} Object fish with and array of fish
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse UnprocessableEntity
+ */
 router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 	db.collection('aquaria').
 		where('id', '==', req.params.id).
@@ -163,11 +172,21 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 		});
 });
 
-// Adds a fish to aquarium
+/**
+ *  @api {post} /aquaria/:id/fish Adds fish
+ *  @apiName Adds a fish to an aquarium
+ *  @apiGroup Aquaria
+ *  @apiParam {String} id id of aquarium
+ *  @apiParam {String} species
+ *
+ *  @apiSuccess {Object} Notification which has been added
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse UnprocessableEntity
+ */
 router.post('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 	if (!req.body.data) {
-		return res.status(400).
-			send('Payload expected. Serve an object with root key *data*');
+		return res.sendStatus(422);
 	}
 
 	const allowedDataKeys = ['species'];
@@ -195,14 +214,15 @@ router.put('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
 });
 
 /**
- *  @api {post} /aquaria/:id/entries  Get all aquarium entries
+ *  @api {get} /aquaria/:id/entries  Get all aquarium entries
  *  @apiName Get all entries from aquarium
  *  @apiGroup Aquaria
- *  @apiParam {String} id of aquarium
+ *  @apiParam {String} id id of aquarium
  *
- *  @apiSuccess {Object} Notification which has been added TODO: Not sure about this return, still needs example
+ *  @apiSuccess {Object} Notification which has been added
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
+ *  @apiUse EmptyReturn
  */
 router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const aquarium = db.collection('aquaria').doc(req.params.id);
@@ -234,12 +254,11 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 });
 
 /**
- *  @api {post} /aquaria/:id Add aquarium entry
- *  @apiName Add entry to the aquaria
+ *  @api {post} /aquaria/:id/entries Adding An Entry
+ *  @apiName Add entry to an aquaria
  *  @apiGroup Aquaria
- *  @apiParam {String} id of aquarium
+ *  @apiParam {String} id id of aquarium
  *
- *  @apiSuccess {Object} Notification which has been added TODO: Not sure about this return, still needs example
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  *  @apiUse HTTPCreated
@@ -247,7 +266,7 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const entry = req.body.entry;
 
-	// Warning: no model validation
+	// TODO: Warning: no model validation
 	db.collection('aquaria').
 		doc(req.params.id).
 		collection('entries').
