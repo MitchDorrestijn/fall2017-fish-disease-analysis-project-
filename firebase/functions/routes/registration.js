@@ -54,7 +54,7 @@ router.post('/register/', (req, res) => {
 		// If succeeded == there is a result
 		if (result) {
 			sendWelcomeMail(user);
-			res.send({user: user}).status(201);
+			res.status(201).send({user: user});
 			return;
 		}
 		res.sendStatus(500);
@@ -64,12 +64,12 @@ router.post('/register/', (req, res) => {
 });
 
 router.delete('/user/:id', (req, res) => {
-	if (!req.user.uid !== req.params.id) {
+	if (req.user.uid !== req.params.id) {
 		return res.status(401).send("Unauthorized");
 	}
 	admin.auth().deleteUser(req.user.uid)
 	.then(() => {
-	  	res.send(204);
+	  	res.sendStatus(204);
 	})
 	.catch((error) => {
 	  	res.status(500).send(error.message);
@@ -125,7 +125,7 @@ router.post('/forgot-password', (req, res) => {
 		"Hi there! We heard you forgot your password.<br/><br/><a href='https://bassleer.nl/forgot-password/" + passwordForgotToken + "'>Please click here to reset it.</a>"
 		);
 	}).then(() => {
-		res.status(200).send("Mail send");
+		res.status(200).send("Mail sent");
 	}).catch((error)=>{
 		console.log(error);
 		res.status(500).send("Email does not exist");
