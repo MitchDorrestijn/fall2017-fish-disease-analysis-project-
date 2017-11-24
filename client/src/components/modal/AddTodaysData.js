@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-	ModalHeader,
-	ModalBody,
-	Button,
-	FormGroup,
-	Label,
-	InputGroup,
-	Input
-} from 'reactstrap';
+import {ModalHeader,ModalBody,Button,FormGroup,Label,InputGroup,Input} from 'reactstrap';
 import Error from './Error';
 import {Col, Row} from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
@@ -91,25 +83,11 @@ class AddTodaysData extends React.Component {
 		let da = new DataAccess ();
 		da.postData(`/aquaria/${document.getElementById("aquarium").value}/entries`, {entry: dataObject}, (err, res) => {
 			if (!err) {
-				alert("Succesvol ingevoerd");
 			} else {
 				console.log(err);
-				// this.showError(true, err.message);
 			};
 		});
 	};
-  //
-	// getUserAquariums = (userID) => {
-	// 	let da = new DataAccess ();
-	// 	da.postData(`/aquaria//entries`, dataObject, (err, res) => {
-	// 		if (!err) {
-	// 			alert("Succesvol opgehaalt");
-	// 		} else {
-	// 			console.log(err);
-	// 			this.showError(true, err.message);
-	// 		};
-	// 	});
-	// };
 
 	render() {
 		return (
