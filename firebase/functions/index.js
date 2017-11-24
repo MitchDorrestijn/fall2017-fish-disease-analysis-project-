@@ -26,6 +26,7 @@ const registrationRoutes = require('./routes/registration.js');
 const aquariumRoutes = require('./routes/aquarium.js');
 const diseaseRoutes = require('./routes/disease.js');
 const notificationRoutes = require('./routes/notification.js');
+const speciesRoutes = require('./routes/species.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
@@ -48,6 +49,7 @@ app.use('/api', registrationRoutes);
 app.use('/api', aquariumRoutes);
 app.use('/api', diseaseRoutes);
 app.use('/api', notificationRoutes);
+app.use('/api', speciesRoutes);
 
 /* Main route */
 
@@ -109,5 +111,32 @@ exports.onDiseaseUpdated = functions.firestore.document("diseases/{id}").onUpdat
 exports.onDiseaseDeleted = functions.firestore.document("diseases/{id}").onDelete(event => {
 	// Write to the algolia index
 	const index = client.initIndex("diseases");
+	return index.deleteObject(event.params.id);
+});
+
+const upsertSpeciesToAlgolia = (event) => {
+	// Get the disease document
+	const species = event.data.data();
+	
+	// Add an "objectID" field which Algolia requires
+	species.objectID = event.params.id;
+	
+	// Write to the algolia index
+	const index = client.initIndex("species");
+	return index.saveObject(species);
+}
+
+// Update the search index every time a blog post is written.
+exports.onSpeciesCreated = functions.firestore.document("species/{id}").onCreate(event => {
+	return upsertSpeciesToAlgolia(event);
+});
+
+exports.onSpeciesUpdated = functions.firestore.document("species/{id}").onUpdate(event => {
+	return upsertSpeciesToAlgolia(event);
+});
+
+exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete(event => {
+	// Write to the algolia index
+	const index = client.initIndex("species");
 	return index.deleteObject(event.params.id);
 });
