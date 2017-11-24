@@ -22,7 +22,16 @@ const db = admin.firestore();
     - treatment
 */
 router.post('/diseases', isAuthenticated, (req, res) => {
-    db.collection("diseases").add(req.body.disease);
+    db.collection('diseases').add(req.body.disease)
+    .then((newDoc) => {
+        return newDoc.get()
+    })
+    .then((document) => {
+        res.status(201).send(document.data());
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
 })
 
 router.get('/diseases/search', isAuthenticated, (req, res) => {
