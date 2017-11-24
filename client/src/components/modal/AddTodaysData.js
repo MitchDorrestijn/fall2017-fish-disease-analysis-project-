@@ -17,7 +17,6 @@ class AddTodaysData extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			userID: "",
 			createdAquariums: []
 		};
 	};
@@ -44,9 +43,7 @@ class AddTodaysData extends React.Component {
 		da.getData ('/aquaria', (err, res) => {
 			this.setCreatedAquariums(res.message);
 			if (!err) {
-
 			} else {
-				// error
 			};
 		});
 	};
@@ -58,21 +55,24 @@ class AddTodaysData extends React.Component {
 		let year = date.getFullYear ();
 
 		const todaysData = {
-			data: {
-				date: day + "-" + month + "-" + year,
-				phosphate: document.getElementById("phosphate").value,
-				nitrate: document.getElementById("nitrate").value,
-				nitrite: document.getElementById("nitrite").value,
-				iron: document.getElementById("iron").value,
-				gH: document.getElementById("gh").value,
-				temperature: document.getElementById("temperature").value,
-				oxygen: document.getElementById("oxygen").value,
-				carbon: document.getElementById("carbon").value,
-				dioxide: document.getElementById("dioxide").value,
-				kH: document.getElementById("kh").value,
-				chlorine: document.getElementById("chlorine").value
-			}
+			date: day + "-" + month + "-" + year,
+			phosphate: document.getElementById("phosphate").value,
+			nitrate: document.getElementById("nitrate").value,
+			nitrite: document.getElementById("nitrite").value,
+			iron: document.getElementById("iron").value,
+			gH: document.getElementById("gh").value,
+			temperature: document.getElementById("temperature").value,
+			oxygen: document.getElementById("oxygen").value,
+			carbon: document.getElementById("carbon").value,
+			dioxide: document.getElementById("dioxide").value,
+			kH: document.getElementById("kh").value,
+			chlorine: document.getElementById("chlorine").value
 		};
+		Object.keys(todaysData).forEach( (key) => {
+			if (todaysData[key] === "") {
+				delete todaysData[key];
+			};
+		});
 		this.postTodaysData(todaysData);
 	};
 
@@ -89,7 +89,7 @@ class AddTodaysData extends React.Component {
 
 	postTodaysData = (dataObject) => {
 		let da = new DataAccess ();
-		da.postData(`/aquaria/${document.getElementById("aquarium").value}/entries`, dataObject, (err, res) => {
+		da.postData(`/aquaria/${document.getElementById("aquarium").value}/entries`, {entry: dataObject}, (err, res) => {
 			if (!err) {
 				alert("Succesvol ingevoerd");
 			} else {
@@ -112,7 +112,6 @@ class AddTodaysData extends React.Component {
 	// };
 
 	render() {
-		console.log(this.state.selectedAquariumID);
 		return (
 			<div>
 				<ModalHeader toggle={this.props.toggleModal}>Today's aquarium data</ModalHeader>

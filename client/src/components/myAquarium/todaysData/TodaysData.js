@@ -4,80 +4,14 @@ import ActionButton from '../../base/ActionButton';
 import { Table } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import AddTodaysData from '../../modal/AddTodaysData';
-
-const todaysData = [{
-	inAquarium:"aquarium1",
-	dataList: [{
-		date: "22-05-2017",
-		phosphate: 1,
-		nitrate: 1,
-		nitrite: 6,
-		iron: 1.6,
-		gH: 11,
-		temperature: 74,
-		oxygen: 0.3,
-		carbon: 2,
-		dioxide: 9,
-		kH: 22,
-		chlorine: 10
-	}, {
-		date: "24-05-2017",
-		phosphate: 1,
-		nitrite: 6,
-		iron: 1.6,
-		kH: 22,
-		gH: 11,
-		temperature: 74,
-		// oxygen: 0.3,
-		// carbon: 2,
-		dioxide: 9,
-		nitrate: 1,
-		chlorine: 150
-	}]
-}, {
-	inAquarium:"aquarium2",
-	dataList: [{
-		date: "22-05-2017",
-		phosphate: 2,
-		nitrate: 1,
-		nitrite: 6,
-		iron: 1.6,
-		gH: 11,
-		temperature: 74,
-		oxygen: 0.3,
-		carbon: 2,
-		dioxide: 9,
-		kH: 22,
-		chlorine: 10
-	}]
-}, {
-	inAquarium:"aquarium3",
-	dataList: [{
-		date: "22-05-2017",
-		phosphate: 3,
-		nitrate: 1,
-		nitrite: 6,
-		iron: 1.6,
-		gH: 11,
-		temperature: 74,
-		oxygen: 0.3,
-		carbon: 2,
-		dioxide: 9,
-		kH: 22,
-		chlorine: 10
-	}]
-}];
-
+import AddAquarium from '../../modal/AddAquarium';
+import DataAccess from '../../../scripts/DataAccess';
 
 export default class TodaysData extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			aquariumData: [{
-				inAquarium: null,
-				dataList: [{
-				}]
-			}],
+			aquariumData: [{}],
 			createdAquariums: [],
 			currentAquarium: null
 		};
@@ -88,31 +22,49 @@ export default class TodaysData extends React.Component {
 			aquariumData: data
 		});
 	};
-	setCurrentAquariums = (aquiriums) => {
+	setCreatedAquariums = (aquariums) => {
 		this.setState({
-			createdAquariums: aquiriums
+			createdAquariums: aquariums
 		});
 	};
-	showSelectedCategory = (button) => {
+	setCurrentAquarium = (aquarium) => {
 		this.setState({
-			currentAquarium: button
-		});
+			currentAquarium: aquarium
+		})
 	};
 	showAddTodaysData = (e) => {
 		e.preventDefault ();
 		this.props.openModal(AddTodaysData);
 	};
-	createFilterButtons = () => {
-		let buttons = this.state.createdAquariums.map((button, index) => {
-			return (
-				<ActionButton key={index} color="primary btn-transparent" buttonText={button} onClickAction={(arr) => this.showSelectedCategory(button)} />
-			);
+	showAddAquariumModel = (e) => {
+		e.preventDefault ();
+		this.props.openModal(AddAquarium);
+	}
+	componentWillMount() {
+		this.initSetters();
+	};
+	initSetters = () => {
+		let da = new DataAccess ();
+		da.getData ('/aquaria', (err, res) => {
+			this.setCreatedAquariums(res.message);
+			if (!err) {
+			} else {
+			};
 		});
-		return (
-			<div>
-				{buttons}
-			</div>
-		);
+	};
+	getAquariumData = (currentAquariumID, currentAquariumName) => {
+				let da = new DataAccess ();
+				da.getData (`/aquaria/${currentAquariumID}/entries`, (err, res) => {
+					if (res.message.entries === undefined) {
+						this.setAquariumData([{}]);
+					} else {
+						this.setAquariumData(res.message.entries);
+					}
+					this.setCurrentAquarium(currentAquariumName);
+					if (!err) {
+					} else {
+				};
+			});
 	};
 	fillAquariumTable = (object) => {
 		let rows = [];
@@ -126,8 +78,11 @@ export default class TodaysData extends React.Component {
 				};
 			});
 		});
+		if (rows.length === 11){
+			rows.push(<td key={12}>NA</td>);
+		}
 		return rows;
-	}
+	};
 	fillAquariumTableHeader = () => {
 		let rows = [];
 		this.tableHeaders.forEach((value, index) => {
@@ -145,7 +100,7 @@ export default class TodaysData extends React.Component {
 				</thead>
 				<tbody>
 					{
-						aquariumData.dataList.map( (value, index) => {
+						aquariumData.map( (value, index) => {
 							return(
 								<tr key={index}>
 									{this.fillAquariumTable(value)}
@@ -161,8 +116,9 @@ export default class TodaysData extends React.Component {
 		return(
 			<div className="text-center">
 				{
-					createdAquariums.map(function(createdAquariums){
-						return <ActionButton key={createdAquariums} buttonText={createdAquariums} color="primary btn-transperant"/>
+					createdAquariums.map( (createdAquarium) => {
+						return <ActionButton	key={createdAquarium.id} buttonText={createdAquarium.name} color="primary btn-transperant"
+																	onClickAction={(arr) => this.getAquariumData(createdAquarium.id, createdAquarium.name)}/>
 					})
 				}
 			</div>
@@ -170,18 +126,13 @@ export default class TodaysData extends React.Component {
 	};
 	drawAquariumCard = () => {
 		let object = [];
-		if (this.state.currentAquarium !== null) {
+		if (this.state.currentAquarium !== null && this.state.currentAquarium !== undefined ) {
 			object.push(
 				<Card>
 					<CardBody>
+						<h4>Aquarium data from: {this.state.currentAquarium}</h4>
 						<Table responsive>
-							{
-								this.state.aquariumData.map( (value, index) => {
-									if (value.inAquarium === this.state.currentAquarium) {
-										return (this.drawAquariumTable(value))
-									}
-								})
-							}
+							{this.drawAquariumTable(this.state.aquariumData)}
 						</Table>
 					</CardBody>
 				</Card>
@@ -197,8 +148,8 @@ export default class TodaysData extends React.Component {
 				<Row>
 					<Col>
 						<div className="addBtns">
-							{this.createFilterButtons()}
-							<Link to="/">+ Add aquarium</Link>
+							{this.drawAquariumButtons(this.state.createdAquariums)}
+							<a href="" onClick={this.showAddAquariumModel}>+ Add aquarium</a>
 							<a href="" onClick={this.showAddTodaysData}>+ Add today's data</a>
 						</div>
 					</Col>
