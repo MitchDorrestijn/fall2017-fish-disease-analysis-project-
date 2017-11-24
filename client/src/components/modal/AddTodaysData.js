@@ -11,6 +11,7 @@ class AddTodaysData extends React.Component {
 			createdAquariums: []
 		};
 	};
+	//setState functions:
 	setUserID = (userID) => {
 		this.setState({
 			userID: userID
@@ -26,9 +27,11 @@ class AddTodaysData extends React.Component {
 			selectedAquariumID: aquariumID
 		});
 	};
+	//component mount/unmount functions:
 	componentWillMount() {
 		this.initSetters();
 	};
+	//get/post data functions:
 	initSetters = () => {
 		let da = new DataAccess ();
 		da.getData ('/aquaria', (err, res) => {
@@ -38,7 +41,6 @@ class AddTodaysData extends React.Component {
 			};
 		});
 	};
-
 	registerTodaysData = () => {
 		let date = new Date ();
 		let day = date.getDate ();
@@ -66,18 +68,6 @@ class AddTodaysData extends React.Component {
 		});
 		this.postTodaysData(todaysData);
 	};
-
- fillAquariumSelect = (aquariums) => {
-	 let options = [];
-	 for(let key in this.state.createdAquariums) {
-		 if(this.state.createdAquariums.hasOwnProperty(key)) {
-			 options.push(<option key={key} value={this.state.createdAquariums[key].id}>{this.state.createdAquariums[key].name}</option>);
-		 }
-	 }
-	 return options;
- }
-
-
 	postTodaysData = (dataObject) => {
 		let da = new DataAccess ();
 		da.postData(`/aquaria/${document.getElementById("aquarium").value}/entries`, {entry: dataObject}, (err, res) => {
@@ -87,6 +77,16 @@ class AddTodaysData extends React.Component {
 				console.log(err);
 			};
 		});
+	};
+	//create/fill the aquarium selector
+	fillAquariumSelect = (aquariums) => {
+	let options = [];
+		for(let key in this.state.createdAquariums) {
+			if(this.state.createdAquariums.hasOwnProperty(key)) {
+				options.push(<option key={key} value={this.state.createdAquariums[key].id}>{this.state.createdAquariums[key].name}</option>);
+			};
+		};
+		return options;
 	};
 
 	render() {

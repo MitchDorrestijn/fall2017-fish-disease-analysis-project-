@@ -14,6 +14,7 @@ export default class TodaysData extends React.Component {
 			createdAquariums: [],
 			currentAquarium: null
 		};
+		this.keyCounter  = 0;
 		this.tableHeaders = ["date", "phosphate", "nitrate", "nitrite", "iron", "gH", "temperature", "oxygen", "carbon", "dioxide", "kH", "chlorine"];
 	};
 	//setState functions:
@@ -74,16 +75,17 @@ export default class TodaysData extends React.Component {
 		let rows = [];
 		this.tableHeaders.forEach((value, index) => {
 			Object.keys(object).forEach( (key) => {
+				this.keyCounter ++;
 				if (key === value) {
-					rows.push(<td>{object[key]}</td>);
+					rows.push(<td key={this.keyCounter}>{object[key]}</td>);
 				};
 				if (index > rows.length) {
-					rows.push(<td>NA</td>);
+					rows.push(<td key={this.keyCounter}>NA</td>);
 				};
 			});
 		});
 		if (rows.length === 11){
-			rows.push(<td>NA</td>);
+			rows.push(<td key={this.keyCounter}>NA</td>);
 		}
 		return rows;
 	};
@@ -98,22 +100,24 @@ export default class TodaysData extends React.Component {
 	drawAquariumTable = (aquariumData) => {
 		return(
 			<div className="table_card">
-				<thead>
-					<tr>
-						{this.fillAquariumTableHeader()}
-					</tr>
-				</thead>
-				<tbody>
-					{
-						aquariumData.map( (value, index) => {
-							return(
-								<tr>
-									{this.fillAquariumTable(value)}
-								</tr>
-							)
-						})
-					}
-				</tbody>
+				<Table responsive>
+					<thead>
+						<tr>
+							{this.fillAquariumTableHeader()}
+						</tr>
+					</thead>
+					<tbody>
+						{
+							aquariumData.map( (value, index) => {
+								return(
+									<tr key={index}>
+										{this.fillAquariumTable(value)}
+									</tr>
+								)
+							})
+						}
+					</tbody>
+				</Table>
 			</div>
 		);
 	};
@@ -133,12 +137,10 @@ export default class TodaysData extends React.Component {
 		let object = [];
 		if (this.state.currentAquarium !== null && this.state.currentAquarium !== undefined ) {
 			object.push(
-				<Card>
+				<Card key={this.keyCounter}>
 					<CardBody>
 						<h4>Aquarium data from: {this.state.currentAquarium}</h4>
-						<Table responsive>
-							{this.drawAquariumTable(this.state.aquariumData)}
-						</Table>
+						{this.drawAquariumTable(this.state.aquariumData)}
 					</CardBody>
 				</Card>
 			)
@@ -147,6 +149,7 @@ export default class TodaysData extends React.Component {
 	};
 
 	render() {
+		console.log(this.keyCounter);
 		return (
 			<div>
 				<h1>Today's Data</h1>
