@@ -45,7 +45,7 @@ export default class FishAdditional extends Component {
 			return (
 				<div className="treatment-container">
 					<h4>Method of treatment</h4>
-					{this.props.extra}
+					{this.props.additional}
 				</div>
 			);
 		} else {
