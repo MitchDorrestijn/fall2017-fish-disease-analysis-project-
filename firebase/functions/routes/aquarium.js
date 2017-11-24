@@ -228,29 +228,26 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const aquarium = db.collection('aquaria').doc(req.params.id);
 
 	//db.collection("entries").where("aquarium", "==", aquarium).where("user", "==", req.user.ref).get()
-	db.collection('aquaria').
-		doc(req.params.id).
-		collection('entries').
-		get().
-		then((snapshot) => {
-			console.log(snapshot);
-			if (snapshot.empty) {
-				res.status(204).send('Nothing found');
-			}
+	db.collection('aquaria').doc(req.params.id).collection('entries').get()
+	.then((snapshot) => {
+		console.log(snapshot);
+		if (snapshot.empty) {
+			res.status(204).send('Nothing found');
+		}
 
-			const diary = {};
-			diary.aquarium = aquarium;
-			diary.user = req.user.ref;
-			diary.entries = [];
+		const diary = {};
+		diary.aquarium = aquarium;
+		diary.user = req.user.ref;
+		diary.entries = [];
 
-			snapshot.forEach((doc) => {
-				diary.entries.push(doc.data());
-			});
-			res.send(diary);
-		}).
-		catch((error) => {
-			res.status(500).send(error.message);
+		snapshot.forEach((doc) => {
+			diary.entries.push(doc.data());
 		});
+		res.send(diary);
+	}).
+	catch((error) => {
+		res.status(500).send(error.message);
+	});
 });
 
 /**
