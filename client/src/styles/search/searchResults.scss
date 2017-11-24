@@ -116,6 +116,7 @@
 					@media screen and(max-width: $responsiveBreakPoint){
 						max-width: auto;
 						min-height: auto;
+						min-width: 300px;
 						max-height: auto;
 					}
 					max-height: $height;
@@ -146,7 +147,7 @@
 				//overflow-y: scroll;
 				@media screen and(max-width: $responsiveBreakPoint){
 					height: auto;
-					margin: $defaultPadding $defaultPadding 0 $defaultPadding;
+					margin: $defaultPadding $defaultPadding $defaultPadding $defaultPadding;
 				}
 			}
 		}
