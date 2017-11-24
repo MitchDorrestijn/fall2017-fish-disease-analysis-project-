@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
 const validator = require('validator');
+const isAuthenticated = require('../middleware/isAuthenticated.js');
 
 const db = admin.firestore();
 
@@ -21,10 +22,14 @@ router.get('/users/:id/', (req, res) => {
 		res.status(400).send(err.message);
 	});
 });
+
 /**
  * Update profile of user from id
  */
-router.post('/users/:id/', (req, res) => {
+router.post('/users/:id/', isAuthenticated, (req, res) => {
+	if (req.user.uid !== req.params.id){
+		return res.sendStatus(403);
+	}
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
@@ -42,15 +47,14 @@ router.post('/users/:id/', (req, res) => {
 		admin.auth().updateUser(userId, {
 			password: user.password,
 		}).then((authUser) => {
-			const userRef = db.collection('users').doc(userId);
-			return userRef.update({
+			return db.collection('users').doc(userId).update({
 				firstName: user.firstName,
 				lastName: user.lastName,
 				country: user.country,
 				birthDate: user.birthDate,
 			});
 		}).then((user) => {
-			res.send('User updated').status(200);
+			res.send('User updated');
 		}).catch((error) => {
 			res.status(400).send(error.message);
 		});

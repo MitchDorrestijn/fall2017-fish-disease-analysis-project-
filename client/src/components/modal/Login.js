@@ -17,7 +17,7 @@ import Translate from 'translate-components';
 class Login extends React.Component {
 	render() {
 		return (
-			<div>			
+			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}><Translate>Login</Translate></ModalHeader>
 				<ModalBody>
 					{ this.props.isErrorVisible ?
@@ -37,12 +37,6 @@ class Login extends React.Component {
 							<InputGroupAddon><i className="fa fa-lock"/></InputGroupAddon>
 							<Input type="password" id="password" placeholder="Password"/>
 						</InputGroup>
-					</FormGroup>
-					<FormGroup check>
-						<Label check>
-							<Input type="checkbox" />
-							<Translate>Remember me</Translate>
-						</Label>
 					</FormGroup>
 					<hr/>
 					<Button outline className="modalLink" color="secondary" onClick={() => this.props.userLogin(document.getElementById("email").value, document.getElementById("password").value)} block><Translate>Login</Translate></Button>
