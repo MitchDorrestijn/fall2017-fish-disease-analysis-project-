@@ -5,6 +5,9 @@ import ActionButton from '../../base/ActionButton';
 import {Link} from 'react-router-dom';
 import AddFish from '../../modal/AddFish';
 import AddAquarium from '../../modal/AddAquarium';
+import RemoveAquarium from '../../modal/RemoveAquarium';
+import DataAccess from '../../../scripts/DataAccess';
+import * as firebase from 'firebase';
 
 export default class MyFish extends React.Component {
 	constructor(props){
@@ -57,16 +60,30 @@ export default class MyFish extends React.Component {
 						"linkTo":"/"
 					}
 			],
-			createdAquariums: ["aquarium1", "aquarium2", "aquarium3"],
+			createdAquariums: "",
 			currentAquarium: "aquarium1"
 		}
 	}
-	createFilterButtons = () => {
-		let buttons = this.state.createdAquariums.map((button, index) => {
-			return (
-				<ActionButton key={index} color="primary btn-transparent" buttonText={button} onClickAction={(arr) => this.showSelectedCategory(button)} />
-			);
+	componentWillMount(){
+		this.renderAquariums();
+	}
+	renderAquariums = () => {
+		let da = new DataAccess();
+		da.getData ('/aquaria', (err, res) => {
+			if (!err) {
+				this.setState({createdAquariums: res.message});
+			} else {
+				console.log("De error is: " + err.message);
+			}
 		});
+	}
+	createFilterButtons = () => {
+		let buttons = []
+		for(var key in this.state.createdAquariums) {
+    	if(this.state.createdAquariums.hasOwnProperty(key)) {
+				buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
+    	}
+		}
 		return (
 			<div>
 				{buttons}
@@ -107,6 +124,10 @@ export default class MyFish extends React.Component {
 		e.preventDefault ();
 		this.props.openModal(AddAquarium);
 	}
+	showRemoveAquariumModel = (e) => {
+		e.preventDefault ();
+		this.props.openModal(RemoveAquarium);
+	}
 	render() {
 		return (
 			<div className="container">
@@ -116,6 +137,7 @@ export default class MyFish extends React.Component {
 						{this.createFilterButtons()}
 						<Link to="" onClick={this.showAddAquariumModel}>+ Add aquarium</Link>
 						<Link to="" onClick={this.showAddFishModel}>+ Add fish</Link>
+						<Link to="" onClick={this.showRemoveAquariumModel}>- Remove aquarium</Link>
 					</div>
 					<div className="card-columns">
 						{this.filterFish()}
