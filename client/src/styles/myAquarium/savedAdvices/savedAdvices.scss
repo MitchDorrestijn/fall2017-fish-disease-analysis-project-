@@ -77,13 +77,13 @@
 			-webkit-transform-origin: 50% 0%;
 			background: $supportColor;
 		}
-		.dropdown-link-down {
-			color: $supportColor;
-			text-decoration: none;
-		}
-		.dropdown-link-up {
-			color: $alternativeTextColor;
-			text-decoration: none;
+		.dropdown-link-down, .dropdown-link-up {
+    	padding: 15px 19px;
+    	border-radius: 30px;
+    	color: $supportColor;
+    	background: $alternativeTextColor;
+    	display: table;
+    	margin: -40px auto 0 auto;
 		}
 		.header {
 			font-size: 18px;
@@ -93,10 +93,18 @@
 			background-color: $grey;
 			height: $height;
 			width: 100%;
+			@media screen and(max-width: $responsiveBreakPoint){
+				width: 100%;
+				height: auto;
+			}
 			.image {
 				position: absolute;
 				height: $height;
 				overflow: hidden;
+				@media screen and(max-width: $responsiveBreakPoint){
+					position: relative;
+					height: auto;
+				}
 				img {
 					max-width: 100%;
 				}
@@ -106,25 +114,37 @@
 			height: $height;
 			color: $supportColor;
 			background-color: $grey;
+			@media screen and(max-width: $responsiveBreakPoint){
+				height: auto;
+			}
 			p {
-				display: inline-block;
-				height: $height - 40px;
-				margin: 20px;
-				overflow-y: scroll;
+				min-height: $height;
+				padding: $defaultPadding;
+				margin-bottom: 0;
+				@media screen and(max-width: $responsiveBreakPoint){
+					min-height: auto;
+				}
 			}
 		}
 		.data {
 			height: $height;
 			color: $supportColor;
 			background-color: $grey;
+			@media screen and(max-width: $responsiveBreakPoint){
+				height: auto;
+				padding-bottom: $defaultPadding;
+			}
 			p {
 				display: inline-block;
-				height: $height - 40px;
+				height: $height;
 				margin: 20px;
 				overflow-y: scroll;
 			}
 			ul {
-				padding-left: 16px;
+				padding: $defaultPadding;
+				@media screen and(max-width: $responsiveBreakPoint){
+					padding: 0 0 0 $defaultPadding*2;
+				}
 			}
 		}
 	}

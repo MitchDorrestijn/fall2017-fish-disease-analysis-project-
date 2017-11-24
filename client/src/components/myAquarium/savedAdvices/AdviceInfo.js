@@ -4,7 +4,7 @@ import {Col} from 'reactstrap';
 export default class AdviceInfo extends Component {
 	render() {
 		return (
-			<Col lg="7" className="no-gutter">
+			<Col xs="12" lg="7" className="no-gutter">
 				<div className="info">
 					<p><strong>{this.props.title}</strong><br/>
 						{this.props.children}
