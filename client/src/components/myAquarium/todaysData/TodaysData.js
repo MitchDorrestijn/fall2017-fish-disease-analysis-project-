@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import { Table } from 'reactstrap';
-import {Link} from 'react-router-dom';
 import AddTodaysData from '../../modal/AddTodaysData';
 import AddAquarium from '../../modal/AddAquarium';
 import DataAccess from '../../../scripts/DataAccess';
@@ -17,6 +16,7 @@ export default class TodaysData extends React.Component {
 		};
 		this.tableHeaders = ["date", "phosphate", "nitrate", "nitrite", "iron", "gH", "temperature", "oxygen", "carbon", "dioxide", "kH", "chlorine"];
 	};
+	//setState functions:
 	setAquariumData = (data) => {
 		this.setState({
 			aquariumData: data
@@ -32,6 +32,7 @@ export default class TodaysData extends React.Component {
 			currentAquarium: aquarium
 		})
 	};
+	//modals functions:
 	showAddTodaysData = (e) => {
 		e.preventDefault ();
 		this.props.openModal(AddTodaysData);
@@ -40,9 +41,11 @@ export default class TodaysData extends React.Component {
 		e.preventDefault ();
 		this.props.openModal(AddAquarium);
 	}
+	//component mount/unmount functions:
 	componentWillMount() {
 		this.initSetters();
 	};
+	//get/post data functions:
 	initSetters = () => {
 		let da = new DataAccess ();
 		da.getData ('/aquaria', (err, res) => {
@@ -66,20 +69,21 @@ export default class TodaysData extends React.Component {
 				};
 			});
 	};
+	//fill table functions:
 	fillAquariumTable = (object) => {
 		let rows = [];
 		this.tableHeaders.forEach((value, index) => {
 			Object.keys(object).forEach( (key) => {
 				if (key === value) {
-					rows.push(<td key={index}>{object[key]}</td>);
+					rows.push(<td>{object[key]}</td>);
 				};
 				if (index > rows.length) {
-					rows.push(<td key={index}>NA</td>);
+					rows.push(<td>NA</td>);
 				};
 			});
 		});
 		if (rows.length === 11){
-			rows.push(<td key={12}>NA</td>);
+			rows.push(<td>NA</td>);
 		}
 		return rows;
 	};
@@ -90,6 +94,7 @@ export default class TodaysData extends React.Component {
 		})
 		return rows;
 	}
+	//create table functions:
 	drawAquariumTable = (aquariumData) => {
 		return(
 			<div className="table_card">
@@ -102,7 +107,7 @@ export default class TodaysData extends React.Component {
 					{
 						aquariumData.map( (value, index) => {
 							return(
-								<tr key={index}>
+								<tr>
 									{this.fillAquariumTable(value)}
 								</tr>
 							)

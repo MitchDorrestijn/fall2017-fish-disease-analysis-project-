@@ -3,7 +3,6 @@ import {ModalHeader,ModalBody,Button,FormGroup,Label,InputGroup,Input} from 'rea
 import Error from './Error';
 import {Col, Row} from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
-import * as firebase from 'firebase';
 
 class AddTodaysData extends React.Component {
 	constructor(props) {
@@ -83,6 +82,7 @@ class AddTodaysData extends React.Component {
 		let da = new DataAccess ();
 		da.postData(`/aquaria/${document.getElementById("aquarium").value}/entries`, {entry: dataObject}, (err, res) => {
 			if (!err) {
+				this.props.toggleModal();
 			} else {
 				console.log(err);
 			};
