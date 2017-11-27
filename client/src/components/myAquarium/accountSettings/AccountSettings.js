@@ -318,7 +318,7 @@ export default class AccountSettings extends React.Component {
 						</Setting>
 					</SettingsBox>
 					<div className="text-right">
-						<Button onClick={this.submit}>submit</Button>
+						<Button onClick={this.submit} className="btn-outline-primary">submit</Button>
 						{/*TODO: Not able to give event to the actionbutton, not sure if this is intended*/}
 						{/*<ActionButton buttonText="Save changes" onClickAction={() => this.submit} color="primary btn-transperant"/>*/}
 					</div>

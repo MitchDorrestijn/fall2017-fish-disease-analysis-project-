@@ -1,6 +1,5 @@
 import React from 'react';
 import SingleBlock from './SingleBlock';
-import Footer from '../base/Footer';
 import Translate from 'translate-components';
 import Register from '../modal/Register';
 import ResetPassword from '../modal/ResetPassword';
@@ -29,7 +28,6 @@ export default class Homepage extends React.Component {
 						btnText={<Translate>Register</Translate>}
 						onClickAction={() => this.props.openModal (Register)}
 					/>
-					<Footer />
 				</div>
 			);
 		}

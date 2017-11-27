@@ -8,7 +8,9 @@ const SingleBlock = (props) => {
 			<Col sm="6" className="singleBlock-content">
 				<h2>{props.title}</h2>
 				<p>{props.text}</p>
+				{props.onClickAction &&
 				<ActionButton link={true} linkTo={props.link} onClickAction={props.onClickAction} color="primary btn-transparent" buttonText={props.btnText} />
+				}
 			</Col>
 		</Col>
 	);
