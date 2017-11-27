@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Col} from 'reactstrap';
 
-export default class AdviceTreatment extends Component {
+export default class FishAdditional extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -24,14 +24,6 @@ export default class AdviceTreatment extends Component {
 		}
 	};
 
-	// getDropdownText = () => {
-	// 	if (this.state.isOpen) {
-	// 		return "Read less";
-	// 	} else {
-	// 		return "Read more";
-	// 	}
-	// };
-
 	getColClass = () => {
 		if (this.state.isOpen) {
 			return "text-center white-bg"
@@ -53,7 +45,7 @@ export default class AdviceTreatment extends Component {
 			return (
 				<div className="treatment-container">
 					<h4>Method of treatment</h4>
-					{this.props.children}
+					{this.props.additional}
 				</div>
 			);
 		} else {
@@ -63,9 +55,8 @@ export default class AdviceTreatment extends Component {
 
 	render() {
 		return (
-			<Col xs="12" lg="12" className={this.getColClass()}>
+			<Col lg="12" className={this.getColClass()}>
 				<a href="" onClick={this.toggleTreatment} className={this.getLinkClass()}>
-					{/* {this.getDropdownText()}<br/> */}
 					<span className={this.getArrowClass()}/>
 				</a>
 				{this.getContent()}

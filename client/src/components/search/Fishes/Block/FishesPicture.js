@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {Col} from 'reactstrap';
 
-export default class ResultPicture extends Component {
+export default class FishesPicture extends Component {
 	render() {
 		return (
 			<Col lg="3" className="no-gutter">
 				<div className="image-container">
 					<div className="image">
-						{ /* Dit zal waarschijnlijk een ander pad worden */ }
-						<img src={`/images/myAquarium/savedAdvices/${this.props.src}.jpg`} alt="icon"/><br/>
+						<img src={`/images/fish/${this.props.src}`} alt="icon"/><br/>
 					</div>
 				</div>
 			</Col>

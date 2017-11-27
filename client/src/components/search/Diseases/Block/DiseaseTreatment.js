@@ -53,7 +53,7 @@ export default class AdviceTreatment extends Component {
 			return (
 				<div className="treatment-container">
 					<h4>Method of treatment</h4>
-					{this.props.children}
+					{this.props.treatment}
 				</div>
 			);
 		} else {
@@ -63,7 +63,7 @@ export default class AdviceTreatment extends Component {
 
 	render() {
 		return (
-			<Col xs="12" lg="12" className={this.getColClass()}>
+			<Col lg="12" className={this.getColClass()}>
 				<a href="" onClick={this.toggleTreatment} className={this.getLinkClass()}>
 					{/* {this.getDropdownText()}<br/> */}
 					<span className={this.getArrowClass()}/>

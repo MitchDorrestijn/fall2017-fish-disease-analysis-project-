@@ -1,5 +1,5 @@
 // Dit kan grotendeels overgenomen worden van notifications, alleen ik weet niet hoe, dus als Mitch ff kijkt
-@import '../../settings.scss';
+@import '../settings.scss';
 
 
 @keyframes pullDown {
@@ -52,18 +52,32 @@
 	}
 }
 
-.saved-advices {
-	.advice {
-		$height: 180px;
-		margin-top: 20px;
-		margin-bottom: 20px;
+.search-results {
+	hr {
+		border-color: white;
+	}
+	.result {
+		$height: 182px;
+		margin: 20px;
 		.treatment-container {
 			color: $alternativeTextColor;
 			text-align: left;
-			padding: $defaultPadding;
+			padding: 0 $defaultPadding $defaultPadding*2 $defaultPadding;
 			h5 {
 				margin-top: $defaultPadding;
 			}
+		}
+		.dropdown-link-down,
+		.dropdown-link-up {
+			padding: $defaultPadding 19px;
+			border-radius: $defaultPadding*2;
+			color: $supportColor;
+			background: $alternativeTextColor;
+			display: table;
+			margin: -25px auto 0 auto;
+		}
+		.no-bg {
+			margin-top: -$defaultPadding - 2px;
 		}
 		.white-bg {
 			animation-name: pullDown;
@@ -76,58 +90,69 @@
 			-ms-transform-origin: 50% 0%;
 			-webkit-transform-origin: 50% 0%;
 			background: $supportColor;
+			margin-top: -$defaultPadding - 2px;
+			@media screen and(max-width: $responsiveBreakPoint){
+				margin-top: auto;
+			}
 		}
-		.dropdown-link-down, .dropdown-link-up {
-    	padding: 15px 19px;
-    	border-radius: 30px;
-    	color: $supportColor;
-    	background: $alternativeTextColor;
-    	display: table;
-    	margin: -40px auto 0 auto;
-		}
+
 		.header {
 			font-size: 18px;
 			background: $mainColor;
 		}
 		.image-container {
 			background-color: $grey;
-			height: $height;
-			width: 100%;
-			@media screen and(max-width: $responsiveBreakPoint){
-				width: 100%;
-				height: auto;
-			}
+			min-height: $height;
 			.image {
 				position: absolute;
-				height: $height;
+				min-height: $height;
 				overflow: hidden;
 				@media screen and(max-width: $responsiveBreakPoint){
+					min-height: auto;
 					position: relative;
-					height: auto;
 				}
 				img {
 					max-width: 100%;
+					@media screen and(max-width: $responsiveBreakPoint){
+						max-width: auto;
+						min-height: auto;
+						min-width: 300px;
+						max-height: auto;
+					}
+					max-height: $height;
+					min-height: $height;
+				}
+				@media screen and(max-width: $responsiveBreakPoint){
+					position: relative;
+					height: auto;
+					img {
+						width: 100%;
+						max-height: $height;
+						min-height: $height;
+					}
 				}
 			}
 		}
 		.info {
-			height: $height;
+			min-height: $height;
 			color: $supportColor;
 			background-color: $grey;
 			@media screen and(max-width: $responsiveBreakPoint){
 				height: auto;
 			}
 			p {
-				min-height: $height;
-				padding: $defaultPadding;
-				margin-bottom: 0;
+				display: inline-block;
+				min-height: $height - 40px;
+				margin: 20px;
+				//overflow-y: scroll;
 				@media screen and(max-width: $responsiveBreakPoint){
-					min-height: auto;
+					height: auto;
+					margin: $defaultPadding $defaultPadding $defaultPadding $defaultPadding;
 				}
 			}
 		}
 		.data {
-			height: $height;
+			min-height: $height;
 			color: $supportColor;
 			background-color: $grey;
 			@media screen and(max-width: $responsiveBreakPoint){
@@ -136,14 +161,16 @@
 			}
 			p {
 				display: inline-block;
-				height: $height;
+				min-height: $height - 40px;
 				margin: 20px;
-				overflow-y: scroll;
+				//overflow-y: scroll;
 			}
 			ul {
-				padding: $defaultPadding;
+				padding-left: $defaultPadding;
+				padding-top: $defaultPadding;
 				@media screen and(max-width: $responsiveBreakPoint){
-					padding: 0 0 0 $defaultPadding*2;
+					padding: auto;
+					margin-left: $defaultPadding;
 				}
 			}
 		}
