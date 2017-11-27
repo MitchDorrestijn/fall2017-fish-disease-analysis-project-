@@ -20,19 +20,19 @@ const isAuthenticated = require('../middleware/isAuthenticated.js');
  *  @apiUse UserAuthenticated
  */
 router.get('/aquaria/', isAuthenticated, (req, res) => {
-	db.collection('aquaria').
-		where('user', '==', req.user.ref).
-		get().
-		then((snapshot) => {
-			let aquaria = [];
-			snapshot.forEach((doc) => {
-				aquaria.push(doc.data());
-			});
-			res.send(aquaria);
-		}).
-		catch((err) => {
-			res.status(500).send(err.message);
+	db.collection("aquaria").where("user", "==", req.user.ref).get()
+	.then((snapshot) => {
+		let aquaria = [];
+		snapshot.forEach((doc) => {
+			aquaria.push(doc.data());
 		});
+		for (let i = 0; i < aquaria.length; i++) {
+			delete aquaria[i].user;
+		}
+		res.send(aquaria);
+	}).catch((err) => {
+		res.status(500).send(err.message);
+	});
 });
 
 /**
@@ -45,22 +45,20 @@ router.get('/aquaria/', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  */
 router.get('/aquaria/:id', isAuthenticated, (req, res) => {
-	db.collection('aquaria').
-		where('id', '==', req.params.id).
-		where('user', '==', req.user.ref).
-		get().
-		then((snapshot) => {
-			if (snapshot.empty) {
-				return Promise.reject(
-					new Error('Aquarium non existent or not owned by user.'));
-			}
-			return res.status(200).send({
-				aquarium: snapshot.docs[0].data(),
-			});
-		}).
-		catch((error) => {
-			res.status(500).send(error.message);
+	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
+	.then((snapshot) => {
+		if (snapshot.empty){
+			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
+		}
+		let aquarium = snapshot.docs[0].data();
+		delete aquarium.user;
+		return res.status(200).send({
+			aquarium: aquarium
 		});
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	});
 });
 
 /**
@@ -81,11 +79,16 @@ router.post('/aquaria/', isAuthenticated, (req, res) => {
 
 	data.user = req.user.ref;
 
-	db.collection('aquaria').add(data).then((newDoc) => {
-		return newDoc.update({id: newDoc.id});
-	}).then(() => {
-		res.sendStatus(201);
-	}).catch((error) => {
+	db.collection("aquaria").add(data)
+	.then((newDoc) => {
+		return newDoc.get ().then ((obj) => {
+			let newData = obj.data ();
+			newData.id = newDoc.id;
+			delete newData.user;
+			res.status(201).send ({aquarium: newData});
+		});
+	})
+	.catch((error) => {
 		res.status(500).send(error.message);
 	});
 });
