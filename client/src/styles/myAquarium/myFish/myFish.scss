@@ -1,0 +1,18 @@
+@import '../../settings.scss';
+@import "selectList.scss";
+
+.addBtns {
+	overflow: auto;
+	width: 100%;
+	margin-bottom: $defaultPadding*2;
+	div {
+		button {
+			float: left;
+		}
+	}
+	a {
+		color: $supportColor;
+		margin: $defaultPadding/2;
+		display: inline-block;
+	}
+}

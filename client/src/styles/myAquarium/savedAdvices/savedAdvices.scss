@@ -1,0 +1,151 @@
+// Dit kan grotendeels overgenomen worden van notifications, alleen ik weet niet hoe, dus als Mitch ff kijkt
+@import '../../settings.scss';
+
+
+@keyframes pullDown {
+	0% {
+		transform: scaleY(0.1);
+	}
+	40% {
+		transform: scaleY(1.02);
+	}
+	60% {
+		transform: scaleY(0.98);
+	}
+	80% {
+		transform: scaleY(1.01);
+	}
+	100% {
+		transform: scaleY(0.98);
+	}
+	80% {
+		transform: scaleY(1.01);
+	}
+	100% {
+		transform: scaleY(1);
+		background: $supportColor;
+	}
+}
+
+@-webkit-keyframes pullDown {
+	0% {
+		-webkit-transform: scaleY(0.1);
+	}
+	40% {
+		-webkit-transform: scaleY(1.02);
+	}
+	60% {
+		-webkit-transform: scaleY(0.98);
+	}
+	80% {
+		-webkit-transform: scaleY(1.01);
+	}
+	100% {
+		-webkit-transform: scaleY(0.98);
+	}
+	80% {
+		-webkit-transform: scaleY(1.01);
+	}
+	100% {
+		-webkit-transform: scaleY(1);
+		background: $supportColor;
+	}
+}
+
+.saved-advices {
+	.advice {
+		$height: 180px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		.treatment-container {
+			color: $alternativeTextColor;
+			text-align: left;
+			padding: $defaultPadding;
+			h5 {
+				margin-top: $defaultPadding;
+			}
+		}
+		.white-bg {
+			animation-name: pullDown;
+			-webkit-animation-name: pullDown;
+			animation-duration: 1.1s;
+			-webkit-animation-duration: 1.1s;
+			animation-timing-function: ease-out;
+			-webkit-animation-timing-function: ease-out;
+			transform-origin: 50% 0%;
+			-ms-transform-origin: 50% 0%;
+			-webkit-transform-origin: 50% 0%;
+			background: $supportColor;
+		}
+		.dropdown-link-down, .dropdown-link-up {
+    	padding: 15px 19px;
+    	border-radius: 30px;
+    	color: $supportColor;
+    	background: $alternativeTextColor;
+    	display: table;
+    	margin: -40px auto 0 auto;
+		}
+		.header {
+			font-size: 18px;
+			background: $mainColor;
+		}
+		.image-container {
+			background-color: $grey;
+			height: $height;
+			width: 100%;
+			@media screen and(max-width: $responsiveBreakPoint){
+				width: 100%;
+				height: auto;
+			}
+			.image {
+				position: absolute;
+				height: $height;
+				overflow: hidden;
+				@media screen and(max-width: $responsiveBreakPoint){
+					position: relative;
+					height: auto;
+				}
+				img {
+					max-width: 100%;
+				}
+			}
+		}
+		.info {
+			height: $height;
+			color: $supportColor;
+			background-color: $grey;
+			@media screen and(max-width: $responsiveBreakPoint){
+				height: auto;
+			}
+			p {
+				min-height: $height;
+				padding: $defaultPadding;
+				margin-bottom: 0;
+				@media screen and(max-width: $responsiveBreakPoint){
+					min-height: auto;
+				}
+			}
+		}
+		.data {
+			height: $height;
+			color: $supportColor;
+			background-color: $grey;
+			@media screen and(max-width: $responsiveBreakPoint){
+				height: auto;
+				padding-bottom: $defaultPadding;
+			}
+			p {
+				display: inline-block;
+				height: $height;
+				margin: 20px;
+				overflow-y: scroll;
+			}
+			ul {
+				padding: $defaultPadding;
+				@media screen and(max-width: $responsiveBreakPoint){
+					padding: 0 0 0 $defaultPadding*2;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,8 @@
+service cloud.firestore {
+  	match /databases/{database}/documents {
+		match /aquaria/{aquarium=**} {
+			// Rules go here...
+			allow write, read: if get(/databases/$(database)/documents/aquaria/$(projectID)).user.id == request.auth.uid;
+		}
+  	}
+}
