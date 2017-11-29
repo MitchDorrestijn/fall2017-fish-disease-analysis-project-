@@ -25,4 +25,62 @@
 
 .sidebar-wrap .aquarium-sidebar {
 	min-height: 100vh;
+	@media screen and(max-width: $responsiveBreakPoint){
+		min-height: auto;
+	}
+}
+
+.editFocus input {
+	width: 100%;
+}
+
+.responsiveTable {
+	border: 1px solid $adminNavBackground;
+	td {
+		border-top: 1px solid $adminNavBackground;
+	}
+	thead {
+		border-top: none;
+		color: $supportColor;
+		background: $adminNavBackground;
+		th {
+			font-weight: 100;
+			min-width: 100px;
+			border-bottom: none;
+			@media screen and(max-width: $responsiveBreakPoint){
+				min-width: auto;
+			}
+		}
+	}
+}
+
+.searchForm {
+	margin: $defaultPadding*2 0 $defaultPadding*2 0;
+	.form-group {
+		width: 50%;
+		input {
+			width: 100%;
+			border-radius: 0;
+			border: 1px solid $supportColor;
+			&:focus {
+				box-shadow: none;
+				border: 1px solid $supportColor;
+			}
+		}
+	}
+	button.btn {
+		border-radius: 0;
+		background: $adminNavBackground;
+		border-color: $adminNavBackground;
+		&:hover {
+			outline: none;
+			border: none;
+			cursor: pointer;
+			border: 1px solid $adminNavBackground;
+		}
+		&:focus {
+			outline: none;
+			border: none;
+		}
+	}
 }
