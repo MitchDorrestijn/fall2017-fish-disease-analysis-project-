@@ -24,6 +24,7 @@ router.post('/register/', (req, res) => {
 	if (!validator.isEmail(user.email) ||
 		!validator.isAlpha(user.firstName) ||
 		!validator.isAlpha(user.lastName) ||
+		!validator.isISO31661Alpha2(user.country) ||
 		validator.isEmpty(user.password)
 	){
 		return res.status(400).send("Input validation failed.");
