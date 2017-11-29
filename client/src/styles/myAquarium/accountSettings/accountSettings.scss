@@ -1,4 +1,13 @@
 .account-settings {
+	.pass-alert {
+		text-align: center;
+		background-color: $alternativeColor;
+		padding: $defaultPadding;
+		margin-bottom: $defaultPadding;
+	}
+	input:disabled {
+		background-color: #ccc;
+	}
 	.settings-box {
 		margin-top: 20px;
 		margin-bottom: 20px;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Col, Input, InputGroup, Button, Alert} from 'reactstrap';
-// import ActionButton from '../../base/ActionButton';
+import ActionButton from '../../base/ActionButton';
 import Setting from './Setting';
 import SettingsBox from './SettingsBox';
 import UserService from '../../../provider/user-data-service';
@@ -81,8 +81,7 @@ export default class AccountSettings extends React.Component {
 		return birthDate;
 	};
 
-	submit = (evt) => {
-		evt.preventDefault();
+	submit = () => {
 		//Javascript iso object
 		const birthDate = new Date(
 			`${this.state.birthYear}-${this.state.birthMonth}-${this.state.birthDay}`);
@@ -286,10 +285,10 @@ export default class AccountSettings extends React.Component {
 						</Col>
 						<Col xs="12" md="12">
 							{!this.state.loginErrorVisible ?
-								<Alert color="light">
+								<div className="pass-alert">
 									If you don't want to change your password,
-									leave the fields empty
-								</Alert> : null
+									leave the password fields empty
+								</div> : null
 							}
 						</Col>
 						<Setting title="E-mail">
@@ -318,9 +317,8 @@ export default class AccountSettings extends React.Component {
 						</Setting>
 					</SettingsBox>
 					<div className="text-right">
-						<Button onClick={this.submit}>submit</Button>
 						{/*TODO: Not able to give event to the actionbutton, not sure if this is intended*/}
-						{/*<ActionButton buttonText="Save changes" onClickAction={() => this.submit} color="primary btn-transperant"/>*/}
+						<ActionButton buttonText="Save changes" onClickAction={this.submit} color="primary btn-transperant"/>
 					</div>
 				</Col>
 			</div>
