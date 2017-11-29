@@ -185,7 +185,7 @@ export default class App extends React.Component {
 			<div className="App">
 				<BrowserRouter>
 					<div>
-						<NavigationBar loggedIn={this.state.loggedIn} logOut={this.logOut} openModal={this.openModal}/>
+						{window.location.pathname == '/admin' || <NavigationBar loggedIn={this.state.loggedIn} logOut={this.logOut} openModal={this.openModal}/>}
 						<div className="block-wrapper">
 							<Switch>
 								{this.state.redirect}

@@ -1,4 +1,28 @@
-.admin-sidebar {
-	height: 100vh;
-	background: green;
+@import '../settings.scss';
+
+.adminWrapper {
+	margin-top: -80px;
+}
+
+.outer-container .aquarium-content-container {
+	background: $adminMainBackground;
+}
+.sidebar-wrap .aquarium-sidebar {
+	background: $adminNavBackground;
+}
+
+.sidebar-wrap .aquarium-sidebar a.selected:after {
+	border-left-color: $adminNavBackground;
+}
+
+.sidebar-wrap .aquarium-sidebar a {
+	border-bottom-color: $adminMainBackground;
+}
+
+.sidebar-wrap .aquarium-sidebar a:first-of-type {
+	border-top-color: $adminMainBackground;
+}
+
+.sidebar-wrap .aquarium-sidebar {
+	min-height: 100vh;
 }
