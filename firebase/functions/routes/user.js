@@ -3,7 +3,6 @@ const router = express.Router();
 const admin = require('firebase-admin');
 const validator = require('validator');
 const isAuthenticated = require('../middleware/isAuthenticated.js');
-
 const db = admin.firestore();
 
 /**
@@ -22,9 +21,14 @@ const db = admin.firestore();
 		birthDate: '1999-01-01T00:00:00.000Z'
  *  }
  *  @apiUse InternalServerError
- *  @apiUse UserAuthenticated //TODO: Still needs to be implemented
+ *  @apiUse UserAuthenticated
+ *  @apiUse Forbidden
  */
-router.get('/users/:id/', (req, res) => {
+router.get('/users/:id/',isAuthenticated, (req, res) => {
+	// Check if user is indeed authenticated user
+	if (req.user.uid !== req.params.id){
+		return res.sendStatus(403);
+	}
 	const userId = req.params.id;
 	const userRef = db.collection('users').doc(userId);
 	userRef.get().then(profileObject => {
@@ -50,9 +54,11 @@ router.get('/users/:id/', (req, res) => {
 *       User updated
 *  }
 *  @apiUse InternalServerError
-*  @apiUse UserAuthenticated // TODO: Still needs to be implemented
+*  @apiUse UserAuthenticated
+*  @apiUse Forbidden
 */
-router.post('/users/:id/', (req, res) => {
+router.post('/users/:id/',isAuthenticated, (req, res) => {
+	// Check if user is indeed authenticated user
 	if (req.user.uid !== req.params.id){
 		return res.sendStatus(403);
 	}

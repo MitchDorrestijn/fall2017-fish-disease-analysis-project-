@@ -18,3 +18,13 @@
  *          Unprocessable Entity
  *     }
  */
+
+/** @apiDefine Forbidden
+ *  @apiError The server understood the request but refuses to authorize it
+ *
+ *  @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *          Forbidden
+ *     }
+ */
