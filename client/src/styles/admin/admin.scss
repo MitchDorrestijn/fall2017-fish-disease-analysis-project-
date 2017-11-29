@@ -32,6 +32,12 @@
 
 .editFocus input {
 	width: 100%;
+	padding: $defaultPadding/2;
+	&:focus {
+		box-shadow: none;
+		border:none;
+		outline: none;
+	}
 }
 
 .responsiveTable {
@@ -68,19 +74,20 @@
 			}
 		}
 	}
-	button.btn {
-		border-radius: 0;
-		background: $adminNavBackground;
-		border-color: $adminNavBackground;
-		&:hover {
-			outline: none;
-			border: none;
-			cursor: pointer;
-			border: 1px solid $adminNavBackground;
-		}
-		&:focus {
-			outline: none;
-			border: none;
-		}
+}
+
+button.btn-admin {
+	border-radius: 0;
+	background: $adminNavBackground;
+	border-color: $adminNavBackground;
+	&:hover {
+		outline: none;
+		border: none;
+		cursor: pointer;
+		border: 1px solid $adminNavBackground;
+	}
+	&:focus {
+		outline: none;
+		border: none;
 	}
 }

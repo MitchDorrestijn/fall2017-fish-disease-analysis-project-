@@ -29,7 +29,7 @@ export default class ManageFish extends React.Component {
         	<FormGroup>
           	<Input type="text" name="searchTerm" placeholder="Wat wil je zoeken?" onChange={this.handleSearchChange} />
         	</FormGroup>
-					<Button>Zoek nu</Button>
+					<Button className="btn-admin">Zoek nu</Button>
 				</Form>
 				<Table className="table">
 				  <Thead>
@@ -67,6 +67,7 @@ export default class ManageFish extends React.Component {
 				        </Tr>
 				    </Tbody>
 				</Table>
+				<Button className="btn-admin">Vis toevoegen</Button>
 			</div>
   	);
 	}
