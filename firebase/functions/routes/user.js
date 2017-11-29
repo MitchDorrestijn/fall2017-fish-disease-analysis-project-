@@ -36,7 +36,8 @@ router.post('/users/:id/', isAuthenticated, (req, res) => {
 	const user = req.body;
 	if (!validator.isAlpha(user.firstName) ||
 		!validator.isAlpha(user.lastName) ||
-		!validator.isISO8601(user.birthDate)
+		!validator.isISO8601(user.birthDate) ||
+		!validator.isISO31661Alpha2(user.country)
 	) {
 		return res.status(400).send('input validation failed');
 	}
