@@ -13,7 +13,6 @@ import Logout from './Logout';
 export default class SideNav extends React.Component {
 	render() {
 		return (
-
 				<div className="row row-no-gutter sidebar-wrap">
 					<Sidebar size="3" title="Beheer" extraClass="adminSidebar">
 						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/vissen">Vissen beheren</SidebarLink>
