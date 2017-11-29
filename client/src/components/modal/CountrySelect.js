@@ -17,7 +17,7 @@ class CountrySelect extends React.Component {
 	render() {
 		return (
 			<Input className={this.props.classStyle} value={this.props.country} onChange={this.props.function} type="select" name="select" id="country">
-				<option value="">Country...</option>
+				<option value="" disabled selected hidden>Please Choose...</option>
 				{this.getCountries()}
 			</Input>
 		);
