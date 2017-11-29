@@ -44,7 +44,7 @@ export default class FishAdditional extends Component {
 		if (this.state.isOpen) {
 			return (
 				<div className="treatment-container">
-					<h4>Method of treatment</h4>
+					<h4>Additional information</h4>
 					{this.props.additional}
 				</div>
 			);
