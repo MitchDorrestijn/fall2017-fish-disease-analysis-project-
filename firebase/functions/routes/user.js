@@ -7,7 +7,22 @@ const isAuthenticated = require('../middleware/isAuthenticated.js');
 const db = admin.firestore();
 
 /**
- * Get profile of user from id
+ *  @api {get} /users/:id/ Get user
+ *  @apiName Returns profile data of a user
+ *  @apiGroup Users
+ *
+ *  @apiSuccess {Object} User profile object
+ *  @apiSuccessExample Success-Response:
+ *  HTTP/1.1 200 OK
+ *  {
+        name: 'John',
+		surname: 'Doe',
+		email: 'test@test.nl',
+		country: 'The Netherlands',
+		birthDate: '1999-01-01T00:00:00.000Z'
+ *  }
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated //TODO: Still needs to be implemented
  */
 router.get('/users/:id/', (req, res) => {
 	const userId = req.params.id;
@@ -24,9 +39,20 @@ router.get('/users/:id/', (req, res) => {
 });
 
 /**
- * Update profile of user from id
- */
-router.post('/users/:id/', isAuthenticated, (req, res) => {
+*  @api {get} /users/:id/ Update user
+*  @apiName Update profile of user from id
+*  @apiGroup Users
+*
+*  @apiSuccess {String} User updated
+*  @apiSuccessExample Success-Response:
+*  HTTP/1.1 200 OK
+*  {
+*       User updated
+*  }
+*  @apiUse InternalServerError
+*  @apiUse UserAuthenticated // TODO: Still needs to be implemented
+*/
+router.post('/users/:id/', (req, res) => {
 	if (req.user.uid !== req.params.id){
 		return res.sendStatus(403);
 	}
@@ -56,7 +82,7 @@ router.post('/users/:id/', isAuthenticated, (req, res) => {
 		}).then((user) => {
 			res.send('User updated');
 		}).catch((error) => {
-			res.status(400).send(error.message);
+			res.status(500).send(error.message);
 		});
 	} else {
 		const userRef = db.collection('users').doc(userId);
@@ -68,7 +94,7 @@ router.post('/users/:id/', isAuthenticated, (req, res) => {
 		}).then((user) => {
 			res.send('User updated').status(200);
 		}).catch((error) => {
-			res.status(400).send(error.message);
+			res.status(500).send(error.message);
 		});
 	}
 });
