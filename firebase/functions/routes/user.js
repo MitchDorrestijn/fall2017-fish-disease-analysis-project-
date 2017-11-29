@@ -3,13 +3,32 @@ const router = express.Router();
 const admin = require('firebase-admin');
 const validator = require('validator');
 const isAuthenticated = require('../middleware/isAuthenticated.js');
-
 const db = admin.firestore();
 
 /**
- * Get profile of user from id
+ *  @api {get} /users/:id/ Get user
+ *  @apiName Returns profile data of a user
+ *  @apiGroup Users
+ *
+ *  @apiSuccess {Object} User profile object
+ *  @apiSuccessExample Success-Response:
+ *  HTTP/1.1 200 OK
+ *  {
+        name: 'John',
+		surname: 'Doe',
+		email: 'test@test.nl',
+		country: 'The Netherlands',
+		birthDate: '1999-01-01T00:00:00.000Z'
+ *  }
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse Forbidden
  */
-router.get('/users/:id/', (req, res) => {
+router.get('/users/:id/',isAuthenticated, (req, res) => {
+	// Check if user is indeed authenticated user
+	if (req.user.uid !== req.params.id){
+		return res.sendStatus(403);
+	}
 	const userId = req.params.id;
 	const userRef = db.collection('users').doc(userId);
 	userRef.get().then(profileObject => {
@@ -24,9 +43,22 @@ router.get('/users/:id/', (req, res) => {
 });
 
 /**
- * Update profile of user from id
- */
-router.post('/users/:id/', isAuthenticated, (req, res) => {
+*  @api {get} /users/:id/ Update user
+*  @apiName Update profile of user from id
+*  @apiGroup Users
+*
+*  @apiSuccess {String} User updated
+*  @apiSuccessExample Success-Response:
+*  HTTP/1.1 200 OK
+*  {
+*       User updated
+*  }
+*  @apiUse InternalServerError
+*  @apiUse UserAuthenticated
+*  @apiUse Forbidden
+*/
+router.post('/users/:id/',isAuthenticated, (req, res) => {
+	// Check if user is indeed authenticated user
 	if (req.user.uid !== req.params.id){
 		return res.sendStatus(403);
 	}
@@ -57,7 +89,7 @@ router.post('/users/:id/', isAuthenticated, (req, res) => {
 		}).then((user) => {
 			res.send('User updated');
 		}).catch((error) => {
-			res.status(400).send(error.message);
+			res.status(500).send(error.message);
 		});
 	} else {
 		const userRef = db.collection('users').doc(userId);
@@ -69,7 +101,7 @@ router.post('/users/:id/', isAuthenticated, (req, res) => {
 		}).then((user) => {
 			res.send('User updated').status(200);
 		}).catch((error) => {
-			res.status(400).send(error.message);
+			res.status(500).send(error.message);
 		});
 	}
 });
