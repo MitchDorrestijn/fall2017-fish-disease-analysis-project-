@@ -15,7 +15,7 @@ export default class SideNav extends React.Component {
 		return (
 
 				<div className="row row-no-gutter sidebar-wrap">
-					<Sidebar size="3" title="Beheer">
+					<Sidebar size="3" title="Beheer" extraClass="adminSidebar">
 						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/vissen">Vissen beheren</SidebarLink>
 						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/ziektes">Ziektes beheren</SidebarLink>
 						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/afspraken">Afspraken beheren</SidebarLink>
@@ -23,7 +23,7 @@ export default class SideNav extends React.Component {
 						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/gebruikers">Gebruikers beheren</SidebarLink>
 						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/uitloggen">Uitloggen</SidebarLink>
 					</Sidebar>
-					<ContentContainer size="12">
+					<ContentContainer extraClass="adminContentContainer" size="12">
 						<Route exact path="/admin/vissen" component={ManageFish}/>
 						<Route exact path="/admin/ziektes" component={ManageDesises}/>
 						<Route exact path="/admin/afspraken" component={ManageAgenda}/>

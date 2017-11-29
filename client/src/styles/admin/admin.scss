@@ -4,22 +4,22 @@
 	margin-top: -80px;
 }
 
-.outer-container .aquarium-content-container {
+.outer-container .adminContentContainer {
 	background: $adminMainBackground;
 }
-.sidebar-wrap .aquarium-sidebar {
+.sidebar-wrap .adminSidebar {
 	background: $adminNavBackground;
 }
 
-.sidebar-wrap .aquarium-sidebar a.selected:after {
+.sidebar-wrap .adminSidebar a.selected:after {
 	border-left-color: $adminNavBackground;
 }
 
-.sidebar-wrap .aquarium-sidebar a {
+.sidebar-wrap .adminSidebar a {
 	border-bottom-color: $adminMainBackground;
 }
 
-.sidebar-wrap .aquarium-sidebar a:first-of-type {
+.sidebar-wrap .adminSidebar a:first-of-type {
 	border-top-color: $adminMainBackground;
 }
 
