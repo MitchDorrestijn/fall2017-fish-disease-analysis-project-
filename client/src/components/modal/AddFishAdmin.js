@@ -15,6 +15,13 @@ class AddFishAdmin extends React.Component {
 	constructor(props){
 		super(props);
 	}
+	addFish = (e) => {
+		e.preventDefault();
+		const fishName = e.target.fishname.value;
+		const fishDescription = e.target.fishDescription.value;
+		const fishImage = e.target.fishImage.value;
+  	console.log(`Submitted form data: fishname: ${fishName}, fish description: ${fishDescription}, fish image: ${fishImage}`);
+	}
 	render() {
 		return (
 			<div>
@@ -24,18 +31,18 @@ class AddFishAdmin extends React.Component {
 						<Error errorContent={this.props.errorContent} /> :
 						null
 					}
-					<Form>
+					<Form onSubmit={this.addFish}>
 		        <FormGroup>
 		          <Label for="fishName">Name of fish:</Label>
-		          <Input type="text" name="fishName" placeholder="Name of fish" />
+		          <Input id="fishname" type="text" name="fishName" placeholder="Name of fish" />
 		        </FormGroup>
 		        <FormGroup>
 		          <Label for="fishDescription">Description of fish:</Label>
-		          <Input type="textarea" name="fishDescription" />
+		          <Input id="fishDescription" type="textarea" name="fishDescription" />
 		        </FormGroup>
 						<FormGroup>
-          		<Label for="exampleFile">Image</Label>
-          		<Input type="file" name="fishImage" />
+          		<Label for="fishImage">Image</Label>
+          		<Input id="fishImage" type="file" name="fishImage" />
           		<FormText color="muted">Images can be uploaded in .jpg and .png.</FormText>
         		</FormGroup>
 		        <Button>Submit</Button>

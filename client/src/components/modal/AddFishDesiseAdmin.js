@@ -15,6 +15,16 @@ class AddFishADesiseAdmin extends React.Component {
 	constructor(props){
 		super(props);
 	}
+	addFishDesise = (e) => {
+		e.preventDefault();
+		const fishName = e.target.fishName.value;
+		const fishDescription = e.target.fishDescription.value;
+		const fishSyntoms = e.target.fishSyntoms.value;
+		const fishImage = e.target.fishImage.value;
+		let allSyntoms = new Array();
+		allSyntoms = fishSyntoms.split(",");
+  	console.log(`Submitted form data: fishname: ${fishName}, fish description: ${fishDescription}, fish syntoms: ${allSyntoms}, fish image: ${fishImage}`);
+	}
 	render() {
 		return (
 			<div>
@@ -24,23 +34,23 @@ class AddFishADesiseAdmin extends React.Component {
 						<Error errorContent={this.props.errorContent} /> :
 						null
 					}
-					<Form>
+					<Form onSubmit={this.addFishDesise}>
 		        <FormGroup>
 		          <Label for="fishName">Name of fish:</Label>
-		          <Input type="text" name="fishName" placeholder="Name of fish" />
+		          <Input id="fishName" type="text" name="fishName" placeholder="Name of fish" />
 		        </FormGroup>
 						<FormGroup>
-							<Label for="fishName">Syntoms:</Label>
-							<Input type="text" name="fishName" placeholder="Desise synomes" />
+							<Label for="fishSyntoms">Syntoms:</Label>
+							<Input id="fishSyntoms" type="text" name="fishSyntoms" placeholder="Desise synomes" />
 							<FormText color="muted">Put a comma (,) to separate the syntoms.</FormText>
 						</FormGroup>
 		        <FormGroup>
 		          <Label for="fishDescription">Description of fish:</Label>
-		          <Input type="textarea" name="fishDescription" />
+		          <Input id="fishDescription" type="textarea" name="fishDescription" />
 		        </FormGroup>
 						<FormGroup>
-          		<Label for="exampleFile">Image</Label>
-          		<Input type="file" name="fishImage" />
+          		<Label for="fishImage">Image</Label>
+          		<Input id="fishImage" type="file" name="fishImage" />
           		<FormText color="muted">Images can be uploaded in .jpg and .png.</FormText>
         		</FormGroup>
 		        <Button>Submit</Button>
