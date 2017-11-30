@@ -25,19 +25,19 @@ export default class ManageFish extends React.Component {
 	render(){
   	return (
 			<div>
-				<h2>Vissen toevoegen / bewerken / verwijderen</h2>
+				<h2>Add / edit / remove fish</h2>
 				<Form inline className="searchForm" onSubmit={this.getSearchTerm}>
         	<FormGroup>
-          	<Input type="text" name="searchTerm" placeholder="Wat wil je zoeken?" onChange={this.handleSearchChange} />
+          	<Input type="text" name="searchTerm" placeholder="Please type your search term" onChange={this.handleSearchChange} />
         	</FormGroup>
-					<Button className="btn-admin">Zoek nu</Button>
+					<Button className="btn-admin">Serch now</Button>
 				</Form>
 				<Table className="table">
 				  <Thead>
 				  	<Tr>
-	            <Th>Vis naam</Th>
-	            <Th>Omschrijving</Th>
-	            <Th>Afbeelding</Th>
+	            <Th>Fish name</Th>
+	            <Th>Description</Th>
+	            <Th>Image</Th>
 		        </Tr>
 			    </Thead>
 				    <Tbody>
@@ -68,7 +68,7 @@ export default class ManageFish extends React.Component {
 				        </Tr>
 				    </Tbody>
 				</Table>
-				<Button onClick={() => this.props.openModal(addFishAdmin)} className="btn-admin">Vis toevoegen</Button>
+				<Button onClick={() => this.props.openModal(addFishAdmin)} className="btn-admin">Add fish</Button>
 			</div>
   	);
 	}
