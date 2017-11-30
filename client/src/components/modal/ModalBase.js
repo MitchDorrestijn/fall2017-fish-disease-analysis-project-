@@ -19,6 +19,7 @@ export default class ModalBase extends React.Component {
 						userResetPassword={this.props.userResetPassword}
 						toggleModal={this.props.closeModal}
 						openModal={this.props.openModal}
+						customProps={this.props.customProps}
 					/> : null}
 			</Modal>
 		);
