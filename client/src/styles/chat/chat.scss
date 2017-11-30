@@ -6,6 +6,7 @@
 	background-position: bottom;
 	background-attachment: fixed;
 	height: calc(100vh - 80px); //Minus the height of the navBar
+	overflow-y: scroll;
 	.senderBox,
 	.recieverBox {
 		position: relative;
@@ -44,10 +45,24 @@
 		border-left-color: $supportColor;
 	}
 }
-
 .sender-spacing {
-
+	margin-left: -$defaultPadding;
 }
 .reciever-spacing {
-	
+	margin-right: -$defaultPadding;
+}
+.footer {
+	background: $supportColor;
+	#messageToSend {
+		width: 100%;
+	}
+	.form-group {
+		width: 80%;
+	}
+}
+.img-responsive {
+	width: 100%;
+}
+.test {
+	position: fixed;
 }
