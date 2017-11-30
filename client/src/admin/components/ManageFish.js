@@ -3,7 +3,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 import InlineEditable from "react-inline-editable-field";
 import { Button, Form, FormGroup, Input } from 'reactstrap';
-import addFish from '../../components/modal/AddFish';
+import addFishAdmin from '../../components/modal/AddFishAdmin';
 
 export default class ManageFish extends React.Component {
 	constructor(props){
@@ -68,7 +68,7 @@ export default class ManageFish extends React.Component {
 				        </Tr>
 				    </Tbody>
 				</Table>
-				<Button onClick={() => this.props.openModal(addFish)} className="btn-admin">Vis toevoegen</Button>
+				<Button onClick={() => this.props.openModal(addFishAdmin)} className="btn-admin">Vis toevoegen</Button>
 			</div>
   	);
 	}
