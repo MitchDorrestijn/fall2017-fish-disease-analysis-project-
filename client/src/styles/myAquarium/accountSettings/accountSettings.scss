@@ -1,7 +1,8 @@
+@import "../../settings.scss";
 .account-settings {
 	.pass-alert {
 		text-align: center;
-		background-color: $alternativeColor;
+		background-color: $alternativeTextColor;
 		padding: $defaultPadding;
 		margin-bottom: $defaultPadding;
 	}
