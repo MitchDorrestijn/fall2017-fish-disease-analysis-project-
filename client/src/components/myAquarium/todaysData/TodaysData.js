@@ -12,7 +12,8 @@ export default class TodaysData extends React.Component {
 		this.state = {
 			aquariumData: [{}],
 			createdAquariums: [],
-			currentAquarium: null
+			currentAquarium: null,
+			currentAquariumID: null
 		};
 		this.keyCounter  = 0;
 		this.tableHeaders = ["Date", "Phosphate", "Nitrate", "Nitrite", "Iron", "gH", "Temperature", "Oxygen", "Carbon", "Dioxide", "kH", "Chlorine"];
@@ -33,10 +34,19 @@ export default class TodaysData extends React.Component {
 			currentAquarium: aquarium
 		})
 	};
+	setCurrentAquariumID = (aquarium) => {
+		this.setState({
+			currentAquariumID: aquarium
+		})
+	};
 	//modals functions:
 	showAddTodaysData = (e) => {
 		e.preventDefault ();
-		this.props.openModal(AddTodaysData, {aquarium: this.state.currentAquarium});
+		this.props.openModal(AddTodaysData, {
+			refreshPage: () => this.getAquariumData(this.state.currentAquariumID, this.state.currentAquarium),
+			aquariumId: this.state.currentAquariumID,
+			aquariumName: this.state.currentAquarium
+		});
 	};
 	showAddAquariumModel = (e) => {
 		e.preventDefault ();
@@ -65,6 +75,7 @@ export default class TodaysData extends React.Component {
 						this.setAquariumData(res.message.entries);
 					}
 					this.setCurrentAquarium(currentAquariumName);
+					this.setCurrentAquariumID(currentAquariumID);
 					if (!err) {
 					} else {
 				};
@@ -141,6 +152,7 @@ export default class TodaysData extends React.Component {
 					<CardBody>
 						<h4>Aquarium data from: {this.state.currentAquarium}</h4>
 						{this.drawAquariumTable(this.state.aquariumData)}
+						<a href="" onClick={this.showAddTodaysData}>+ Add today's data</a>
 					</CardBody>
 				</Card>
 			)
@@ -157,7 +169,6 @@ export default class TodaysData extends React.Component {
 						<div className="addBtns">
 							{this.drawAquariumButtons(this.state.createdAquariums)}
 							<a href="" onClick={this.showAddAquariumModel}>+ Add aquarium</a>
-							<a href="" onClick={this.showAddTodaysData}>+ Add today's data</a>
 						</div>
 					</Col>
 				</Row>
