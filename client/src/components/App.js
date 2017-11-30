@@ -9,6 +9,7 @@ import ModalBase from './modal/ModalBase';
 import Login from './modal/Login';
 import Search from './search/Search';
 import DataAccess from '../scripts/DataAccess';
+import Admin from '../admin/Admin';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
 
@@ -182,20 +183,29 @@ export default class App extends React.Component {
 				<div className="App">
 					<BrowserRouter>
 						<div>
-							<NavigationBar loggedIn={this.state.loggedIn} logOut={this.logOut} openModal={this.openModal}/>
 							<div className="block-wrapper">
 								<Switch>
 									{this.state.redirect}
-									<Route exact path="/" render={(props) => {
-										return <Homepage {...props} openModal={this.openModal}/>
+									<Route path="/admin" component={Admin}/>
+									<Route path="/" render={(props) => {
+										return (
+											<div className="body-margin-top">
+												<NavigationBar loggedIn={this.state.loggedIn} logOut={this.logOut} openModal={this.openModal}/>
+												<Switch>
+													<Route exact path="/" render={(props) => {
+														return <Homepage {...props} openModal={this.openModal}/>
+													}}/>
+													<Route path="/myAquarium" render={(props) => {
+														return <MyAquarium {...props} openModal={this.openModal} app={this.app}/>
+													}}/>
+													<Route path="/forgot-password" render={(props) => {
+														return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
+													}}/>
+													<Route path="/search" component={Search}/>
+												</Switch>
+											</div>
+										);
 									}}/>
-									<Route path="/myAquarium" render={(props) => {
-										return <MyAquarium {...props} openModal={this.openModal} app={this.app}/>
-									}}/>
-									<Route path="/forgot-password" render={(props) => {
-										return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
-									}}/>
-									<Route path="/search" component={Search}/>
 								</Switch>
 							</div>
 							<ModalBase
