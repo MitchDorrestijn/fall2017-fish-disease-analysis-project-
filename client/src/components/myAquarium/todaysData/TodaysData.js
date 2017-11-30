@@ -36,11 +36,11 @@ export default class TodaysData extends React.Component {
 	//modals functions:
 	showAddTodaysData = (e) => {
 		e.preventDefault ();
-		this.props.openModal(AddTodaysData);
+		this.props.openModal(AddTodaysData, {aquarium: this.state.currentAquarium});
 	};
 	showAddAquariumModel = (e) => {
 		e.preventDefault ();
-		this.props.openModal(AddAquarium);
+		this.props.openModal(AddAquarium, {refreshPage: this.initSetters});
 	}
 	//component mount/unmount functions:
 	componentWillMount() {
