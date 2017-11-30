@@ -11,7 +11,7 @@ import Login from './modal/Login';
 import DataAccess from '../scripts/DataAccess';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
-
+import ChatIntializer from './chat/ChatIntializer';
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -201,6 +201,7 @@ export default class App extends React.Component {
 								<Route path="/admin" render={(props) => {
 									return <Adminscreen {...props} openModal={this.openModal} />
 								}}/>
+								<Route path="/chat" component={ChatIntializer} />
 							</Switch>
 						</div>
 					</div>
