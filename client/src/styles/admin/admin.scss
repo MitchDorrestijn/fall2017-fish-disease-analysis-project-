@@ -1,0 +1,93 @@
+@import '../settings.scss';
+
+.adminWrapper {
+	margin-top: -80px;
+}
+
+.outer-container .adminContentContainer {
+	background: $adminMainBackground;
+}
+.sidebar-wrap .adminSidebar {
+	background: $adminNavBackground;
+}
+
+.sidebar-wrap .adminSidebar a.selected:after {
+	border-left-color: $adminNavBackground;
+}
+
+.sidebar-wrap .adminSidebar a {
+	border-bottom-color: $adminMainBackground;
+}
+
+.sidebar-wrap .adminSidebar a:first-of-type {
+	border-top-color: $adminMainBackground;
+}
+
+.sidebar-wrap .aquarium-sidebar {
+	min-height: 100vh;
+	@media screen and(max-width: $responsiveBreakPoint){
+		min-height: auto;
+	}
+}
+
+.editFocus input {
+	width: 100%;
+	padding: $defaultPadding/2;
+	&:focus {
+		box-shadow: none;
+		border:none;
+		outline: none;
+	}
+}
+
+.responsiveTable {
+	border: 1px solid $adminNavBackground;
+	td {
+		border-top: 1px solid $adminNavBackground;
+	}
+	thead {
+		border-top: none;
+		color: $supportColor;
+		background: $adminNavBackground;
+		th {
+			font-weight: 100;
+			min-width: 100px;
+			border-bottom: none;
+			@media screen and(max-width: $responsiveBreakPoint){
+				min-width: auto;
+			}
+		}
+	}
+}
+
+.searchForm {
+	margin: $defaultPadding*2 0 $defaultPadding*2 0;
+	.form-group {
+		width: 50%;
+		input {
+			width: 100%;
+			border-radius: 0;
+			border: 1px solid $supportColor;
+			&:focus {
+				box-shadow: none;
+				border: 1px solid $supportColor;
+			}
+		}
+	}
+}
+
+button.btn-admin {
+	border-radius: 0;
+	background: $adminNavBackground;
+	border-color: $adminNavBackground;
+	&:hover {
+		outline: none;
+		border: none;
+		cursor: pointer;
+		border: 1px solid $adminNavBackground;
+	}
+	&:focus {
+		outline: none;
+		border: none;
+	}
+}

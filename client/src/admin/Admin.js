@@ -1,3 +1,13 @@
 import React from 'react';
-const Admin = () => <div>Hoiii! :D</div>;
+import SideNav from './components/SideNav';
+import '../styles/admin/admin.css';
+
+const Admin = (props) => {
+  return (
+		<div className='adminWrapper'>
+			<SideNav openModal={props.openModal} />
+		</div>
+  );
+};
+
 export default Admin;

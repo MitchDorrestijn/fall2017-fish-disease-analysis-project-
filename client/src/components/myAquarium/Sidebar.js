@@ -5,7 +5,7 @@ export default class Sidebar extends React.Component {
 	render() {
 		return (
 			<Col lg={this.props.size} className="no-gutter">
-				<div className="aquarium-sidebar col-lg-3 no-gutter">
+				<div className={"aquarium-sidebar col-lg-3 no-gutter "+this.props.extraClass}>
 					<h2>{this.props.title}</h2>
 					{this.props.children}
 					{/* <div className="arrow-right"/> */}

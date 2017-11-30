@@ -1,0 +1,46 @@
+@import '../settings.scss';
+
+.chat-wrapper {
+	background: url('/images/myAquarium/achtergrond.jpg');
+	background-size: cover;
+	background-position: bottom;
+	background-attachment: fixed;
+	height: calc(100vh - 80px); //Minus the height of the navBar
+	.senderBox,
+	.recieverBox {
+		position: relative;
+		background: $supportColor;
+		margin-top: $defaultPadding;
+		margin-bottom: $defaultPadding/2;
+		padding: $defaultPadding;
+	}
+	.senderBox:after,
+	.senderBox:before,
+	.recieverBox:after,
+	.recieverBox:before {
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		top: 50%;
+	}
+	.senderBox:before,
+	.recieverBox:before {
+		border-width: $defaultPadding;
+		margin-top: -$defaultPadding;
+	}
+	.senderBox:after, .senderBox:before {
+		right: 100%;
+	}
+	.recieverBox:after, .recieverBox:before {
+		left: 100%;
+	}
+	.senderBox:before {
+		border-right-color: $supportColor;
+	}
+	.recieverBox:before {
+		border-left-color: $supportColor;
+	}
+}
