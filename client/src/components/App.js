@@ -198,7 +198,9 @@ export default class App extends React.Component {
 								<Route path="/forgot-password" render={(props) => {
 									return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
 								}}/>
-								<Route path="/admin" component={Adminscreen} />
+								<Route path="/admin" render={(props) => {
+									return <Adminscreen {...props} openModal={this.openModal} />
+								}}/>
 							</Switch>
 						</div>
 					</div>

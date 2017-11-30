@@ -3,6 +3,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 import InlineEditable from "react-inline-editable-field";
 import { Button, Form, FormGroup, Input } from 'reactstrap';
+import addFish from '../../components/modal/AddFish';
 
 export default class ManageFish extends React.Component {
 	constructor(props){
@@ -46,28 +47,28 @@ export default class ManageFish extends React.Component {
 				            <Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
 				        </Tr>
 								<Tr>
-										<Td><InlineEditable content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+										<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+				            <Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+				            <Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
 				        </Tr>
 								<Tr>
-										<Td><InlineEditable content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+										<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+				            <Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+				            <Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
 				        </Tr>
 								<Tr>
-										<Td><InlineEditable content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+										<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+				            <Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+				            <Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
 				        </Tr>
 								<Tr>
-										<Td><InlineEditable content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+										<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+				            <Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
+				            <Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
 				        </Tr>
 				    </Tbody>
 				</Table>
-				<Button className="btn-admin">Vis toevoegen</Button>
+				<Button onClick={() => this.props.openModal(addFish)} className="btn-admin">Vis toevoegen</Button>
 			</div>
   	);
 	}

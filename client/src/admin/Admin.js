@@ -5,7 +5,7 @@ import '../styles/admin/admin.css';
 const Admin = (props) => {
   return (
 		<div className='adminWrapper'>
-			<SideNav />
+			<SideNav openModal={props.openModal} />
 		</div>
   );
 };
