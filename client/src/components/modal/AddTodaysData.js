@@ -5,42 +5,7 @@ import {Col, Row} from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
 
 class AddTodaysData extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			createdAquariums: []
-		};
-	};
-	//setState functions:
-	setUserID = (userID) => {
-		this.setState({
-			userID: userID
-		});
-	};
-	setCreatedAquariums = (aquariums) => {
-		this.setState({
-			createdAquariums: aquariums
-		});
-	};
-	setselectedAquariumID = (aquariumID) => {
-		this.setState({
-			selectedAquariumID: aquariumID
-		});
-	};
-	//component mount/unmount functions:
-	componentWillMount() {
-		this.initSetters();
-	};
 	//get/post data functions:
-	initSetters = () => {
-		let da = new DataAccess ();
-		da.getData ('/aquaria', (err, res) => {
-			this.setCreatedAquariums(res.message);
-			if (!err) {
-			} else {
-			};
-		});
-	};
 	registerTodaysData = () => {
 		let date = new Date ();
 		let day = date.getDate ();
@@ -70,23 +35,14 @@ class AddTodaysData extends React.Component {
 	};
 	postTodaysData = (dataObject) => {
 		let da = new DataAccess ();
-		da.postData(`/aquaria/${document.getElementById("aquarium").value}/entries`, {entry: dataObject}, (err, res) => {
+		da.postData(`/aquaria/${this.props.customProps.aquariumId}/entries`, {entry: dataObject}, (err, res) => {
 			if (!err) {
+				this.props.customProps.refreshPage();
 				this.props.toggleModal();
 			} else {
 				console.log(err);
 			};
 		});
-	};
-	//create/fill the aquarium selector
-	fillAquariumSelect = (aquariums) => {
-	let options = [];
-		for(let key in this.state.createdAquariums) {
-			if(this.state.createdAquariums.hasOwnProperty(key)) {
-				options.push(<option key={key} value={this.state.createdAquariums[key].id}>{this.state.createdAquariums[key].name}</option>);
-			};
-		};
-		return options;
 	};
 
 	render() {
@@ -201,9 +157,7 @@ class AddTodaysData extends React.Component {
 							<FormGroup>
 								<Label for="aquarium">Aquarium</Label>
 								<InputGroup>
-									<Input type="select" name="select" id="aquarium">
-										{this.fillAquariumSelect(this.state.createdAquariums)}
-									</Input>
+									<Input type="text" disabled value={this.props.customProps.aquariumName}/>
 								</InputGroup>
 							</FormGroup>
 						</Col>

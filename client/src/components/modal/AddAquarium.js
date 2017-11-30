@@ -32,6 +32,7 @@ class Login extends React.Component {
 			let da = new DataAccess();
 			da.postData ('/aquaria/', {data: {name: this.state.aquariumName}}, (err, res) => {
 				if (!err) {
+					this.props.customProps.refreshPage();
 					this.props.toggleModal();
 				} else {
 					this.setState({error: true});

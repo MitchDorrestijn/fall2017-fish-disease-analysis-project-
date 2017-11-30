@@ -21,6 +21,7 @@ export default class App extends React.Component {
 			showError: false,
 			errorContent: "",
 			modalContent: null,
+			modalCustomProps: null,
 			redirect: null,
 			loggedIn: false
 		};
@@ -113,12 +114,13 @@ export default class App extends React.Component {
 				this.showError(true, err.message);
 			}
 		});
-	}
+	};
 
-	openModal = (content) => {
+	openModal = (content, props) => {
 		this.setState ({
 			showModal: true,
-			modalContent: content
+			modalContent: content,
+			modalCustomProps: props
 		});
 
 		this.showError(false, "");
@@ -207,6 +209,7 @@ export default class App extends React.Component {
 								userResetPassword={this.userResetPassword}
 								openModal={this.openModal}
 								closeModal={this.closeModal}
+								customProps={this.state.modalCustomProps}
 							>
 								{this.state.modalContent}
 							</ModalBase>
