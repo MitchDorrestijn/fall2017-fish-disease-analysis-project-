@@ -28,7 +28,7 @@ export default class ManageDesises extends React.Component {
 				<h2>Add / edit / remove fish desises</h2>
 				<Form inline className="searchForm" onSubmit={this.getSearchTerm}>
         	<FormGroup>
-          	<Input type="text" name="searchTerm" placeholder="Wat do you wanna search?" onChange={this.handleSearchChange} />
+          	<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
         	</FormGroup>
 					<Button className="btn-admin">Search now</Button>
 				</Form>
