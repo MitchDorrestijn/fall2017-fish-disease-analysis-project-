@@ -6,17 +6,20 @@
             integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
             crossorigin="anonymous"></script>
             <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-firestore.js"></script>
             <script>
-              // Initialize Firebase
-              var config = {
-                apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
-                authDomain: "fishproject-47cfd.firebaseapp.com",
-                databaseURL: "https://fishproject-47cfd.firebaseio.com",
-                projectId: "fishproject-47cfd",
-                storageBucket: "fishproject-47cfd.appspot.com",
-                messagingSenderId: "324776878982"
-              };
-              firebase.initializeApp(config);
+                // Initialize Firebase
+                var config = {
+                    apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
+                    authDomain: "fishproject-47cfd.firebaseapp.com",
+                    databaseURL: "https://fishproject-47cfd.firebaseio.com",
+                    projectId: "fishproject-47cfd",
+                    storageBucket: "fishproject-47cfd.appspot.com",
+                    messagingSenderId: "324776878982"
+                };
+                firebase.initializeApp(config);
+                const Auth = firebase.auth();
+                const messaging = firebase.messaging();
             </script>
         </head>
         <body>
@@ -38,15 +41,56 @@
                         console.log(result);
                         if(result){
                             $('#message').html("Gelukt! Userid: " + result.uid);
-                            Auth = firebase.auth();
                             Auth.currentUser.getIdToken().then(function(data) {
                                 console.log(data)
+                            });
+
+                            messaging.requestPermission()
+                            .then(function() {
+                                console.log('Notification permission granted.');
+                                getToken()
+                            })
+                            .catch(function(err) {
+                                console.log('Unable to get permission to notify.', err);
                             });
                             return;
                         }
                         $('#message').html("Fail...");
                     });
                 });
+
+                messaging.onTokenRefresh(() => {
+                    getToken();
+                });
+
+                messaging.onMessage((payload) => {
+                    console.log("Message: " + payload);
+                });
+
+                const getToken = () => {
+                    // Get token and send to server
+                    messaging.getToken()
+                    .then(function(currentToken) {
+                        if (currentToken) {
+                            console.log(currentToken);
+                            firebase.firestore()
+                            .collection("users")
+                            .doc(Auth.currentUser.uid)
+                            .collection("devices")
+                            .doc(currentToken)
+                            .set({
+                                device: "Browser",
+                                id: currentToken
+                            })
+                            //db.coll
+                        } else {
+                            console.log('No Instance ID token available. Request permission to generate one.');
+                        }
+                    })
+                    .catch(function(err) {
+                        console.log('An error occurred while retrieving token. ', err);
+                    });
+                }
             </script>
         </body>
     </html>
