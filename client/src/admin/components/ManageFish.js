@@ -30,7 +30,7 @@ export default class ManageFish extends React.Component {
         	<FormGroup>
           	<Input type="text" name="searchTerm" placeholder="Please type your search term" onChange={this.handleSearchChange} />
         	</FormGroup>
-					<Button className="btn-admin">Serch now</Button>
+					<Button className="btn-admin">Search now</Button>
 				</Form>
 				<Table className="table">
 				  <Thead>

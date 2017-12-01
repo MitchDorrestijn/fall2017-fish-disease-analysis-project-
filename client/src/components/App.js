@@ -187,7 +187,9 @@ export default class App extends React.Component {
 							<div className="block-wrapper">
 								<Switch>
 									{this.state.redirect}
-									<Route path="/admin" component={Admin}/>
+									<Route path="/admin" render={(props) => {
+										return <Admin {...props} openModal={this.openModal}/>
+									}}/>
 									<Route path="/" render={(props) => {
 										return (
 											<div className="body-margin-top">

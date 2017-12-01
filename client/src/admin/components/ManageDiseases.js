@@ -5,7 +5,7 @@ import InlineEditable from "react-inline-editable-field";
 import { Button, Form, FormGroup, Input } from 'reactstrap';
 import addFishDesiseAdmin from '../../components/modal/AddFishDesiseAdmin';
 
-export default class ManageDesises extends React.Component {
+export default class ManageDiseases extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -74,7 +74,7 @@ export default class ManageDesises extends React.Component {
 				        </Tr>
 				    </Tbody>
 				</Table>
-				<Button onClick={() => this.props.openModal(addFishDesiseAdmin)} className="btn-admin">Add fish desise</Button>
+				<Button onClick={() => this.props.openModal(addFishDesiseAdmin)} className="btn-admin">Add fish disease</Button>
 			</div>
   	);
 	}
