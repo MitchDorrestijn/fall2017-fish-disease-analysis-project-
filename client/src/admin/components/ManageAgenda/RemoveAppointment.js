@@ -4,7 +4,6 @@ import {Button, ModalHeader, ModalBody} from 'reactstrap';
 export default class RemoveAppointment extends Component {
 	cancelAppointment = () => {
 		// Hier moet die deleteData request gedaan worden
-		console.log ("Remove "+this.props.customProps.entry.id);
 		this.props.customProps.refreshPage();
 		this.props.toggleModal();
 	};

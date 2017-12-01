@@ -11,37 +11,37 @@ import {
 } from 'reactstrap';
 import Error from './Error';
 
-class AddFishADesiseAdmin extends React.Component {
+export default class AddFishDiseaseAdmin extends React.Component {
 	constructor(props){
 		super(props);
 	}
-	addFishDesise = (e) => {
+	addFishDisease = (e) => {
 		e.preventDefault();
 		const fishName = e.target.fishName.value;
 		const fishDescription = e.target.fishDescription.value;
-		const fishSyntoms = e.target.fishSyntoms.value;
+		const fishSymptoms = e.target.fishSymptoms.value;
 		const fishImage = e.target.fishImage.value;
-		let allSyntoms = new Array();
-		allSyntoms = fishSyntoms.split(",");
-  	console.log(`Submitted form data: fishname: ${fishName}, fish description: ${fishDescription}, fish syntoms: ${allSyntoms}, fish image: ${fishImage}`);
+		let allSymptoms = new Array();
+		allSymptoms = fishSymptoms.split(",");
+  	console.log(`Submitted form data: fishname: ${fishName}, fish description: ${fishDescription}, fish syntoms: ${allSymptoms}, fish image: ${fishImage}`);
 	}
 	render() {
 		return (
 			<div>
-				<ModalHeader toggle={() => this.props.toggleModal()}>Add fish desise</ModalHeader>
+				<ModalHeader toggle={() => this.props.toggleModal()}>Add fish disease</ModalHeader>
 				<ModalBody>
 					{ this.props.isErrorVisible ?
 						<Error errorContent={this.props.errorContent} /> :
 						null
 					}
-					<Form onSubmit={this.addFishDesise}>
+					<Form onSubmit={this.addFishDisease}>
 		        <FormGroup>
 		          <Label for="fishName">Name of fish:</Label>
 		          <Input id="fishName" type="text" name="fishName" placeholder="Name of fish" />
 		        </FormGroup>
 						<FormGroup>
-							<Label for="fishSyntoms">Syntoms:</Label>
-							<Input id="fishSyntoms" type="text" name="fishSyntoms" placeholder="Desise synomes" />
+							<Label for="fishSymptoms">Symptoms:</Label>
+							<Input id="fishSymptoms" type="text" name="fishSymptoms" placeholder="Disease symptoms" />
 							<FormText color="muted">Put a comma (,) to separate the syntoms.</FormText>
 						</FormGroup>
 		        <FormGroup>
@@ -60,5 +60,3 @@ class AddFishADesiseAdmin extends React.Component {
 		);
 	}
 }
-
-export default AddFishADesiseAdmin;
