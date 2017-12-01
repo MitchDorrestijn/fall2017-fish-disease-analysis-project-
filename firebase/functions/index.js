@@ -27,6 +27,7 @@ const aquariumRoutes = require('./routes/aquarium.js');
 const diseaseRoutes = require('./routes/disease.js');
 const notificationRoutes = require('./routes/notification.js');
 const speciesRoutes = require('./routes/species.js');
+const appointmentRoutes = require('./routes/appointment.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
@@ -50,6 +51,7 @@ app.use('/api', aquariumRoutes);
 app.use('/api', diseaseRoutes);
 app.use('/api', notificationRoutes);
 app.use('/api', speciesRoutes);
+app.use('/api', appointmentRoutes);
 
 /* Main route */
 
