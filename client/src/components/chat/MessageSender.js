@@ -12,12 +12,13 @@ export default class MessageSender extends React.Component {
   	return (
 			<Col className="footer fixed-bottom" sm="12" md="12">
 				<Col sm="12" md={{ size: 8, offset: 1 }}>
-					<Form inline onSubmit={this.getTextMessage}>
-						<FormGroup>
-							<Input type="text" name="textmessage" id="messageToSend" placeholder="Type your message" />
-						</FormGroup>
-						<Button className="btn-admin">Send message</Button>
-					</Form>
+						<Form inline onSubmit={this.getTextMessage}>
+							<FormGroup>
+								<Input type="text" name="textmessage" id="messageToSend" placeholder="Type your message" />
+								<Input type="file" name="fileUpload" id="fileUpload" />
+							</FormGroup>
+							<Button className="btn-admin">Send message</Button>
+						</Form>
 				</Col>
 			</Col>
   	);
