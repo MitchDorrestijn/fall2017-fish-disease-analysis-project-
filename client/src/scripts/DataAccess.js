@@ -84,7 +84,6 @@ export default class DataAccess {
 				method: 'POST',
 				mode: 'cors',
 				headers: headers,
-				mode: 'cors',
 				body: JSON.stringify (body)
 			};
 			let request = new Request (this.api + url, requestParams);

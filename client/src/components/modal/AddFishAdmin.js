@@ -12,9 +12,6 @@ import {
 import Error from './Error';
 
 class AddFishAdmin extends React.Component {
-	constructor(props){
-		super(props);
-	}
 	addFish = (e) => {
 		e.preventDefault();
 		const fishName = e.target.fishname.value;

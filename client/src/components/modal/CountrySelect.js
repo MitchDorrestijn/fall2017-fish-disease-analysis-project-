@@ -2,8 +2,6 @@ import React from 'react';
 import countries from '../../data/countries.js'
 
 import {
-	InputGroup,
-	InputGroupAddon,
 	Input
 } from 'reactstrap';
 
