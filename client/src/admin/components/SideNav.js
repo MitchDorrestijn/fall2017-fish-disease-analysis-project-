@@ -14,7 +14,7 @@ export default class SideNav extends React.Component {
 	render() {
 		return (
 			<div className="row row-no-gutter sidebar-wrap">
-				<Sidebar size="3" title="Management" extraClass="adminSidebar">
+				<Sidebar size="3" title={<span>Control<br/>Panel</span>} extraClass="adminSidebar">
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/fish">Fish</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/diseases">Diseases</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/appointments">Appointments</SidebarLink>
