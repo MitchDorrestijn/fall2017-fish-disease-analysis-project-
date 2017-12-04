@@ -8,6 +8,7 @@ import TodaysData from './todaysData/TodaysData';
 import SavedAdvices from './savedAdvices/SavedAdvices';
 import Notifications from './notifications/Notifications';
 import AccountSettings from './accountSettings/AccountSettings';
+import RequestConsult from './requestConsult/RequestConsult';
 
 export default class MyAquarium extends React.Component {
 	render() {
@@ -28,6 +29,9 @@ export default class MyAquarium extends React.Component {
 						<SidebarLink img="/images/myAquarium/clock-icon.png" target="/myAquarium/notifications">
 							Notifications
 						</SidebarLink>
+						<SidebarLink img="/images/myAquarium/calendar-icon.png" target="/myAquarium/requestConsult">
+							Register a consult
+						</SidebarLink>
 						<SidebarLink img="/images/myAquarium/profile-icon.png" target="/myAquarium/accountSettings">
 							Account settings
 						</SidebarLink>
@@ -42,6 +46,7 @@ export default class MyAquarium extends React.Component {
 						<Route exact path="/myAquarium/savedAdvices" component={SavedAdvices}/>
 						<Route exact path="/myAquarium/notifications" component={Notifications}/>
 						<Route exact path="/myAquarium/accountSettings" component={AccountSettings}/>
+						<Route exact path="/myAquarium/requestConsult" component={RequestConsult}/>
 					</ContentContainer>
 				</div>
 		);
