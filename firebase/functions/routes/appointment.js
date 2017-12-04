@@ -48,7 +48,6 @@ router.post('/appointments/',isAuthenticated, (req, res) => {
 		return res.sendStatus(400);
 	}
 	const appointment = req.body;
-
 	if (!validator.isAscii(appointment.comment) ||
 		!validator.isISO8601(appointment.date)
 	) {
@@ -93,10 +92,32 @@ router.put('/appointments/:id', isAuthenticated, (req, res) => {
 	const appointmentId = req.params.id;
 	const appointmentRef = db.collection('appointments').doc(appointmentId);
 	return appointmentRef.update({
-		reserved: true
+		canceled: true
 	})
 	.then(() => {
 		res.sendStatus(204);
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	});
+});
+
+/**
+ *  @api {DELETE} /appointment/:id Delete appointment
+ *  @apiName Remove an appointment
+ *  @apiGroup Appointments
+ *
+ *  @apiSuccess {String} Appointment deleted
+ *  @apiSuccessExample Success-Response:
+ *  HTTP/1.1 204 OK
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ */
+router.delete('/appointments/:id',isAuthenticated, (req, res) => {
+	const appointmentId = req.params.id;
+	db.collection('appointments').doc(appointmentId).delete()
+	.then(() => {
+		res.status(204).send('Appointment deleted');
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
