@@ -34,4 +34,40 @@ router.get('/species/search', isAuthenticated, (req, res) => {
     });
 })
 
+router.get('/species', isAuthenticated, (req, res) => {
+    db.collection('species').get()
+    .then((snapshot) => {
+        let array = [];
+        snapshot.docs.forEach((doc) => {
+            array.push(doc.data());
+        })
+        res.send(array);
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+router.get('/species/:id', isAuthenticated, (req, res) => {
+    db.collection('species').doc(req.params.id).get()
+    .then((doc) => {
+        res.send(doc.data());
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+router.post('/species', isAuthenticated, (req, res) => {
+
+})
+
+router.put('/species/:id', isAuthenticated, (req, res) => {
+    
+})
+
+router.delete('/species/:id', isAuthenticated, (req, res) => {
+    
+})
+
 module.exports = router;
