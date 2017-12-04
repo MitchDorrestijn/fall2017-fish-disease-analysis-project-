@@ -111,14 +111,11 @@ exports.onNotificationCreated = functions.firestore.document("notifications/{id}
 			body: notification.message
 		}
 	}
-	console.log(notification);
 	return notification.user.collection("devices").get()
 	.then((snapshot) => {
 		console.log(snapshot.docs);
 		snapshot.docs.forEach((doc) => {
 			const device = doc.data()
-			console.log(device);
-			console.log("Sending to: " + device.id);
 			notificator.push(device.id, payload)
 			.then((response) => {
 				console.log("Noti sent to: " + device.id);
