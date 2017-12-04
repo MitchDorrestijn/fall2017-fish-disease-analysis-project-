@@ -12,16 +12,13 @@ import {
 import Error from './Error';
 
 class AddFishADesiseAdmin extends React.Component {
-	constructor(props){
-		super(props);
-	}
 	addFishDesise = (e) => {
 		e.preventDefault();
 		const fishName = e.target.fishName.value;
 		const fishDescription = e.target.fishDescription.value;
 		const fishSyntoms = e.target.fishSyntoms.value;
 		const fishImage = e.target.fishImage.value;
-		let allSyntoms = new Array();
+		let allSyntoms = [];
 		allSyntoms = fishSyntoms.split(",");
   	console.log(`Submitted form data: fishname: ${fishName}, fish description: ${fishDescription}, fish syntoms: ${allSyntoms}, fish image: ${fishImage}`);
 	}

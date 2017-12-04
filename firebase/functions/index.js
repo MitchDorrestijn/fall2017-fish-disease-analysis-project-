@@ -11,8 +11,8 @@ admin.initializeApp({
 	databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
 
-// Custom helper modules
-const notifications = require('./notifications/notifications.js');
+/* Custom helper modules */
+const notificator = require('./notifications/notifications.js');
 const statusChecker = require('./status_checker/checker.js');
 
 /* Algolia, used for search */
@@ -32,7 +32,6 @@ const timeSlotRoutes = require('./routes/timeslots.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
-const functionsMiddleware = require('./middleware/functions.js');
 
 /* Express */
 const app = express();
@@ -43,7 +42,6 @@ app.use(cors({origin: '*'}));
 
 /* Middlewares */
 app.use('*', authenticate);
-app.use('*', functionsMiddleware);
 
 /* Routes to different API endpoints */
 app.use('/api', userRoutes);
@@ -71,15 +69,20 @@ exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event
 
 // Logic getting executed when an entry is submitted. It will check whether something is wrong with the water.
 exports.checkEntryDataForDangerousMutations = functions.firestore.document("aquaria/{aquarium}/entries/{entry}").onCreate(event => {
+
+	let user;
+	let aquarium;
+	let entry;
+
 	return admin.firestore().collection("aquaria").doc(event.params.aquarium).get()
 	.then((doc) => {
-		console.log(doc);
+		aquarium = doc.data();
 		return doc.data().user.get()
 	})
-	.then((user) => {
-		console.log(user);
-		const entry = event.data.data()
-		statusChecker.check(user.id, entry)
+	.then((doc) => {
+		user = doc.data();
+		entry = event.data.data();
+		statusChecker.digest(aquarium, user, entry);
 	})
 	.catch((error) => {
 		console.log(error.message);
@@ -102,6 +105,37 @@ const upsertDiseaseToAlgolia = (event) => {
 	const index = client.initIndex("diseases");
 	return index.saveObject(disease);
 }
+
+// Send push notification when notification is created 
+exports.onNotificationCreated = functions.firestore.document("notifications/{id}").onCreate(event => {
+	const notification = event.data.data();
+	let payload = {
+		notification: {
+			title: "Nieuw bericht over uw aquarium.",
+			body: notification.message
+		}
+	}
+	console.log(notification);
+	return notification.user.collection("devices").get()
+	.then((snapshot) => {
+		console.log(snapshot.docs);
+		snapshot.docs.forEach((doc) => {
+			const device = doc.data()
+			console.log(device);
+			console.log("Sending to: " + device.id);
+			notificator.push(device.id, payload)
+			.then((response) => {
+				console.log("Noti sent to: " + device.id);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			})
+		})
+	})
+	.catch((error) => {
+		return error;
+	})
+});
 
 // Update the search index every time a blog post is written.
 exports.onDiseaseCreated = functions.firestore.document("diseases/{id}").onCreate(event => {

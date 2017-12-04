@@ -11,8 +11,16 @@ const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
+const validateModel = require('../middleware/validateModel.js');
 
 const db = admin.firestore();
+
+/* Model Definition */
+const model = {
+    name: "disease",
+    endpoint: "diseases",
+    keys: ["name", "symptoms", "description", "treatment"]
+}
 
 /*
     Fish disease model:
@@ -21,8 +29,33 @@ const db = admin.firestore();
     - description,
     - treatment
 */
-router.post('/diseases', isAuthenticated, (req, res) => {
-    db.collection('diseases').add(req.body.disease)
+
+router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
+    db.collection(model.endpoint).get()
+    .then((snapshot) => {
+        let array = [];
+        snapshot.docs.forEach((doc) => {
+            array.push(doc.data());
+        })
+        res.send(array);
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+router.get('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
+    db.collection(model.endpoint).doc(req.params.id).get()
+    .then((doc) => {
+        res.send(doc.data());
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+router.post('/' + model.endpoint, isAuthenticated, (req, res) => {
+    db.collection(model.name).add(req.body.disease)
     .then((newDoc) => {
         return newDoc.get()
     })
@@ -34,8 +67,28 @@ router.post('/diseases', isAuthenticated, (req, res) => {
     })
 })
 
-router.get('/diseases/search', isAuthenticated, (req, res) => {
-    const index = client.initIndex("diseases");
+router.put('/' + model.endpoint + '/:id', isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
+    db.collection(model.name).doc(req.params.id).set(req.body.species)
+    .then((updatedDoc) => {
+        res.status(200).send(updatedDoc.data());
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+router.delete('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
+    db.collection(model.name).doc(req.params.id).delete()
+    .then(() => {
+        res.status(200);
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+router.get('/' + model.endpoint + '/search', isAuthenticated, (req, res) => {
+    const index = client.initIndex(model.endpoint);
     const query = req.query.term;
 
     if(!query){

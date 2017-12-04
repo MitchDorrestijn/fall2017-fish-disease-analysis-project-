@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Input, InputGroup, Button, Alert} from 'reactstrap';
+import {Col, Input, InputGroup} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import Setting from './Setting';
 import SettingsBox from './SettingsBox';
