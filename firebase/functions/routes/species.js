@@ -11,31 +11,19 @@ const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
+const validateModel = require('../middleware/validateModel.js');
 
 const db = admin.firestore();
 
-router.get('/species/search', isAuthenticated, (req, res) => {
-    const index = client.initIndex("species");
-    const query = req.query.term;
+/* Model Definition */
+const model = {
+    name: "species",
+    endpoint: "species",
+    keys: ["name", "lol"]
+}
 
-    if(!query){
-        return res.status(400).send("Please provide '?term=searchterm' in url");
-    }
-
-    index
-    .search({
-        query
-    })
-    .then(responses => {
-        res.send(responses.hits);
-    })
-    .catch((error) => {
-        res.status(500).send(error.message);
-    });
-})
-
-router.get('/species', isAuthenticated, (req, res) => {
-    db.collection('species').get()
+router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
+    db.collection(model.endpoint).get()
     .then((snapshot) => {
         let array = [];
         snapshot.docs.forEach((doc) => {
@@ -48,8 +36,8 @@ router.get('/species', isAuthenticated, (req, res) => {
     })
 })
 
-router.get('/species/:id', isAuthenticated, (req, res) => {
-    db.collection('species').doc(req.params.id).get()
+router.get('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
+    db.collection(model.endpoint).doc(req.params.id).get()
     .then((doc) => {
         res.send(doc.data());
     })
@@ -58,16 +46,54 @@ router.get('/species/:id', isAuthenticated, (req, res) => {
     })
 })
 
-router.post('/species', isAuthenticated, (req, res) => {
-
+router.post('/' + model.endpoint, isAuthenticated, (req, res) => {
+    db.collection(model.name).add(req.body.disease)
+    .then((newDoc) => {
+        return newDoc.get()
+    })
+    .then((document) => {
+        res.status(201).send(document.data());
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
 })
 
-router.put('/species/:id', isAuthenticated, (req, res) => {
-    
+router.put('/' + model.endpoint + '/:id', isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
+    db.collection(model.name).doc(req.params.id).set(req.body.species)
+    .then((updatedDoc) => {
+        res.status(200).send(updatedDoc.data());
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
 })
 
-router.delete('/species/:id', isAuthenticated, (req, res) => {
-    
+router.delete('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
+    db.collection(model.name).doc(req.params.id).delete()
+    .then(() => {
+        res.status(200);
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+router.get('/' + model.endpoint + '/search', isAuthenticated, (req, res) => {
+    const index = client.initIndex(model.endpoint);
+    const query = req.query.term;
+
+    if(!query){
+        return res.status(400).send("Please provide '?term=searchterm' in url");
+    }
+
+    index
+    .search({
+        query
+    })
+    .then(responses => {
+        res.send(responses.hits);
+    });
 })
 
 module.exports = router;
