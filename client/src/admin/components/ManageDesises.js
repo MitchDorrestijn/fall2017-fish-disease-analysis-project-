@@ -1,16 +1,56 @@
 import React from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
-import InlineEditable from "react-inline-editable-field";
 import { Button, Form, FormGroup, Input } from 'reactstrap';
 import addFishDesiseAdmin from '../../components/modal/AddFishDesiseAdmin';
+import DataAccess from '../../scripts/DataAccess';
 
 export default class ManageDesises extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			searchTerm: ""
+			searchTerm: "",
+			dataFromDB: [],
+			data: []
 		}
+	}
+	componentDidMount(){
+		this.loadCurrentDiseases();
+	}
+	loadCurrentDiseases = () => {
+		let da = new DataAccess();
+		da.getData ('/diseases', (err, res) => {
+			if (!err) {
+				this.setState({dataFromDB: res.message});
+				this.getData();
+			} else {
+				console.log("De error is: " + err.message);
+			}
+		});
+	}
+	getData = () => {
+		let data = [];
+		for(var key in this.state.dataFromDB) {
+    	if(this.state.dataFromDB.hasOwnProperty(key)) {
+				let symptoms = null;
+				if (this.state.dataFromDB[key].symptoms) {
+					symptoms = this.state.dataFromDB[key].symptoms.map ((elem, index) => {
+						return <li key={parseInt(index,10)}>{elem}</li>
+					});
+				}
+				data.push(
+					<Tr key={parseInt(key,10)}>
+						<Td>{this.state.dataFromDB[key].name}</Td>
+						<Td><ul>{symptoms}</ul></Td>
+						<Td>{this.state.dataFromDB[key].description}</Td>
+						<Td>{this.state.dataFromDB[key].treatment}</Td>
+					</Tr>
+				);
+    	}
+		}
+		this.setState({
+			data: data
+		})
 	}
 	updateRecord = (recordToUpdate) => {
   	console.log(recordToUpdate);
@@ -35,43 +75,14 @@ export default class ManageDesises extends React.Component {
 				<Table className="table">
 				  <Thead>
 				  	<Tr>
-	            <Th>Fish name</Th>
-	            <Th>Syntoms</Th>
+	            <Th>Name</Th>
+	            <Th>Symptoms</Th>
 							<Th>Description</Th>
-							<Th>Image</Th>
+							<Th>Treatment</Th>
 		        </Tr>
 			    </Thead>
 				    <Tbody>
-				        <Tr>
-										<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-										<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				            <Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				        </Tr>
-								<Tr>
-									<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				        </Tr>
-								<Tr>
-									<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				        </Tr>
-								<Tr>
-									<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				        </Tr>
-								<Tr>
-									<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="Potvis" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large." inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-									<Td><InlineEditable className="editFocus" content="img/afbeelding.png" inputType="text" onBlur={(recordToUpdate) => {this.updateRecord(recordToUpdate)}}/></Td>
-				        </Tr>
+							{this.state.data}
 				    </Tbody>
 				</Table>
 				<Button onClick={() => this.props.openModal(addFishDesiseAdmin)} className="btn-admin">Add fish desise</Button>
