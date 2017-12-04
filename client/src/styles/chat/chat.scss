@@ -7,6 +7,9 @@
 	background-attachment: fixed;
 	height: calc(100vh - 80px); //Minus the height of the navBar
 	overflow-y: scroll;
+	h3 {
+		color: white;
+	}
 	.senderBox,
 	.recieverBox {
 		position: relative;
@@ -62,7 +65,7 @@
 }
 .fixed-wrapper {
 	position: fixed;
-  max-width: 25%;
+	max-width: 25%;
 	top:0;
 	bottom:0;
 	.inner-video-wrapper{
@@ -77,6 +80,11 @@
 			vertical-align: middle;
 			video {
 				width: 100%;
+				background-color: #ddd;
+				border-radius: 7px;
+				margin: 10px 0px 10px 0px;
+				height: 240px;
+				width: 320px;
 			}
 		}
 	}

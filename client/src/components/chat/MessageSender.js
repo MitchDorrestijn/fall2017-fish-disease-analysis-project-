@@ -5,8 +5,10 @@ import { Button, Form, FormGroup, Input } from 'reactstrap';
 export default class MessageSender extends React.Component {
 	getTextMessage = (e) => {
 		e.preventDefault();
-		const message = document.getElementById('messageToSend').value;
-		console.log(message);
+		const el = document.getElementById('messageToSend');
+		const message = el.value;
+		el.value = "";
+		this.props.sendChatMessage(message);
 	}
 	render(){
   	return (

@@ -1,16 +1,19 @@
 import React from 'react';
-import { Col } from 'reactstrap';
+import { Col, Button } from 'reactstrap';
 
-const Videobox = () => {
+const Videobox = (props) => {
   return (
 		<div className="fixed-wrapper">
 			<div className="inner-video-wrapper">
 				<div className="video-center">
 					<Col md="12" className="no-gutter">
-						<video src="http://www.onirikal.com/videos/mp4/assembly_line.mp4" controls></video>
+						<video id="otherCam" autoPlay muted></video>
 					</Col>
 					<Col md="12" className="no-gutter">
-						<video src="http://www.onirikal.com/videos/mp4/assembly_line.mp4" controls></video>
+						<video id="myCam" autoPlay muted></video>
+					</Col>
+					<Col md="12" className="no-gutter">
+						<Button color="primary" onClick={() => props.checkOnline()} block><i className="fa fa-video-camera"/> Call</Button>
 					</Col>
 				</div>
 			</div>
