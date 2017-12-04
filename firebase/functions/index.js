@@ -11,7 +11,7 @@ admin.initializeApp({
 	databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
 
-// Custom helper modules
+/* Custom helper modules */
 const notificator = require('./notifications/notifications.js');
 const statusChecker = require('./status_checker/checker.js');
 
@@ -30,7 +30,6 @@ const speciesRoutes = require('./routes/species.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
-const functionsMiddleware = require('./middleware/functions.js');
 
 /* Express */
 const app = express();
@@ -41,7 +40,6 @@ app.use(cors({origin: '*'}));
 
 /* Middlewares */
 app.use('*', authenticate);
-app.use('*', functionsMiddleware);
 
 /* Routes to different API endpoints */
 app.use('/api', userRoutes);
