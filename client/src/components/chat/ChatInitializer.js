@@ -18,27 +18,20 @@ export default class ChatInitializer extends React.Component {
 		this.chatId = null;
 		this.userId = null;
 		this.admin = false;
+		this.stream = null;
 		
-		//Benodigde variabelen voor WebRTC
-		this.servers = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'urls': 'stun:stun.l.google.com:19302'}, {'urls': 'turn:numb.viagenie.ca','credential': '123456','username': 'coen_severein@hotmail.com'}]};
-		this.pc = new RTCPeerConnection(this.servers);
-				
-		this.pc.onicecandidate = (event => event.candidate?this.sendMessage(this.userId, "ice", {'ice': event.candidate}):console.log("Sent All Ice") );
-		this.pc.onaddstream = (event => document.getElementById("otherCam").srcObject = event.stream);
-		this.pc.ondatachannel = (event) => {
-			this.dataChannel = event.channel;
-			this.dataChannel.onmessage = (event) => { 
-				this.addReceiverMessage(event.data);
-			};
-		};
+		this.initializeWebRTC();
 	}
 	
 	componentDidMount = () => {
 		//Setup webcam gebruiker
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 		navigator.mediaDevices.getUserMedia({audio:true, video:true})
-			.then(stream => document.getElementById("myCam").srcObject = stream)
-			.then(stream => this.pc.addStream(stream))
-			.then(() => {
+			.then((stream) => {
+				document.getElementById("myCam").srcObject = stream;
+				this.pc.addStream(stream);
+				this.stream = stream;
+			}).then(() => {
 				this.checkAdmin();
 				this.initializeDatabase();
 				this.checkOnline();
@@ -66,6 +59,26 @@ export default class ChatInitializer extends React.Component {
 		}
 		this.database = firebase.database().ref('/chat/' + this.chatId);
 		this.database.on('child_added', this.readMessage);
+	}
+	
+	initializeWebRTC = () => {
+		this.servers = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'urls': 'stun:stun.l.google.com:19302'}, {'urls': 'turn:numb.viagenie.ca','credential': '123456','username': 'coen_severein@hotmail.com'}]};
+		this.pc = new RTCPeerConnection(this.servers);	
+		this.pc.onicecandidate = (event) => {
+			event.candidate?this.sendMessage(this.userId, "ice", {'ice': event.candidate}):console.log("Sent All Ice")
+		};
+		
+		this.pc.onaddstream = (event) => {
+			document.getElementById("otherCam").srcObject = event.stream
+		};
+		
+		this.pc.ondatachannel = (event) => {
+			this.dataChannel = event.channel;
+			this.dataChannel.onmessage = (event) => { 
+				this.addReceiverMessage(event.data);
+			};
+			console.log("received datachannel");
+		};
 	}
 	
 	checkOnline = () => {
@@ -118,6 +131,15 @@ export default class ChatInitializer extends React.Component {
 		});
 	}
 	
+	closeConnection = () => {
+		console.log("Closed connection");
+		this.sendMessage(this.userId, "closeConnection", "");
+		this.pc.close();
+		this.pc = null;
+		this.initializeWebRTC();
+		this.pc.addStream(this.stream);
+	}
+	
 	sendMessage = (senderId, type, data) => {
 		//Plaats een bericht op de database en verwijder hem daarna weer
 		let msg = this.database.push({ sender: senderId, message: JSON.stringify({'type': type, 'data': data}) });
@@ -148,6 +170,13 @@ export default class ChatInitializer extends React.Component {
 			}else if(type === "checkOnlineAnswer"){
 				//Andere gebruiker heeft gereageerd op de vraag of er iemand online is
 				this.setupStreamOther();
+			}else if(type === "closeConnection"){
+				//Andere gebruiker heeft de connectie verbroken
+				console.log("Other user closed connection");
+				this.pc.close();
+				this.pc = null;
+				this.initializeWebRTC();
+				this.pc.addStream(this.stream);
 			}
 		}
 	}
@@ -166,7 +195,7 @@ export default class ChatInitializer extends React.Component {
 								<MessageSender sendChatMessage={this.sendChatMessage} />
 							</Col>
 							<Col md="4">
-								<Videobox checkOnline={this.checkOnline} />
+								<Videobox closeConnection={this.closeConnection} stream={this.stream} checkOnline={this.checkOnline} />
 							</Col>
 						</Row>
 					</Container>
