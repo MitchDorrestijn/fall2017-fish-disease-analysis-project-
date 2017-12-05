@@ -5,6 +5,7 @@ import ActionButton from '../../../components/base/ActionButton';
 import RemoveAppointment from './RemoveAppointment';
 import ChangeAppointment from './ChangeAppointment';
 import ApproveAppointment from './ApproveAppointment';
+import DataAccess from '../../../scripts/DataAccess';
 
 export default class ManageAgenda extends Component {
 	constructor(props) {
@@ -44,57 +45,50 @@ export default class ManageAgenda extends Component {
 		// Bij de onClickAction moet het id van de afspraak worden meegegeven
 		let results = [];
 
-		// Voorbeeld van een array van afspraken
-		let resultsFromDB = [{
-			id: "weorij3874893sjdo",
-			date: "20-10-2019",
-			time: "16:00-17:00",
-			person: "Piet",
-			description: "Het betreft een hele zieke vis :(",
-			video: true,
-			approved: false
-		}, {
-			id: "aoiej39t08jfei390",
-			date: "20-10-2019",
-			time: "17:00-18:00",
-			person: "Henk",
-			description: "Het betreft een dooie vis :(",
-			video: false,
-			approved: true
-		}];
+		let resultsFromDB;
+		let da = new DataAccess();
 
-		results = resultsFromDB.map ((elem) => {
-			return (
-				<Tr key={elem.id}>
-					<Td>{elem.date}</Td>
-					<Td>{elem.time}</Td>
-					<Td>{elem.person}</Td>
-					<Td>{elem.description}</Td>
-					<Td>{elem.video ? "Yes" : "No"}</Td>
-					<Td>{elem.approved ? "Yes" : "No"}</Td>
-					<Td>
-						<ButtonGroup>
-							{elem.approved ?
+		da.getData('/appointments', (err, res) => {
+			resultsFromDB = res.message;
+			for (let i = 0; i < resultsFromDB.length; i++) {
+				if (resultsFromDB[i].canceled) {
+					delete resultsFromDB[i];
+					i--;
+				}
+			}
+			results = resultsFromDB.map ((elem) => {
+				return (
+					<Tr key={elem.id}>
+						<Td>{elem.date}</Td>
+						<Td>{elem.time}</Td>
+						<Td>{elem.reservedBy}</Td>
+						<Td>{elem.comment}</Td>
+						<Td>{elem.video ? "Yes" : "No"}</Td>
+						<Td>{elem.approved ? "Yes" : "No"}</Td>
+						<Td>
+							<ButtonGroup>
+								{elem.approved ?
+									<ActionButton
+										buttonText={<span className="fa fa-edit"/>}
+										color="primary"
+										onClickAction={() => this.changeAppointment(elem)}/> :
+									<ActionButton
+										buttonText={<span className="fa fa-check"/>}
+										color="primary"
+										onClickAction={() => this.approveAppointment(elem)}/>
+								}
 								<ActionButton
-									buttonText={<span className="fa fa-edit"/>}
+									buttonText={<span className="fa fa-close"/>}
 									color="primary"
-									onClickAction={() => this.changeAppointment(elem)}/> :
-								<ActionButton
-									buttonText={<span className="fa fa-check"/>}
-									color="primary"
-									onClickAction={() => this.approveAppointment(elem)}/>
-							}
-							<ActionButton
-								buttonText={<span className="fa fa-close"/>}
-								color="primary"
-								onClickAction={() => this.cancelAppointment(elem)}/>
-						</ButtonGroup>
-					</Td>
-				</Tr>
-			);
-		});
-		this.setState({
-			tableEntries: results
+									onClickAction={() => this.cancelAppointment(elem)}/>
+							</ButtonGroup>
+						</Td>
+					</Tr>
+				);
+			});
+			this.setState({
+				tableEntries: results
+			});
 		});
 	};
 
