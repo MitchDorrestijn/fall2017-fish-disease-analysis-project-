@@ -7,7 +7,6 @@ import AddFish from '../../modal/AddFish';
 import AddAquarium from '../../modal/AddAquarium';
 import RemoveAquarium from '../../modal/RemoveAquarium';
 import DataAccess from '../../../scripts/DataAccess';
-import * as firebase from 'firebase';
 
 export default class MyFish extends React.Component {
 	constructor(props){
@@ -79,11 +78,11 @@ export default class MyFish extends React.Component {
 	}
 	createFilterButtons = () => {
 		let buttons = []
-		for(var key in this.state.createdAquariums) {
-    	if(this.state.createdAquariums.hasOwnProperty(key)) {
+		this.state.createdAquariums.forEach((key) => {
+			if(this.state.createdAquariums.hasOwnProperty(key)) {
 				buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
-    	}
-		}
+			}
+		});
 		return (
 			<div>
 				{buttons}

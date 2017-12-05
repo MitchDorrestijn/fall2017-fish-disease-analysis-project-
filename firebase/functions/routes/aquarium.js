@@ -9,6 +9,10 @@ const notifications = require('../notifications/notifications.js');
 
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
+const validateModel = require('../middleware/validateModel.js');
+
+/* Helper functions */
+const helperFunctions = require('../middleware/functions.js');
 
 /**
  *  @api {get} /aquaria/ Get All Aquaria
@@ -24,11 +28,11 @@ router.get('/aquaria/', isAuthenticated, (req, res) => {
 	.then((snapshot) => {
 		let aquaria = [];
 		snapshot.forEach((doc) => {
-			aquaria.push(doc.data());
+			aquaria.push(helperFunctions.flatData(doc));
 		});
-		for (let i = 0; i < aquaria.length; i++) {
-			delete aquaria[i].user;
-		}
+		// for (let i = 0; i < aquaria.length; i++) {
+		// 	aquaria[i].user = aquaria[i].user.id;
+		// }
 		res.send(aquaria);
 	}).catch((err) => {
 		res.status(500).send(err.message);
@@ -71,14 +75,8 @@ router.get('/aquaria/:id', isAuthenticated, (req, res) => {
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.post('/aquaria/', isAuthenticated, (req, res) => {
-	const allowedDataKeys = ['name'];
-	const data = req.body.data;
-
-	req.removeIllegalKeys(allowedDataKeys, data);
-
+router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
 	data.user = req.user.ref;
-
 	db.collection("aquaria").add(data)
 	.then((newDoc) => {
 		return newDoc.get ().then ((obj) => {
@@ -104,15 +102,7 @@ router.post('/aquaria/', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.post('/aquaria/:id', isAuthenticated,(req, res) => {
-	if (!req.body.data) {
-		return res.sendStatus(422);
-	}
-	// Specify the keys accepted by the process.
-	const allowedDataKeys = ['name'];
-	const data = req.body.data;
-	req.removeIllegalKeys(allowedDataKeys, data);
-
+router.post('/aquaria/:id', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
 	db.collection('aquaria').
 		where('id', '==', req.params.id).
 		where('user', '==', req.user.ref).
@@ -123,11 +113,18 @@ router.post('/aquaria/:id', isAuthenticated,(req, res) => {
 					new Error('Aquarium non existent or not owned by user.'));
 			}
 			return snapshot.docs[0].ref.update(data);
-		}).
-		then(() => {
-			res.sendStatus(200);
-		}).
-		catch((error) => {
+		})
+		.then((updated) => {
+			return updated.get();
+		})
+		.then((doc) => {
+			const ret = doc.data()
+			if(ret.user){
+				ret.user = ret.user.id
+			}
+			res.status(200).send(ret);
+		})
+		.catch((error) => {
 			res.status(500).send(error.message);
 		});
 });
@@ -187,16 +184,7 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.post('/aquaria/:id/fish', isAuthenticated, (req, res) => {
-	if (!req.body.data) {
-		return res.sendStatus(422);
-	}
-
-	const allowedDataKeys = ['species'];
-	const data = req.body.data;
-
-	req.removeIllegalKeys(allowedDataKeys, data);
-
+router.post('/aquaria/:id/fish', isAuthenticated, validateModel("data", ["species"]), (req, res) => {
 	const aquariumRef = db.collection('aquaria').doc(req.params.id);
 
 	data.user = req.user.ref;

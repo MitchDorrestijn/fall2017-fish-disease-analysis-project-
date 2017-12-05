@@ -28,3 +28,11 @@
  *          Forbidden
  *     }
  */
+
+/**
+ * @apiDefine BadRequest
+ * @apiError The Request cannot be understood
+ *
+ *  @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ */

@@ -11,8 +11,8 @@ admin.initializeApp({
 	databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
 
-// Custom helper modules
-const notifications = require('./notifications/notifications.js');
+/* Custom helper modules */
+const notificator = require('./notifications/notifications.js');
 const statusChecker = require('./status_checker/checker.js');
 
 /* Algolia, used for search */
@@ -27,10 +27,11 @@ const aquariumRoutes = require('./routes/aquarium.js');
 const diseaseRoutes = require('./routes/disease.js');
 const notificationRoutes = require('./routes/notification.js');
 const speciesRoutes = require('./routes/species.js');
+const appointmentRoutes = require('./routes/appointment.js');
+const timeSlotRoutes = require('./routes/timeslots.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
-const functionsMiddleware = require('./middleware/functions.js');
 
 /* Express */
 const app = express();
@@ -41,7 +42,6 @@ app.use(cors({origin: '*'}));
 
 /* Middlewares */
 app.use('*', authenticate);
-app.use('*', functionsMiddleware);
 
 /* Routes to different API endpoints */
 app.use('/api', userRoutes);
@@ -50,6 +50,8 @@ app.use('/api', aquariumRoutes);
 app.use('/api', diseaseRoutes);
 app.use('/api', notificationRoutes);
 app.use('/api', speciesRoutes);
+app.use('/api', appointmentRoutes);
+app.use('/api', timeSlotRoutes);
 
 /* Main route */
 
@@ -67,15 +69,20 @@ exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event
 
 // Logic getting executed when an entry is submitted. It will check whether something is wrong with the water.
 exports.checkEntryDataForDangerousMutations = functions.firestore.document("aquaria/{aquarium}/entries/{entry}").onCreate(event => {
+
+	let user;
+	let aquarium;
+	let entry;
+
 	return admin.firestore().collection("aquaria").doc(event.params.aquarium).get()
 	.then((doc) => {
-		console.log(doc);
+		aquarium = doc.data();
 		return doc.data().user.get()
 	})
-	.then((user) => {
-		console.log(user);
-		const entry = event.data.data()
-		statusChecker.check(user.id, entry)
+	.then((doc) => {
+		user = doc.data();
+		entry = event.data.data();
+		statusChecker.digest(aquarium, user, entry);
 	})
 	.catch((error) => {
 		console.log(error.message);
@@ -98,6 +105,37 @@ const upsertDiseaseToAlgolia = (event) => {
 	const index = client.initIndex("diseases");
 	return index.saveObject(disease);
 }
+
+// Send push notification when notification is created 
+exports.onNotificationCreated = functions.firestore.document("notifications/{id}").onCreate(event => {
+	const notification = event.data.data();
+	let payload = {
+		notification: {
+			title: "Nieuw bericht over uw aquarium.",
+			body: notification.message
+		}
+	}
+	console.log(notification);
+	return notification.user.collection("devices").get()
+	.then((snapshot) => {
+		console.log(snapshot.docs);
+		snapshot.docs.forEach((doc) => {
+			const device = doc.data()
+			console.log(device);
+			console.log("Sending to: " + device.id);
+			notificator.push(device.id, payload)
+			.then((response) => {
+				console.log("Noti sent to: " + device.id);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			})
+		})
+	})
+	.catch((error) => {
+		return error;
+	})
+});
 
 // Update the search index every time a blog post is written.
 exports.onDiseaseCreated = functions.firestore.document("diseases/{id}").onCreate(event => {
@@ -124,7 +162,23 @@ const upsertSpeciesToAlgolia = (event) => {
 	// Write to the algolia index
 	const index = client.initIndex("species");
 	return index.saveObject(species);
-}
+};
+
+const calculateEndDate = (event) => {
+	// Get the timeslot document
+	const timeslot = event.data.data();
+
+	const startDate = new Date(timeslot.startDate);
+	const duration = timeslot.duration;
+	// Add an "end timestamp" field
+	const endDate = startDate.setMinutes(startDate.getMinutes() + duration);
+
+	// Write timestamp to the timestamp
+	return event.data.ref.set({
+		endDate: new Date(endDate)
+	}, {merge: true});
+};
+
 
 // Update the search index every time a blog post is written.
 exports.onSpeciesCreated = functions.firestore.document("species/{id}").onCreate(event => {
@@ -133,6 +187,14 @@ exports.onSpeciesCreated = functions.firestore.document("species/{id}").onCreate
 
 exports.onSpeciesUpdated = functions.firestore.document("species/{id}").onUpdate(event => {
 	return upsertSpeciesToAlgolia(event);
+});
+
+exports.onTimeslotCreated = functions.firestore.document("timeslots/{id}").onCreate(event => {
+	return calculateEndDate(event);
+});
+
+exports.onTimeslotUpdated = functions.firestore.document("timeslots/{id}").onUpdate(event => {
+	return calculateEndDate(event);
 });
 
 exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete(event => {

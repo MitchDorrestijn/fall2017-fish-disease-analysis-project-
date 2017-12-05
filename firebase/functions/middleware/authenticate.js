@@ -23,15 +23,20 @@ module.exports = (req, res, next) => {
         admin.auth().getUser(uid)
         .then((userRecord) => {
             req.user = userRecord;
-
-            // The following is used to save the reference for easy querying and editing
             req.user.ref = admin.firestore().collection("users").doc(req.user.uid);
+            return req.user.ref.get()
+        })
+        .then((document) => {
+            if(document.data().isAdmin === true){
+                req.user.isAdmin = true;
+            }
             next();
         })
         .catch((error) => {
             next();
         });
-    }).catch((error) => {
+    })
+    .catch((error) => {
         // Not a valid idToken
         console.log(error);
         next();
