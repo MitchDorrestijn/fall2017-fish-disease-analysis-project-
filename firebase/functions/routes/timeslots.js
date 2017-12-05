@@ -45,7 +45,6 @@ router.get('/opentimeslots/', (req, res) => {
 				// console.log(index);
 				// console.log(-1);
 				if (index === -1 && timeslot.id !== timeslotField) {
-					console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
 					timeslots.push(timeslot);
 				}
 			});

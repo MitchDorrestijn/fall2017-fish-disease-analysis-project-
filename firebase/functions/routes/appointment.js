@@ -90,6 +90,8 @@ router.post('/appointments/:timeSlotId', (req, res) => {
 		return res.status(400).send("Input validation failed.");
 	}
 	appointment.canceled = false;
+	appointment.approved = false;
+	appointment.video = false;
 	appointment.reservedBy = admin.firestore().collection("users").doc(req.user.uid);
 	appointment.timeslot = admin.firestore().collection("timeslots").doc(timeSlotId);
 	db.collection('appointments')
@@ -121,10 +123,24 @@ router.put('/appointments/:id', isAuthenticated, (req, res) => {
 	if (req.user.uid !== req.params.id) {
 		return res.sendStatus(403);
 	}
+	const appointment = req.body;
 	const appointmentId = req.params.id;
 	const appointmentRef = db.collection('appointments').doc(appointmentId);
+
+	if (appointment.approved) {
+		appointment.approved = false;
+	}
+	if (appointment.video) {
+		appointment.video = false;
+	}
+	if (appointment.canceled) {
+		appointment.canceled = false;
+	}
+
 	return appointmentRef.update({
-		canceled: true
+		approved: appointment.approved,
+		canceled: appointment.canceled,
+		video: appointment.video
 	})
 	.then(() => {
 		res.sendStatus(204);
