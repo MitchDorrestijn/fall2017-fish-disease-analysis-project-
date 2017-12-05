@@ -6,21 +6,18 @@ const db = admin.firestore();
 const validator = require('validator');
 
 const isAuthenticated = require('../middleware/isAuthenticated.js');
+const helperFunctions = require('../middleware/functions.js');
 
 //get open timeslots
 router.get('/opentimeslots/', (req, res) => {
 	// get all appointment timeslot references
+	let appointmentsTimeslots = [];
 	db.collection("appointments").get()
 	.then((snapshot) => {
-		let appointmentsTimeslots = [];
 		snapshot.forEach((doc) => {
-			if (doc.data().timeslot != null) {
-				appointmentsTimeslots.push(doc.data().timeslot);
-			}
+			const flatData = helperFunctions.flatData(doc);
+			appointmentsTimeslots.push(flatData.timeslot);
 		});
-		// if (appointment has a reference timeslot field)
-
-		// res.send(appointments);
 	}).catch((err) => {
 		res.status(500).send(err.message);
 	});
@@ -28,13 +25,32 @@ router.get('/opentimeslots/', (req, res) => {
 	.then((snapshot) => {
 		let timeslots = [];
 		snapshot.forEach((doc) => {
-			if (doc.data().timeslots != null) {
-				timeslots.push(doc.data().timeslot);
-			}
-		});
-		// if (appointment has a reference timeslot field)
+			let timeslot = helperFunctions.flatData(doc);
+			appointmentsTimeslots.forEach((timeslotField) => {
+				// console.log('timeslotField ' + timeslotField);
+				// console.log('timeslot.id ' + timeslot.id);
+				// console.log('timeslots.indexOf(timeslot)' + timeslots.indexOf(timeslot));
 
-		// res.send(appointments);
+				// let index = timeslots.findIndex((x) => { // wordt voor elk item in een array geexecute
+				// 	// console.log(x.id == timeslotField);
+				// 	console.log(x.id);
+				// 	console.log(timeslotField);
+				// 	return x.id == timeslotField;
+				// });
+				let index = timeslots.indexOf(timeslot);
+				console.log(timeslot.id);
+				console.log(timeslotField);
+
+				console.log(timeslotField == timeslot.id);
+				// console.log(index);
+				// console.log(-1);
+				if (index === -1 && timeslot.id !== timeslotField) {
+					console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+					timeslots.push(timeslot);
+				}
+			});
+		});
+		return res.status(200).send(timeslots);
 	}).catch((err) => {
 		res.status(500).send(err.message);
 	});
@@ -70,7 +86,6 @@ router.post('/timeslots/', (req, res) => {
 		return res.status(400).send("Input validation failed.");
 	}
 	timeSlot.startDate = new Date(timeSlot.startDate);
-	timeSlot.reserved = false;
 	db.collection('timeslots')
 	.add(timeSlot)
 	.then((newDoc) => {
@@ -97,7 +112,6 @@ router.put('/timeslots/:id', (req, res) => {
 		return res.status(400).send("Input validation failed.");
 	}
 	timeslot.startDate = new Date(timeslot.startDate);
-	timeslot.reserved = false;
 	db.collection('timeslots').doc(timeslotId).update(timeslot)
 	.then((document) => {
 		res.status(203).send();

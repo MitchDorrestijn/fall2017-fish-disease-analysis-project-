@@ -6,7 +6,7 @@ const db = admin.firestore();
 const validator = require('validator');
 
 const isAuthenticated = require('../middleware/isAuthenticated.js');
-
+const helperFunctions = require('../middleware/functions.js');
 /**
  *  Admin
  *  @api {get} /appointments/ Get All Appointments
@@ -16,16 +16,30 @@ const isAuthenticated = require('../middleware/isAuthenticated.js');
  *  @apiSuccess {Array} appointments List of appointments
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
+ *  TODO: maybe it could be made more efficient?
  */
-router.get('/appointments/', (req, res) => {
+router.get('/appointments/',isAuthenticated, (req, res) => {
 	db.collection("appointments").get()
 	.then((snapshot) => {
 		let appointments = [];
 		snapshot.forEach((doc) => {
-			appointments.push(doc.data());
+			appointments.push(helperFunctions.flatData(doc));
 		});
-		res.send(appointments);
-	}).catch((err) => {
+		return appointments;
+	}).then((appointmentsWithId) => {
+		let appointments = appointmentsWithId;
+		let promises = [];
+		appointmentsWithId.forEach((appointment) => {
+			promises.push(admin.auth().getUser(appointment.reservedBy).then((userRecord) => {
+				appointment.reservedBy = userRecord.toJSON().displayName;
+				return appointment;
+			}))
+		});
+		Promise.all(promises).then(() => {
+			res.send(appointments);
+		});
+	})
+	.catch((err) => {
 		res.status(500).send(err.message);
 	});
 });
@@ -76,7 +90,7 @@ router.post('/appointments/:timeSlotId', (req, res) => {
 		return res.status(400).send("Input validation failed.");
 	}
 	appointment.canceled = false;
-	// appointment.reservedBy = admin.firestore().collection("users").doc(user);
+	appointment.reservedBy = admin.firestore().collection("users").doc(req.user.uid);
 	appointment.timeslot = admin.firestore().collection("timeslots").doc(timeSlotId);
 	db.collection('appointments')
 	.add(appointment)

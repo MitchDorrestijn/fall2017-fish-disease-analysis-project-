@@ -5,7 +5,6 @@
  *
  */
 module.exports = isAuthenticated = (req, res, next) => {
-    console.log(req.user);
     // Checks whether the authentication middleware is successfully detected and parsed an idToken.
     if (req.user)
         return next();
