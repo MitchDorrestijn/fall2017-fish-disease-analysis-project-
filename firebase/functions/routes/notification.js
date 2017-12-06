@@ -33,7 +33,6 @@ router.get("/notifications", isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  */
 router.get('/notifications/rules', (req, res) => {
-    console.log("access");
     db.collection('notification_rules').get()
     .then((snapshot) => {
         let arr = []
@@ -56,7 +55,7 @@ router.get('/notifications/rules', (req, res) => {
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.post('/notifications/rules', isAdmin, (req, res) => {
+router.post('/notifications/rules', isAuthenticated, (req, res) => {
     if(!req.body.rule){
         res.sendStatus(400);
         return;

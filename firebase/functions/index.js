@@ -49,13 +49,6 @@ app.use('/api', diseaseRoutes);
 app.use('/api', notificationRoutes);
 app.use('/api', speciesRoutes);
 
-/* Main route */
-
-// /* Test routes for development */
-app.get("/api/home", (request, response) => {
-	response.send("Hello from Express on Firebase!");
-});
-
 exports.app = functions.https.onRequest(app);
 
 exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event => {

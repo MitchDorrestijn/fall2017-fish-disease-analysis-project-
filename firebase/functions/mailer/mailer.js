@@ -1,20 +1,7 @@
-const nodemailer = require('nodemailer');
-const dependency = {};
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey('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');
 
-dependency.getTransporter = (user, password) => {
-    return nodemailer.createTransport({
-        host: '185.182.56.198',
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: "info@bassleer.nl", // generated ethereal user
-            pass: "abcdefg"  // generated ethereal password
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
-};
+const dependency = {};
 
 dependency.mail = (to, subject, html) => {
     // setup email data with unicode symbols
@@ -26,17 +13,10 @@ dependency.mail = (to, subject, html) => {
             html: html
         };
 
-        const transporter = dependency.getTransporter("info@bassleer.nl", "abcdefg");
-        
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                //return console.log(error);
-                return reject(error);
-            }
-            console.log('Message sent: %s', info.messageId);
-            resolve(info);
-        });
+        sgMail.send(mailOptions)
+        .then(() => {
+            resolve();
+        })
     });
 };
 
