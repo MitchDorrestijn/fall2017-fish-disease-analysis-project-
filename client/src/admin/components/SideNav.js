@@ -6,7 +6,7 @@ import ContentContainer from '../../components/myAquarium/ContentContainer';
 import ManageAgenda from './ManageAgenda';
 import ManageDesises from './ManageDesises';
 import ManageFish from './ManageFish';
-import ManageNotifications from './ManageNotifications';
+import ManageNotifications from './ManageNotifications/ManageNotifications';
 import ManageUsers from './ManageUsers';
 import Logout from './Logout';
 
