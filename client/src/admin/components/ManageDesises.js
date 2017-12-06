@@ -1,17 +1,22 @@
 import React from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
-import { Button, Form, FormGroup, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Input, ButtonGroup } from 'reactstrap';
 import addFishDesiseAdmin from '../../components/modal/AddFishDesiseAdmin';
 import DataAccess from '../../scripts/DataAccess';
+import ActionButton from '../../components/base/ActionButton';
+import RemoveDisease from '../../components/modal/RemoveDisease';
+import EditDisease from '../../components/modal/EditDisease';
+
 
 export default class ManageDesises extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			searchTerm: "",
-			dataFromDB: [],
-			data: []
+			data: [],
+			userHasSearched: false,
+			error: ""
 		}
 	}
 	componentDidMount(){
@@ -21,29 +26,58 @@ export default class ManageDesises extends React.Component {
 		let da = new DataAccess();
 		da.getData ('/diseases', (err, res) => {
 			if (!err) {
-				this.setState({dataFromDB: res.message});
-				this.getData();
+				this.getData(res.message);
+				this.setState({userHasSearched: false, error: ""})
 			} else {
 				console.log("De error is: " + err.message);
 			}
 		});
 	}
-	getData = () => {
+	removeDisease = (entry) => {
+		this.props.openModal(RemoveDisease, {
+			refreshPage: this.getData,
+			entry: entry
+		});
+	};
+	editDisease = (entry) => {
+		this.props.openModal(EditDisease, {
+			refreshPage: this.getData,
+			entry: entry
+		});
+	};
+	getData = (results) => {
 		let data = [];
-		for(var key in this.state.dataFromDB) {
-    	if(this.state.dataFromDB.hasOwnProperty(key)) {
+		for(var key in results) {
+    	if(results.hasOwnProperty(key)) {
 				let symptoms = null;
-				if (this.state.dataFromDB[key].symptoms) {
-					symptoms = this.state.dataFromDB[key].symptoms.map ((elem, index) => {
+				if (results[key].symptoms) {
+					symptoms = results[key].symptoms.map ((elem, index) => {
 						return <li key={parseInt(index,10)}>{elem}</li>
 					});
 				}
+				let element = results[key];
 				data.push(
 					<Tr key={parseInt(key,10)}>
-						<Td>{this.state.dataFromDB[key].name}</Td>
+						<Td>{element.name}</Td>
 						<Td><ul>{symptoms}</ul></Td>
-						<Td>{this.state.dataFromDB[key].description}</Td>
-						<Td>{this.state.dataFromDB[key].treatment}</Td>
+						<Td>{element.description}</Td>
+						<Td>{element.treatment}</Td>
+						<Td>
+							<ButtonGroup>
+								<ActionButton
+									buttonText={<span className="fa fa-close"/>}
+									color="primary"
+								  onClickAction={() => this.removeDisease(element)}
+								/>
+							</ButtonGroup>
+							<ButtonGroup>
+								<ActionButton
+									buttonText={<span className="fa fa-edit"/>}
+									color="primary"
+									onClickAction={() => this.editDisease(element)}
+								/>
+							</ButtonGroup>
+						</Td>
 					</Tr>
 				);
     	}
@@ -57,7 +91,19 @@ export default class ManageDesises extends React.Component {
 	}
 	getSearchTerm = (e) => {
 		e.preventDefault();
-		console.log("SerchTerm: " + this.state.searchTerm);
+		let da = new DataAccess();
+		da.getData (`/diseases/search?term=${this.state.searchTerm}`, (err, res) => {
+			if (!err) {
+				this.getData(res.message);
+				this.setState({userHasSearched: true, error: ""});
+				if(res.message.length == 0) {
+					this.setState({error: "no results found."});
+				}
+			} else {
+				console.log("De error is: " + err.message);
+				this.setState({error: "Please type a search term!"});
+			}
+		});
 	}
 	handleSearchChange = (e) => {
 		this.setState({searchTerm: e.target.value});
@@ -71,7 +117,11 @@ export default class ManageDesises extends React.Component {
           	<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
         	</FormGroup>
 					<Button className="btn-admin">Search now</Button>
+					&nbsp; {this.state.userHasSearched && <Button className="btn-admin" onClick={this.loadCurrentDiseases}><i className="fa fa-arrow-circle-left"></i> Go back</Button>}
 				</Form>
+				<div className="search-errors">
+					{this.state.error}
+				</div>
 				<Table className="table">
 				  <Thead>
 				  	<Tr>
@@ -79,6 +129,7 @@ export default class ManageDesises extends React.Component {
 	            <Th>Symptoms</Th>
 							<Th>Description</Th>
 							<Th>Treatment</Th>
+							<Th>Edit</Th>
 		        </Tr>
 			    </Thead>
 				    <Tbody>
