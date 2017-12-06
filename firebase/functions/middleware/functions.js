@@ -1,21 +1,17 @@
-// Adding functions to request, available for every route to use
+// Helper functions that may be used everywhere in the app
+class HelperFunctions {
 
-module.exports = (req, res, next) => {
-
-    // Function to delete all illegal keys from object, for example from body
-    req.removeIllegalKeys = (allowedKeys, object) => {
-        // Deletes all illegal keys
-        Object.keys(object).forEach((itm) => {
-            let deleting = true;
-            allowedKeys.forEach((key) => {
-                console.log(itm + " vs. " + key);
-                if (itm == key) deleting = false;
-            });
-            if (deleting){
-                delete object[itm];
+    // Removes document references and replaces them with IDs to prevent super giant returning JSONs
+    flatData(snapshot) {
+        let data = snapshot.data();
+        for(let key of Object.keys(data)) {
+            if(data[key].constructor.name == 'DocumentReference'){
+                data[key] = data[key].id
             }
-        });
-    };
+        }
+        return data;
+    }
+}
 
-    next();
-};
+module.exports = new HelperFunctions()
+

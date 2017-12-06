@@ -46,8 +46,8 @@ router.get('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
     })
 })
 
-router.post('/' + model.endpoint, isAuthenticated, (req, res) => {
-    db.collection(model.name).add(req.body.disease)
+router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
+    db.collection(model.endpoint).add(req.body[model.name])
     .then((newDoc) => {
         return newDoc.get()
     })
@@ -60,7 +60,7 @@ router.post('/' + model.endpoint, isAuthenticated, (req, res) => {
 })
 
 router.put('/' + model.endpoint + '/:id', isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
-    db.collection(model.name).doc(req.params.id).set(req.body.species)
+    db.collection(model.endpoint).doc(req.params.id).set(req.body[model.name])
     .then((updatedDoc) => {
         res.status(200).send(updatedDoc.data());
     })
@@ -70,9 +70,9 @@ router.put('/' + model.endpoint + '/:id', isAuthenticated, validateModel(model.n
 })
 
 router.delete('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
-    db.collection(model.name).doc(req.params.id).delete()
+    db.collection(model.endpoint).doc(req.params.id).delete()
     .then(() => {
-        res.status(200);
+        res.sendStatus(200);
     })
     .catch((error) => {
         res.status(500).send(error.message);

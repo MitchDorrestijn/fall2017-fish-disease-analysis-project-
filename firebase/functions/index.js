@@ -11,7 +11,7 @@ admin.initializeApp({
 	databaseURL: "https://fishproject-47cfd.firebaseio.com"
 });
 
-// Custom helper modules
+/* Custom helper modules */
 const notificator = require('./notifications/notifications.js');
 const statusChecker = require('./status_checker/checker.js');
 
@@ -30,7 +30,6 @@ const speciesRoutes = require('./routes/species.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
-const functionsMiddleware = require('./middleware/functions.js');
 
 /* Express */
 const app = express();
@@ -41,7 +40,6 @@ app.use(cors({origin: '*'}));
 
 /* Middlewares */
 app.use('*', authenticate);
-app.use('*', functionsMiddleware);
 
 /* Routes to different API endpoints */
 app.use('/api', userRoutes);
@@ -50,13 +48,6 @@ app.use('/api', aquariumRoutes);
 app.use('/api', diseaseRoutes);
 app.use('/api', notificationRoutes);
 app.use('/api', speciesRoutes);
-
-/* Main route */
-
-// /* Test routes for development */
-app.get("/api/home", (request, response) => {
-	response.send("Hello from Express on Firebase!");
-});
 
 exports.app = functions.https.onRequest(app);
 
@@ -113,14 +104,11 @@ exports.onNotificationCreated = functions.firestore.document("notifications/{id}
 			body: notification.message
 		}
 	}
-	console.log(notification);
 	return notification.user.collection("devices").get()
 	.then((snapshot) => {
 		console.log(snapshot.docs);
 		snapshot.docs.forEach((doc) => {
 			const device = doc.data()
-			console.log(device);
-			console.log("Sending to: " + device.id);
 			notificator.push(device.id, payload)
 			.then((response) => {
 				console.log("Noti sent to: " + device.id);
