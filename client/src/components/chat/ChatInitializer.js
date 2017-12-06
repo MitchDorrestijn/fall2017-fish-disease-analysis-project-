@@ -36,7 +36,9 @@ export default class ChatInitializer extends React.Component {
 				this.initializeDatabase();
 				this.checkOnline();
 				
-				this.forceUpdate();
+				setTimeout(() => {
+					this.forceUpdate();
+				}, 1000);
 			});
 	}
 	
@@ -62,10 +64,11 @@ export default class ChatInitializer extends React.Component {
 	}
 	
 	initializeWebRTC = () => {
+		//Zet alle variabelen die nodig zijn voor een WebRTC verbinding
 		this.servers = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'urls': 'stun:stun.l.google.com:19302'}, {'urls': 'turn:numb.viagenie.ca','credential': '123456','username': 'coen_severein@hotmail.com'}]};
 		this.pc = new RTCPeerConnection(this.servers);	
 		this.pc.onicecandidate = (event) => {
-			event.candidate?this.sendMessage(this.userId, "ice", {'ice': event.candidate}):console.log("Sent All Ice")
+			event.candidate&&this.sendMessage(this.userId, "ice", {'ice': event.candidate})
 		};
 		
 		this.pc.onaddstream = (event) => {
@@ -77,7 +80,6 @@ export default class ChatInitializer extends React.Component {
 			this.dataChannel.onmessage = (event) => { 
 				this.addReceiverMessage(event.data);
 			};
-			console.log("received datachannel");
 		};
 	}
 	
@@ -87,6 +89,7 @@ export default class ChatInitializer extends React.Component {
 	}
 	
 	setupDataChannel = () => {
+		//Setup de datachannel verbinding
 		let dataChannelOptions = { 
 			reliable:true 
 		};
@@ -97,42 +100,73 @@ export default class ChatInitializer extends React.Component {
 	}
 	
 	setupStreamOther = () => {
+		//Setup webcam andere gebruiker en de datachannel
 		this.setupDataChannel();
-		//Setup webcam andere gebruiker
 		this.pc.createOffer()
 			.then(offer => this.pc.setLocalDescription(offer) )
 			.then(() => this.sendMessage(this.userId, "offer", {'sdp': this.pc.localDescription}) );
 	}
 	
-	sendChatMessage = (message) => {
+	sendChatMessage = (type, message) => {
 		//Stuur chat bericht naar andere gebruiker
 		if(this.dataChannel !== undefined){
-			this.dataChannel.send(message);
-			this.addSenderMessage(message);
+			let messageObj = JSON.stringify({'type': type, 'data': message});
+			this.dataChannel.send(messageObj);
+			this.addSenderMessage(messageObj);
 		}
 	}
 	
-	addSenderMessage = (message) => {
-		console.log("Send: " + message);
-		let chatMessages = this.state.chat;
-		chatMessages.push(<Receiverbox key="0">{message}</Receiverbox>);
-		this.setState({
-			chat: chatMessages
-		});
-		
+	addSenderMessage = (msg) => {
+		let message = JSON.parse(msg);
+		if(message.type === "text"){
+			
+			let chatMessages = this.state.chat;
+			chatMessages.push(<Receiverbox key="0">{message.data}</Receiverbox>);
+			this.setState({
+				chat: chatMessages
+			});
+			
+		}else if(message.type === "image"){
+			if(message.data === "open"){
+				this.receivedImage = "";
+			}else if(message.data === "close"){
+				let chatMessages = this.state.chat;
+				chatMessages.push(<Receiverbox key="0"><img className="img-fluid" src={this.receivedImage} alt="Send"/></Receiverbox>);
+				this.setState({
+					chat: chatMessages
+				});
+			}else{
+				this.receivedImage += message.data;
+			}
+		}
 	}
 	
-	addReceiverMessage = (message) => {
-		console.log("Received: " + message);
-		let chatMessages = this.state.chat;
-		chatMessages.push(<Senderbox key="0">{message}</Senderbox>);
-		this.setState({
-			chat: chatMessages
-		});
+	addReceiverMessage = (msg) => {
+		let message = JSON.parse(msg);
+		if(message.type === "text"){
+			
+			let chatMessages = this.state.chat;
+			chatMessages.push(<Senderbox key="0">{message.data}</Senderbox>);
+			this.setState({
+				chat: chatMessages
+			});
+			
+		}else if(message.type === "image"){
+			if(message.data === "open"){
+				this.receivedImage = "";
+			}else if(message.data === "close"){
+				let chatMessages = this.state.chat;
+				chatMessages.push(<Senderbox key="0"><img className="img-fluid" src={this.receivedImage} alt="Received"/></Senderbox>);
+				this.setState({
+					chat: chatMessages
+				});
+			}else{
+				this.receivedImage += message.data;
+			}
+		}
 	}
 	
 	closeConnection = () => {
-		console.log("Closed connection");
 		this.sendMessage(this.userId, "closeConnection", "");
 		this.pc.close();
 		this.pc = null;
@@ -172,7 +206,6 @@ export default class ChatInitializer extends React.Component {
 				this.setupStreamOther();
 			}else if(type === "closeConnection"){
 				//Andere gebruiker heeft de connectie verbroken
-				console.log("Other user closed connection");
 				this.pc.close();
 				this.pc = null;
 				this.initializeWebRTC();
