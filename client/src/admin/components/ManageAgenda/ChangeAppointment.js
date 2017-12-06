@@ -24,16 +24,8 @@ export default class RemoveAppointment extends Component {
 		});
 	};
 
-	changeDate = (evt) => {
-		this.changeData("date", evt);
-	};
-
-	changeTime = (evt) => {
-		this.changeData("time", evt);
-	};
-
-	changePerson = (evt) => {
-		this.changeData("person", evt);
+	changeTimeslot = (evt) => {
+		this.changeData("timeslot", evt);
 	};
 
 	changeDescription = (evt) => {
@@ -49,28 +41,16 @@ export default class RemoveAppointment extends Component {
 	};
 
 	render() {
-		const {date, time, person, description, video} = this.state.data;
+		const {timeslot, description, video} = this.state.data;
 		const {toggleModal} = this.props;
 		return (
 			<div>
 				<ModalHeader toggle={toggleModal}>Change appointment</ModalHeader>
 				<ModalBody>
 					<FormGroup>
-						<Label>Date</Label><br/>
+						<Label>Timeslot</Label><br/>
 						<InputGroup>
-							<Input type="text" value={date} onChange={this.changeDate}/>
-						</InputGroup>
-					</FormGroup>
-					<FormGroup>
-						<Label>Time</Label><br/>
-						<InputGroup>
-							<Input type="text" value={time} onChange={this.changeTime}/>
-						</InputGroup>
-					</FormGroup>
-					<FormGroup>
-						<Label>Person</Label><br/>
-						<InputGroup>
-							<Input type="text" value={person} onChange={this.changePerson}/>
+							<Input type="text" value={timeslot} onChange={this.changeTimeslot}/>
 						</InputGroup>
 					</FormGroup>
 					<FormGroup>
