@@ -12,11 +12,20 @@ export default class ChangeNotificationRule extends Component {
 	}
 
 	changeNotificationRule = () => {
+		if (this.state.data.equation === "range") {
+			let {data} = this.state;
+			data.compared = null;
+			this.setState({data: data});
+		} else {
+			let {data} = this.state;
+			data.min = data.max = null;
+			this.setState({data: data});
+		};
 		this.putNotificationRule(this.state.data);
 	};
 	putNotificationRule = (dataObject) => {
 		let da = new DataAccess ();
-		da.postData('/notifications/rules', {rule: dataObject}, (err, res) => {
+		da.putData(`/notifications/rules/${dataObject.id}`, {rule: dataObject}, (err, res) => {
 			if (!err) {
 				this.props.customProps.refreshPage();
 				this.props.toggleModal();
@@ -66,26 +75,26 @@ export default class ChangeNotificationRule extends Component {
 		return options
 	};
 
-	showCompared = () => {
+	showCompared = (min, max, compared) => {
 		if (this.state.data.equation === "range") {
 			return (
-				<FormGroup>
+				<FormGroup key="0">
 					<Label>Min</Label><br/>
 					<InputGroup>
-						<Input type="number" value={this.min} onChange={this.changeMin}/>
+						<Input type="number" value={min} onChange={this.changeMin}/>
 					</InputGroup>
 					<Label>Max</Label><br/>
 					<InputGroup>
-						<Input type="number" value={this.max} onChange={this.changeMax}/>
+						<Input type="number" value={max} onChange={this.changeMax}/>
 					</InputGroup>
 				</FormGroup>
 			);
 		} else {
 			return (
-				<FormGroup>
+				<FormGroup key="1">
 					<Label>Compared</Label><br/>
 					<InputGroup>
-						<Input type="number" value={this.compared} onChange={this.changeCompared}/>
+						<Input type="number" value={compared} onChange={this.changeCompared}/>
 					</InputGroup>
 				</FormGroup>
 			);
@@ -118,7 +127,7 @@ export default class ChangeNotificationRule extends Component {
 							</Input>
 						</InputGroup>
 					</FormGroup>
-					{this.showCompared()}
+					{this.showCompared(min, max, compared)}
 					<FormGroup>
 						<Label>Notification message</Label><br/>
 						<InputGroup>

@@ -6,18 +6,27 @@ export default class AddNotificationRule extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: {}
+			data: this.props.customProps
 		};
 		this.attributes = ["Phosphate", "Nitrate", "Nitrite", "Iron", "gH", "Temperature", "Oxygen", "Carbon", "Dioxide", "kH", "Chlorine"];
 	}
 
 	addNotificationRule = () => {
+		if (this.state.data.equation === "range") {
+			let {data} = this.state;
+			data.compared = null;
+			this.setState({data: data});
+		} else {
+			let {data} = this.state;
+			data.min = data.max = null;
+			this.setState({data: data});
+		};
 		this.postNotificationRule(this.state.data);
 	};
 	postNotificationRule = (dataObject) => {
 		let da = new DataAccess ();
 		da.postData('/notifications/rules', {rule: dataObject}, (err, res) => {
-			if (!err) {
+			if (!err.status) {
 				this.props.customProps.refreshPage();
 				this.props.toggleModal();
 			} else {
@@ -66,26 +75,26 @@ export default class AddNotificationRule extends Component {
 		return options
 	};
 
-	showCompared = () => {
+	showCompared = (min, max, compared) => {
 		if (this.state.data.equation === "range") {
 			return (
-				<FormGroup>
+				<FormGroup key="0">
 					<Label>Min</Label><br/>
 					<InputGroup>
-						<Input type="number" value={this.min} onChange={this.changeMin}/>
+						<Input type="number" value={min} onChange={this.changeMin}/>
 					</InputGroup>
 					<Label>Max</Label><br/>
 					<InputGroup>
-						<Input type="number" value={this.max} onChange={this.changeMax}/>
+						<Input type="number" value={max} onChange={this.changeMax}/>
 					</InputGroup>
 				</FormGroup>
 			);
 		} else {
 			return (
-				<FormGroup>
+				<FormGroup key="0">
 					<Label>Compared</Label><br/>
 					<InputGroup>
-						<Input type="number" value={this.compared} onChange={this.changeCompared}/>
+						<Input type="number" value={compared} onChange={this.changeCompared}/>
 					</InputGroup>
 				</FormGroup>
 			);
@@ -102,7 +111,7 @@ export default class AddNotificationRule extends Component {
 					<FormGroup>
 						<Label>Attribute</Label><br/>
 						<InputGroup>
-							<Input type="select" value={attribute} onChange={this.changeAttribute}>
+							<Input type="select" onChange={this.changeAttribute}>
 								<option selected disabled hidden>Choose here</option>
 								{this.showAttributes()}
 							</Input>
@@ -111,7 +120,7 @@ export default class AddNotificationRule extends Component {
 					<FormGroup>
 						<Label>Equation</Label><br/>
 						<InputGroup>
-							<Input type="select" value={equation} onChange={this.changeEquation}>
+							<Input type="select" onChange={this.changeEquation}>
 								<option selected disabled hidden>Choose here</option>
 								<option value=">">bigger than</option>
 								<option value="<">smaller than</option>
@@ -120,11 +129,11 @@ export default class AddNotificationRule extends Component {
 							</Input>
 						</InputGroup>
 					</FormGroup>
-					{this.showCompared()}
+					{this.showCompared(min, max, compared)}
 					<FormGroup>
 						<Label>Notification message</Label><br/>
 						<InputGroup>
-							<Input type="text" value={message} onChange={this.changeMessage}/>
+							<Input type="text" onChange={this.changeMessage}/>
 						</InputGroup>
 					</FormGroup>
 					<hr/>

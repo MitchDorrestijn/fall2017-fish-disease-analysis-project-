@@ -34,24 +34,25 @@ export default class ManageNotifications extends React.Component {
 		let data = [];
 		for(var key in this.state.dataFromDB) {
     	if(this.state.dataFromDB.hasOwnProperty(key)) {
+				let element = this.state.dataFromDB[key];
 				data.push(
 					<Tr key={parseInt(key,10)}>
-						<Td>{this.state.dataFromDB[key].attribute}</Td>
-						<Td>{this.state.dataFromDB[key].equation}</Td>
-						<Td>{this.state.dataFromDB[key].compared}</Td>
-						<Td>{this.state.dataFromDB[key].min}</Td>
-						<Td>{this.state.dataFromDB[key].max}</Td>
-						<Td>{this.state.dataFromDB[key].message}</Td>
+						<Td>{element.attribute}</Td>
+						<Td>{element.equation}</Td>
+						<Td>{element.compared}</Td>
+						<Td>{element.min}</Td>
+						<Td>{element.max}</Td>
+						<Td>{element.message}</Td>
 						<Td>
 							<ButtonGroup>
 								<ActionButton
 									buttonText={<span className="fa fa-edit"/>}
 									color="primary"
-									onClickAction={() => this.changeNotificationRule(this.state.dataFromDB[key])}/>
+									onClickAction={() => this.changeNotificationRule(element)}/>
 								<ActionButton
 									buttonText={<span className="fa fa-close"/>}
 									color="primary"
-									onClickAction={() => this.removeNotificationRule(this.state.dataFromDB[key])}/>
+									onClickAction={() => this.removeNotificationRule(element)}/>
 							</ButtonGroup>
 						</Td>
 					</Tr>
@@ -64,7 +65,7 @@ export default class ManageNotifications extends React.Component {
 	}
 	removeNotificationRule = (entry) => {
 		this.props.openModal(removeNotificationRule, {
-			refreshPage: this.getData,
+			refreshPage: this.loadCurrentNotifications,
 			entry: entry
 		});
 	};
@@ -87,7 +88,7 @@ export default class ManageNotifications extends React.Component {
 	render(){
 		return (
 			<div>
-				<h2>Add / edit / remove fish desises</h2>
+				<h2>Add / edit / remove notification rules</h2>
 				<Form inline className="searchForm" onSubmit={this.getSearchTerm}>
 					<FormGroup>
 						<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
@@ -110,7 +111,7 @@ export default class ManageNotifications extends React.Component {
 						{this.state.data}
 					</Tbody>
 				</Table>
-				<Button onClick={() => this.props.openModal(addNotificationRule)} className="btn-admin">Add notification rule</Button>
+				<Button onClick={() => this.props.openModal(addNotificationRule, {refreshPage: this.loadCurrentNotifications})} className="btn-admin">Add notification rule</Button>
 			</div>
 		);
 	};
