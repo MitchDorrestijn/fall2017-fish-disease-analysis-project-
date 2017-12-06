@@ -10,14 +10,26 @@ import {
 	FormText
 } from 'reactstrap';
 import Error from './Error';
+import DataAccess from '../../scripts/DataAccess';
 
 class AddFishAdmin extends React.Component {
 	addFish = (e) => {
 		e.preventDefault();
-		const fishName = e.target.fishname.value;
-		const fishDescription = e.target.fishDescription.value;
-		const fishImage = e.target.fishImage.value;
-  	console.log(`Submitted form data: fishname: ${fishName}, fish description: ${fishDescription}, fish image: ${fishImage}`);
+		const fishToAdd = {
+			name: e.target.fishname.value,
+			info: e.target.fishDescription.value,
+			additional: e.target.fishAdditional.value,
+			picture: e.target.fishImage.value
+		}
+		let da = new DataAccess();
+		da.postData(`/species`, {species: fishToAdd},  (err, res) => {
+			if (!err.status) {
+				this.props.customProps.refreshPage();
+				this.props.toggleModal();
+			} else {
+				console.log(err);
+			}
+		});
 	}
 	render() {
 		return (
@@ -30,13 +42,17 @@ class AddFishAdmin extends React.Component {
 					}
 					<Form onSubmit={this.addFish}>
 		        <FormGroup>
-		          <Label for="fishName">Name of fish:</Label>
+		          <Label for="fishName">Name:</Label>
 		          <Input id="fishname" type="text" name="fishName" placeholder="Name of fish" />
 		        </FormGroup>
 		        <FormGroup>
-		          <Label for="fishDescription">Description of fish:</Label>
+		          <Label for="fishDescription">Description:</Label>
 		          <Input id="fishDescription" type="textarea" name="fishDescription" />
 		        </FormGroup>
+						<FormGroup>
+							<Label for="fishAdditional">Additional:</Label>
+							<Input id="fishAdditional" type="textarea" name="fishAdditional" />
+						</FormGroup>
 						<FormGroup>
           		<Label for="fishImage">Image</Label>
           		<Input id="fishImage" type="file" name="fishImage" />

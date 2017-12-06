@@ -27,7 +27,7 @@ export default class ManageDesises extends React.Component {
 		da.getData ('/diseases', (err, res) => {
 			if (!err) {
 				this.getData(res.message);
-				this.setState({userHasSearched: false, error: ""})
+				this.setState({userHasSearched: false, error: ""});
 			} else {
 				console.log("De error is: " + err.message);
 			}
@@ -96,8 +96,8 @@ export default class ManageDesises extends React.Component {
 			if (!err) {
 				this.getData(res.message);
 				this.setState({userHasSearched: true, error: ""});
-				if(res.message.length == 0) {
-					this.setState({error: "no results found."});
+				if(res.message.length === 0) {
+					this.setState({error: "No results found."});
 				}
 			} else {
 				console.log("De error is: " + err.message);
