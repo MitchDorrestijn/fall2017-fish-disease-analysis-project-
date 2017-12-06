@@ -11,52 +11,38 @@ const helperFunctions = require('../middleware/functions.js');
 //get open timeslots
 router.get('/opentimeslots/', (req, res) => {
 	// get all appointment timeslot references
-	let appointmentsTimeslots = [];
+
 	db.collection("appointments").get()
 	.then((snapshot) => {
+		let appointmentsTimeslots = [];
 		snapshot.forEach((doc) => {
 			const flatData = helperFunctions.flatData(doc);
-			appointmentsTimeslots.push(flatData.timeslot);
+			appointmentsTimeslots.push({
+				id: flatData.timeslot,
+				canceled: flatData.canceled
+			});
 		});
-	}).catch((err) => {
-		res.status(500).send(err.message);
-	});
-	db.collection("timeslots").get()
-	.then((snapshot) => {
-		let timeslots = [];
-		snapshot.forEach((doc) => {
-			let timeslot = helperFunctions.flatData(doc);
-			appointmentsTimeslots.forEach((timeslotField) => {
-				// console.log('timeslotField ' + timeslotField);
-				// console.log('timeslot.id ' + timeslot.id);
-				// console.log('timeslots.indexOf(timeslot)' + timeslots.indexOf(timeslot));
-
-				// let index = timeslots.findIndex((x) => { // wordt voor elk item in een array geexecute
-				// 	// console.log(x.id == timeslotField);
-				// 	console.log(x.id);
-				// 	console.log(timeslotField);
-				// 	return x.id == timeslotField;
-				// });
-				let index = timeslots.indexOf(timeslot);
-				console.log(timeslot.id);
-				console.log(timeslotField);
-
-				console.log(timeslotField == timeslot.id);
-				// console.log(index);
-				// console.log(-1);
-				if (index === -1 && timeslot.id !== timeslotField) {
+		return appointmentsTimeslots;
+	}).then((data) => {
+		db.collection("timeslots").get().then((snapshot) => {
+			let timeslots = [];
+			snapshot.forEach((doc) => {
+				let timeslot = helperFunctions.flatData(doc);
+				let appointmentIdCheck = true;
+				data.forEach((appointment) => {
+					if (appointment.id === timeslot.id && !appointment.canceled) {
+						appointmentIdCheck = false;
+					}
+				});
+				if (timeslots.indexOf(timeslot) === -1 && appointmentIdCheck){
 					timeslots.push(timeslot);
 				}
 			});
-		});
-		return res.status(200).send(timeslots);
+			return res.status(200).send(timeslots);
+		})
 	}).catch((err) => {
 		res.status(500).send(err.message);
 	});
-
-	// if canceled == false
-	// 	then
-	// reserved == true
 });
 
 // get all timeslots
