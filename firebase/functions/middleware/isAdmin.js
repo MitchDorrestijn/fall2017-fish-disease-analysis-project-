@@ -5,5 +5,5 @@ module.exports = isAdmin = (req, res, next) => {
         return next();
 
     // When not, send the appropriate status code.
-    res.status(403).send("Unauthorized");
+    res.status(403).send("Unauthorized, must be admin to perform this request.");
 };
