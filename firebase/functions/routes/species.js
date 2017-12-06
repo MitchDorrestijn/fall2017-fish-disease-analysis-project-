@@ -36,16 +36,6 @@ router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
     })
 })
 
-router.get('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
-    db.collection(model.endpoint).doc(req.params.id).get()
-    .then((doc) => {
-        res.send(doc.data());
-    })
-    .catch((error) => {
-        res.status(500).send(error.message);
-    })
-})
-
 router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
     db.collection(model.endpoint).add(req.body[model.name])
     .then((newDoc) => {
@@ -94,6 +84,16 @@ router.get('/' + model.endpoint + '/search', isAuthenticated, (req, res) => {
     .then(responses => {
         res.send(responses.hits);
     });
+})
+
+router.get('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
+    db.collection(model.endpoint).doc(req.params.id).get()
+    .then((doc) => {
+        res.send(doc.data());
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
 })
 
 module.exports = router;
