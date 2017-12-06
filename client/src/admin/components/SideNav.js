@@ -14,13 +14,13 @@ export default class SideNav extends React.Component {
 	render() {
 		return (
 				<div className="row row-no-gutter sidebar-wrap">
-					<Sidebar size="3" title="Beheer" extraClass="adminSidebar">
-						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/vissen">Vissen beheren</SidebarLink>
-						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/ziektes">Ziektes beheren</SidebarLink>
-						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/afspraken">Afspraken beheren</SidebarLink>
-						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/notificaties">Notificaties beheren</SidebarLink>
-						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/gebruikers">Gebruikers beheren</SidebarLink>
-						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/uitloggen">Uitloggen</SidebarLink>
+					<Sidebar size="3" title="Admin" extraClass="adminSidebar">
+						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/vissen">Species</SidebarLink>
+						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/ziektes">Diseases</SidebarLink>
+						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/afspraken">Appointments</SidebarLink>
+						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/notificaties">Notifications</SidebarLink>
+						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/gebruikers">Users</SidebarLink>
+						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/uitloggen">Log out</SidebarLink>
 					</Sidebar>
 					<ContentContainer extraClass="adminContentContainer" size="12">
 						<Route exact path="/admin/vissen" render={(props) => {
