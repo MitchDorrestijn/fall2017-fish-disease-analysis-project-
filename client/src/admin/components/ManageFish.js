@@ -54,7 +54,7 @@ export default class ManageFish extends React.Component {
 						<Td>{element.name}</Td>
 						<Td>{element.info}</Td>
 						<Td>{element.additional}</Td>
-						<Td>{element.picture}</Td>
+						<Td><img className="img-fluid" src={element.picture} alt="Fish" /></Td>
 						<Td>
 							<ButtonGroup>
 								<ActionButton

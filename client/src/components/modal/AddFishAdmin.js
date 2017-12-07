@@ -15,21 +15,27 @@ import DataAccess from '../../scripts/DataAccess';
 class AddFishAdmin extends React.Component {
 	addFish = (e) => {
 		e.preventDefault();
-		const fishToAdd = {
-			name: e.target.fishname.value,
-			info: e.target.fishDescription.value,
-			additional: e.target.fishAdditional.value,
-			picture: e.target.fishImage.value
-		}
-		let da = new DataAccess();
-		da.postData(`/species`, {species: fishToAdd},  (err, res) => {
-			if (!err.status) {
-				this.props.customProps.refreshPage();
-				this.props.toggleModal();
-			} else {
-				console.log(err);
+		const fileUploader = document.getElementById("fishImage");
+		// TODO: VALIDATIE AFBEELDING
+		let reader = new FileReader();
+    reader.readAsDataURL(fileUploader.files[0]);
+    reader.onload = () => {
+			const fishToAdd = {
+				name: document.getElementById("fishname").value,
+				info: document.getElementById("fishDescription").value,
+				additional: document.getElementById("fishAdditional").value,
+				picture: reader.result
 			}
-		});
+			let da = new DataAccess();
+			da.postData(`/species`, {species: fishToAdd},  (err, res) => {
+				if (!err.status) {
+					this.props.customProps.refreshPage();
+					this.props.toggleModal();
+				} else {
+					console.log(err);
+				}
+			});
+		}
 	}
 	render() {
 		return (
