@@ -15,7 +15,13 @@ Om de site lokaal te draaien voor development kan je het volgende commando gebru
 Nadat je dit commando hebt uitgevoerd wordt er in je browser een tab geopend waarop de site te zien is. Als je terwijl de development server draait een wijziging maakt in de code dan wordt dit direct geweizigd op de site. Je hoeft hiervoor dus niet de site opnieuw te laden.
 
 ### Firebase
-Voor zaken die te maken hebben met het opslaan van gegevens wordt er gebruik gemaakt van Google's Firebase. Firebase kan je lokaal en op de servers van Firebase zelf laten draaien. Tevens bied Firebase ook de mogelijkheid om gratis de site te hosten. Om Firebase lokaal te draaien gebruik je het volgende commando:
+Voor zaken die te maken hebben met het opslaan van gegevens wordt er gebruik gemaakt van Google's Firebase. Firebase kan je lokaal en op de servers van Firebase zelf laten draaien. Tevens bied Firebase ook de mogelijkheid om gratis de site te hosten. 
+
+Om Firebase te kunnen gebruiken moet je de Firebase CLI installeren op je computer.
+
+[https://firebase.google.com/docs/cli/](https://firebase.google.com/docs/cli/)
+
+Om Firebase lokaal te draaien gebruik je het volgende commando:
 
 ```firebase serve --only hosting,functions```
 
