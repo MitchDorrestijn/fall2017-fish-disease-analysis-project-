@@ -45,17 +45,14 @@ export default class ManageAgenda extends Component {
 		// Bij de onClickAction moet het id van de afspraak worden meegegeven
 		let results = [];
 
-		let resultsFromDB;
 		let da = new DataAccess();
 
 		da.getData('/appointments', (err, res) => {
-			console.log ("@@@@err", err);
-			console.log ("@@@@res", res);
 			if (!err) {
-				resultsFromDB = res.message;
+				let resultsFromDB = res.message;
 				for (let i = 0; i < resultsFromDB.length; i++) {
 					if (resultsFromDB[i].canceled) {
-						delete resultsFromDB[i];
+						resultsFromDB.splice(i, 1);
 						i--;
 					}
 				}
