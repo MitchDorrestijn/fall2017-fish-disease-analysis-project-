@@ -12,13 +12,6 @@ const validateModel = require('../middleware/validateModel.js');
 /* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
 
-/* Model Definition */
-const model = {
-	name: "timeslot",
-	endpoint: "timeslots",
-	keys: ["duration", "startDate"]
-};
-
 /*
     Timeslot model:
     - duration,
@@ -99,11 +92,11 @@ router.get('/timeslots/', (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse ValidationError
  */
-router.post('/timeslots/',validateModel("model", ["name"]), (req, res) => {
+router.post('/timeslots/',validateModel("timeslot", ["duration","startDate"]), (req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
-	const timeSlot = req.body;
+	const timeSlot = req.body.timeslot;
 	if (!validator.isDecimal(timeSlot.duration) ||
 		!validator.isISO8601(timeSlot.startDate)
 	) {
@@ -136,7 +129,7 @@ router.post('/timeslots/',validateModel("model", ["name"]), (req, res) => {
 *  @apiUse UserAuthenticated
 *  @apiUse ValidationError
 */
-router.put('/timeslots/:id',isAuthenticated,(req, res) => {
+router.put('/timeslots/:id',validateModel("timeslot", ["duration","startDate"]),isAuthenticated,(req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}

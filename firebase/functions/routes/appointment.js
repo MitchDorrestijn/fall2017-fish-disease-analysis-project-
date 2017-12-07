@@ -12,13 +12,6 @@ const validateModel = require('../middleware/validateModel.js');
 /* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
 
-/* Model Definition */
-const model = {
-	name: "appointment",
-	endpoint: "appointment",
-	keys: ["id","approved","comment","canceled", "timeslot","reservedBy"]
-};
-
 /**
  *  Admin
  *  @api {get} /appointments/ Get All Appointments
@@ -57,8 +50,16 @@ router.get('/appointments/',isAuthenticated, (req, res) => {
 	});
 });
 
-// get appointments of user
-//Dont know if this is rest url
+/**
+ *  @api {get} /appointments/ Get appointments of user
+ *  @apiName Returns all appointments of user
+ *  @apiGroup Appointments
+ *
+ *  @apiSuccess {Array} appointments List of appointments
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse AppointmentSuccess
+ */
 router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
 	if (req.user.uid !== req.params.id){
 		return res.sendStatus(403);
@@ -150,11 +151,11 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
  *  @apiUse UserAuthenticated
  *  @apiUse Forbidden
  */
-router.put('/appointments/:id', (req, res) => {
+router.put('/appointments/:id',isAuthenticated, (req, res) => {
 	if (req.user.uid !== req.params.id) {
 		return res.sendStatus(403);
 	}
-	const appointment = req.body;
+	const appointment = req.body.appointment;
 	const appointmentId = req.params.id;
 	const appointmentRef = db.collection('appointments').doc(appointmentId);
 
