@@ -5,12 +5,8 @@ import {
 	Button,
 	FormGroup,
 	Label,
-	InputGroup,
-	InputGroupAddon,
 	Input
 } from 'reactstrap';
-import {Redirect} from 'react-router-dom';
-import Error from './Error';
 import DataAccess from '../../scripts/DataAccess';
 
 export default class RemoveAquarium extends React.Component {
