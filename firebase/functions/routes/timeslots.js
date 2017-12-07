@@ -78,23 +78,22 @@ router.get('/timeslots/', (req, res) => {
 });
 
 /**
-*  @api {get} /users/:id/ Get user
-*  @apiName Returns profile data of a user
-*  @apiGroup Users
+*  @api {get} /timeslots/:id/ Get timeslot
+*  @apiName Returns data of a timeslot
+*  @apiGroup timeslots
 *
-*  @apiSuccess {Object} User profile object
+*  @apiSuccess {Object} Timeslot profile object
 *  @apiSuccessExample Success-Response:
 *  HTTP/1.1 200 OK
-*  {
-	name: 'John',
-	surname: 'Doe',
-	email: 'test@test.nl',
-	country: 'The Netherlands',
-	birthDate: '1999-01-01T00:00:00.000Z'
-	*  }
+*
+ {
+    "endDate": "2017-12-12T17:00:00.000Z",
+    "id": "IAOQ90UnsHxV4sqFFQUY",
+    "startDate": "2017-12-12T16:00:00.000Z",
+    "duration": "60"
+}
 *  @apiUse InternalServerError
 *  @apiUse UserAuthenticated
-*  @apiUse Forbidden
 **/
 router.get('/timeslots/:id/',isAuthenticated, (req, res) => {
 	const timeslotId = req.params.id;
