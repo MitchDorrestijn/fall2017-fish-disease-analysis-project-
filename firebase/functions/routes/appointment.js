@@ -81,7 +81,7 @@ router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
 /**
  *  Admin
  *  @api {DELETE} /appointment/:id Cancele appointment
- *  @apiName cancele an appointment
+ *  @apiName cancel an appointment
  *  @apiGroup Appointments
  *
  *  @apiSuccess {String} Appointment canceled
