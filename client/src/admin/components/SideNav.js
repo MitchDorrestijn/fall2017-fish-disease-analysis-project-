@@ -9,6 +9,7 @@ import ManageFish from './ManageFish';
 import ManageNotifications from './ManageNotifications';
 import ManageUsers from './ManageUsers';
 import Logout from './Logout';
+import ManageTimeSlots from './ManageTimeSlots/ManageTimeSlots';
 
 export default class SideNav extends React.Component {
 	render() {
@@ -18,6 +19,7 @@ export default class SideNav extends React.Component {
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/fish">Fish</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/diseases">Diseases</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/appointments">Appointments</SidebarLink>
+					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/timeslots">Timeslots</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/notifications">Notifications</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/users">Users</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/logout">Log out</SidebarLink>
@@ -31,6 +33,9 @@ export default class SideNav extends React.Component {
 					}}/>
 					<Route exact path="/admin/appointments" render={(props) => {
 						return <ManageAgenda {...props} openModal={this.props.openModal} />
+					}}/>
+					<Route exact path="/admin/timeslots" render={(props) => {
+						return <ManageTimeSlots {...props} openModal={this.props.openModal} />
 					}}/>
 					<Route exact path="/admin/notifications" component={ManageNotifications}/>
 					<Route exact path="/admin/users" component={ManageUsers}/>

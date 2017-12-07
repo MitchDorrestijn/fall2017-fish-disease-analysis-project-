@@ -50,6 +50,7 @@ export default class ManageAgenda extends Component {
 		da.getData('/appointments', (err, res) => {
 			if (!err) {
 				let resultsFromDB = res.message;
+				console.log (resultsFromDB);
 				for (let i = 0; i < resultsFromDB.length; i++) {
 					if (resultsFromDB[i].canceled) {
 						resultsFromDB.splice(i, 1);
@@ -60,7 +61,7 @@ export default class ManageAgenda extends Component {
 					return (
 						<Tr key={elem.id}>
 							<Td>{elem.date}</Td>
-							<Td>{elem.time}</Td>
+							<Td>{elem.timeslot}</Td>
 							<Td>{elem.reservedBy}</Td>
 							<Td>{elem.comment}</Td>
 							<Td>{elem.video ? "Yes" : "No"}</Td>
