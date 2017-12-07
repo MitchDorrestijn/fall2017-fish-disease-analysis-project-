@@ -7,6 +7,7 @@ import ActionButton from '../../components/base/ActionButton';
 import AddFishAdmin from '../../components/modal/AddFishAdmin';
 import RemoveSpecies from '../../components/modal/RemoveSpecies';
 import EditSpecies from '../../components/modal/EditSpecies';
+import EditImageAddFish from '../../components/modal/EditImageAddFish';
 
 export default class ManageFish extends React.Component {
 	constructor(props){
@@ -44,6 +45,12 @@ export default class ManageFish extends React.Component {
 			entry: entry
 		});
 	};
+	editImage = (entry) => {
+		this.props.openModal(EditImageAddFish, {
+			refreshPage: this.loadSpecies,
+			entry: entry
+		});
+	}
 	getData = (results) => {
 		let data = [];
 		for(var key in results) {
@@ -68,6 +75,13 @@ export default class ManageFish extends React.Component {
 									buttonText={<span className="fa fa-edit"/>}
 									color="primary"
 									onClickAction={() => this.editSpecies(element)}
+								/>
+							</ButtonGroup>
+							<ButtonGroup>
+								<ActionButton
+									buttonText={<span className="fa fa-image"/>}
+									color="primary"
+									onClickAction={() => this.editImage(element)}
 								/>
 							</ButtonGroup>
 						</Td>

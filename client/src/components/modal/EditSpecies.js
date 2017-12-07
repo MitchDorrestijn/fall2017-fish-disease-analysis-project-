@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, ModalHeader, ModalBody, Input, Form, FormGroup, Label} from 'reactstrap';
+import {Button, ModalHeader, ModalBody, Input, Form, FormGroup, Label, FormText} from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
 
 export default class EditSpecies extends Component {
@@ -74,9 +74,10 @@ export default class EditSpecies extends Component {
 							<Input id="speciesAdditional" type="textarea" name="speciesAdditional" value={this.state.additional} onChange={this.changeAdditional} />
 						</FormGroup>
 						<FormGroup>
-							<Label for="speciesPicture">Picture:</Label>
-							<Input id="speciesPicture" type="text" name="speciesPicture" value={this.state.picture} onChange={this.changePicture} />
-						</FormGroup>
+          		<Label for="speciesPicture">Image</Label>
+          		<Input id="speciesPicture" type="file" name="speciesPicture" />
+          		<FormText color="muted">Images can be uploaded in .jpg and .png.</FormText>
+        		</FormGroup>
 						<Button>Edit</Button>
 					</Form>
 				</ModalBody>
