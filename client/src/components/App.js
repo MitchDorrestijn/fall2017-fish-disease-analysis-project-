@@ -13,6 +13,7 @@ import ChatInitializer from './chat/ChatIntializer';
 import Admin from '../admin/Admin';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
+import AdminError from '../admin/components/AdminError';
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -25,7 +26,8 @@ export default class App extends React.Component {
 			modalContent: null,
 			modalCustomProps: null,
 			redirect: null,
-			loggedIn: false
+			loggedIn: false,
+			isAdmin: false
 		};
 		this.config = {
 			apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
@@ -100,7 +102,7 @@ export default class App extends React.Component {
 				this.showError(true, err.message);
 			}
 		});
-	}
+	};
 
 	userResetPassword = (password) => {
 		const passwordObj = {
@@ -156,12 +158,30 @@ export default class App extends React.Component {
 
 	updateLoggedIn = () => {
 		firebase.auth().onAuthStateChanged((user) => {
+			let da = new DataAccess();
 			if (user) {
-				this.setState({loggedIn: true});
+				da.getData('/users/' + user.uid, (err, res) => {
+					if (res.message.isAdmin) {
+						this.setState({
+							loggedIn: true,
+							isAdmin: true,
+							show: true
+						});
+					} else {
+						this.setState({
+							loggedIn: true,
+							isAdmin: false,
+							show: true
+						});
+					}
+				});
 			}else{
-				this.setState({loggedIn: false});
+				this.setState({
+					loggedIn: false,
+					isAdmin: false,
+					show: true
+				});
 			}
-			this.setState({show: true});
 		});
 	};
 
@@ -188,12 +208,21 @@ export default class App extends React.Component {
 								<Switch>
 									{this.state.redirect}
 									<Route path="/admin" render={(props) => {
-										return <Admin {...props} openModal={this.openModal}/>
+										const {loggedIn, isAdmin} = this.state;
+										if (loggedIn && isAdmin) {
+											return <Admin {...props}/>;
+										} else {
+											return <AdminError/>
+										}
 									}}/>
 									<Route path="/" render={(props) => {
 										return (
 											<div className="body-margin-top">
-												<NavigationBar loggedIn={this.state.loggedIn} logOut={this.logOut} openModal={this.openModal}/>
+												<NavigationBar
+													loggedIn={this.state.loggedIn}
+													isAdmin={this.state.isAdmin}
+													logOut={this.logOut}
+													openModal={this.openModal}/>
 												<Switch>
 													<Route exact path="/" render={(props) => {
 														return <Homepage {...props} openModal={this.openModal}/>

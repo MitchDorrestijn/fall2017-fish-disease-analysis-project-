@@ -4,6 +4,7 @@ const admin = require('firebase-admin');
 const validator = require('validator');
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const db = admin.firestore();
+const mailer = require('../mailer/mailer.js');
 
 /**
  *  @api {get} /users/:id/ Get user
@@ -106,5 +107,16 @@ router.post('/users/:id/',isAuthenticated, (req, res) => {
 		});
 	}
 });
+
+// Route to test mailer.
+router.post('/user/mail', (req, res) => {
+	mailer.mail("jaapweijland@gmail.com", "Title", "Body")
+	.then(() => {
+		res.sendStatus(200);
+	})
+	.catch((error) => {
+		res.send(error.message);
+	})
+})
 
 module.exports = router;

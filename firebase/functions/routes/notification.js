@@ -7,6 +7,7 @@ const db = admin.firestore();
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const isAdmin = require('../middleware/isAdmin.js');
+const validateModel = require('../middleware/validateModel.js');
 
 router.get("/notifications", isAuthenticated, (req, res) => {
     db.collection("notifications").where("user", "==", req.user.ref).orderBy('date', 'desc').get()
@@ -32,8 +33,7 @@ router.get("/notifications", isAuthenticated, (req, res) => {
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.get('/notifications/rules', (req, res) => {
-    console.log("access");
+router.get('/notifications/rules', isAdmin, (req, res) => {
     db.collection('notification_rules').get()
     .then((snapshot) => {
         let arr = []
@@ -56,21 +56,40 @@ router.get('/notifications/rules', (req, res) => {
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.post('/notifications/rules', isAdmin, (req, res) => {
-    if(!req.body.rule){
-        res.sendStatus(400);
-        return;
-    }
-
+router.post('/notifications/rules', isAdmin, validateModel("rule", ["message", "compared", "min", "max", "equation", "attribute"]), (req, res) => {
     db.collection('notification_rules').add(req.body.rule)
     .then((newObject) => {
-        res.status(201).send(newObject.data());
+        return newObject.get();
+    })
+    .then((doc) => {
+        res.status(201).send(doc.data());
     })
     .catch((error) => {
         res.status(500).send(error.message);
     })
 })
 
+router.put('/notifications/rules/:id', isAdmin, validateModel("rule", ["message", "compared", "min", "max", "equation", "attribute", "id"]), (req, res) => {
+    db.collection('notification_rules').doc(req.params.id).update(req.body.rule)
+    .then((doc) => {
+        res.status(200).send("Ok");
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+router.delete('/notifications/rules/:id', isAdmin, (req, res) => {
+    db.collection('notification_rules').doc(req.params.id).delete()
+    .then(() => {
+        res.status(200).send();
+    })
+    .catch((error) => {
+        res.status(500).send(error.message);
+    })
+})
+
+// Route for getting an API token from google. Currently not necessary.
 router.get('/notifications/access_token', (req, res) => {
     var key = require('../private-key.json');
     var jwtClient = new google.auth.JWT(
@@ -89,6 +108,7 @@ router.get('/notifications/access_token', (req, res) => {
     });
 })
 
+// Push a message to device
 router.post('/notifications/push/:token', (req, res) => {
     const payload = {
         notification: {
@@ -107,10 +127,11 @@ router.post('/notifications/push/:token', (req, res) => {
     });
 });
 
-router.post('/notifications/push/register', isAuthenticated, (req, res) => {
-    if(!req.body.token){
-        return res.send(400).send("Please provide a token to register: { token: xxxx, devices: 'browser' }");
-    }
+// Add a device to the current authenticated user.
+router.post('/notifications/push/register', isAuthenticated, validateModel('token', ['token', 'browser']), (req, res) => {
+    // if(!req.body.token){
+    //     return res.send(400).send("Please provide a token to register: { token: xxxx, devices: 'browser' }");
+    // }
 
     db.collection('users').doc(req.user.id).collection('devices').add(req.body.token)
     .then((addedDoc) => {
