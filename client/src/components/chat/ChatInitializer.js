@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Senderbox from './Senderbox';
 import Receiverbox from './Receiverbox';
+import Infobox from './Infobox';
 import MessageSender from './MessageSender';
 import Videobox from './Videobox';
 import * as firebase from 'firebase';
@@ -36,15 +37,14 @@ export default class ChatInitializer extends React.Component {
 				this.initializeDatabase();
 				this.checkOnline();
 				
-				setTimeout(() => {
-					this.forceUpdate();
-				}, 1000);
+				this.forceUpdate();
 			});
 	}
 	
 	checkAdmin = () => {
 		//Controleer of de gebruiker een admin(consultant) is
-		if(window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1) !== "chat"){
+		const url = window.location.href.replace(/\/$/, '');
+		if(url.substr(url.lastIndexOf('/') + 1) !== "chat"){
 			this.admin = true;
 		}
 	}
@@ -52,7 +52,8 @@ export default class ChatInitializer extends React.Component {
 	initializeDatabase = () => {
 		//Setup database ref
 		if(this.admin){
-			this.chatId = window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1);
+			const url = window.location.href.replace(/\/$/, '');
+			this.chatId = url.substr(url.lastIndexOf('/') + 1);
 			this.userId = "admin";
 		}else{
 			if(firebase.auth().currentUser !== null){
@@ -124,6 +125,8 @@ export default class ChatInitializer extends React.Component {
 			chatMessages.push(<Receiverbox key="0">{message.data}</Receiverbox>);
 			this.setState({
 				chat: chatMessages
+			}, () => {
+				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 			});
 			
 		}else if(message.type === "image"){
@@ -134,6 +137,8 @@ export default class ChatInitializer extends React.Component {
 				chatMessages.push(<Receiverbox key="0"><img className="img-fluid" src={this.receivedImage} alt="Send"/></Receiverbox>);
 				this.setState({
 					chat: chatMessages
+				}, () => {
+					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 				});
 			}else{
 				this.receivedImage += message.data;
@@ -149,6 +154,8 @@ export default class ChatInitializer extends React.Component {
 			chatMessages.push(<Senderbox key="0">{message.data}</Senderbox>);
 			this.setState({
 				chat: chatMessages
+			}, () => {
+				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 			});
 			
 		}else if(message.type === "image"){
@@ -159,6 +166,8 @@ export default class ChatInitializer extends React.Component {
 				chatMessages.push(<Senderbox key="0"><img className="img-fluid" src={this.receivedImage} alt="Received"/></Senderbox>);
 				this.setState({
 					chat: chatMessages
+				}, () => {
+					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 				});
 			}else{
 				this.receivedImage += message.data;
@@ -166,10 +175,21 @@ export default class ChatInitializer extends React.Component {
 		}
 	}
 	
+	addInfoMessage = (msg) => {
+		let chatMessages = this.state.chat;
+		chatMessages.push(<Infobox key="0">{msg}</Infobox>);
+		this.setState({
+			chat: chatMessages
+		}, () => {
+			document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+		});
+	}
+	
 	closeConnection = () => {
 		this.sendMessage(this.userId, "closeConnection", "");
 		this.pc.close();
 		this.pc = null;
+		this.addInfoMessage("De verbinding is verbroken");
 		this.initializeWebRTC();
 		this.pc.addStream(this.stream);
 	}
@@ -191,13 +211,16 @@ export default class ChatInitializer extends React.Component {
 			}else if (type === "offer" && this.chatId !== null){
 				//Andere gebruiker heeft een offer gestuurd, antwoord met een answer
 				this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp))
-				  .then(() => this.pc.createAnswer())
-				  .then(answer => this.pc.setLocalDescription(answer))
-				  .then(() => this.sendMessage(this.userId, "answer", {'sdp': this.pc.localDescription}))
-				  .then(() => this.setupDataChannel());
+					.then(() => this.pc.createAnswer())
+					.then(answer => this.pc.setLocalDescription(answer))
+					.then(() => this.sendMessage(this.userId, "answer", {'sdp': this.pc.localDescription}))
+					.then(() => this.setupDataChannel());
+				
+				this.addInfoMessage("De chat is gestart");
 			}else if (type === "answer"){
 				//Andere gebruiker heeft een answer gestuurd op de offer
 				this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+				this.addInfoMessage("De chat is gestart");
 			}else if(type === "checkOnline"){
 				//Andere gebruiker vraagt of de gebruiker online is, stuur een antwoord terug
 				this.sendMessage(this.userId, "checkOnlineAnswer", "");
@@ -208,6 +231,7 @@ export default class ChatInitializer extends React.Component {
 				//Andere gebruiker heeft de connectie verbroken
 				this.pc.close();
 				this.pc = null;
+				this.addInfoMessage("De verbinding is verbroken");
 				this.initializeWebRTC();
 				this.pc.addStream(this.stream);
 			}
@@ -216,7 +240,7 @@ export default class ChatInitializer extends React.Component {
 	
 	render(){
 		return (
-				<div className="chat-wrapper">
+				<div id="chat-main" className="chat-wrapper">
 					<Container>
 						<Row>
 							<Col md="8">
