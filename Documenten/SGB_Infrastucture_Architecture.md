@@ -1,4 +1,4 @@
-# 2. Functional overview
+# 2. Infrastructure Architecture
 
 Dit hoofdstuk bevat informatie over de infrastructuur van de website.
 
@@ -15,7 +15,9 @@ Type: cloud server
 Voor de development wordt er gebruik gemaakt van GitHub. In de 'development' branch worden alle elementen geplaatst, na een sprint review wordt dezze brancht gekopieerd naar de 'master'. De 'master' branch is altijd de laatste versie en is te zien op bassleer.nl.
 
 ## Infrastructure diagram
-Deze komt nog
+Op de onderstaande diagram is te zien hoe de communicatie vanuit Firebase naar de server en de client verloopt.
+![Diagram](images/infrastructureDiagram.png)
+
 
 ## STUN-server
 De stun server wordt gebruikt voor communicatie via webRTC. WebRTC wordt gebruikt in tijdens chatsessies. De STUN-server die gebruikt wordt wordt aangeleverd door google.
