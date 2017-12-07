@@ -14,4 +14,3 @@ class HelperFunctions {
 }
 
 module.exports = new HelperFunctions()
-

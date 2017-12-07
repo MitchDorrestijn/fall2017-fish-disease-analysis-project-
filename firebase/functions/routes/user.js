@@ -54,6 +54,7 @@ router.get('/users/:id/',isAuthenticated, (req, res) => {
 *  {
 *       User updated
 *  }
+*  @apiUse BadRequest
 *  @apiUse InternalServerError
 *  @apiUse UserAuthenticated
 *  @apiUse Forbidden

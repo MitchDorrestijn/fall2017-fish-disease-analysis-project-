@@ -27,6 +27,8 @@ const aquariumRoutes = require('./routes/aquarium.js');
 const diseaseRoutes = require('./routes/disease.js');
 const notificationRoutes = require('./routes/notification.js');
 const speciesRoutes = require('./routes/species.js');
+const appointmentRoutes = require('./routes/appointment.js');
+const timeSlotRoutes = require('./routes/timeslots.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
@@ -48,6 +50,8 @@ app.use('/api', aquariumRoutes);
 app.use('/api', diseaseRoutes);
 app.use('/api', notificationRoutes);
 app.use('/api', speciesRoutes);
+app.use('/api', appointmentRoutes);
+app.use('/api', timeSlotRoutes);
 
 exports.app = functions.https.onRequest(app);
 
@@ -148,7 +152,23 @@ const upsertSpeciesToAlgolia = (event) => {
 	// Write to the algolia index
 	const index = client.initIndex("species");
 	return index.saveObject(species);
-}
+};
+
+const calculateEndDate = (event) => {
+	// Get the timeslot document
+	const timeslot = event.data.data();
+
+	const startDate = new Date(timeslot.startDate);
+	const duration = timeslot.duration;
+	// Add an "end timestamp" field
+	const endDate = startDate.setMinutes(startDate.getMinutes() + duration);
+
+	// Write timestamp to the timestamp
+	return event.data.ref.set({
+		endDate: new Date(endDate)
+	}, {merge: true});
+};
+
 
 // Update the search index every time a blog post is written.
 exports.onSpeciesCreated = functions.firestore.document("species/{id}").onCreate(event => {
@@ -157,6 +177,14 @@ exports.onSpeciesCreated = functions.firestore.document("species/{id}").onCreate
 
 exports.onSpeciesUpdated = functions.firestore.document("species/{id}").onUpdate(event => {
 	return upsertSpeciesToAlgolia(event);
+});
+
+exports.onTimeslotCreated = functions.firestore.document("timeslots/{id}").onCreate(event => {
+	return calculateEndDate(event);
+});
+
+exports.onTimeslotUpdated = functions.firestore.document("timeslots/{id}").onUpdate(event => {
+	return calculateEndDate(event);
 });
 
 exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete(event => {
