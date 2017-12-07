@@ -66,7 +66,7 @@ router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
 	if (req.user.uid !== req.params.id){
 		return res.sendStatus(403);
 	}
-	db.collection("appointments").where("user", "==", req.user.ref).get()
+	db.collection("appointments").where("reservedBy", "==", req.user.ref).get()
 	.then((snapshot) => {
 		let appointments = [];
 		snapshot.forEach((doc) => {
@@ -158,7 +158,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
  *  @apiUse Forbidden
  */
 router.put('/appointments/:appointmentId/',isAuthenticated, (req, res) => {
-	if (!req.body) {
+	if (!req.body.appointment) {
 		return res.sendStatus(400);
 	}
 	const appointment = req.body.appointment;
@@ -167,48 +167,11 @@ router.put('/appointments/:appointmentId/',isAuthenticated, (req, res) => {
 	let consultant = null;
 	if (appointment.consultantId) {
 		consultant = db.collection('users').doc(appointment.consultantId);
-	}
-	return appointmentRef.update({
-		approved: appointment.approved,
-		canceled: appointment.canceled,
-		video: appointment.video,
-		consultant: consultant
-	})
-	.then(() => {
-		res.sendStatus(204);
-	})
-	.catch((error) => {
-		res.status(500).send(error.message);
-	});
-});
-
-/**
- *  @api {PUT} /appointment/:id updating appointment
- *  @apiName Update a appointment
- *  @apiGroup Appointments
- *
- *  @apiSuccess {String} Appointment updated
- *  @apiSuccessExample Success-Response:
- *  HTTP/1.1 204 OK
- *  @apiUse InternalServerError
- *  @apiUse UserAuthenticated
- *  @apiUse Forbidden
- */
-router.put('/appointments/:appointmentId/users/:userId',isAuthenticated, (req, res) => {
-	if (!req.body) {
-		return res.sendStatus(400);
-	}
-	const appointment = req.body.appointment;
-	const appointmentId = req.params.appointmentId;
-	const appointmentRef = db.collection('appointments').doc(appointmentId);
-	let consultant = null;
-	if (appointment.consultantId) {
-		consultant = db.collection('users').doc(appointment.consultantId);
-	}
-	if (appointment.approved) {
-		admin.auth().getUser(req.params.userId).then((userRecord) => {
-			sendAppointmentApprovedMail(userRecord);
-		});
+		if (appointment.approved) {
+			admin.auth().getUser(helperFunctions.flatData(appointmentRef.reservedBy).id).then((userRecord) => {
+				sendNewAppointmentMail(userRecord);
+			});
+		}
 	}
 	return appointmentRef.update({
 		approved: appointment.approved,
