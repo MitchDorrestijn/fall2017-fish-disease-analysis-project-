@@ -44,10 +44,8 @@ router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
     })
 })
 
-
-
-router.post('/' + model.endpoint, isAuthenticated, (req, res) => {
-    db.collection(model.name).add(req.body.disease)
+router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
+    db.collection(model.endpoint).add(req.body[model.name])
     .then((newDoc) => {
         return newDoc.get()
     })
@@ -60,17 +58,17 @@ router.post('/' + model.endpoint, isAuthenticated, (req, res) => {
 })
 
 router.put('/' + model.endpoint + '/:id', isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
-    db.collection(model.name).doc(req.params.id).set(req.body.disease)
-		.then((newDoc) => {
-			res.sendStatus(200);
-		})
+    db.collection(model.endpoint).doc(req.params.id).update(req.body[model.name])
+    .then(() => {
+        res.status(200).send();
+    })
     .catch((error) => {
         res.status(500).send(error.message);
     })
 })
 
 router.delete('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
-    db.collection(model.name).doc(req.params.id).delete()
+    db.collection(model.endpoint).doc(req.params.id).delete()
     .then(() => {
         res.sendStatus(200);
     })
@@ -79,9 +77,11 @@ router.delete('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
     })
 })
 
-router.get('/' + model.endpoint + '/search', isAuthenticated, (req, res) => {
+router.get('/diseases/search', isAuthenticated, (req, res) => {
     const index = client.initIndex(model.endpoint);
     const query = req.query.term;
+
+    console.log("d");
 
     if(!query){
         return res.status(400).send("Please provide '?term=searchterm' in url");
@@ -92,6 +92,7 @@ router.get('/' + model.endpoint + '/search', isAuthenticated, (req, res) => {
         query
     })
     .then(responses => {
+        console.log("response");
         res.send(responses.hits);
     });
 })

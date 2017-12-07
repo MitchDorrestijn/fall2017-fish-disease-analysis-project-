@@ -2,8 +2,8 @@
         <head>
             <title>Authentication - Proof of Concept<</title>
             <script
-            src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
             <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
             <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-firestore.js"></script>
@@ -28,6 +28,7 @@
             <button type="submit" id="knop">Log in!</button>
             <span id="message"></span>
             <script>
+                let idToken = "";
                 $('#knop').click(function(e){
                     const email = $('#email').val();
                     const password = $('#password').val();
@@ -43,6 +44,7 @@
                             $('#message').html("Gelukt! Userid: " + result.uid);
                             Auth.currentUser.getIdToken().then(function(data) {
                                 console.log(data)
+                                idToken = data;
                             });
 
                             messaging.requestPermission()
@@ -91,6 +93,31 @@
                         console.log('An error occurred while retrieving token. ', err);
                     });
                 }
+            </script>
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <input type="file" id="imageInput" />
+            <button id="uploadBtn">Upload</button>
+            <script>
+                $('#uploadBtn').click((e) => {
+                    let formData = new FormData();
+                    formData.append('testdata', 'toon dit!');
+                    formData.append('image', $('#imageInput').prop('files')[0]); 
+                    $.ajax({
+                        url: 'http://localhost:5000/api/species/mQovDDr3IpGJYtW5w0z2/upload',
+                        beforeSend: function(request) {
+                            request.setRequestHeader("Authorization", "Token " + idToken);
+                        },
+                        data: formData,
+                        type: 'POST',
+                        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                        processData: false, // NEEDED, DON'T OMIT THIS
+                        // ... Other options like success and etc
+                    });
+                })
             </script>
         </body>
     </html>
