@@ -138,7 +138,9 @@ export default class ChatInitializer extends React.Component {
 				this.setState({
 					chat: chatMessages
 				}, () => {
-					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+					setTimeout(() => {
+						document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+					}, 100);
 				});
 			}else{
 				this.receivedImage += message.data;
@@ -167,7 +169,9 @@ export default class ChatInitializer extends React.Component {
 				this.setState({
 					chat: chatMessages
 				}, () => {
-					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+					setTimeout(() => {
+						document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+					}, 100);
 				});
 			}else{
 				this.receivedImage += message.data;
@@ -244,8 +248,8 @@ export default class ChatInitializer extends React.Component {
 					<Container>
 						<Row>
 							<Col md="8">
-								<h3>ChatId: {''+this.chatId}
-								<br/>Is consultant: {''+this.admin}</h3>
+								<h3>ChatId: {''+this.chatId}</h3>
+								{/*<br/>Is consultant: {''+this.admin}</h3>*/}
 								<div id="chatBox">
 									{this.state.chat}
 								</div>

@@ -1,6 +1,13 @@
 import React from 'react';
-import { Col } from 'reactstrap';
-import { Button, Form, FormGroup, Input } from 'reactstrap';
+import {
+	Form,
+	Input,
+	InputGroup,
+	InputGroupButton,
+	InputGroupAddon,
+	UncontrolledTooltip,
+	Col
+	} from 'reactstrap';
 
 export default class MessageSender extends React.Component {
 	getTextMessage = (e) => {
@@ -16,9 +23,33 @@ export default class MessageSender extends React.Component {
 				if (uploadEl.files[0].name.match(/.(jpg|jpeg|png|gif)$/i)){
 					this.sendImage(uploadEl.files[0]);
 					uploadEl.value = "";
+					this.handleFileChange();
 				}
 			}
 		}
+	}
+	
+	handleFileChange = () => {
+		const messageEl = document.getElementById("messageToSend");
+		const uploadEl = document.getElementById("fileUpload");
+		const buttonEl = document.getElementById("sendButton");
+		const removeEl = document.getElementById("removeImage");
+		if(uploadEl.files[0] === undefined){
+			messageEl.value = "";
+			messageEl.disabled = false;
+			buttonEl.innerHTML = "Send message";
+			removeEl.style.visibility = "hidden";
+		}else{
+			messageEl.value = uploadEl.files[0].name;
+			messageEl.disabled = true;
+			buttonEl.innerHTML = "Send image";
+			removeEl.style.visibility = "visible";
+		}
+	}
+	
+	deleteImage = () => {
+		document.getElementById("fileUpload").value = "";
+		this.handleFileChange();
 	}
 	
 	sendImage = (file) => {
@@ -47,13 +78,22 @@ export default class MessageSender extends React.Component {
   	return (
 			<Col className="footer fixed-bottom" sm="12" md="12">
 				<Col sm="12" md={{ size: 8, offset: 1 }}>
-						<Form inline onSubmit={this.getTextMessage}>
-							<FormGroup>
-								<Input type="text" name="textmessage" id="messageToSend" placeholder="Type your message" />
-								<Input type="file" name="fileUpload" id="fileUpload" />
-							</FormGroup>
-							<Button className="btn-admin">Send message</Button>
-						</Form>
+					<Form onSubmit={(e) => this.getTextMessage(e)}>
+						<InputGroup>
+							<span className="removeImage" id="removeImage" onClick={() => this.deleteImage()}><i className="fa fa-times "/></span>
+							<UncontrolledTooltip placement="top" target="removeImage">
+								Click to delete image
+							</UncontrolledTooltip>
+							<InputGroupAddon className="fileUpload-wrapper">
+								<label htmlFor="fileUpload">
+									<i className="fa fa-picture-o "/>
+								</label>
+								<input id="fileUpload" type="file" onChange={() => this.handleFileChange()}/>
+							</InputGroupAddon>
+							<Input type="text" className="messageToSend" id="messageToSend" placeholder="Type your message" />
+							<InputGroupButton className="sendButton" id="sendButton">Send message</InputGroupButton>
+						</InputGroup>
+					</Form>
 				</Col>
 			</Col>
   	);

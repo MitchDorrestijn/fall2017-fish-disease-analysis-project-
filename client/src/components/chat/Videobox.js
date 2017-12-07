@@ -5,10 +5,20 @@ export default class Videobox extends React.Component {
 
 	toggleAudio = () => {
 		this.props.stream.getAudioTracks()[0].enabled = !(this.props.stream.getAudioTracks()[0].enabled);
+		if(this.props.stream.getAudioTracks()[0].enabled){
+			document.getElementById("toggleAudio").className = "btn-circle btn btn-primary";
+		}else{
+			document.getElementById("toggleAudio").className = "btn-circle btn btn-secondary";
+		}
 	}
 
 	toggleVideo = () => {
 		this.props.stream.getVideoTracks()[0].enabled = !(this.props.stream.getVideoTracks()[0].enabled);
+		if(this.props.stream.getVideoTracks()[0].enabled){
+			document.getElementById("toggleVideo").className = "btn-circle btn btn-primary";
+		}else{
+			document.getElementById("toggleVideo").className = "btn-circle btn btn-secondary";
+		}
 	}
 
 	render(){
@@ -19,16 +29,14 @@ export default class Videobox extends React.Component {
 						<Col md="12" sm="6" className="no-gutter">
 							<video id="otherCam" autoPlay></video>
 						</Col>
-						<Col md="12" sm="6" className="no-gutter">
-							<video id="myCam" autoPlay muted></video>
-						</Col>
-						<Col md="12" sm="6" className="no-gutter">
-							<Button color="primary chat-btn" onClick={() => this.toggleAudio()}><i className="fa fa-microphone-slash"/> Audio</Button>
-							<Button color="primary chat-btn" onClick={() => this.toggleVideo()}><i className="fa fa-video-camera"/> Video</Button>
-						</Col>
-						<Col md="12" sm="6" className="no-gutter">
-							<Button color="primary chat-btn" onClick={() => this.props.checkOnline()}><i className="fa fa-phone"/> Call</Button>
-							<Button color="primary chat-btn" onClick={() => this.props.closeConnection()}><i className="fa fa-phone fa-rotate-90"/> Hangup</Button>
+						<Col md="12" sm="6" className="no-gutter videoContainer">
+							<video className="myCam" id="myCam" autoPlay muted></video>
+							<div className="videoOverlay">
+								<div className="videoOverlayText">
+									<Button id="toggleAudio" onClick={() => this.toggleAudio()} className="btn-circle" color="primary"><i className="fa fa-microphone-slash"/></Button>
+									<Button id="toggleVideo" onClick={() => this.toggleVideo()} className="btn-circle" color="primary"><i className="fa fa-video-camera"/></Button>
+								</div>
+							</div>
 						</Col>
 					</div>
 				</div>
