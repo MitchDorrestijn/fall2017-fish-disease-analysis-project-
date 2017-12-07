@@ -8,7 +8,8 @@ const algoliasearch = require('algoliasearch');
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
-	databaseURL: "https://fishproject-47cfd.firebaseio.com"
+	databaseURL: "https://fishproject-47cfd.firebaseio.com",
+	storageBucket: 'fishproject-47cfd.appspot.com'
 });
 
 /* Custom helper modules */

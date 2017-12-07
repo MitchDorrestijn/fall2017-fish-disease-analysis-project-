@@ -76,7 +76,7 @@ router.get('/aquaria/:id', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  */
 router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
-	data.user = req.user.ref;
+	req.body.data.user = req.user.ref;
 	db.collection("aquaria").add(data)
 	.then((newDoc) => {
 		return newDoc.get ().then ((obj) => {
@@ -187,8 +187,8 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 router.post('/aquaria/:id/fish', isAuthenticated, validateModel("data", ["species"]), (req, res) => {
 	const aquariumRef = db.collection('aquaria').doc(req.params.id);
 
-	data.user = req.user.ref;
-	data.aquarium = aquariumRef;
+	req.body.data.user = req.user.ref;
+	req.body.data.aquarium = aquariumRef;
 
 	db.collection('fish').add(data).then((newDoc) => {
 		return newDoc.update({id: newDoc.id});

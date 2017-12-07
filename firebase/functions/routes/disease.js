@@ -58,9 +58,9 @@ router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, mod
 })
 
 router.put('/' + model.endpoint + '/:id', isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
-    db.collection(model.endpoint).doc(req.params.id).set(req.body[model.name])
-    .then((updatedDoc) => {
-        res.status(200).send(updatedDoc.data());
+    db.collection(model.endpoint).doc(req.params.id).update(req.body[model.name])
+    .then(() => {
+        res.status(200).send();
     })
     .catch((error) => {
         res.status(500).send(error.message);
