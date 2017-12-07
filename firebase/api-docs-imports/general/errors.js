@@ -36,3 +36,14 @@
  *  @apiErrorExample Error-Response:
  *     HTTP/1.1 400 Bad Request
  */
+
+/**
+ * @apiDefine ValidationError
+ * @apiError Input validation failed
+ *
+ *  @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       Input validation failed.
+ *     }
+ */

@@ -102,7 +102,7 @@ router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req,
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.post('/aquaria/:id', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
+router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (req, res) => {
 	db.collection('aquaria').
 		where('id', '==', req.params.id).
 		where('user', '==', req.user.ref).
