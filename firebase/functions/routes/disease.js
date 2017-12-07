@@ -20,7 +20,7 @@ const model = {
     name: "disease",
     endpoint: "diseases",
     keys: ["name", "symptoms", "description", "treatment"]
-}
+};
 
 /*
     Fish disease model:
