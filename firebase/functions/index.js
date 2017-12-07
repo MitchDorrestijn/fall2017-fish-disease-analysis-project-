@@ -97,16 +97,16 @@ exports.addIDtoAllDocs = functions.firestore.document("{collection}/{docID}").on
 const upsertDiseaseToAlgolia = (event) => {
 	// Get the disease document
 	const disease = event.data.data();
-	
+
 	// Add an "objectID" field which Algolia requires
 	disease.objectID = event.params.id;
-	
+
 	// Write to the algolia index
 	const index = client.initIndex("diseases");
 	return index.saveObject(disease);
 }
 
-// Send push notification when notification is created 
+// Send push notification when notification is created
 exports.onNotificationCreated = functions.firestore.document("notifications/{id}").onCreate(event => {
 	const notification = event.data.data();
 	let payload = {
@@ -155,10 +155,10 @@ exports.onDiseaseDeleted = functions.firestore.document("diseases/{id}").onDelet
 const upsertSpeciesToAlgolia = (event) => {
 	// Get the disease document
 	const species = event.data.data();
-	
+
 	// Add an "objectID" field which Algolia requires
 	species.objectID = event.params.id;
-	
+
 	// Write to the algolia index
 	const index = client.initIndex("species");
 	return index.saveObject(species);
@@ -193,7 +193,11 @@ exports.onTimeslotCreated = functions.firestore.document("timeslots/{id}").onCre
 	return calculateEndDate(event);
 });
 
-exports.onTimeslotUpdated = functions.firestore.document("timeslots/{id}").onUpdate(event => {
+exports.onTimeslotDurationUpdated = functions.firestore.document("timeslots/{id}/duration").onUpdate(event => {
+	return calculateEndDate(event);
+});
+
+exports.onTimeslotStartDateUpdated = functions.firestore.document("timeslots/{id}/startDate").onUpdate(event => {
 	return calculateEndDate(event);
 });
 

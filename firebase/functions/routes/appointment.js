@@ -26,32 +26,44 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiUse AppointmentSuccess
  */
 // TODO: maybe it could be made more efficient?
-router.get('/appointments/',isAuthenticated, (req, res) => {
-	db.collection("appointments").get()
-	.then((snapshot) => {
+router.get('/appointments/', (req, res) => {
+	db.collection("appointments").get().then((snapshot) => {
 		let appointments = [];
-		snapshot.forEach((doc) => {
-			appointments.push(helperFunctions.flatData(doc));
-		});
-		return appointments;
-	}).then((appointmentsWithId) => {
-		let appointments = appointmentsWithId;
 		let promises = [];
-		appointmentsWithId.forEach((appointment) => {
-			promises.push(admin.auth().getUser(appointment.reservedBy).then((userRecord) => {
-				appointment.reservedBy = userRecord.toJSON().displayName;
-				return appointment;
-			}))
+		snapshot.forEach((doc) => {
+			appointmentFlat = helperFunctions.flatData(doc);
+			if (appointmentFlat.timeslotId) {
+				promises.push(db.collection('timeslots').
+					doc(appointmentFlat.timeslotId).
+					get().
+					then((timeslot) => {
+						appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
+						appointments.push(appointmentFlat);
+						return appointments;
+					}))
+			}
 		});
 		Promise.all(promises).then(() => {
-			res.send(appointments);
+			return appointments;
+		}).then((appointmentsWithId) => {
+			let appointments = appointmentsWithId;
+			let promises = [];
+			appointmentsWithId.forEach((appointment) => {
+				promises.push(admin.auth().
+					getUser(appointment.reservedBy).
+					then((userRecord) => {
+						appointment.reservedBy = userRecord.toJSON().displayName;
+						return appointment;
+					}));
+			});
+			Promise.all(promises).then(() => {
+				res.send(appointments);
+			});
+		}).catch((err) => {
+			res.status(500).send(err.message);
 		});
-	})
-	.catch((err) => {
-		res.status(500).send(err.message);
 	});
 });
-
 /**
  *  @api {get} /appointments/ Get appointments of user
  *  @apiName Returns all appointments of user
@@ -62,7 +74,7 @@ router.get('/appointments/',isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse AppointmentSuccess
  */
-router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
+router.get('/appointments/user/:id', (req, res) => {
 	if (req.user.uid !== req.params.id){
 		return res.sendStatus(403);
 	}
@@ -71,6 +83,9 @@ router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
 		let appointments = [];
 		snapshot.forEach((doc) => {
 			appointments.push(helperFunctions.flatData(doc));
+			db.collection('timeslots').doc(doc.timeslot).get().then((timeslots) => {
+				appointments.timeslot = helperFunctions.flatData(timeslots);
+			});
 		});
 		res.send(appointments);
 	}).catch((err) => {
@@ -129,7 +144,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 	appointment.canceled = false;
 	appointment.approved = false;
 	appointment.reservedBy = admin.firestore().collection("users").doc(req.user.uid);
-	appointment.timeslot = admin.firestore().collection("timeslots").doc(appointmentBody.timeSlotId);
+	appointment.timeslotId = admin.firestore().collection("timeslots").doc(appointmentBody.timeSlotId);
 	admin.auth().getUser(req.user.uid).then((userRecord) => {
 		sendNewAppointmentMail(userRecord);
 	});
@@ -168,6 +183,7 @@ router.put('/appointments/:appointmentId/',isAuthenticated, (req, res) => {
 	const appointmentRef = db.collection('appointments').doc(appointmentId);
 	let consultant = null;
 	if (appointment.consultantId) {
+		//.get
 		consultant = db.collection('users').doc(appointment.consultantId);
 		if (appointment.approved) {
 			admin.auth().getUser(helperFunctions.flatData(appointmentRef.reservedBy).id).then((userRecord) => {
