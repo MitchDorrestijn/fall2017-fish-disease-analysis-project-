@@ -80,11 +80,11 @@ router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
 
 /**
  *  Admin
- *  @api {DELETE} /appointment/:id Delete appointment
- *  @apiName Remove an appointment
+ *  @api {DELETE} /appointment/:id Cancele appointment
+ *  @apiName cancele an appointment
  *  @apiGroup Appointments
  *
- *  @apiSuccess {String} Appointment deleted
+ *  @apiSuccess {String} Appointment canceled
  *  @apiSuccessExample Success-Response:
  *  HTTP/1.1 204 OK
  *  @apiUse InternalServerError
@@ -92,9 +92,11 @@ router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
  */
 router.delete('/appointments/:id',isAuthenticated, (req, res) => {
 	const appointmentId = req.params.id;
-	db.collection('appointments').doc(appointmentId).delete()
+	db.collection('appointments').doc(appointmentId).update({
+		canceled: true
+	})
 	.then(() => {
-		res.status(204).send('Appointment deleted');
+		res.status(204).send('Appointment canceled');
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
