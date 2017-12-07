@@ -210,7 +210,7 @@ export default class App extends React.Component {
 									<Route path="/admin" render={(props) => {
 										const {loggedIn, isAdmin} = this.state;
 										if (loggedIn && isAdmin) {
-											return <Admin {...props}/>;
+											return <Admin {...props} openModal={this.openModal}/>;
 										} else {
 											return <AdminError/>
 										}
