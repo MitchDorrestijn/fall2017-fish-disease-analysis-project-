@@ -12,12 +12,6 @@ const validateModel = require('../middleware/validateModel.js');
 /* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
 
-/*
-    Timeslot model:
-    - duration,
-    - startDate
-*/
-
 /**
  *  @api {GET} /opentimeslots/ get open timeslots
  *  @apiName get all open timeslots
