@@ -34,7 +34,7 @@ router.get('/users/:id/',isAuthenticated, (req, res) => {
 	userRef.get().then(profileObject => {
 		if (profileObject.empty) {
 			return Promise.reject(
-				new Error('Aquarium non existent or not owned by user.'));
+				new Error('User does not exist.'));
 		}
 		return res.send(profileObject.data()).status(200);
 	}).catch(err => {

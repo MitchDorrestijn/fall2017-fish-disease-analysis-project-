@@ -78,6 +78,39 @@ router.get('/timeslots/', (req, res) => {
 });
 
 /**
+*  @api {get} /users/:id/ Get user
+*  @apiName Returns profile data of a user
+*  @apiGroup Users
+*
+*  @apiSuccess {Object} User profile object
+*  @apiSuccessExample Success-Response:
+*  HTTP/1.1 200 OK
+*  {
+	name: 'John',
+	surname: 'Doe',
+	email: 'test@test.nl',
+	country: 'The Netherlands',
+	birthDate: '1999-01-01T00:00:00.000Z'
+	*  }
+*  @apiUse InternalServerError
+*  @apiUse UserAuthenticated
+*  @apiUse Forbidden
+**/
+router.get('/timeslots/:id/',isAuthenticated, (req, res) => {
+	const timeslotId = req.params.id;
+	const timeslotRef = db.collection('timeslots').doc(timeslotId);
+	timeslotRef.get().then(timeslotObject => {
+		if (timeslotObject.empty) {
+			return Promise.reject(
+				new Error('timeslot does not exist'));
+		}
+		return res.send(timeslotObject.data()).status(200);
+	}).catch(err => {
+		res.status(400).send(err.message);
+	});
+});
+
+/**
  *  @api {POST} /timeslots/ Create timeslot
  *  @apiName Creates a timeslot
  *  @apiGroup Timeslots
