@@ -10,14 +10,32 @@ import {
 	FormText
 } from 'reactstrap';
 import Error from './Error';
+import DataAccess from '../../scripts/DataAccess';
 
 class AddFishAdmin extends React.Component {
 	addFish = (e) => {
 		e.preventDefault();
-		const fishName = e.target.fishname.value;
-		const fishDescription = e.target.fishDescription.value;
-		const fishImage = e.target.fishImage.value;
-  	console.log(`Submitted form data: fishname: ${fishName}, fish description: ${fishDescription}, fish image: ${fishImage}`);
+		const fileUploader = document.getElementById("fishImage");
+		// TODO: VALIDATIE AFBEELDING
+		let reader = new FileReader();
+    reader.readAsDataURL(fileUploader.files[0]);
+    reader.onload = () => {
+			const fishToAdd = {
+				name: document.getElementById("fishname").value,
+				info: document.getElementById("fishDescription").value,
+				additional: document.getElementById("fishAdditional").value,
+				picture: reader.result
+			}
+			let da = new DataAccess();
+			da.postData(`/species`, {species: fishToAdd},  (err, res) => {
+				if (!err.status) {
+					this.props.customProps.refreshPage();
+					this.props.toggleModal();
+				} else {
+					console.log(err);
+				}
+			});
+		}
 	}
 	render() {
 		return (
@@ -30,13 +48,17 @@ class AddFishAdmin extends React.Component {
 					}
 					<Form onSubmit={this.addFish}>
 		        <FormGroup>
-		          <Label for="fishName">Name of fish:</Label>
+		          <Label for="fishName">Name:</Label>
 		          <Input id="fishname" type="text" name="fishName" placeholder="Name of fish" />
 		        </FormGroup>
 		        <FormGroup>
-		          <Label for="fishDescription">Description of fish:</Label>
+		          <Label for="fishDescription">Description:</Label>
 		          <Input id="fishDescription" type="textarea" name="fishDescription" />
 		        </FormGroup>
+						<FormGroup>
+							<Label for="fishAdditional">Additional:</Label>
+							<Input id="fishAdditional" type="textarea" name="fishAdditional" />
+						</FormGroup>
 						<FormGroup>
           		<Label for="fishImage">Image</Label>
           		<Input id="fishImage" type="file" name="fishImage" />
