@@ -4,12 +4,12 @@ import Sidebar from '../../components/myAquarium/Sidebar';
 import SidebarLink from '../../components/myAquarium/SidebarLink';
 import ContentContainer from '../../components/myAquarium/ContentContainer';
 import ManageAgenda from './ManageAgenda/ManageAgenda';
-import ManageDiseases from './ManageDiseases';
 import ManageFish from './ManageFish';
 import ManageNotifications from './ManageNotifications/ManageNotifications';
 import ManageUsers from './ManageUsers';
 import Logout from './Logout';
 import ManageTimeSlots from './ManageTimeSlots/ManageTimeSlots';
+import ManageDesises from './ManageDesises';
 
 export default class SideNav extends React.Component {
 	render() {
@@ -29,7 +29,7 @@ export default class SideNav extends React.Component {
 						return <ManageFish {...props} openModal={this.props.openModal} />
 					}}/>
 					<Route exact path="/admin/diseases" render={(props) => {
-						return <ManageDiseases {...props} openModal={this.props.openModal} />
+						return <ManageDesises {...props} openModal={this.props.openModal} />
 					}}/>
 					<Route exact path="/admin/appointments" render={(props) => {
 						return <ManageAgenda {...props} openModal={this.props.openModal} />

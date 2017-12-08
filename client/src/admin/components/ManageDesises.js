@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 import { Button, Form, FormGroup, Input } from 'reactstrap';
-import addFishDesiseAdmin from '../../components/modal/AddFishDesiseAdmin';
+import addFishDesiseAdmin from '../../components/modal/AddFishDiseaseAdmin';
 import DataAccess from '../../scripts/DataAccess';
 
 export default class ManageDesises extends React.Component {
