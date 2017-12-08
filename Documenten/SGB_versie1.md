@@ -154,34 +154,34 @@ De website moet vóór 19-01-2018 worden opgeleverd. Als deze deadline niet geha
 
 ## 5. Principles
 
-In dit hoofdstuk worden de software principles toegelicht. Software principles zijn regels waaraan ieder groepslid zich moet houden om elkaars code te begrijpen. Groeps principles zijn regels om ervoor te zorgen dat het project optimaal verloopt.
+In dit hoofdstuk worden de software principles toegelicht. Software principles zijn regels waaraan ieder groepslid zich moet houden om elkaars code te kunnen begrijpen. Groepsprinciples zijn regels om ervoor te zorgen dat het project optimaal verloopt.
 
 #### 5.1 Code principles
 **Algemeen**
 1. Gebruik tabs, geen spaties,
 2. Altijd spaties rondom operators ( = + - * / ),
 3. Statements beëindigen met puntkomma’s,
-4. Wanneer mogelijk niet meer dan 120 karakters op een regel.
+4. Waar mogelijk niet meer dan 120 karakters op een regel.
 
 **Control structures**
 1. Spatie voor haakje openen,
-2. Normale strings declaraties worden aangegeven met enkele quote(‘) ipv dubbele quote(“).
+2. Normale string declaraties worden aangegeven met enkele quote(‘) ipv dubbele quote(“).
 
 **Benamingen**
 1. Alle namen starten met een letter uit het Nederlandse alfabet,
-2. meerdere woorden komen aan elkaar door middel van camelCasing (met uizondering van klassen).
+2. Bij meerdere woorden aan elkaar wordt camelCasing gebruikt (met uitzondering van klassen).
 
 **Functies**
 1. Camel casing (functionName),
 2. Accolade aan het einde van de eerste regel,
-3. Spatie voor accolade,
+3. Spatie voor accolades,
 4. Beëindigings accolade op nieuwe regel.
 
 **Klassen**
-1. Klassen namen maken gebruik van Pascal case (ClassName).
+1. Namen van klassen maken gebruik van Pascal case (ClassName).
 
 **Variabelen**
-1. Maak variable altijd aan met const of let gebruik geen var.
+1. Maak variabelen altijd aan met const of let. Gebruik geen var.
 
 **Objecten**
 Objecten worden als volgt gedefineerd:
@@ -207,7 +207,7 @@ https://google.github.io/styleguide/jsguide.html
 5. Men zet in de gezamenlijke kalender wanneer men niet of anders aanwezig is dan
   eerder afgesproken,
 6. Elke teamgenoot mag niet meer dan twee items in progress hebben,
-7. Elke teamgenoot wordt geacht het Scrum-bord bij te houden,
+7. Elke teamgenoot wordt geacht het Scrumbord bij te houden,
 8. Inhoudelijke meldingen worden gedaan via Slack in het daarvoor bestemde kanaal.
 9. Whatsapp wordt gebruikt voor informele of vlugge mededelingen.
 
