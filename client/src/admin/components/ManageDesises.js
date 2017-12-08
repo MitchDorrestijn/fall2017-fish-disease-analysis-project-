@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 import { Button, Form, FormGroup, Input, ButtonGroup } from 'reactstrap';
-import addFishDesiseAdmin from '../../components/modal/AddFishDesiseAdmin';
+import addFishDesiseAdmin from '../../components/modal/AddFishDiseaseAdmin';
 import DataAccess from '../../scripts/DataAccess';
 import ActionButton from '../../components/base/ActionButton';
 import RemoveDisease from '../../components/modal/RemoveDisease';
