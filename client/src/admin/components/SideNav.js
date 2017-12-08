@@ -37,7 +37,9 @@ export default class SideNav extends React.Component {
 					<Route exact path="/admin/timeslots" render={(props) => {
 						return <ManageTimeSlots {...props} openModal={this.props.openModal} />
 					}}/>
-					<Route exact path="/admin/notifications" component={ManageNotifications}/>
+					<Route exact path="/admin/notifications" render={(props) => {
+						return <ManageNotifications {...props} openModal={this.props.openModal} />
+					}}/>
 					<Route exact path="/admin/users" component={ManageUsers}/>
 					<Route exact path="/admin/logout" component={Logout}/>
 				</ContentContainer>
