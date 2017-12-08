@@ -8,11 +8,11 @@ export default class AddNotificationRule extends Component {
 		this.state = {
 			data: this.props.customProps
 		};
-		this.attributes = ["Phosphate", "Nitrate", "Nitrite", "Iron", "gH", "Temperature", "Oxygen", "Carbon", "Dioxide", "kH", "Chlorine"];
+		this.attributes = ['Phosphate', 'Nitrate', 'Nitrite', 'Iron', 'gH', 'Temperature', 'Oxygen', 'Carbon', 'Dioxide', 'kH', 'Chlorine'];
 	}
 
 	addNotificationRule = () => {
-		if (this.state.data.equation === "range") {
+		if (this.state.data.equation === 'range') {
 			let {data} = this.state;
 			data.compared = null;
 			this.setState({data: data});
@@ -44,27 +44,31 @@ export default class AddNotificationRule extends Component {
 	};
 
 	changeAttribute = (evt) => {
-		this.changeData("attribute", evt);
+		this.changeData('attribute', evt);
 	};
 
 	changeEquation = (evt) => {
-		this.changeData("equation", evt);
+		this.changeData('equation', evt);
 	};
 
 	changeCompared = (evt) => {
-		this.changeData("compared", evt);
+		this.changeData('compared', evt);
 	};
 
 	changeMin = (evt) => {
-		this.changeData("min", evt);
+		this.changeData('min', evt);
 	};
 
 	changeMax = (evt) => {
-		this.changeData("max", evt);
+		this.changeData('max', evt);
 	};
 
 	changeMessage = (evt) => {
-		this.changeData("message", evt);
+		this.changeData('message', evt);
+	};
+
+	changeType = (evt) => {
+		this.changeData('type', evt);
 	};
 
 	showAttributes = () => {
@@ -76,25 +80,25 @@ export default class AddNotificationRule extends Component {
 	};
 
 	showCompared = (min, max, compared) => {
-		if (this.state.data.equation === "range") {
+		if (this.state.data.equation === 'range') {
 			return (
-				<FormGroup key="0">
+				<FormGroup key='0'>
 					<Label>Min</Label><br/>
 					<InputGroup>
-						<Input type="number" value={min} onChange={this.changeMin}/>
+						<Input type='number' value={min} onChange={this.changeMin}/>
 					</InputGroup>
 					<Label>Max</Label><br/>
 					<InputGroup>
-						<Input type="number" value={max} onChange={this.changeMax}/>
+						<Input type='number' value={max} onChange={this.changeMax}/>
 					</InputGroup>
 				</FormGroup>
 			);
 		} else {
 			return (
-				<FormGroup key="0">
+				<FormGroup key='0'>
 					<Label>Compared</Label><br/>
 					<InputGroup>
-						<Input type="number" value={compared} onChange={this.changeCompared}/>
+						<Input type='number' value={compared} onChange={this.changeCompared}/>
 					</InputGroup>
 				</FormGroup>
 			);
@@ -102,7 +106,7 @@ export default class AddNotificationRule extends Component {
 	};
 
 	render() {
-		const {attribute, equation, compared, min, max, message} = this.state.data;
+		const {attribute, equation, compared, min, max, message, type} = this.state.data;
 		const {toggleModal} = this.props;
 		return (
 			<div>
@@ -111,7 +115,7 @@ export default class AddNotificationRule extends Component {
 					<FormGroup>
 						<Label>Attribute</Label><br/>
 						<InputGroup>
-							<Input type="select" onChange={this.changeAttribute}>
+							<Input type='select' onChange={this.changeAttribute}>
 								<option selected disabled hidden>Choose here</option>
 								{this.showAttributes()}
 							</Input>
@@ -120,12 +124,12 @@ export default class AddNotificationRule extends Component {
 					<FormGroup>
 						<Label>Equation</Label><br/>
 						<InputGroup>
-							<Input type="select" onChange={this.changeEquation}>
+							<Input type='select' onChange={this.changeEquation}>
 								<option selected disabled hidden>Choose here</option>
-								<option value=">">bigger than</option>
-								<option value="<">smaller than</option>
-								<option value="==">equal to</option>
-								<option value="range">between</option>
+								<option value='>'>bigger than</option>
+								<option value='<'>smaller than</option>
+								<option value='=='>equal to</option>
+								<option value='range'>between</option>
 							</Input>
 						</InputGroup>
 					</FormGroup>
@@ -133,12 +137,22 @@ export default class AddNotificationRule extends Component {
 					<FormGroup>
 						<Label>Notification message</Label><br/>
 						<InputGroup>
-							<Input type="text" onChange={this.changeMessage}/>
+							<Input type='text' onChange={this.changeMessage}/>
+						</InputGroup>
+					</FormGroup>
+					<FormGroup>
+						<Label>Notification type</Label><br/>
+						<InputGroup>
+							<Input type='select' value={type} onChange={this.changeType}>
+								<option selected disabled hidden>Choose here</option>
+								<option value='Error'>Error</option>
+								<option value='Warning'>Warning</option>
+							</Input>
 						</InputGroup>
 					</FormGroup>
 					<hr/>
-					<Button onClick={this.addNotificationRule} outline className="modalLink" color="secondary" block>Add notification rule</Button>
-					<Button onClick={toggleModal} outline className="modalLink" color="secondary" block>Cancel</Button>
+					<Button onClick={this.addNotificationRule} outline className='modalLink' color='secondary' block>Add notification rule</Button>
+					<Button onClick={toggleModal} outline className='modalLink' color='secondary' block>Cancel</Button>
 				</ModalBody>
 			</div>
 		);

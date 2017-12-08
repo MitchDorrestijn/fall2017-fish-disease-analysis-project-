@@ -11,7 +11,7 @@ export default class ManageNotifications extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			searchTerm: "",
+			searchTerm: '',
 			dataFromDB: [],
 			data: []
 		}
@@ -26,7 +26,7 @@ export default class ManageNotifications extends React.Component {
 				this.setState({dataFromDB: res.message});
 				this.getData();
 			} else {
-				console.log("De error is: " + err.message);
+				console.log('De error is: ' + err.message);
 			}
 		});
 	}
@@ -43,15 +43,16 @@ export default class ManageNotifications extends React.Component {
 						<Td>{element.min}</Td>
 						<Td>{element.max}</Td>
 						<Td>{element.message}</Td>
+						<Td>{element.type}</Td>
 						<Td>
 							<ButtonGroup>
 								<ActionButton
-									buttonText={<span className="fa fa-edit"/>}
-									color="primary"
+									buttonText={<span className='fa fa-edit'/>}
+									color='primary'
 									onClickAction={() => this.changeNotificationRule(element)}/>
 								<ActionButton
-									buttonText={<span className="fa fa-close"/>}
-									color="primary"
+									buttonText={<span className='fa fa-close'/>}
+									color='primary'
 									onClickAction={() => this.removeNotificationRule(element)}/>
 							</ButtonGroup>
 						</Td>
@@ -80,7 +81,7 @@ export default class ManageNotifications extends React.Component {
 	}
 	getSearchTerm = (e) => {
 		e.preventDefault();
-		console.log("SearchTerm: " + this.state.searchTerm);
+		console.log('SearchTerm: ' + this.state.searchTerm);
 	}
 	handleSearchChange = (e) => {
 		this.setState({searchTerm: e.target.value});
@@ -89,13 +90,13 @@ export default class ManageNotifications extends React.Component {
 		return (
 			<div>
 				<h2>Add / edit / remove notification rules</h2>
-				<Form inline className="searchForm" onSubmit={this.getSearchTerm}>
+				<Form inline className='searchForm' onSubmit={this.getSearchTerm}>
 					<FormGroup>
-						<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
+						<Input type='text' name='searchTerm' placeholder='What do you wanna search?' onChange={this.handleSearchChange} />
 					</FormGroup>
-					<Button className="btn-admin">Search now</Button>
+					<Button className='btn-admin'>Search now</Button>
 				</Form>
-				<Table className="table">
+				<Table className='table'>
 					<Thead>
 						<Tr>
 							<Th>Attribute</Th>
@@ -104,6 +105,7 @@ export default class ManageNotifications extends React.Component {
 							<Th>Min</Th>
 							<Th>Max</Th>
 							<Th>Message</Th>
+							<Th>Type</Th>
 							<Th>Edit</Th>
 						</Tr>
 					</Thead>
@@ -111,7 +113,7 @@ export default class ManageNotifications extends React.Component {
 						{this.state.data}
 					</Tbody>
 				</Table>
-				<Button onClick={() => this.props.openModal(addNotificationRule, {refreshPage: this.loadCurrentNotifications})} className="btn-admin">Add notification rule</Button>
+				<Button onClick={() => this.props.openModal(addNotificationRule, {refreshPage: this.loadCurrentNotifications})} className='btn-admin'>Add notification rule</Button>
 			</div>
 		);
 	};
