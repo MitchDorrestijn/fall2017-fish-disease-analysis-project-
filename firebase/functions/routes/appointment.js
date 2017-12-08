@@ -183,11 +183,23 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
  *  @apiUse UserAuthenticated
  *  @apiUse Forbidden
  */
-router.put('/appointments/:appointmentId/',isAuthenticated, (req, res) => {
+router.put('/appointments/:appointmentId/', (req, res) => {
 	if (!req.body.appointment) {
 		return res.sendStatus(400);
 	}
 	const appointment = req.body.appointment;
+	let video = null;
+	if (!appointment.video) {
+		video = appointment.video;
+	}
+	let approved = null;
+	if (!appointment.video) {
+		approved = appointment.approved;
+	}
+	let canceled = null;
+	if (!appointment.video) {
+		canceled = appointment.canceled;
+	}
 	const appointmentId = req.params.appointmentId;
 	const appointmentRef = db.collection('appointments').doc(appointmentId);
 	let consultant = null;
@@ -202,9 +214,9 @@ router.put('/appointments/:appointmentId/',isAuthenticated, (req, res) => {
 		}
 	}
 	return appointmentRef.update({
-		approved: appointment.approved,
-		canceled: appointment.canceled,
-		video: appointment.video,
+		approved: approved,
+		canceled: canceled,
+		video: video,
 		consultant: consultant
 	})
 	.then(() => {
