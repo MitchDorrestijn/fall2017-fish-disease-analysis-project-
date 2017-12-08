@@ -18,7 +18,7 @@ export default class MessageSender extends React.Component {
 			if(uploadEl.files[0] === undefined){
 				const message = messageEl.value;
 				messageEl.value = "";
-				this.props.sendChatMessage("text", message);
+				this.props.sendChatMessage("text", {"name": this.props.name, "message": message});
 			}else{
 				if (uploadEl.files[0].name.match(/.(jpg|jpeg|png|gif)$/i)){
 					this.sendImage(uploadEl.files[0]);
@@ -56,21 +56,21 @@ export default class MessageSender extends React.Component {
 		let reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onload = () => {
-			this.props.sendChatMessage("image", "open");
+			this.props.sendChatMessage("image", {"name": this.props.name, "message": "open"});
 		
 			const CHUNK_LENGTH = 60000;
 			const len = Math.floor(reader.result.length / CHUNK_LENGTH);
 			
 			if(len === 0){
-				this.props.sendChatMessage("image", reader.result);
+				this.props.sendChatMessage("image", {"name": this.props.name, "message": reader.result});
 			}else{
 				for(let i = 0; i < len; i++){
-					this.props.sendChatMessage("image", reader.result.substring((CHUNK_LENGTH*i), (CHUNK_LENGTH*(i+1))));
+					this.props.sendChatMessage("image", {"name": this.props.name, "message": reader.result.substring((CHUNK_LENGTH*i), (CHUNK_LENGTH*(i+1)))});
 				}
-				this.props.sendChatMessage("image", reader.result.substring((CHUNK_LENGTH*len), reader.result.length));
+				this.props.sendChatMessage("image", {"name": this.props.name, "message": reader.result.substring((CHUNK_LENGTH*len), reader.result.length)});
 			}
 			
-			this.props.sendChatMessage("image", "close");
+			this.props.sendChatMessage("image", {"name": this.props.name, "message": "close"});
 		};
 	}
 
