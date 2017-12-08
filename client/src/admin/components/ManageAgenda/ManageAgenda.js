@@ -19,6 +19,21 @@ export default class ManageAgenda extends Component {
 		this.getAppointments();
 	}
 
+	parseDate = (date) => {
+		let parsedDate = new Date (date);
+		return parsedDate.toDateString();
+	};
+
+	parseTime = (date) => {
+		let parsedDate = new Date (date);
+		let hours = parsedDate.getHours();
+		let minutes = parsedDate.getMinutes();
+		if (minutes < 10) {
+			minutes = minutes + "0";
+		}
+		return `${hours}:${minutes}`;
+	};
+
 	cancelAppointment = (entry) => {
 		this.props.openModal(RemoveAppointment, {
 			refreshPage: this.getAppointments,
@@ -47,7 +62,7 @@ export default class ManageAgenda extends Component {
 
 		let da = new DataAccess();
 
-		da.getData('/appointments', (err, res) => {
+		da.getData('/admin/appointments', (err, res) => {
 			if (!err) {
 				let resultsFromDB = res.message;
 				console.log (resultsFromDB);
@@ -60,8 +75,9 @@ export default class ManageAgenda extends Component {
 				results = resultsFromDB.map ((elem) => {
 					return (
 						<Tr key={elem.id}>
-							<Td>{elem.date}</Td>
-							<Td>{elem.timeslot}</Td>
+							<Td>{this.parseDate(elem.timeslot.startDate)}</Td>
+							<Td>{this.parseTime(elem.timeslot.startDate)}</Td>
+							<Td>{this.parseTime(elem.timeslot.endDate)}</Td>
 							<Td>{elem.reservedBy}</Td>
 							<Td>{elem.comment}</Td>
 							<Td>{elem.video ? "Yes" : "No"}</Td>
@@ -102,7 +118,8 @@ export default class ManageAgenda extends Component {
 					<Thead>
 						<Tr>
 							<Th>Date</Th>
-							<Th>Time</Th>
+							<Th>Start time</Th>
+							<Th>End time</Th>
 							<Th>Person</Th>
 							<Th>Description</Th>
 							<Th>Video</Th>
