@@ -1,9 +1,9 @@
 import React from 'react';
 
 const ManageNotifications = () => {
-  return (
+	return (
 		<div>ManageNotifications</div>
-  );
+	);
 };
 
 export default ManageNotifications;

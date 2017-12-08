@@ -1,5 +1,10 @@
 @import '../settings.scss';
 
+.appointment-table {
+	td {
+		vertical-align: middle;
+	}
+}
 .outer-container .adminContentContainer {
 	background: $adminMainBackground;
 }

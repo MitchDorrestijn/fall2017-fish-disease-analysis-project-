@@ -8,7 +8,7 @@
 	height: calc(100vh - 80px); //Minus the height of the navBar
 	overflow-y: scroll;
 	.senderBox,
-	.recieverBox {
+	.receiverBox {
 		position: relative;
 		background: $supportColor;
 		margin-top: $defaultPadding;
@@ -17,8 +17,8 @@
 	}
 	.senderBox:after,
 	.senderBox:before,
-	.recieverBox:after,
-	.recieverBox:before {
+	.receiverBox:after,
+	.receiverBox:before {
 		border: solid transparent;
 		content: " ";
 		height: 0;
@@ -28,20 +28,20 @@
 		top: 50%;
 	}
 	.senderBox:before,
-	.recieverBox:before {
+	.receiverBox:before {
 		border-width: $defaultPadding;
 		margin-top: -$defaultPadding;
 	}
 	.senderBox:after, .senderBox:before {
 		right: 100%;
 	}
-	.recieverBox:after, .recieverBox:before {
+	.receiverBox:after, .recieverBox:before {
 		left: 100%;
 	}
 	.senderBox:before {
 		border-right-color: $supportColor;
 	}
-	.recieverBox:before {
+	.receiverBox:before {
 		border-left-color: $supportColor;
 	}
 }

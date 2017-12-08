@@ -5,6 +5,9 @@
 	@media screen and(max-width: $responsiveBreakPoint){
 		height: auto;
 	}
+	h2{
+		word-wrap: break-word;
+	}
 	.aquarium-sidebar {
 		background-color: $mainColor;
 		min-height: calc(100vh - 80px);
