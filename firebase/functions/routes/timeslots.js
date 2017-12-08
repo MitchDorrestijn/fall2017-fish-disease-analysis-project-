@@ -5,13 +5,23 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 const validator = require('validator');
 
+/* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
+const validateModel = require('../middleware/validateModel.js');
+
+/* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
 
-//get open timeslots
-router.get('/opentimeslots/', (req, res) => {
-	// get all appointment timeslot references
-
+/**
+ *  @api {GET} /opentimeslots/ get open timeslots
+ *  @apiName get all open timeslots
+ *  @apiGroup Timeslots
+ *
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse getTimeslotsSuccess
+ */
+router.get('/opentimeslots/',isAuthenticated, (req, res) => {
 	db.collection("appointments").get()
 	.then((snapshot) => {
 		let appointmentsTimeslots = [];
@@ -28,13 +38,15 @@ router.get('/opentimeslots/', (req, res) => {
 			let timeslots = [];
 			snapshot.forEach((doc) => {
 				let timeslot = helperFunctions.flatData(doc);
-				let appointmentIdCheck = true;
+				let appointmentCheck = true;
 				data.forEach((appointment) => {
+					// Check if canceled is false and the appointment id equals the id of the timeslot
 					if (appointment.id === timeslot.id && !appointment.canceled) {
-						appointmentIdCheck = false;
+						appointmentCheck = false;
 					}
 				});
-				if (timeslots.indexOf(timeslot) === -1 && appointmentIdCheck){
+				// Only push unique timeslots and appointments which meet the appointment check
+				if (timeslots.indexOf(timeslot) === -1 && appointmentCheck){
 					timeslots.push(timeslot);
 				}
 			});
@@ -45,7 +57,13 @@ router.get('/opentimeslots/', (req, res) => {
 	});
 });
 
-// get all timeslots
+/**
+ *  @api {GET} /timeslots/ get all timeslots
+ *  @apiName get a list of all timeslots
+ *  @apiGroup Timeslots
+ *
+ * @apiUse getTimeslotsSuccess
+ */
 router.get('/timeslots/', (req, res) => {
 	db.collection("timeslots").get()
 	.then((snapshot) => {
@@ -59,12 +77,52 @@ router.get('/timeslots/', (req, res) => {
 	});
 });
 
-// admin creates a timeslot
-router.post('/timeslots/', (req, res) => {
+/**
+*  @api {get} /timeslots/:id/ Get timeslot
+*  @apiName Returns data of a timeslot
+*  @apiGroup timeslots
+*
+*  @apiSuccess {Object} Timeslot profile object
+*  @apiSuccessExample Success-Response:
+*  HTTP/1.1 200 OK
+*
+ {
+    "endDate": "2017-12-12T17:00:00.000Z",
+    "id": "IAOQ90UnsHxV4sqFFQUY",
+    "startDate": "2017-12-12T16:00:00.000Z",
+    "duration": "60"
+}
+*  @apiUse InternalServerError
+*  @apiUse UserAuthenticated
+**/
+router.get('/timeslots/:id/',isAuthenticated, (req, res) => {
+	const timeslotId = req.params.id;
+	const timeslotRef = db.collection('timeslots').doc(timeslotId);
+	timeslotRef.get().then(timeslotObject => {
+		if (timeslotObject.empty) {
+			return Promise.reject(
+				new Error('timeslot does not exist'));
+		}
+		return res.send(timeslotObject.data()).status(200);
+	}).catch(err => {
+		res.status(400).send(err.message);
+	});
+});
+
+/**
+ *  @api {POST} /timeslots/ Create timeslot
+ *  @apiName Creates a timeslot
+ *  @apiGroup Timeslots
+ *
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse ValidationError
+ */
+router.post('/timeslots/',validateModel("timeslot", ["duration","startDate"]), (req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
-	const timeSlot = req.body;
+	const timeSlot = req.body.timeslot;
 	if (!validator.isDecimal(timeSlot.duration) ||
 		!validator.isISO8601(timeSlot.startDate)
 	) {
@@ -84,8 +142,20 @@ router.post('/timeslots/', (req, res) => {
 	})
 });
 
-//admin update timeslot
-router.put('/timeslots/:id', (req, res) => {
+/**
+*  Admin
+*  @api {PUT} /appointment/:id Update timeslot
+*  @apiName Update timeslot
+*  @apiGroup Timeslots
+*
+*  @apiSuccess {String} TimeslotsId updated
+*  @apiSuccessExample Success-Response:
+*  HTTP/1.1 203 Non-authoritative Information
+*  @apiUse InternalServerError
+*  @apiUse UserAuthenticated
+*  @apiUse ValidationError
+*/
+router.put('/timeslots/:id',validateModel("timeslot", ["duration","startDate"]),isAuthenticated,(req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
@@ -109,20 +179,23 @@ router.put('/timeslots/:id', (req, res) => {
 /**
  *  Admin
  *  @api {DELETE} /appointment/:id Delete timeslot
- *  @apiName Remove an timeslot
+ *  @apiName Remove a timeslot
  *  @apiGroup Timeslots
  *
  *  @apiSuccess {String} TimeslotsId deleted
  *  @apiSuccessExample Success-Response:
  *  HTTP/1.1 204 OK
+ *  {
+ *      Timeslot id deleted
+ *  }
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.delete('/timeslots/:id', (req, res) => {
+router.delete('/timeslots/:id',isAuthenticated, (req, res) => {
 	const timeslotsId = req.params.id;
 	db.collection('timeslots').doc(timeslotsId).delete()
 	.then(() => {
-		res.status(204).send('TimeslotsId deleted');
+		res.status(204).send('Timeslot id deleted');
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);

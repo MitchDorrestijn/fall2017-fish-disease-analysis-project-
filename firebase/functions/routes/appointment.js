@@ -5,8 +5,15 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 const validator = require('validator');
 
+const mailer = require('../mailer/mailer.js');
+
+/* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
+const validateModel = require('../middleware/validateModel.js');
+
+/* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
+
 /**
  *  Admin
  *  @api {get} /appointments/ Get All Appointments
@@ -16,8 +23,9 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiSuccess {Array} appointments List of appointments
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
- *  TODO: maybe it could be made more efficient?
+ *  @apiUse AppointmentSuccess
  */
+// TODO: maybe it could be made more efficient?
 router.get('/appointments/',isAuthenticated, (req, res) => {
 	db.collection("appointments").get()
 	.then((snapshot) => {
@@ -45,12 +53,38 @@ router.get('/appointments/',isAuthenticated, (req, res) => {
 });
 
 /**
- *  Admin
- *  @api {DELETE} /appointment/:id Delete appointment
- *  @apiName Remove an appointment
+ *  @api {get} /appointments/ Get appointments of user
+ *  @apiName Returns all appointments of user
  *  @apiGroup Appointments
  *
- *  @apiSuccess {String} Appointment deleted
+ *  @apiSuccess {Array} appointments List of appointments
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse AppointmentSuccess
+ */
+router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
+	if (req.user.uid !== req.params.id){
+		return res.sendStatus(403);
+	}
+	db.collection("appointments").where("reservedBy", "==", req.user.ref).get()
+	.then((snapshot) => {
+		let appointments = [];
+		snapshot.forEach((doc) => {
+			appointments.push(helperFunctions.flatData(doc));
+		});
+		res.send(appointments);
+	}).catch((err) => {
+		res.status(500).send(err.message);
+	});
+});
+
+/**
+ *  Admin
+ *  @api {DELETE} /appointment/:id Cancele appointment
+ *  @apiName cancel an appointment
+ *  @apiGroup Appointments
+ *
+ *  @apiSuccess {String} Appointment canceled
  *  @apiSuccessExample Success-Response:
  *  HTTP/1.1 204 OK
  *  @apiUse InternalServerError
@@ -58,9 +92,11 @@ router.get('/appointments/',isAuthenticated, (req, res) => {
  */
 router.delete('/appointments/:id',isAuthenticated, (req, res) => {
 	const appointmentId = req.params.id;
-	db.collection('appointments').doc(appointmentId).delete()
+	db.collection('appointments').doc(appointmentId).update({
+		canceled: true
+	})
 	.then(() => {
-		res.status(204).send('Appointment deleted');
+		res.status(204).send('Appointment canceled');
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
@@ -78,28 +114,32 @@ router.delete('/appointments/:id',isAuthenticated, (req, res) => {
  *  @apiUse Forbidden
  *  @apiUse BadRequest
  */
-router.post('/appointments/:timeSlotId', (req, res) => {
+router.post('/appointments/',isAuthenticated,validateModel("appointment",["comment","timeSlotId"]), (req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
-	const appointment = req.body;
-	const timeSlotId = req.params.timeSlotId;
+	const appointmentBody = req.body.appointment;
 	// check timeSlotId
-	if (!validator.isAscii(appointment.comment)
+	if (!validator.isAscii(appointmentBody.comment)
 	) {
 		return res.status(400).send("Input validation failed.");
 	}
+	const appointment = {};
+	appointment.comment = appointmentBody.comment;
 	appointment.canceled = false;
 	appointment.approved = false;
-	appointment.video = false;
 	appointment.reservedBy = admin.firestore().collection("users").doc(req.user.uid);
-	appointment.timeslot = admin.firestore().collection("timeslots").doc(timeSlotId);
+	appointment.timeslot = admin.firestore().collection("timeslots").doc(appointmentBody.timeSlotId);
+	admin.auth().getUser(req.user.uid).then((userRecord) => {
+		sendNewAppointmentMail(userRecord);
+	});
+	// At the moment a static user id which is the consultant, if we decide to let the user chose a consultant we can get the consultant
+	admin.auth().getUser("kXKvHb3WlYWIQu3LxUzyYZVuFHt2").then((userRecord) => {
+		sendConsultNewAppointmentMail(userRecord);
+	});
 	db.collection('appointments')
 	.add(appointment)
-	.then((newDoc) => {
-		return newDoc.get()
-	})
-	.then((document) => {
+	.then(() => {
 		res.status(201).send();
 	})
 	.catch((error) => {
@@ -108,8 +148,8 @@ router.post('/appointments/:timeSlotId', (req, res) => {
 });
 
 /**
- *  @api {PUT} /appointment/:id Cancel appointment
- *  @apiName Change open appointment to canceled
+ *  @api {PUT} /appointment/:id updating appointment
+ *  @apiName Update a appointment
  *  @apiGroup Appointments
  *
  *  @apiSuccess {String} Appointment updated
@@ -119,28 +159,27 @@ router.post('/appointments/:timeSlotId', (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse Forbidden
  */
-router.put('/appointments/:id', isAuthenticated, (req, res) => {
-	if (req.user.uid !== req.params.id) {
-		return res.sendStatus(403);
+router.put('/appointments/:appointmentId/',isAuthenticated, (req, res) => {
+	if (!req.body.appointment) {
+		return res.sendStatus(400);
 	}
-	const appointment = req.body;
-	const appointmentId = req.params.id;
+	const appointment = req.body.appointment;
+	const appointmentId = req.params.appointmentId;
 	const appointmentRef = db.collection('appointments').doc(appointmentId);
-
-	if (appointment.approved) {
-		appointment.approved = false;
+	let consultant = null;
+	if (appointment.consultantId) {
+		consultant = db.collection('users').doc(appointment.consultantId);
+		if (appointment.approved) {
+			admin.auth().getUser(helperFunctions.flatData(appointmentRef.reservedBy).id).then((userRecord) => {
+				sendNewAppointmentMail(userRecord);
+			});
+		}
 	}
-	if (appointment.video) {
-		appointment.video = false;
-	}
-	if (appointment.canceled) {
-		appointment.canceled = false;
-	}
-
 	return appointmentRef.update({
 		approved: appointment.approved,
 		canceled: appointment.canceled,
-		video: appointment.video
+		video: appointment.video,
+		consultant: consultant
 	})
 	.then(() => {
 		res.sendStatus(204);
@@ -149,5 +188,17 @@ router.put('/appointments/:id', isAuthenticated, (req, res) => {
 		res.status(500).send(error.message);
 	});
 });
+
+const sendNewAppointmentMail = (user) => {
+	mailer.mail(user.email, "Appointment Bassleer", "Hello, We are sending you this email to confirm that you have requested an appointment with a consultant of Bassleer.");
+};
+
+const sendAppointmentApprovedMail = (user) => {
+	mailer.mail(user.email, "Appointment approved Bassleer", "Hello, We are sending you this email to confirm that you have made an appointment with a consultant.");
+};
+
+const sendConsultNewAppointmentMail = (user) => {
+	mailer.mail(user.email, "New Appointment", "Hallo, een gebruiker heeft een aanvraag gedaan voor een afspraak.");
+};
 
 module.exports = router;
