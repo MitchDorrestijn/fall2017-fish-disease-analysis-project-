@@ -1,10 +1,7 @@
 import React from 'react';
-import {Col, Input, InputGroup, Button, Alert, Card, CardBody, CardTitle, CardText, FormGroup, Label, CardSubtitle} from 'reactstrap';
+import {Col, Input, Card, CardBody, CardTitle, CardText, FormGroup, Label, CardSubtitle} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
-import UserService from '../../../provider/user-data-service';
-import Error from '../../modal/Error';
 import * as firebase from 'firebase';
-import CountrySelect from '../../modal/CountrySelect';
 import DataAccess from '../../../scripts/DataAccess';
 
 //TODO: refactor country select to controlled component
@@ -12,93 +9,163 @@ export default class AccountSettings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			availableDates: []
+			appointments: {},
+			availableDates: {},
+			comment: ''
 		};
+		this.currentUserId = firebase.auth().currentUser.uid;
+	};
+	//setState functions:
+	setAppointments = (data) => {
+		this.setState({
+			appointments: data
+		});
+	};
+	setAvailableDates = (data) => {
+		this.setState({
+			availableDates: data
+		});
+	};
+	setComment = (data) => {
+		this.setState({
+			comment: data
+		});
+	};
+	onChange = (event) => {
+		this.setState({
+			comment: event.target.value
+		});
 	};
 	//component mount/unmount functions:
 	componentWillMount() {
-		//this.initSetters();
+		this.initSetters();
 	};
 	//get/post data functions:
-	registerRequest = () => {
-		const appointment = {
-			date: document.getElementById("dateTime").value,
-			comment: document.getElementById("comment").value
-		};
-		Object.keys(Request).forEach( (key) => {
-			if (Request[key] === "") {
-				delete Request[key];
+	initSetters = () => {
+		let da = new DataAccess ();
+		da.getData ('/opentimeslots/', (err, res) => {
+			if (!err) {
+				this.setAvailableDates(res.message);
+				this.setComment('');
+			} else {
+				console.log(err);
 			};
 		});
-		this.postRequest(Request);
-	};
-	postRequest = (dataObject) => {
-		let da = new DataAccess ();
-		da.postData(`/aquaria/${this.props.customProps.aquariumId}/entries`, {entry: dataObject}, (err, res) => {
+		da.getData (`/appointments/user/${this.currentUserId}`, (err, res) => {
 			if (!err) {
-				this.props.customProps.refreshPage();
-				this.props.toggleModal();
+				this.setAppointments(res.message);
 			} else {
 				console.log(err);
 			};
 		});
 	};
-	//get/post data functions:
-	initSetters = () => {
+	// getTimeslot = () => {
+	// 	let timeslots = {};
+	// 	for (let key in this.state.appointments) {
+	// 		if (this.state.appointments.hasOwnProperty(key)) {
+	// 			let da = new DataAccess ();
+	// 			da.getData(`/timeslots/${this.state.appointments[key].timeslot}/`, (err, res) => {
+	// 				if () {
+	// 					timeslots.push(res.message);
+	// 				} else {
+	// 					console.log(err);
+	// 				};
+	// 			});
+	// 		};
+	// 	};
+	// 	this.setTimeslot(timeslots);
+	// };
+	registerRequest = () => {
+		const appointment = {
+			timeSlotId: document.getElementById('dateTime').value,
+			comment: document.getElementById('comment').value,
+		};
+		// Validation possibility
+		Object.keys(appointment).forEach( (key) => {
+			if (appointment[key] === '') {
+				delete appointment[key];
+			};
+		});
+		this.postRequest(appointment);
+	};
+	postRequest = (dataObject) => {
 		let da = new DataAccess ();
-		da.getData ('/aquaria', (err, res) => {
-			this.setCreatedAquariums(res.message);
+		da.postData('/appointments/', {appointment: dataObject}, (err, res) => {
 			if (!err) {
+				console.log('registered');
+				this.initSetters();
 			} else {
+				console.log(err);
 			};
 		});
 	};
+	//option filler for the selector
 	fillDateSelector = () => {
 		let options = [];
-		for(let key in this.state.availableDates) {
-			if(this.state.availableDates.hasOwnProperty(key)) {
-				options.push(<option key={key} value={this.state.availableDates[key].id}>{this.state.availableDates[key].name}</option>);
+		for (let key in this.state.availableDates) {
+			if (this.state.availableDates.hasOwnProperty(key)) {
+				options.push(<option key={key} value={this.state.availableDates[key].id}>
+					{this.state.availableDates[key].startDate.substring(0, 10)} from {this.state.availableDates[key].startDate.substring(11, 16)} till {this.state.availableDates[key].endDate.substring(11, 16)} UTC+1
+				</option>);
 			};
 		};
+		if (options.length === 0) {
+			options.push(<option key='' value='' disabled selected hidden>No available timeslots.</option>);
+		}
 		return options;
+	};
+	drawConsultsCards = () => {
+		let cards = [];
+		for (let key in this.state.appointments) {
+			if (cards.length === 0) {
+				cards.push(<Col key='header'><h1 className='center'>Current registered consults.</h1></Col>)
+			};
+			if (this.state.appointments.hasOwnProperty(key)) {
+				//this.getTimeslot();
+				cards.push(
+					<Col key={key}>
+						<Card>
+							<CardBody>
+								<CardTitle>
+									test
+									{/* Consult on: {this.state.appointments[key].startDate.substring(0, 10)} from {this.state.appointments[key].startDate.substring(11, 16)} till {this.state.appointments[key].endDate.substring(11, 16)} UTC+1 */}
+								</CardTitle>
+								<CardSubtitle>Comment:</CardSubtitle>
+								<CardText>{this.state.appointments[key].comment}</CardText>
+							</CardBody>
+						</Card>
+					</Col>
+				);
+			};
+		};
+		return cards;
 	};
 
 	render() {
 		return (
-			<div className="account-settings">
-				<Col>
-					<h1 className="center">Current registered consults.</h1>
-				</Col>
-				<div className="container">
-					<div className="row inner-content">
-						<div className="col-md-12 no-gutter">
+			<div className='account-settings'>
+				<div className='container'>
+					<div className='row inner-content'>
+						<div className='col-md-12 no-gutter'>
+							{this.drawConsultsCards()}
 							<Col>
-								<Card>
-									<CardBody>
-										<CardTitle>Consult on: 27-01-2018</CardTitle>
-										<CardSubtitle>Comment:</CardSubtitle>
-										<CardText>De analyse zegt dat mijn vis een ziekte heeft maar ik weet van de ziekte niks af.</CardText>
-									</CardBody>
-								</Card>
-							</Col>
-							<Col>
-								<h1 className="center">Register new consult.</h1>
+								<h1 className='center'>Register new consult.</h1>
 							</Col>
 							<Col>
 								<Card>
 									<CardBody>
 										<FormGroup>
-											<Label for="exampleSelect">Select date/time</Label>
-											<Input type="select" name="select" id="dateTime">
+											<Label for='exampleSelect'>Select date/time (yyyy-mm-dd)</Label>
+											<Input type='select' name='select' id='dateTime'>
 												{this.fillDateSelector()}
 											</Input>
 										</FormGroup>
 										<FormGroup>
-											<Label for="exampleText">Comment:</Label>
-											<Input type="textarea" name="text" id="comment" />
+											<Label for='exampleText'>Comment:</Label>
+											<Input type='textarea' name='text' id='comment' value={this.state.comment} onChange={this.onChange.bind(this)}/>
 										</FormGroup>
-										<div className="text-right">
-											<ActionButton buttonText="Register consult" onClick={this.registerRequest} color="primary btn-transperant"/>
+										<div className='text-right'>
+											<ActionButton buttonText='Register consult' onClickAction={this.registerRequest} color='primary btn-transperant'/>
 										</div>
 									</CardBody>
 								</Card>
