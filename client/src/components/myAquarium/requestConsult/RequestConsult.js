@@ -51,7 +51,8 @@ export default class AccountSettings extends React.Component {
 				console.log(err);
 			};
 		});
-		da.getData (`/appointments/user/${this.currentUserId}`, (err, res) => {
+		da.getData (`/appointments/`, (err, res) => {
+			console.log(res.message);
 			if (!err) {
 				this.setAppointments(res.message);
 			} else {
