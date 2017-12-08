@@ -27,7 +27,7 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiUse AppointmentSuccess
  */
 // TODO: maybe it could be made more efficient?
-router.get('/admin/appointments/',isAdmin, (req, res) => {
+router.get('/admin/appointments/', (req, res) => {
 	db.collection("appointments").get().then((snapshot) => {
 		let appointments = [];
 		let promises = [];
@@ -183,48 +183,14 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
  *  @apiUse UserAuthenticated
  *  @apiUse Forbidden
  */
-router.put('/appointments/:appointmentId/', (req, res) => {
-	if (!req.body.appointment) {
-		return res.sendStatus(400);
-	}
-	const appointment = req.body.appointment;
-	let video = null;
-	if (!appointment.video) {
-		video = appointment.video;
-	}
-	let approved = null;
-	if (!appointment.video) {
-		approved = appointment.approved;
-	}
-	let canceled = null;
-	if (!appointment.video) {
-		canceled = appointment.canceled;
-	}
-	const appointmentId = req.params.appointmentId;
-	const appointmentRef = db.collection('appointments').doc(appointmentId);
-	let consultant = null;
-	if (appointment.consultantId) {
-		//.get
-		// consultant = db.collection('users').doc(appointment.consultantId);
-		if (appointment.approved) {
-			console.log('Send Log');
-			// admin.auth().getUser(helperFunctions.flatData(appointmentRef.reservedBy).id).then((userRecord) => {
-			// 	sendNewAppointmentMail(userRecord);
-			// });
-		}
-	}
-	return appointmentRef.update({
-		approved: approved,
-		canceled: canceled,
-		video: video,
-		consultant: consultant
-	})
-	.then(() => {
-		res.sendStatus(204);
+router.put('/appointments/:appointmentId/',validateModel("appointment",["canceled","timeslotId","comment","video","approved"]), (req, res) => {
+	db.collection('appointments').doc(req.params.appointmentId).update(req.body.appointment)
+	.then((doc) => {
+		res.status(200).send("Ok");
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
-	});
+	})
 });
 
 const sendNewAppointmentMail = (user) => {
