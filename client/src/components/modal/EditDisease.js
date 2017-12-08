@@ -33,8 +33,8 @@ export default class EditDisease extends Component {
 		let da = new DataAccess();
 		da.putData(`/diseases/${this.props.customProps.entry.id}`, {disease: diseaseData},  (err, res) => {
 			if (!err) {
-				this.props.toggleModal();
 				this.props.customProps.refreshPage();
+				this.props.toggleModal();
 			} else {
 				console.log('error');
 			}

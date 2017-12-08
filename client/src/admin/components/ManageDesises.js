@@ -35,13 +35,13 @@ export default class ManageDesises extends React.Component {
 	}
 	removeDisease = (entry) => {
 		this.props.openModal(RemoveDisease, {
-			refreshPage: this.getData,
+			refreshPage: this.loadCurrentDiseases,
 			entry: entry
 		});
 	};
 	editDisease = (entry) => {
 		this.props.openModal(EditDisease, {
-			refreshPage: this.getData,
+			refreshPage: this.loadCurrentDiseases,
 			entry: entry
 		});
 	};
@@ -136,7 +136,7 @@ export default class ManageDesises extends React.Component {
 							{this.state.data}
 				    </Tbody>
 				</Table>
-				<Button onClick={() => this.props.openModal(addFishDesiseAdmin)} className="btn-admin">Add fish diseases</Button>
+				<Button onClick={() => this.props.openModal(addFishDesiseAdmin, {refreshPage: this.loadCurrentDiseases})} className="btn-admin">Add fish diseases</Button>
 			</div>
   	);
 	}
