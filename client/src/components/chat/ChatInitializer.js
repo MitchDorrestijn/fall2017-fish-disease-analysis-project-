@@ -19,7 +19,8 @@ export default class ChatInitializer extends React.Component {
 
 		this.chatId = null;
 		this.userId = null;
-		this.admin = false;
+		this.name = "";
+		this.pageAdmin = false;
 		this.stream = null;
 		
 		this.initializeWebRTC();
@@ -49,19 +50,27 @@ export default class ChatInitializer extends React.Component {
 		//Controleer of de gebruiker een admin(consultant) is
 		const url = window.location.href.replace(/\/$/, '');
 		if(url.substr(url.lastIndexOf('/') + 1) !== "chat"){
-			this.admin = true;
+			this.pageAdmin = true;
 		}
 	}
 	
 	initializeDatabase = () => {
 		//Setup database ref
-		if(this.admin){
-			const url = window.location.href.replace(/\/$/, '');
-			this.chatId = url.substr(url.lastIndexOf('/') + 1);
-			this.userId = "admin";
+		if(this.pageAdmin){
+			if(this.props.isAdmin){
+				const url = window.location.href.replace(/\/$/, '');
+				this.chatId = url.substr(url.lastIndexOf('/') + 1);
+				this.userId = "admin";
+				this.name = "Consultant";
+			}else{
+				this.addInfoMessage("Niet ingelogd als administrator");
+			}
 		}else{
 			if(firebase.auth().currentUser !== null){
 				this.chatId = this.userId = firebase.auth().currentUser.uid;
+				this.name = firebase.auth().currentUser.displayName;
+			}else{
+				this.addInfoMessage("U bent niet ingelogd");
 			}
 		}
 		this.database = firebase.database().ref('/chat/' + this.chatId);
@@ -93,7 +102,13 @@ export default class ChatInitializer extends React.Component {
 	
 	checkOnline = () => {
 		//Controleer of er een gebruiker online is in deze chatruimte
-		this.sendMessage(this.userId, "checkOnline", "");
+		if(firebase.auth().currentUser !== null){
+			if(this.pageAdmin && this.props.isAdmin){
+				this.sendMessage(this.userId, "checkOnline", "");
+			}else{
+				this.sendMessage(this.userId, "checkOnline", "");
+			}
+		}
 	}
 	
 	setupDataChannel = () => {
@@ -129,7 +144,7 @@ export default class ChatInitializer extends React.Component {
 		if(message.type === "text"){
 			
 			let chatMessages = this.state.chat;
-			chatMessages.push(<Receiverbox key="0">{message.data}</Receiverbox>);
+			chatMessages.push(<Receiverbox name={message.data.name} key="0">{message.data.message}</Receiverbox>);
 			this.setState({
 				chat: chatMessages
 			}, () => {
@@ -137,11 +152,11 @@ export default class ChatInitializer extends React.Component {
 			});
 			
 		}else if(message.type === "image"){
-			if(message.data === "open"){
+			if(message.data.message === "open"){
 				this.receivedImage = "";
-			}else if(message.data === "close"){
+			}else if(message.data.message === "close"){
 				let chatMessages = this.state.chat;
-				chatMessages.push(<Receiverbox key="0"><img className="img-fluid" src={this.receivedImage} alt="Send"/></Receiverbox>);
+				chatMessages.push(<Receiverbox name={message.data.name} key="0"><img className="img-fluid" src={this.receivedImage} alt="Send"/></Receiverbox>);
 				this.setState({
 					chat: chatMessages
 				}, () => {
@@ -150,7 +165,7 @@ export default class ChatInitializer extends React.Component {
 					}, 100);
 				});
 			}else{
-				this.receivedImage += message.data;
+				this.receivedImage += message.data.message;
 			}
 		}
 	}
@@ -160,7 +175,7 @@ export default class ChatInitializer extends React.Component {
 		if(message.type === "text"){
 			
 			let chatMessages = this.state.chat;
-			chatMessages.push(<Senderbox key="0">{message.data}</Senderbox>);
+			chatMessages.push(<Senderbox name={message.data.name} key="0">{message.data.message}</Senderbox>);
 			this.setState({
 				chat: chatMessages
 			}, () => {
@@ -168,11 +183,11 @@ export default class ChatInitializer extends React.Component {
 			});
 			
 		}else if(message.type === "image"){
-			if(message.data === "open"){
+			if(message.data.message === "open"){
 				this.receivedImage = "";
-			}else if(message.data === "close"){
+			}else if(message.data.message === "close"){
 				let chatMessages = this.state.chat;
-				chatMessages.push(<Senderbox key="0"><img className="img-fluid" src={this.receivedImage} alt="Received"/></Senderbox>);
+				chatMessages.push(<Senderbox name={message.data.name} key="0"><img className="img-fluid" src={this.receivedImage} alt="Received"/></Senderbox>);
 				this.setState({
 					chat: chatMessages
 				}, () => {
@@ -181,7 +196,7 @@ export default class ChatInitializer extends React.Component {
 					}, 100);
 				});
 			}else{
-				this.receivedImage += message.data;
+				this.receivedImage += message.data.message;
 			}
 		}
 	}
@@ -263,7 +278,7 @@ export default class ChatInitializer extends React.Component {
 								<div id="chatBox">
 									{this.state.chat}
 								</div>
-								<MessageSender sendChatMessage={this.sendChatMessage} />
+								<MessageSender name={this.name} sendChatMessage={this.sendChatMessage} />
 							</Col>
 							<Col md="4" className="removeColumn">
 								<Videobox closeConnection={this.closeConnection} stream={this.stream} checkOnline={this.checkOnline} />
