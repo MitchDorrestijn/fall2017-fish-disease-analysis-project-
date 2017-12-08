@@ -111,7 +111,7 @@ export default class ManageDesises extends React.Component {
 	render(){
   	return (
 			<div>
-				<h2>Add / edit / remove fish desises</h2>
+				<h2>Add / edit / remove fish diseases</h2>
 				<Form inline className="searchForm" onSubmit={this.getSearchTerm}>
         	<FormGroup>
           	<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
@@ -136,7 +136,7 @@ export default class ManageDesises extends React.Component {
 							{this.state.data}
 				    </Tbody>
 				</Table>
-				<Button onClick={() => this.props.openModal(addFishDesiseAdmin)} className="btn-admin">Add fish desise</Button>
+				<Button onClick={() => this.props.openModal(addFishDesiseAdmin)} className="btn-admin">Add fish diseases</Button>
 			</div>
   	);
 	}

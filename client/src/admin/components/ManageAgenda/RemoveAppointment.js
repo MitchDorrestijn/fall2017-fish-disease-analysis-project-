@@ -31,7 +31,7 @@ export default class RemoveAppointment extends Component {
 				<ModalHeader toggle={() => this.props.toggleModal()}>Cancel appointment</ModalHeader>
 				<ModalBody>
 					{this.state.error}
-					Are you sure you want to cancel this appointment
+					Are you sure you want to cancel this appointment?
 					<hr/>
 					<Button onClick={this.cancelAppointment} outline className="modalLink" color="secondary" block>Yes</Button>
 					<Button onClick={toggleModal} outline className="modalLink" color="secondary" block>No</Button>
