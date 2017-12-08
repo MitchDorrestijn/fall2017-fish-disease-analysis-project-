@@ -12,6 +12,7 @@ import DataAccess from '../scripts/DataAccess';
 import ChatInitializer from './chat/ChatInitializer';
 import Admin from '../admin/Admin';
 import * as firebase from 'firebase';
+import '@firebase/firestore';
 import { reactTranslateChangeLanguage } from 'translate-components';
 import AdminError from '../admin/components/AdminError';
 
