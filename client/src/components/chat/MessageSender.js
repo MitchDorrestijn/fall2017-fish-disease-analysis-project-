@@ -91,7 +91,7 @@ export default class MessageSender extends React.Component {
 								<input id="fileUpload" type="file" onChange={() => this.handleFileChange()}/>
 							</InputGroupAddon>
 							<Input type="text" className="messageToSend" id="messageToSend" placeholder="Type your message" />
-							<InputGroupButton className="sendButton" id="sendButton">Send message</InputGroupButton>
+							<InputGroupButton className="sendButton" id="sendButton" color="dark">Send message</InputGroupButton>
 						</InputGroup>
 					</Form>
 				</Col>

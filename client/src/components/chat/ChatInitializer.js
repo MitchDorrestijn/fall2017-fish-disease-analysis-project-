@@ -5,6 +5,7 @@ import Receiverbox from './Receiverbox';
 import Infobox from './Infobox';
 import MessageSender from './MessageSender';
 import Videobox from './Videobox';
+import VideoboxMobile from './VideoboxMobile';
 import * as firebase from 'firebase';
 
 export default class ChatInitializer extends React.Component {
@@ -29,7 +30,10 @@ export default class ChatInitializer extends React.Component {
 		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 		navigator.mediaDevices.getUserMedia({audio:true, video:true})
 			.then((stream) => {
-				document.getElementById("myCam").srcObject = stream;
+				const camEl = document.getElementsByClassName("myCam");
+				for(let i = 0; i < camEl.length; i++){
+					camEl[i].srcObject = stream;
+				}
 				this.pc.addStream(stream);
 				this.stream = stream;
 			}).then(() => {
@@ -73,7 +77,10 @@ export default class ChatInitializer extends React.Component {
 		};
 		
 		this.pc.onaddstream = (event) => {
-			document.getElementById("otherCam").srcObject = event.stream
+			const camEl = document.getElementsByClassName("otherCam");
+			for(let i = 0; i < camEl.length; i++){
+				camEl[i].srcObject = event.stream;
+			}
 		};
 		
 		this.pc.ondatachannel = (event) => {
@@ -247,15 +254,18 @@ export default class ChatInitializer extends React.Component {
 				<div id="chat-main" className="chat-wrapper">
 					<Container>
 						<Row>
+							<VideoboxMobile closeConnection={this.closeConnection} stream={this.stream} checkOnline={this.checkOnline} />
+						</Row>
+						<Row className="inner-chat-wrapper">
 							<Col md="8">
-								<h3>ChatId: {''+this.chatId}</h3>
-								{/*<br/>Is consultant: {''+this.admin}</h3>*/}
+								{/*<h3>ChatId: {''+this.chatId}</h3>
+								<br/>Is consultant: {''+this.admin}</h3>*/}
 								<div id="chatBox">
 									{this.state.chat}
 								</div>
 								<MessageSender sendChatMessage={this.sendChatMessage} />
 							</Col>
-							<Col md="4">
+							<Col md="4" className="removeColumn">
 								<Videobox closeConnection={this.closeConnection} stream={this.stream} checkOnline={this.checkOnline} />
 							</Col>
 						</Row>

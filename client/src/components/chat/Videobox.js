@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Button } from 'reactstrap';
+import { Row, Button } from 'reactstrap';
 
 export default class Videobox extends React.Component {
 
@@ -26,10 +26,10 @@ export default class Videobox extends React.Component {
 			<div className="fixed-wrapper">
 				<div className="inner-video-wrapper">
 					<div className="video-center">
-						<Col md="12" sm="6" className="no-gutter">
-							<video id="otherCam" autoPlay></video>
-						</Col>
-						<Col md="12" sm="6" className="no-gutter videoContainer">
+						<Row className="no-gutter">
+							<video className="otherCam" id="otherCam" autoPlay></video>
+						</Row>
+						<Row className="no-gutter videoContainer">
 							<video className="myCam" id="myCam" autoPlay muted></video>
 							<div className="videoOverlay">
 								<div className="videoOverlayText">
@@ -37,7 +37,7 @@ export default class Videobox extends React.Component {
 									<Button id="toggleVideo" onClick={() => this.toggleVideo()} className="btn-circle" color="primary"><i className="fa fa-video-camera"/></Button>
 								</div>
 							</div>
-						</Col>
+						</Row>
 					</div>
 				</div>
 			</div>

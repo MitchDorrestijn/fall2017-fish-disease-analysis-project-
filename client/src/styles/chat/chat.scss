@@ -11,6 +11,11 @@
 	h3 {
 		color: white;
 	}
+	.inner-chat-wrapper {
+		@media screen and(max-width: $responsiveBreakPoint){
+			margin-top: 200px;
+		}
+	}
 	.senderBox,
 	.recieverBox,
 	.infoBox{
@@ -93,66 +98,39 @@
 	}
 }
 .fixed-wrapper {
+	@media screen and(max-width: $responsiveBreakPoint){
+		display: none;
+	}
 	position: fixed;
-	max-width: 25%;
 	top:0;
 	bottom:0;
-	@media screen and(max-width: $responsiveBreakPoint){
-		max-width: 100%;
-	}
 	.inner-video-wrapper{
 		margin: 0;
 		padding: 0;
 		width: 100%;
 		height: 100%;
 		display: table;
-		.chat-btn {
-			width: 100%;
-			margin-bottom: $defaultPadding;
-			color: $supportColor;
-			background: $alternativeColor;
-			outline:none;
-			border: none;
-		}
-		.chat-btn:hover {
-			cursor: pointer;
-		}
 		.video-center {
 			display: table-cell;
 			text-align: center;
 			vertical-align: middle;
-			padding-bottom: $defaultPadding*2;
-			@media screen and(max-width: $responsiveBreakPoint){
-				display: inherit;
-				position: absolute;
-				bottom: 185px;
-				left: 50px;
-				vertical-align:inherit;
-				padding-bottom: 0;
-			}
 			video {
-				width: 100%;
 				background-color: #ddd;
 				border-radius: 7px;
 				margin: 10px 0px 10px 0px;
-				height: 240px;
-				width: 320px;
-				@media screen and(max-width: $responsiveBreakPoint){
-					width: 100%;
-					height: 100px;
-				}
+				height: 285px;
+				width: 380px;
 			}
-			
+				
 			.videoContainer {
 				position: relative;
 			}
 			.myCam {
 				display: block;
-				height: auto;
 			}
 			.videoOverlay {
 				position: absolute;
-				bottom: -10px;
+				bottom: 0px;
 				left: 0;
 				right: 0;
 				background-color: rgba(0,0,0,0.5);
@@ -160,7 +138,7 @@
 				border-radius: 7px;
 				margin: 10px 0px 10px 0px;
 				height: 0px;
-				width: 320px;
+				width: auto;
 				transition: .5s ease;
 			}
 			.videoContainer:hover .videoOverlay {
@@ -192,5 +170,53 @@
 				box-shadow: none;
 			}
 		}
+	}
+}
+
+.fixed-wrapper-mobile {
+	@media screen and(min-width: $responsiveBreakPoint){
+		display: none;
+	}
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	background: url('/images/myAquarium/achtergrond.jpg');
+	background-position: top;
+	background-attachment: fixed;
+	.inner-video-wrapper{
+		text-align: center;
+		.video-center {
+			display: inline-block;
+			video {
+				background-color: #ddd;
+				border-radius: 7px;
+				margin: 20px 5px 10px 5px;
+				height: 120px;
+				width: 160px;
+			}
+			.btns {
+				display: flex;
+				justify-content: center;
+			}
+			.btn-circle {
+				width: 30px;
+				height: 30px;
+				padding: 6px 0;
+				font-size: 12px;
+				line-height: 1.428571429;
+				border-radius: 15px;
+				margin: 0 5px 5px 5px;
+			}
+			.btn:focus {
+				outline: none !important;
+				box-shadow: none;
+			}
+		}
+	}
+}
+
+.removeColumn {
+	@media screen and(max-width: $responsiveBreakPoint){
+		display: none;
 	}
 }
