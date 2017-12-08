@@ -182,6 +182,7 @@ export default class App extends React.Component {
 					show: true
 				});
 			}
+			this.setState({show: true});
 		});
 	};
 
