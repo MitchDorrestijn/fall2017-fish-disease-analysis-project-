@@ -164,10 +164,12 @@ const calculateEndDate = (event) => {
 	// Add an "end timestamp" field
 	const endDate = startDate.setMinutes(startDate.getMinutes() + duration);
 
-	// Write timestamp to the timestamp
-	return event.data.ref.set({
-		endDate: new Date(endDate)
-	}, {merge: true});
+	if (endDate !== timeslot.endDate){
+		// Write timestamp to the timestamp
+		return event.data.ref.set({
+			endDate: new Date(endDate)
+		}, {merge: true});
+	}
 };
 
 
@@ -180,20 +182,18 @@ exports.onSpeciesUpdated = functions.firestore.document("species/{id}").onUpdate
 	return upsertSpeciesToAlgolia(event);
 });
 
-exports.onTimeslotCreated = functions.firestore.document("timeslots/{id}").onCreate(event => {
-	return calculateEndDate(event);
-});
-
-exports.onTimeslotDurationUpdated = functions.firestore.document("timeslots/{id}/duration").onUpdate(event => {
-	return calculateEndDate(event);
-});
-
-exports.onTimeslotStartDateUpdated = functions.firestore.document("timeslots/{id}/startDate").onUpdate(event => {
-	return calculateEndDate(event);
-});
-
 exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete(event => {
 	// Write to the algolia index
 	const index = client.initIndex("species");
 	return index.deleteObject(event.params.id);
 });
+
+exports.onTimeslotCreated = functions.firestore.document("timeslots/{id}").onCreate(event => {
+	return calculateEndDate(event);
+});
+
+exports.onTimeslotUpdated = functions.firestore.document("timeslots/{id}").onUpdate(event => {
+	return calculateEndDate(event);
+});
+
+
