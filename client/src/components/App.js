@@ -12,6 +12,7 @@ import DataAccess from '../scripts/DataAccess';
 import ChatInitializer from './chat/ChatInitializer';
 import Admin from '../admin/Admin';
 import * as firebase from 'firebase';
+import '@firebase/firestore';
 import { reactTranslateChangeLanguage } from 'translate-components';
 import AdminError from '../admin/components/AdminError';
 
@@ -150,11 +151,55 @@ export default class App extends React.Component {
 
 	componentDidMount() {
 		this.getLanguage();
+		this.setNotifications();
 	}
 
 	componentWillMount() {
 		this.updateLoggedIn();
 	}
+
+	setNotifications = () => {
+		const messaging = firebase.messaging();
+		const Auth = firebase.auth();
+		messaging.requestPermission()
+		.then(function() {
+			console.log('Notification permission granted.');
+			getToken()
+		})
+		.catch(function(err) {
+			console.log('Unable to get permission to notify.', err);
+		});
+		messaging.onTokenRefresh(() => {
+			getToken();
+		});
+		messaging.onMessage((payload) => {
+			console.log("Message: " + payload);
+		});
+		const getToken = () => {
+			// Get token and send to server
+			messaging.getToken()
+			.then(function(currentToken) {
+				if (currentToken) {
+					console.log(currentToken);
+					firebase.firestore()
+					.collection("users")
+					.doc(Auth.currentUser.uid)
+					.collection("devices")
+					.doc(currentToken)
+					.set({
+						device: "Browser",
+						id: currentToken
+					})
+					//db.coll
+				} else {
+					console.log('No Instance ID token available. Request permission to generate one.');
+				}
+			})
+			.catch(function(err) {
+				console.log('An error occurred while retrieving token. ', err);
+			});
+		}
+	};
 
 	updateLoggedIn = () => {
 		firebase.auth().onAuthStateChanged((user) => {
