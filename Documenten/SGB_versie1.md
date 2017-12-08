@@ -13,40 +13,40 @@ DWA project 2017
 ## Inhoud
 
 1. **Context**
-	* *1.1 Gerald Bassleer*
+  * *1.1 Gerald Bassleer*
 2. **Functional Overview**
-	* *2.1 Zoeken van informatie over visziektes,*
-	* *2.2 Analyse tool voor gebruikers met zieke vis(sen),*
-	* *2.3 Bijhouden van aquarium gegevens,*
-	* *2.4 Beheersystemen/CMS,*
-	* *2.5 Inschrijven voor een consult,*
-	* *2.6 Het consult gesprek.*
+  * *2.1 Zoeken van informatie over visziektes,*
+  * *2.2 Analyse tool voor gebruikers met zieke vis(sen),*
+  * *2.3 Bijhouden van aquarium gegevens,*
+  * *2.4 Beheersystemen/CMS,*
+  * *2.5 Inschrijven voor een consult,*
+  * *2.6 Het consult gesprek.*
 3. **Quality Attributes**
 4. **Constraints**
-	* *4.1 Budget,*
-	* *4.2 Technologieën,*
-	* *4.3 Design,*
-	* *4.4 Ontwikkelmethode,*
-	* *4.5 Opleveren.*
+  * *4.1 Budget,*
+  * *4.2 Technologieën,*
+  * *4.3 Design,*
+  * *4.4 Ontwikkelmethode,*
+  * *4.5 Opleveren.*
 5. **Principles**
-	* *5.1 Code principles,*
-	* *5.2 Groeps principles.*
+  * *5.1 Code principles,*
+  * *5.2 Groeps principles.*
 6. **Software Architecture**
-	* *6.1 Overzicht,*
-	* *6.2 Web Applicatie.*
+  * *6.1 Overzicht,*
+  * *6.2 Web Applicatie.*
 7. **External Interfaces**
 8. **Code**
 9. **Data**
 10. **Infrastructure Architecture**
-	* *10.1 Live omgeving,*
-	* *10.2 Development omgeving,*
-	* *10.3 Infrastructure diagram,*
-	* *10.4 STUN-server,*
-	* *10.5 Sidenotes.*
+  * *10.1 Live omgeving,*
+  * *10.2 Development omgeving,*
+  * *10.3 Infrastructure diagram,*
+  * *10.4 STUN-server,*
+  * *10.5 Sidenotes.*
 11. **Deployment**
 12. **Operation and Support**
-	* *12.1 React,*
-	* *12.2 Firebase.*
+   * *12.1 React,*
+   * *12.2 Firebase.*
 13. **Decision Log**
 
 ----
@@ -66,31 +66,42 @@ Het   project   is   opgezet   als   opdracht   vanuit   de   HAN.   Dit   proce
 ----
 
 ## 2. Functional overview
-De web-applicatie die word gemaakt zal ervoor moeten zorgen dat de gebruiker, informatie kan vinden over de ziektes van hun vis, zelfstandig een analyse doorlopen om te kijken welke ziekte hun vis zou kunnen hebben, aquarium gegevens bijhouden, een beheersysteem voor de websitebeheerder/consultant, een afspraak maken met een consultant en een gesprek voeren met de consultant.
+De webapplicatie die wordt gemaakt zal ervoor moeten zorgen dat een gebruiker:
+
+- informatie kan vinden over de ziektes van hun vis,
+- zelfstandig een analyse kan doorlopen om te kijken welke ziekte hun vis zou kunnen hebben,
+- een afspraak kan maken met een consultant,
+- een gesprek kan voeren met deze consultant.
+
+De webapplicatie zal tevens een beheersysteem bevatten voor consultants.
 
 #### 2.1 Zoeken van informatie over visziektes.
-De gebruiker kan op de site van Bassleer een zoek term invoeren in het zoekvenster en het systeem zal vervolgens de zoekresultaten laten zien. Hierna kan de gebruiker door middel van verschillende filters, zoals vissen en ziektes, zijn resultaat verkleinen om specifieker zijn gewenste resultaat weer te geven.
+De gebruiker kan op de site van Bassleer een zoekterm invoeren in het zoekvenster en het systeem zal vervolgens de zoekresultaten laten zien. Hierna kan de gebruiker de zoekresultaten filteren op bijvoorbeeld vissen of ziekten.
 
 #### 2.2 Analyse tool voor gebruikers met zieke vis(sen).
-Dit is een tool in de web-applicatie die ervoor zorgt dat de gebruiker met zieke vis(sen) zelf een analyse kan doorlopen zonder hier contact met een specialist voor hoeft op te nemen. De analyse heeft een vorm van een activity diagram op de achtergrond, dit betekent dat bepaalde vragen een antwoord van de vorige vraag als pre-conditie hebben. Het berekenen van het uiteindelijke resultaat zal gedaan worden d.m.v. een puntensysteem. Voor elk antwoord dat de gebruiker geeft worden punten aan mogelijke ziektes gegeven die de symptomen hebben. Op het einde van de analyse zal vervolgens een top 3,4,5 (onduidelijk op het moment) worden getoond van ziektes waar de gebruiker het beste op scoorde. Bij deze uitkomsten wordt dan vervolgens bijbehorende informatie getoond, zoals de beschrijving van de ziekte, symptomen en een mogelijke behandeling voor de zieke vis.
+Dit is een tool in de webapplicatie die ervoor zorgt dat de gebruiker met zieke vis(sen) een analyse kan maken zonder contact met een specialist. De analyse heeft een vorm van een activity diagram op de achtergrond. Dit betekent dat bepaalde vragen een antwoord van de vorige vraag als pre-conditie hebben.
+
+Het berekenen van het uiteindelijke resultaat zal gedaan worden d.m.v. een puntensysteem. Voor elk antwoord dat de gebruiker geeft worden punten aan mogelijke ziektes gegeven die vergelijkbare symptomen hebben.
+
+Op het einde van de analyse wordt er een lijst getoond van ziektes die het meest overeenkomen. Bij deze uitkomsten wordt vervolgens bijbehorende informatie getoond, zoals een korte beschrijving, bijbehorende symptomen en een mogelijke behandeling voor de zieke vis.
 
 #### 2.3 Bijhouden van aquarium gegevens.
-De gebruiker met vissen en dus een aquarium kan ook zijn aquarium gegevens bijhouden. Gegevens die we hieronder zoal zien zijn, vissen, tempratuur, iron, oxygen. Aangezien verschillende vissen verschillende standaarden hebben voor gegevens als hierboven is het van belang dat de gebruiker op de hoogte word gehouden van mogelijke gevaren. Dit wordt gedaan wanneer de gebruiker een formulier van zijn aquarium waarde in vult en vissen aan zijn digitale aquarium toevoegt. Het systeem zal vervolgens nagaan of de waarden binnen de acceptatie normen liggen. Zo niet dan krijgt de gebruiker een notificatie van de oorzaak van het gevaar en voor welke vis dit van belang is.
+Een gebruiker kan ook zijn aquariumgegevens bijhouden. Gegevens die we hieronder zoal zien zijn, vissen, tempratuur, iron en zuurstof. Aangezien verschillende vissen verschillende standaarden hebben voor deze waarden, is het van belang dat de gebruiker op de hoogte word gehouden van mogelijke gevaren. Dit wordt gedaan wanneer de gebruiker deze waarden invult of vissen aan zijn digitale aquarium toevoegt. Het systeem zal vervolgens nagaan of de waarden binnen acceptabele normen liggen. Zo niet, dan krijgt de gebruiker hier een notificatie van.
 
-#### 2.4 Beheersystemen/CMS.
-Nu hebben we het al enkele keren gehad over de verschillende data die het systeem nodig heeft, informatie over vissen, ziektes en hun symptomen/beschrijvingen, analyse punten. Al deze gegevens kunnen beheerd worden in het CMS-gedeelte van de web-applicatie. In dit gedeelte kunnen normale gebruikers niet komen, alleen de consultant/beheerder heeft hier recht op. In het CMS zullen de create, read, update en delete (CRUD) scenarios van verschillende gegevens voor de web-applicatie worden beheerd. Waaronder:
+#### 2.4 Beheersysteem/CMS.
+Informatie over vissen en ziektes en analysepunten kunnen worden beheerd in het CMS-gedeelte van de web-applicatie. In dit gedeelte kunnen alleen beheerders komen. Onder andere de volgende gegevens kunnen hier worden bewerkt:
 * Vis ziekten (symptomen, beschrijving, behandeling)
 * Vis soorten (leefomstandigheden, beschrijving)
 * Analyse vragen (pre-conditie, symptomen, afbeelding, post-conditie)
 * Notificatie regels (regels)
-* Consult afspraken (Wie, wanneer, waarover, bezetting)
-* Consulten plannen (Wanneer)
+* Consult afspraken (wie, wanneer, waarover, bezetting)
+* Consulten plannen (wanneer)
 
 #### 2.5 Inschrijven voor een consult.
-Als de gebruiker dit wilt dan kan hij een afspraak maken met een consultant. Hij zal hier een afspraak voor moeten inplannen. De gebruiker kan bij het maken van een afspraak een kleinen beschrijving toevoegen en de datum + tijd kiezen uit een lijst. Deze lijst wordt door de consultant in het beheersysteem gemaakt. Hij kan hier aangeven wanneer hij tijd heeft voor een gesprek. Wanneer de gebruiker zich heeft ingeschreven zal het systeem een mail sturen naar de consultant en het verwerken in het systeem.
+Als de gebruiker een consult wilt, kan hij hiervoor een afspraak inplannen. De gebruiker kan bij het maken van een afspraak een kleine beschrijving toevoegen en de datum + tijd kiezen uit een lijst. Deze lijst wordt door de consultant in het beheersysteem samengesteld. Hij kan hier aangeven wanneer hij tijd heeft voor een gesprek. Wanneer de gebruiker zich heeft ingeschreven zal het systeem een mail sturen naar de consultant en de aanvraag verwerken in het systeem.
 
 #### 2.6 Het consult gesprek.
-Het uitvoeren van een consult gesprek gebeurd ook via de web-applicatie. De applicatie krijgt de mogelijkheid om een videochat te starten tussen twee personen, de consultant en de gebruiker met het probleem. Na de inschrijving van het gesprek krijgt de consultant een code die hij kan invoeren in de chat op de afgesproken tijd. De Consultant doet hetzelfde en dit zal een verbinding tot stand brengen tussen beide partijen. Voor gebruikers die geen beschikking hebben over een microfoon zal er een mogelijkheid zijn om met de consultant te chatten d.m.v. tekst. Onder het gesprek is er een mogelijkheid voor zowel de gebruiker als de consultant om media met elkaar te delen.
+Het uitvoeren van een consult gesprek gebeurt ook via de web-applicatie. De applicatie krijgt de mogelijkheid om een videochat te starten. Voor gebruikers die geen beschikking hebben over een microfoon, zal er een mogelijkheid zijn om met de consultant te chatten d.m.v. tekst. Ook kunnen de gebruiker en de consultant afbeeldingen naar elkaar sturen.
 
 ----
 
@@ -192,9 +203,9 @@ https://google.github.io/styleguide/jsguide.html
 2. Er wordt gewerkt op de Hogeschool van Arnhem en Nijmegen,
 3. De dagelijkse scrum meeting vindt plaats om 9:30,
 4. Men heeft een half uur pauze van 12:00 uur tot 12:30 uur. Dit kan afwijken i.v.m. andere
-afspraken op die dag,
+  afspraken op die dag,
 5. Men zet in de gezamenlijke kalender wanneer men niet of anders aanwezig is dan
-eerder afgesproken,
+  eerder afgesproken,
 6. Elke teamgenoot mag niet meer dan twee items in progress hebben,
 7. Elke teamgenoot wordt geacht het Scrum-bord bij te houden,
 8. Inhoudelijke meldingen worden gedaan via Slack in het daarvoor bestemde kanaal.
