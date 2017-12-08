@@ -9,7 +9,7 @@ import ModalBase from './modal/ModalBase';
 import Login from './modal/Login';
 import Search from './search/Search';
 import DataAccess from '../scripts/DataAccess';
-import ChatInitializer from './chat/ChatIntializer';
+import ChatInitializer from './chat/ChatInitializer';
 import Admin from '../admin/Admin';
 import * as firebase from 'firebase';
 import { reactTranslateChangeLanguage } from 'translate-components';
@@ -228,6 +228,7 @@ export default class App extends React.Component {
 														return <Homepage {...props} openModal={this.openModal}/>
 													}}/>
 													<Route exact path="/chat" component={ChatInitializer}/>
+													<Route exact path="/chat/:userId" component={ChatInitializer}/>
 													<Route path="/myAquarium" render={(props) => {
 														return <MyAquarium {...props} openModal={this.openModal} app={this.app}/>
 													}}/>
