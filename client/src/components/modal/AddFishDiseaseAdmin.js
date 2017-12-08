@@ -37,17 +37,16 @@ export default class AddFishADesiseAdmin extends React.Component {
 		if(diseasesName == "" || diseasesDescription == "" || diseasesSyntoms == "" || diseasesTreatment == ""){
 			this.setState({error: "Fill in all fields!"});
 		} else if(diseasesName && diseasesDescription && diseasesSyntoms && diseasesTreatment){
-
-		let da = new DataAccess();
-		da.postData ('/diseases/', {disease: diseaseInfo}, (err, res) => {
-			if (!err) {
-				this.props.customProps.refreshPage();
-				this.props.toggleModal();
-			} else {
-				this.setState({error: "An error occurred !"});
-			}
-		});
-	}
+			let da = new DataAccess();
+			da.postData ('/diseases/', {disease: diseaseInfo}, (err, res) => {
+				if (!err) {
+					this.props.customProps.refreshPage();
+					this.props.toggleModal();
+				} else {
+					this.setState({error: "An error occurred !"});
+				}
+			});
+		}
 	}
 	render() {
 		return (
