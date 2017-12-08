@@ -65,7 +65,6 @@ export default class ManageAgenda extends Component {
 		da.getData('/admin/appointments', (err, res) => {
 			if (!err) {
 				let resultsFromDB = res.message;
-				console.log (resultsFromDB);
 				for (let i = 0; i < resultsFromDB.length; i++) {
 					if (resultsFromDB[i].canceled) {
 						resultsFromDB.splice(i, 1);
