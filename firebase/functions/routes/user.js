@@ -25,7 +25,7 @@ const mailer = require('../mailer/mailer.js');
  *  @apiUse UserAuthenticated
  *  @apiUse Forbidden
  */
-router.get('/users/:id/',isAuthenticated, (req, res) => {
+router.get('/users/:id/', isAuthenticated, (req, res) => {
 	// Check if user is indeed authenticated user
 	if (req.user.uid !== req.params.id){
 		return res.sendStatus(403);
@@ -58,13 +58,13 @@ router.get('/users/:id/',isAuthenticated, (req, res) => {
 *  @apiUse UserAuthenticated
 *  @apiUse Forbidden
 */
-router.post('/users/:id/',isAuthenticated, (req, res) => {
+router.put('/users/:id/', isAuthenticated, (req, res) => {
 	// Check if user is indeed authenticated user
-	if (req.user.uid !== req.params.id){
-		return res.sendStatus(403);
+	if (req.user.uid != req.params.id){
+		return res.status(403).send("User is trying to access other user's credentials.");
 	}
 	if (!req.body) {
-		return res.sendStatus(400);
+		return res.status(400).send("No body provided");
 	}
 	const user = req.body;
 	if (!validator.isAlpha(user.firstName) ||

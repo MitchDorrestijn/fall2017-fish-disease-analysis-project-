@@ -76,7 +76,8 @@ router.get('/aquaria/:id', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  */
 router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
-	req.body.data.user = req.user.ref;
+	let data = req.body.data;
+	data.user = req.user.ref;
 	db.collection("aquaria").add(data)
 	.then((newDoc) => {
 		return newDoc.get ().then ((obj) => {

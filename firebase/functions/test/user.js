@@ -42,26 +42,31 @@ waitForToken ();
 
 describe ("User", () => {
 	it ("should return 201 if user is created", (done) => {
-		request
-		.post (server + '/users/' + app.auth().currentUser.uid)
-		.set ('Authorization', 'Token ' + token)
-		.send ({
-			firstName: "Sjoerd",
-			lastName: "Scheffer",
-			password: "Eenwachtwoord123",
-			country: "Netherlands",
-			birthDate: "1995-03-10T00:00:00.000Z"
+		waitForToken ().then (() => {
+			console.log(token);
+			request
+			.put (server + '/users/' + app.auth().currentUser.uid)
+			.set ('Authorization', 'Token ' + token)
+			.send ({
+				firstName: "Sjoerd",
+				lastName: "Scheffer",
+				password: "Eenwachtwoord123",
+				country: "Netherlands",
+				birthDate: "1995-03-10T00:00:00.000Z"
+			})
+			.end ((err, res) => {
+				if (err || res.status !== 201) {
+					console.log(err.message);
+					assert.ok (false);
+					done ();
+				} else {
+					assert.ok (true);
+					done ();
+				}
+			});
 		})
-		.end ((err, res) => {
-			if (err || res.status !== 201) {
-				assert.ok (false);
-				done ();
-			} else {
-				assert.ok (true);
-				done ();
-			}
-		});
 	}).timeout (5000);
+
 	it ("should return 200 if user is fetched", (done) => {
 		waitForToken ().then (() => {
 			request

@@ -24,10 +24,17 @@ router.post('/register/', (req, res) => {
 	if (!validator.isEmail(user.email) ||
 		!validator.isAlpha(user.firstName) ||
 		!validator.isAlpha(user.lastName) ||
-		!validator.isISO31661Alpha2(user.country) ||
+		!validator.isAlpha(user.country) ||
 		validator.isEmpty(user.password)
 	){
-		return res.status(400).send("Input validation failed.");
+		console.log(user);
+		return res.status(400).send(`Input validation failed: 
+		Email: ${validator.isEmail(user.email)}, 
+		firstName: ${validator.isAlpha(user.firstName)},
+		lastName: ${validator.isAlpha(user.lastName)},
+		country: ${validator.isAlpha(user.country)},
+		password: ${validator.isEmpty(user.password)}
+		`);
 	}
 
     admin.auth().createUser({

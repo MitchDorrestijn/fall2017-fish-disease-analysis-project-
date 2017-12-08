@@ -17,7 +17,7 @@ var config = {
     storageBucket: "fishproject-47cfd.appspot.com",
     messagingSenderId: "324776878982"
 };
-firebase.initializeApp(config);
+//firebase.initializeApp(config);
 
 describe('Registration APIs', () => {
     it('should return 400 when there is no body posted', (done) => {
@@ -95,7 +95,7 @@ describe('Registration APIs', () => {
 
     it('should return 201 when user is created', (done) => {
         request
-        .post('http://localhost:5000/api/register')
+        .post('http://localhost:5000/api/register/')
         .send({
             user: {
                 email: "test@address.com",
