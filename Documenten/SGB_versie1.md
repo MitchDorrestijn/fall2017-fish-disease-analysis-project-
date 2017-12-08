@@ -259,9 +259,9 @@ Opzet: https://firebase.google.com/docs/web/setup#host_your_web_app_using_fireba
 Systeem: Node 8.9.1 LTS
 Type: cloud server
 
-#### 10.2 Development omgeving
+#### 10.2 Ontwikkelomgeving
 
-Voor de development wordt er gebruik gemaakt van GitHub. In de 'development' branch worden alle elementen geplaatst, na een sprint review wordt deze branch gekopieerd naar de 'master'. De 'master' branch is altijd de laatste versie en is te zien op bassleer.nl.
+Voor ontwikkeling wordt er gebruik gemaakt van GitHub. In de 'development' branch worden alle elementen geplaatst, na een sprint review wordt deze branch gekopieerd naar de 'master'. De 'master' branch is altijd de laatste versie en is te zien op bassleer.nl.
 
 #### 10.3 Infrastructure diagram
 Op de onderstaande diagram is te zien hoe de communicatie vanuit Firebase naar de server en de client verloopt.
@@ -269,9 +269,9 @@ Op de onderstaande diagram is te zien hoe de communicatie vanuit Firebase naar d
 ![Diagram](images/infrastructureDiagram.png)
 
 #### 10.4 STUN-server
-De STUN (Simple Traversal of User Datagram Protocol [UDP] Through Network Address Translators [NAT’s]) server wordt gebruikt voor communicatie via webRTC. WebRTC wordt gebruikt in tijdens chatsessies. De STUN-server die gebruikt wordt word aangeleverd door google.
+De STUN (Simple Traversal of User Datagram Protocol [UDP] Through Network Address Translators [NAT’s]) server wordt gebruikt voor communicatie via WebRTC. WebRTC wordt gebruikt voor chatsessies. De STUN-server die gebruikt wordt, wordt aangeleverd door Google.
 
-Een STUN server stelt NAT-clients (computers achter een firewall) in staat om telefoongesprekken op te zetten met een VOIP-provider buiten het lokale netwerk.
+Een STUN server stelt NAT-clients (computers achter een firewall) in staat om telefoongesprekken op te zetten met een VoIP-provider buiten het lokale netwerk.
 (Bron: https://www.3cx.nl/voip-sip/stun-server/)
 
 #### 10.5 Sidenotes
@@ -291,16 +291,16 @@ De website is gemaakt met React. Om de site te draaien op een web-server moet je
 
 ```npm run build```
 
-In de hoofdmap van het React project komt een mapje genaamd "build" te staan. Hierin zitten alle benodigde bestanden om de site te draaien op een web-server. Alle javascript bestanden zijn hierbij samengevoegd in een groot javascript bestand.
+In de hoofdmap van het React project komt een mapje genaamd "build" te staan. Hierin zitten alle benodigde bestanden om de site te draaien op een web-server. Alle JavaScript bestanden zijn hierbij samengevoegd tot een groot javascript bestand.
 
-Om de site lokaal te draaien voor development kan je het volgende commando gebruiken:
+Om de site lokaal te draaien voor ontwikkeling kan je het volgende commando gebruiken:
 
 ```npm start```
 
-Nadat je dit commando hebt uitgevoerd wordt er in je browser een tab geopend waarop de site te zien is. Als je, terwijl de development server draait, een wijziging maakt in de code dan wordt dit direct gewijzigd op de site. Je hoeft hiervoor niet de site opnieuw te laden.
+Nadat je dit commando hebt uitgevoerd, wordt er in je browser een tab geopend waarop de site te zien is. Als je, terwijl de development server draait, een wijziging maakt in de code, dan wordt dit direct gewijzigd in de browser. Je hoeft hiervoor niet de site opnieuw te laden.
 
 #### 12.2 Firebase
-Voor zaken die te maken hebben met het opslaan van gegevens wordt er gebruik gemaakt van Google's Firebase. Firebase kan je lokaal en op de servers van Firebase zelf laten draaien. Tevens biedt Firebase ook de mogelijkheid om gratis de site te hosten.
+Voor zaken die te maken hebben met het opslaan van gegevens wordt er gebruik gemaakt van Google's Firebase. Firebase kan lokaal en op de servers van Firebase gedraaid worden. Tevens biedt Firebase ook de mogelijkheid om gratis de site te hosten.
 
 Om Firebase te kunnen gebruiken moet je de Firebase CLI installeren op je computer.
 
