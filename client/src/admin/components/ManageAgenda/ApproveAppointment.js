@@ -7,11 +7,17 @@ export default class ApproveAppointment extends Component {
 		const {toggleModal} = this.props;
 		const {refreshPage} = this.props.customProps;
 		let {entry} = this.props.customProps;
-		entry.approved = true;
+		let response = {
+			canceled: entry.canceled,
+			comment: entry.comment,
+			timeslotId: entry.timeslotId,
+			video: entry.video,
+			approved: true
+		};
 		console.log (entry);
 
 		let da = new DataAccess();
-		da.putData('/appointments/' + entry.id, {appointment: entry}, (err, res) => {
+		da.putData('/appointments/' + entry.id, {appointment: response}, (err, res) => {
 			if (!err) {
 				console.log(res);
 				refreshPage();
