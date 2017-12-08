@@ -36,18 +36,16 @@ DWA project 2017
   * *6.2 Web Applicatie.*
 7. **External Interfaces**
 8. **Code**
-9. **Data**
-10. **Infrastructure Architecture**
-  * *10.1 Live omgeving,*
-  * *10.2 Development omgeving,*
-  * *10.3 Infrastructure diagram,*
-  * *10.4 STUN-server,*
-  * *10.5 Sidenotes.*
-11. **Deployment**
-12. **Operation and Support**
-   * *12.1 React,*
-   * *12.2 Firebase.*
-13. **Decision Log**
+9. **Infrastructure Architecture**
+  * *9.1 Live omgeving,*
+  * *9.2 Development omgeving,*
+  * *9.3 Infrastructure diagram,*
+  * *9.4 STUN-server,*
+  * *9.5 Sidenotes.*
+10. **Deployment**
+11. **Operation and Support**
+   * *11.1 React,*
+   * *11.2 Firebase.*
 
 ----
 
@@ -236,57 +234,148 @@ Hieronder staat een sitemap van de Web Applicatie, inclusief het administratieve
 
 ----
 
-[External Interfaces hier]
+## 7. External Interfaces
+
+#### Internal
+
+Een Node js server wordt ingezet waarop een react applicatie draait. Via https requests naar een firebase server worden alle data interacties gehandeld.
+
+#### External
+
+###### Firebase
+
+Er wordt in de applicatie gebruik gemaakt van de volgende firebase producten:
+
+###### [Real-time database](https://firebase.google.com/docs/database/)
+
+Wordt gebruikt voor om de webrtc verbinding op te zetten.
+
+**[Cloud functions](https://firebase.google.com/docs/functions/)**
+
+Deze functies worden gebruikt als triggers voor:
+
+- Het bijhouden van de Algolia zoek indexes
+- Notificaties
+- Tijdslot einddatums bereken
+
+**[Cloud Firestore](https://firebase.google.com/docs/firestore/)**
+
+Cloud Firestore is een NoSql scalable cloud database
+
+In deze database wordt alle data opgeslagen van de webapplicatie
+
+**[Cloud Storage](https://cloud.google.com/storage/docs/)**
+
+Cloud storage wordt gebruikt om images te versturen tussen twee clients.
+
+**[Authentication](https://firebase.google.com/docs/auth/)**
+
+Er wordt gebruik gemaakt van authentication module voor email verificatie.
+
+Er wordt een verificatie token bijgehouden die kan worden geverifieerd.
+
+**[Cloud messaging](https://firebase.google.com/docs/cloud-messaging/server)**
+
+De Node.js server verbindt met een FCM server van google. Hierdoor kunnen notificaties worden gestuurd op smartphone en in de browsers.
+
+###### [Sendgrid](https://sendgrid.com/docs)
+
+Sendgrid is een cloudbased mail systeem. De Node.js server verbindt met deze mail server.
+
+###### [WebRTC](https://webrtc.org/)
+
+WebRTC is een API die er voor zorgt dat smartphones en browsers gebruik kunnen maken van Real-Time Communications (RTC) .
+
+Wordt gebruikt voor realtime video chat en tekst chat.
+
+###### [Algolia](https://www.algolia.com/doc/)
+
+Algolia is een API wat gebruikt wordt voor zoekfunctionaliteit. Op Algolia zijn zoek indexen ingesteld.
+
+De Node.js server verbindt met de API van Algolia en krijgt zoekresultaten terug.
 
 ----
 
-[Code hier]
+## 8. Code
+
+Het doel van dit hoofdstuk is om de implementatie details te beschrijven voor de delen van de code die belangrijk, complex of significant zijn.
+
+#### **Structure**
+
+In de [Create react app documentatie](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md) kan gevonden worden wat de structuur is van de applicatie. Er wordt gebruik gemaakt van JSX-code om HTML te genereren.
+
+#### **Error handling**
+
+###### Client
+
+Errors worden server-side teruggegeven vanuiteen http-request. Wanneer de status van een http-request niet in de 200->300 range ligt wordt een melding van de http-request weergegeven indienmogelijk.
+
+###### Server
+
+Server side worden catches afgehandeld als eenserver operatie faalt. Wanneer dit gebeurd wordt een Error code gestuurd alsresponse. In de api-docs kunnen de responses gevonden worden.
+
+#### Security
+
+API's zijn alleen toegankelijk voor gebruikersdie geauthentiseerd zijn. Door middel van een unique authorisation token. Ditworden opgevangen in de middleware van de server.
 
 ----
 
-[Data hier]
-
-----
-
-## 10. Infrastructure Architecture
+## 9. Infrastructure Architecture
 
 Dit hoofdstuk bevat informatie over de infrastructuur van de website.
 
-#### 10.1 Live omgeving
+#### 9.1 Live omgeving
 
 De live omgeving is niet heel erg complex; het is namelijk een enkele cloud server gehost door Google's Firebase:
 Opzet: https://firebase.google.com/docs/web/setup#host_your_web_app_using_firebase_hosting
 Systeem: Node 8.9.1 LTS
 Type: cloud server
 
-#### 10.2 Ontwikkelomgeving
+#### 9.2 Ontwikkelomgeving
 
 Voor ontwikkeling wordt er gebruik gemaakt van GitHub. In de 'development' branch worden alle elementen geplaatst, na een sprint review wordt deze branch gekopieerd naar de 'master'. De 'master' branch is altijd de laatste versie en is te zien op bassleer.nl.
 
-#### 10.3 Infrastructure diagram
+#### 9.3 Infrastructure diagram
 Op de onderstaande diagram is te zien hoe de communicatie vanuit Firebase naar de server en de client verloopt.
 
 ![Diagram](images/infrastructureDiagram.png)
 
-#### 10.4 STUN-server
+#### 9.4 STUN-server
 De STUN (Simple Traversal of User Datagram Protocol [UDP] Through Network Address Translators [NAT’s]) server wordt gebruikt voor communicatie via WebRTC. WebRTC wordt gebruikt voor chatsessies. De STUN-server die gebruikt wordt, wordt aangeleverd door Google.
 
 Een STUN server stelt NAT-clients (computers achter een firewall) in staat om telefoongesprekken op te zetten met een VoIP-provider buiten het lokale netwerk.
 (Bron: https://www.3cx.nl/voip-sip/stun-server/)
 
-#### 10.5 Sidenotes
+#### 9.5 Sidenotes
 Google Firebase is verantwoordelijk voor het updaten en onderhouden van de servers. Dhr. Bassleer is verantwoordelijk voor het maken van back-ups, de resources zijn staan ook op naam van Dhr. Bassleer.
 
 ----
 
-[Deployment hier]
+## 10. Deployment
+Dit hoofdstuk zal uitleggen welke stack er gebruikt wordt om het product te draaien.
+
+#### 10.1 Software
+De omgeving van productie zijn de servers van Firebase. Firebase draait op Google App Engine. De volgende producten worden gebruikt bij deployment:
+- Firebase Cloud Functions (NodeJS omgeving, Node v6.11.5.),
+- Firebase Firestore (NoSQL database),
+- Firebase Cloud Messaging (Push Notifications service),
+- Firebase Realtime Database (Structured Real Time Database),
+- Firebase Hosting (hosting van statische files),
+- Firebase Authentication (user management),
+- Firebase Storage (Voor het dynamisch uploaden van files, zoals images).
+
+#### 10.2 Build
+Het is niet nodig om dit project te builden.
+
+#### 10.3 Deploy
+Om het project te deployen naar de servers van Firebase, navigeer naar de map /functions, en type "firebase deploy". Mocht je alleen bepaalde facetten willen deployen, doe dan firebase deploy --only functions[,firestore,...].
 
 ----
 
-## 12. Operation and Support
+## 11. Operation and Support
 In dit hoofdstuk wordt uitgelegd hoe de site kan worden onderhouden en hoe alles moet worden opgestart.
 
-#### 12.1 React
+#### 11.1 React
 De website is gemaakt met React. Om de site te draaien op een web-server moet je een "production build" maken van het React project. Dit doe je door het volgende commando te gebruiken:
 
 ```npm run build```
@@ -299,7 +388,7 @@ Om de site lokaal te draaien voor ontwikkeling kan je het volgende commando gebr
 
 Nadat je dit commando hebt uitgevoerd, wordt er in je browser een tab geopend waarop de site te zien is. Als je, terwijl de development server draait, een wijziging maakt in de code, dan wordt dit direct gewijzigd in de browser. Je hoeft hiervoor niet de site opnieuw te laden.
 
-#### 12.2 Firebase
+#### 11.2 Firebase
 Voor zaken die te maken hebben met het opslaan van gegevens wordt er gebruik gemaakt van Google's Firebase. Firebase kan lokaal en op de servers van Firebase gedraaid worden. Tevens biedt Firebase ook de mogelijkheid om gratis de site te hosten.
 
 Om Firebase te kunnen gebruiken moet je de Firebase CLI installeren op je computer.
@@ -314,6 +403,3 @@ Om de bestanden van Firebase online te zetten gebruik je:
 
 ``` firebase deploy --only hosting,functions```
 
-----
-
-[Decision Log hier]
