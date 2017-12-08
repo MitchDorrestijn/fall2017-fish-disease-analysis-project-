@@ -10,6 +10,7 @@ const mailer = require('../mailer/mailer.js');
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const validateModel = require('../middleware/validateModel.js');
+const isAdmin = require('../middleware/isAdmin.js');
 
 /* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
@@ -26,7 +27,7 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiUse AppointmentSuccess
  */
 // TODO: maybe it could be made more efficient?
-router.get('/admin/appointments/', (req, res) => {
+router.get('/admin/appointments/',isAdmin, (req, res) => {
 	db.collection("appointments").get().then((snapshot) => {
 		let appointments = [];
 		let promises = [];
@@ -64,6 +65,31 @@ router.get('/admin/appointments/', (req, res) => {
 		});
 	});
 });
+
+/**
+ *  @api {DELETE} /appointment/:id Cancel appointment
+ *  @apiName cancel an appointment
+ *  @apiGroup Appointments
+ *
+ *  @apiSuccess {String} Appointment canceled
+ *  @apiSuccessExample Success-Response:
+ *  HTTP/1.1 204 OK
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ */
+router.delete('/appointments/:id',isAuthenticated, (req, res) => {
+	const appointmentId = req.params.id;
+	db.collection('appointments').doc(appointmentId).update({
+		canceled: true
+	})
+	.then(() => {
+		res.status(204).send('Appointment canceled');
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	});
+});
+
 /**
  *  @api {get} /appointments/ Get appointments of user
  *  @apiName Returns all appointments of user
@@ -101,31 +127,6 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
 });
 
 /**
- *  Admin
- *  @api {DELETE} /appointment/:id Cancele appointment
- *  @apiName cancel an appointment
- *  @apiGroup Appointments
- *
- *  @apiSuccess {String} Appointment canceled
- *  @apiSuccessExample Success-Response:
- *  HTTP/1.1 204 OK
- *  @apiUse InternalServerError
- *  @apiUse UserAuthenticated
- */
-router.delete('/appointments/:id',isAuthenticated, (req, res) => {
-	const appointmentId = req.params.id;
-	db.collection('appointments').doc(appointmentId).update({
-		canceled: true
-	})
-	.then(() => {
-		res.status(204).send('Appointment canceled');
-	})
-	.catch((error) => {
-		res.status(500).send(error.message);
-	});
-});
-
-/**
  *  @api {POST} /appointments/:id Make an appointment
  *  @apiName create an appointment
  *  @apiGroup Appointments
@@ -156,9 +157,10 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 		sendNewAppointmentMail(userRecord);
 	});
 	// At the moment a static user id which is the consultant, if we decide to let the user chose a consultant we can get the consultant
-	admin.auth().getUser("kXKvHb3WlYWIQu3LxUzyYZVuFHt2").then((userRecord) => {
-		sendConsultNewAppointmentMail(userRecord);
-	});
+	// admin.auth().getUser("kXKvHb3WlYWIQu3LxUzyYZVuFHt2").then((userRecord) => {
+	// 	sendConsultNewAppointmentMail(userRecord);
+	console.log('Send email');
+	// });
 	db.collection('appointments')
 	.add(appointment)
 	.then(() => {
@@ -191,11 +193,12 @@ router.put('/appointments/:appointmentId/',isAuthenticated, (req, res) => {
 	let consultant = null;
 	if (appointment.consultantId) {
 		//.get
-		consultant = db.collection('users').doc(appointment.consultantId);
+		// consultant = db.collection('users').doc(appointment.consultantId);
 		if (appointment.approved) {
-			admin.auth().getUser(helperFunctions.flatData(appointmentRef.reservedBy).id).then((userRecord) => {
-				sendNewAppointmentMail(userRecord);
-			});
+			console.log('Send Log');
+			// admin.auth().getUser(helperFunctions.flatData(appointmentRef.reservedBy).id).then((userRecord) => {
+			// 	sendNewAppointmentMail(userRecord);
+			// });
 		}
 	}
 	return appointmentRef.update({

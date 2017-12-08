@@ -8,6 +8,7 @@ const validator = require('validator');
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const validateModel = require('../middleware/validateModel.js');
+const isAdmin = require('../middleware/isAdmin.js');
 
 /* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
@@ -64,7 +65,7 @@ router.get('/opentimeslots/',isAuthenticated, (req, res) => {
  *
  * @apiUse getTimeslotsSuccess
  */
-router.get('/timeslots/', (req, res) => {
+router.get('/timeslots/',isAdmin, (req, res) => {
 	db.collection("timeslots").get()
 	.then((snapshot) => {
 		let timeslots = [];
@@ -118,7 +119,7 @@ router.get('/timeslots/:id/',isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse ValidationError
  */
-router.post('/timeslots/',validateModel("timeslot", ["duration","startDate"]), (req, res) => {
+router.post('/timeslots/',isAuthenticated, validateModel("timeslot", ["duration","startDate"]), (req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
@@ -155,7 +156,7 @@ router.post('/timeslots/',validateModel("timeslot", ["duration","startDate"]), (
 *  @apiUse UserAuthenticated
 *  @apiUse ValidationError
 */
-router.put('/timeslots/:id',validateModel("timeslot", ["duration","startDate"]),isAuthenticated,(req, res) => {
+router.put('/timeslots/:id',validateModel("timeslot", ["duration","startDate"]),isAdmin,(req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
@@ -191,7 +192,7 @@ router.put('/timeslots/:id',validateModel("timeslot", ["duration","startDate"]),
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.delete('/timeslots/:id',isAuthenticated, (req, res) => {
+router.delete('/timeslots/:id',isAdmin, (req, res) => {
 	const timeslotsId = req.params.id;
 	db.collection('timeslots').doc(timeslotsId).delete()
 	.then(() => {
