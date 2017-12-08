@@ -10,6 +10,7 @@ const mailer = require('../mailer/mailer.js');
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const validateModel = require('../middleware/validateModel.js');
+const isAdmin = require('../middleware/isAdmin.js');
 
 /* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
@@ -26,61 +27,47 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiUse AppointmentSuccess
  */
 // TODO: maybe it could be made more efficient?
-router.get('/appointments/',isAuthenticated, (req, res) => {
-	db.collection("appointments").get()
-	.then((snapshot) => {
+router.get('/admin/appointments/',isAdmin, (req, res) => {
+	db.collection("appointments").get().then((snapshot) => {
 		let appointments = [];
-		snapshot.forEach((doc) => {
-			appointments.push(helperFunctions.flatData(doc));
-		});
-		return appointments;
-	}).then((appointmentsWithId) => {
-		let appointments = appointmentsWithId;
 		let promises = [];
-		appointmentsWithId.forEach((appointment) => {
-			promises.push(admin.auth().getUser(appointment.reservedBy).then((userRecord) => {
-				appointment.reservedBy = userRecord.toJSON().displayName;
-				return appointment;
-			}))
+		snapshot.forEach((doc) => {
+			appointmentFlat = helperFunctions.flatData(doc);
+			if (appointmentFlat.timeslotId) {
+				promises.push(
+					db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
+					.then((timeslot) => {
+						appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
+						appointments.push(appointmentFlat);
+						return appointments;
+					})
+				)
+			}
 		});
 		Promise.all(promises).then(() => {
-			res.send(appointments);
+			return appointments;
+		}).then((appointmentsWithId) => {
+			let appointments = appointmentsWithId;
+			let promises = [];
+			appointmentsWithId.forEach((appointment) => {
+				promises.push(admin.auth().
+					getUser(appointment.reservedBy).
+					then((userRecord) => {
+						appointment.reservedBy = userRecord.toJSON().displayName;
+						return appointment;
+					}));
+			});
+			Promise.all(promises).then(() => {
+				res.send(appointments);
+			});
+		}).catch((err) => {
+			res.status(500).send(err.message);
 		});
-	})
-	.catch((err) => {
-		res.status(500).send(err.message);
 	});
 });
 
 /**
- *  @api {get} /appointments/ Get appointments of user
- *  @apiName Returns all appointments of user
- *  @apiGroup Appointments
- *
- *  @apiSuccess {Array} appointments List of appointments
- *  @apiUse InternalServerError
- *  @apiUse UserAuthenticated
- *  @apiUse AppointmentSuccess
- */
-router.get('/appointments/user/:id',isAuthenticated, (req, res) => {
-	if (req.user.uid !== req.params.id){
-		return res.sendStatus(403);
-	}
-	db.collection("appointments").where("reservedBy", "==", req.user.ref).get()
-	.then((snapshot) => {
-		let appointments = [];
-		snapshot.forEach((doc) => {
-			appointments.push(helperFunctions.flatData(doc));
-		});
-		res.send(appointments);
-	}).catch((err) => {
-		res.status(500).send(err.message);
-	});
-});
-
-/**
- *  Admin
- *  @api {DELETE} /appointment/:id Cancele appointment
+ *  @api {DELETE} /appointment/:id Cancel appointment
  *  @apiName cancel an appointment
  *  @apiGroup Appointments
  *
@@ -100,6 +87,42 @@ router.delete('/appointments/:id',isAuthenticated, (req, res) => {
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
+	});
+});
+
+/**
+ *  @api {get} /appointments/ Get appointments of user
+ *  @apiName Returns all appointments of user
+ *  @apiGroup Appointments
+ *
+ *  @apiSuccess {Array} appointments List of appointments
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse AppointmentSuccess
+ */
+router.get('/appointments/', isAuthenticated, (req, res) => {
+	db.collection("appointments").where("reservedBy", "==", req.user.ref).get()
+	.then((snapshot) => {
+		let appointments = [];
+		let promises = [];
+		snapshot.forEach((doc) => {
+			appointmentFlat = helperFunctions.flatData(doc);
+			if (appointmentFlat.timeslotId) {
+				promises.push(
+					db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
+					.then((timeslot) => {
+						appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
+						appointments.push(appointmentFlat);
+						return appointments;
+					})
+				)
+			}
+		});
+		Promise.all(promises).then(() => {
+			res.send(appointments);
+		});
+	}).catch((err) => {
+		res.status(500).send(err.message);
 	});
 });
 
@@ -129,14 +152,15 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 	appointment.canceled = false;
 	appointment.approved = false;
 	appointment.reservedBy = admin.firestore().collection("users").doc(req.user.uid);
-	appointment.timeslot = admin.firestore().collection("timeslots").doc(appointmentBody.timeSlotId);
+	appointment.timeslotId = admin.firestore().collection("timeslots").doc(appointmentBody.timeSlotId);
 	admin.auth().getUser(req.user.uid).then((userRecord) => {
 		sendNewAppointmentMail(userRecord);
 	});
 	// At the moment a static user id which is the consultant, if we decide to let the user chose a consultant we can get the consultant
-	admin.auth().getUser("kXKvHb3WlYWIQu3LxUzyYZVuFHt2").then((userRecord) => {
-		sendConsultNewAppointmentMail(userRecord);
-	});
+	// admin.auth().getUser("kXKvHb3WlYWIQu3LxUzyYZVuFHt2").then((userRecord) => {
+	// 	sendConsultNewAppointmentMail(userRecord);
+	console.log('Send email');
+	// });
 	db.collection('appointments')
 	.add(appointment)
 	.then(() => {
@@ -168,11 +192,13 @@ router.put('/appointments/:appointmentId/',isAuthenticated, (req, res) => {
 	const appointmentRef = db.collection('appointments').doc(appointmentId);
 	let consultant = null;
 	if (appointment.consultantId) {
-		consultant = db.collection('users').doc(appointment.consultantId);
+		//.get
+		// consultant = db.collection('users').doc(appointment.consultantId);
 		if (appointment.approved) {
-			admin.auth().getUser(helperFunctions.flatData(appointmentRef.reservedBy).id).then((userRecord) => {
-				sendNewAppointmentMail(userRecord);
-			});
+			console.log('Send Log');
+			// admin.auth().getUser(helperFunctions.flatData(appointmentRef.reservedBy).id).then((userRecord) => {
+			// 	sendNewAppointmentMail(userRecord);
+			// });
 		}
 	}
 	return appointmentRef.update({
