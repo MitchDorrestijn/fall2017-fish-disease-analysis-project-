@@ -32,14 +32,14 @@ router.get('/admin/appointments/',isAdmin, (req, res) => {
 		let appointments = [];
 		let promises = [];
 		snapshot.forEach((doc) => {
-			appointmentFlat = helperFunctions.flatData(doc);
+			let appointmentFlat = helperFunctions.flatData(doc);
 			if (appointmentFlat.timeslotId) {
 				promises.push(
 					db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
 					.then((timeslot) => {
 						appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
 						appointments.push(appointmentFlat);
-						return appointments;
+						return null;
 					})
 				)
 			}
@@ -106,7 +106,7 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
 		let appointments = [];
 		let promises = [];
 		snapshot.forEach((doc) => {
-			appointmentFlat = helperFunctions.flatData(doc);
+			let appointmentFlat = helperFunctions.flatData(doc);
 			if (appointmentFlat.timeslotId) {
 				promises.push(
 					db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
