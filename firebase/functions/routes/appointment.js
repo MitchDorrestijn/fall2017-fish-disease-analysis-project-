@@ -183,7 +183,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
  *  @apiUse UserAuthenticated
  *  @apiUse Forbidden
  */
-router.put('/appointments/:appointmentId/',validateModel("appointment",["canceled","timeslotId","comment","video","approved"]), (req, res) => {
+router.put('/appointments/:appointmentId/',validateModel('appointment',['canceled','comment','video','approved']), (req, res) => {
 	db.collection('appointments').doc(req.params.appointmentId).update(req.body.appointment)
 	.then((doc) => {
 		res.status(200).send("Ok");
