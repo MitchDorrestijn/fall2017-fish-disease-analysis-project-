@@ -106,19 +106,19 @@ Het uitvoeren van een consult gesprek gebeurt ook via de web-applicatie. De appl
 ----
 
 ## 3. Quality Attributes
-De functionele aspecten of de applicatie zijn in het vorige hoofdstuk (functional overview) beschreven, hier zullen de non-functionele aspecten worden verwoord.
-* De web-applicatie is beschikbaar voor alle gebruikers met een browser.
-* De web-applicatie word ondersteund voor alle gebruikers met de volgende browsers:
-  * Microsoft IE 11+
+Hier zullen de non-functionele aspecten worden verwoord.
+* De webapplicatie is beschikbaar voor alle gebruikers met een browser.
+* De webapplicatie ondersteunt de volgende browsers:
+  * Microsoft IE 11+ (consultgesprekken)
   * Microsoft Edge 15+
   * Google Chrome 46+
   * Mozilla Firefox 52+
   * Safari 11+
 * Het beheersysteem/CMS is alleen beschikbaar voor consultants/beheerders van de website.
 * De videochat wordt niet ondersteund met het gebruik van Microsoft IE 11+.
-* De code zal volgens de “code conversie” worden geïmplementeerd. Zie Principles, hooftstuk 5.
-* Het design is duidelijk geïnspireerd van het voorgaande CMD-groep, met uitzondering van het beheersysteem/CMS.
-* Het product word geleverd met een softwareguidebook.
+* De code zal volgens de “code conventie” worden geïmplementeerd. Zie hoofdstuk 5.
+* Het design is duidelijk geïnspireerd van het voorgaande CMD-groep, met kleine uitzonderingen waaronder het beheersysteem/CMS.
+* Het product wordt geleverd met een softwareguidebook.
 
 ----
 
