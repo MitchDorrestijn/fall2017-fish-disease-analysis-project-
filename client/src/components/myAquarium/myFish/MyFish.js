@@ -70,6 +70,7 @@ export default class MyFish extends React.Component {
 		let da = new DataAccess();
 		da.getData ('/aquaria', (err, res) => {
 			if (!err) {
+				console.log(res.message);
 				this.setState({createdAquariums: res.message});
 			} else {
 				console.log("De error is: " + err.message);
@@ -77,17 +78,30 @@ export default class MyFish extends React.Component {
 		});
 	}
 	createFilterButtons = () => {
-		let buttons = []
-		this.state.createdAquariums.forEach((key) => {
-			if(this.state.createdAquariums.hasOwnProperty(key)) {
+		// let buttons = []
+		// this.state.createdAquariums.forEach((key) => {
+		// 	if(this.state.createdAquariums.hasOwnProperty(key)) {
+		// 		buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
+		// 	}
+		// });
+		// return (
+		// 	<div>
+		// 		{buttons}
+		// 	</div>
+		// )
+
+		let buttons = [];
+		for(var key in this.state.createdAquariums) {
+    	if(this.state.createdAquariums.hasOwnProperty(key)) {
 				buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
 			}
-		});
+		}
 		return (
 			<div>
 				{buttons}
 			</div>
 		)
+
 	}
 	showSelectedCategory = (button) => {
     this.setState({ currentAquarium: button });
@@ -117,7 +131,7 @@ export default class MyFish extends React.Component {
 	}
 	showAddFishModel = (e) => {
 		e.preventDefault ();
-		this.props.openModal(AddFish);
+		this.props.openModal(AddFish, {refreshPage: this.renderAquariums});
 	};
 	showAddAquariumModel = (e) => {
 		e.preventDefault ();
