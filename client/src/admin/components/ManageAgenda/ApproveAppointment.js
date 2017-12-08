@@ -10,7 +10,6 @@ export default class ApproveAppointment extends Component {
 		let response = {
 			canceled: entry.canceled,
 			comment: entry.comment,
-			timeslotId: entry.timeslotId,
 			video: entry.video,
 			approved: true
 		};
