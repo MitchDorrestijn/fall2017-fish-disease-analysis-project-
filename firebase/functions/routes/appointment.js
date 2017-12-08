@@ -26,21 +26,21 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiUse AppointmentSuccess
  */
 // TODO: maybe it could be made more efficient?
-router.get('/appointments/', (req, res) => {
+router.get('/admin/appointments/', (req, res) => {
 	db.collection("appointments").get().then((snapshot) => {
 		let appointments = [];
 		let promises = [];
 		snapshot.forEach((doc) => {
 			appointmentFlat = helperFunctions.flatData(doc);
 			if (appointmentFlat.timeslotId) {
-				promises.push(db.collection('timeslots').
-					doc(appointmentFlat.timeslotId).
-					get().
-					then((timeslot) => {
+				promises.push(
+					db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
+					.then((timeslot) => {
 						appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
 						appointments.push(appointmentFlat);
 						return appointments;
-					}))
+					})
+				)
 			}
 		});
 		Promise.all(promises).then(() => {
@@ -74,20 +74,27 @@ router.get('/appointments/', (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse AppointmentSuccess
  */
-router.get('/appointments/user/:id', (req, res) => {
-	if (req.user.uid !== req.params.id){
-		return res.sendStatus(403);
-	}
+router.get('/appointments/', isAuthenticated, (req, res) => {
 	db.collection("appointments").where("reservedBy", "==", req.user.ref).get()
 	.then((snapshot) => {
 		let appointments = [];
+		let promises = [];
 		snapshot.forEach((doc) => {
-			appointments.push(helperFunctions.flatData(doc));
-			db.collection('timeslots').doc(doc.timeslot).get().then((timeslots) => {
-				appointments.timeslot = helperFunctions.flatData(timeslots);
-			});
+			appointmentFlat = helperFunctions.flatData(doc);
+			if (appointmentFlat.timeslotId) {
+				promises.push(
+					db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
+					.then((timeslot) => {
+						appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
+						appointments.push(appointmentFlat);
+						return appointments;
+					})
+				)
+			}
 		});
-		res.send(appointments);
+		Promise.all(promises).then(() => {
+			res.send(appointments);
+		});
 	}).catch((err) => {
 		res.status(500).send(err.message);
 	});
