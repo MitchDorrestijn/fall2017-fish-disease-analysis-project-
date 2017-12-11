@@ -3,7 +3,7 @@ const router = express.Router();
 const admin = require('firebase-admin');
 const gcs = require('@google-cloud/storage');
 const algoliasearch = require('algoliasearch');
-const joi = require("joi"); 
+const Joi = require("joi"); 
 
 /* Algolia */
 const ALGOLIA_ID = "WPBUCLWL7Y";
