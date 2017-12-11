@@ -16,7 +16,7 @@ export default class ApproveAppointment extends Component {
 		console.log (entry);
 
 		let da = new DataAccess();
-		da.putData('/appointments/' + entry.id, {appointment: response}, (err, res) => {
+		da.putData('/admin/appointments/' + entry.id, {appointment: response}, (err, res) => {
 			if (!err) {
 				console.log(res);
 				refreshPage();
