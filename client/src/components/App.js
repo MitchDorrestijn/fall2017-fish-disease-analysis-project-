@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import '../styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavigationBar from './navigation/NavigationBar';
+import Feedback from './feedback/Feedback';
 import Homepage from './homepage/Homepage';
 import MyAquarium from './myAquarium/MyAquarium';
 import ModalBase from './modal/ModalBase';
@@ -28,7 +29,10 @@ export default class App extends React.Component {
 			modalCustomProps: null,
 			redirect: null,
 			loggedIn: false,
-			isAdmin: false
+			isAdmin: false,
+			showFeedback: false,
+			feedbackContent: "",
+			feedbackColor: ""
 		};
 		this.config = {
 			apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
@@ -77,6 +81,7 @@ export default class App extends React.Component {
 						return <Redirect to=""/>
 					}}/>
 				});
+				this.showFeedback("success", "U bent succesvol geregistreerd! Er is een bevestigingsmail gestuurd naar het opgegeven emailadres.");
 			} else {
 				console.log(err);
 				this.showError(true, err.message);
@@ -242,6 +247,20 @@ export default class App extends React.Component {
 			console.log("Something went wrong: " + error);
 		});
 	};
+	
+	closeFeedback = () => {
+		this.setState({
+			showFeedback: false
+		});
+	};
+	
+	showFeedback = (color, message) => {
+		this.setState({
+			showFeedback: true,
+			feedbackContent: message,
+			feedbackColor: color
+		});
+	};
 
 	render() {
 		if (this.state.show) {
@@ -268,6 +287,10 @@ export default class App extends React.Component {
 													isAdmin={this.state.isAdmin}
 													logOut={this.logOut}
 													openModal={this.openModal}/>
+												{ this.state.showFeedback ?
+													<Feedback feedbackColor={this.state.feedbackColor} feedbackContent={this.state.feedbackContent} closeFeedback={this.closeFeedback} showFeedback={this.state.showFeedback} /> :
+													null
+												}
 												<Switch>
 													<Route exact path="/" render={(props) => {
 														return <Homepage {...props} openModal={this.openModal}/>

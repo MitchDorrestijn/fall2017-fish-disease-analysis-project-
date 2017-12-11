@@ -7,7 +7,7 @@ export default class Error extends React.Component {
 	render() {
 		return (
 			<Alert color="danger">
-				<p>{this.props.errorContent}</p>
+				{this.props.errorContent}
 			</Alert>
 		);
 	}
