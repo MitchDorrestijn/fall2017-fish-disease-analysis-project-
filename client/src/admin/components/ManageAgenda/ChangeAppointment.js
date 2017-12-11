@@ -64,12 +64,16 @@ export default class RemoveAppointment extends Component {
 			canceled: data.canceled,
 			comment: data.comment,
 			video: data.video,
-			approved: data.approved
+			approved: data.approved,
+			reservedBy: data.reservedBy,
+			timeslotId: this.state.selectedTimeslot
 		};
-		this.da.putData('/appointments/' + data.id, {}, (err) => {
+		this.da.putData('/appointments/' + data.id, {appointment: response}, (err) => {
 			if (!err) {
 				this.props.customProps.refreshPage();
 				this.props.toggleModal();
+			} else {
+				console.log(err);
 			}
 		});
 	};
@@ -108,7 +112,7 @@ export default class RemoveAppointment extends Component {
 					<FormGroup>
 						<Label>Timeslot</Label><br/>
 						<InputGroup>
-							<select className="custom-select" value={this.state.value}>
+							<select className="custom-select" value={this.state.selectedTimeslot}>
 								{this.state.timeslots}
 							</select>
 						</InputGroup>
