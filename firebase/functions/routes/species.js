@@ -26,7 +26,7 @@ const bucket = admin.storage().bucket();
 const model = {
     name: "species",
     endpoint: "species",
-    keys: ["name", "info", "additional"]
+    keys: ["name", "info", "additional", "picture"]
 }
 
 /* Joi schema */ 
