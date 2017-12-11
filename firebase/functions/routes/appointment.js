@@ -176,7 +176,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 });
 
 /**
- *  @api {PUT} /appointment/:id updating appointment
+ *  @api {PUT} /appointments/:id updating appointment
  *  @apiName Update a appointment
  *  @apiGroup Appointments
  *
@@ -187,7 +187,32 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
  *  @apiUse UserAuthenticated
  *  @apiUse Forbidden
  */
-router.put('/appointments/:appointmentId/',validateModel('appointment',['canceled','comment','video','approved']), (req, res) => {
+router.put('/appointments/:appointmentId/',isAuthenticated, validateModel('appointment',['canceled','comment','video','approved']), (req, res) => {
+	db.collection('appointments').doc(req.params.appointmentId).update(req.body.appointment)
+	.then((doc) => {
+		res.status(200).send("Ok");
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	})
+});
+
+/**
+*  @api {PUT} /appointments/:id updating appointment
+*  @apiName Update a appointment
+*  @apiGroup Appointments
+*
+*  @apiSuccess {String} Appointment updated
+*  @apiSuccessExample Success-Response:
+*  HTTP/1.1 204 OK
+*  @apiUse InternalServerError
+*  @apiUse UserAuthenticated
+*  @apiUse Forbidden
+**/
+router.put('/admin/appointments/:appointmentId/',isAdmin, validateModel('appointment',['canceled','comment','video','approved','timeslotId','reservedBy']), (req, res) => {
+	let appointment = req.body.appointment;
+	appointment.reservedBy = admin.firestore().collection("users").doc(appointment.reservedBy);
+	appointment.timeslotId = admin.firestore().collection("timeslots").doc(appointment.timeslotId);
 	db.collection('appointments').doc(req.params.appointmentId).update(req.body.appointment)
 	.then((doc) => {
 		res.status(200).send("Ok");
