@@ -35,7 +35,7 @@ class Checker {
                             .then((doc) => {
                                 const species = doc.data();
                                 const message = self.composeNotification(species, aquarium, entry, rule);
-                                return notifications.add(user.id, message, 1)
+                                return notifications.add(user.id, message, rule.type)
                             })
                             .then(() => {
                                 resolve(true);
@@ -45,7 +45,7 @@ class Checker {
                             })
                         } else {
                             const message = self.composeNotification(undefined, aquarium, entry, rule);
-                            notifications.add(user.id, message, 1)
+                            notifications.add(user.id, message, rule.type)
                             .then(() => {
                                 resolve(true);
                             })
