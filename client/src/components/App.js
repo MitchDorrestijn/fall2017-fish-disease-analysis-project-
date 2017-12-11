@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import '../styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavigationBar from './navigation/NavigationBar';
+import Feedback from './feedback/Feedback';
 import Homepage from './homepage/Homepage';
 import MyAquarium from './myAquarium/MyAquarium';
 import ModalBase from './modal/ModalBase';
@@ -29,7 +30,7 @@ export default class App extends React.Component {
 			redirect: null,
 			loggedIn: false,
 			isAdmin: false,
-			showFeedback: true,
+			showFeedback: false,
 			feedbackContent: "",
 			feedbackColor: ""
 		};
@@ -80,6 +81,7 @@ export default class App extends React.Component {
 						return <Redirect to=""/>
 					}}/>
 				});
+				this.showFeedback("success", "U bent succesvol geregistreerd! Er is een bevestigingsmail gestuurd naar het opgegeven emailadres.");
 			} else {
 				console.log(err);
 				this.showError(true, err.message);
