@@ -28,7 +28,10 @@ export default class App extends React.Component {
 			modalCustomProps: null,
 			redirect: null,
 			loggedIn: false,
-			isAdmin: false
+			isAdmin: false,
+			showFeedback: true,
+			feedbackContent: "",
+			feedbackColor: ""
 		};
 		this.config = {
 			apiKey: "AIzaSyBxbF0vZXeq8ItH9SsQvO8Ynev_5-lGffs",
@@ -242,6 +245,20 @@ export default class App extends React.Component {
 			console.log("Something went wrong: " + error);
 		});
 	};
+	
+	closeFeedback = () => {
+		this.setState({
+			showFeedback: false
+		});
+	};
+	
+	showFeedback = (color, message) => {
+		this.setState({
+			showFeedback: true,
+			feedbackContent: message,
+			feedbackColor: color
+		});
+	};
 
 	render() {
 		if (this.state.show) {
@@ -268,6 +285,10 @@ export default class App extends React.Component {
 													isAdmin={this.state.isAdmin}
 													logOut={this.logOut}
 													openModal={this.openModal}/>
+												{ this.state.showFeedback ?
+													<Feedback feedbackColor={this.state.feedbackColor} feedbackContent={this.state.feedbackContent} closeFeedback={this.closeFeedback} showFeedback={this.state.showFeedback} /> :
+													null
+												}
 												<Switch>
 													<Route exact path="/" render={(props) => {
 														return <Homepage {...props} openModal={this.openModal}/>
