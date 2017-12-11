@@ -11,7 +11,6 @@ import {
 	Form,
 	FormText
 } from 'reactstrap';
-import ReactFileReader from 'react-file-reader';
 
 export default class EditImageAddFish extends React.Component {
 	constructor(props){

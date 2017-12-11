@@ -6,10 +6,8 @@ import {
 	FormGroup,
 	Label,
 	Input,
-	Form,
-	FormText
+	Form
 } from 'reactstrap';
-import Error from './Error';
 import DataAccess from '../../scripts/DataAccess';
 
 export default class AddFishAdmin extends React.Component {
@@ -27,7 +25,7 @@ export default class AddFishAdmin extends React.Component {
 			additional: document.getElementById("fishAdditional").value,
 			picture: ""
 		}
-		if(fishToAdd.name == "" || fishToAdd.info == "" || fishToAdd.additional == ""){
+		if(fishToAdd.name === "" || fishToAdd.info === "" || fishToAdd.additional === ""){
 			this.setState({error: "Fill in all fields!"});
 		} else if(fishToAdd.name && fishToAdd.info && fishToAdd.additional){
 			let da = new DataAccess();

@@ -9,7 +9,6 @@ import {
 	Form,
 	FormText
 } from 'reactstrap';
-import Error from './Error';
 import DataAccess from '../../scripts/DataAccess';
 
 export default class AddFishADesiseAdmin extends React.Component {
@@ -34,7 +33,7 @@ export default class AddFishADesiseAdmin extends React.Component {
 			treatment: diseasesTreatment
 		}
 
-		if(diseasesName == "" || diseasesDescription == "" || diseasesSyntoms == "" || diseasesTreatment == ""){
+		if(diseasesName === "" || diseasesDescription === "" || diseasesSyntoms === "" || diseasesTreatment === ""){
 			this.setState({error: "Fill in all fields!"});
 		} else if(diseasesName && diseasesDescription && diseasesSyntoms && diseasesTreatment){
 			let da = new DataAccess();
