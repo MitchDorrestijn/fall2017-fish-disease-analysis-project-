@@ -82,7 +82,10 @@ router.delete('/appointments/:id',isAuthenticated, (req, res) => {
 	db.collection('appointments').doc(appointmentId).update({
 		canceled: true
 	})
-	.then(() => {
+	.then((doc) => {
+		admin.auth().getUser(helperFunctions(doc).reservedBy).then((userRecord) => {
+			sendConsultNewAppointmentMail(userRecord);
+		});
 		res.status(204).send('Appointment canceled');
 	})
 	.catch((error) => {
@@ -137,7 +140,7 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
  *  @apiUse Forbidden
  *  @apiUse BadRequest
  */
-router.post('/appointments/',isAuthenticated,validateModel("appointment",["comment","timeSlotId"]), (req, res) => {
+router.post('/appointments/',isAuthenticated,validateModel("appointment",["comment","timeSlotId","video"]), (req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
@@ -151,6 +154,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 	appointment.comment = appointmentBody.comment;
 	appointment.canceled = false;
 	appointment.approved = false;
+	appointment.video = appointmentBody.video;
 	appointment.reservedBy = admin.firestore().collection("users").doc(req.user.uid);
 	appointment.timeslotId = admin.firestore().collection("timeslots").doc(appointmentBody.timeSlotId);
 	admin.auth().getUser(req.user.uid).then((userRecord) => {
@@ -159,7 +163,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 	// At the moment a static user id which is the consultant, if we decide to let the user chose a consultant we can get the consultant
 	// admin.auth().getUser("kXKvHb3WlYWIQu3LxUzyYZVuFHt2").then((userRecord) => {
 	// 	sendConsultNewAppointmentMail(userRecord);
-	console.log('Send email');
+	// 	console.log('Send email');
 	// });
 	db.collection('appointments')
 	.add(appointment)
@@ -199,6 +203,10 @@ const sendNewAppointmentMail = (user) => {
 
 const sendAppointmentApprovedMail = (user) => {
 	mailer.mail(user.email, "Appointment approved Bassleer", "Hello, We are sending you this email to confirm that you have made an appointment with a consultant.");
+};
+
+const sendAppointmentCancelledMail = (user) => {
+	mailer.mail(user.email, "Appointment cancelled Bassleer", "Hello, We are sending you this email to inform you that your appintment has been cancelled.");
 };
 
 const sendConsultNewAppointmentMail = (user) => {
