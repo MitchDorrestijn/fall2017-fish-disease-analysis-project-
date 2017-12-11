@@ -19,6 +19,16 @@ export default class ManageAgenda extends Component {
 		this.getAppointments();
 	}
 
+	sortAppointmentsByDate = (a, b) => {
+		let aDate = new Date(a.timeslot.startDate);
+		let bDate = new Date(b.timeslot.startDate);
+		if (aDate > bDate)
+			return -1;
+		if (aDate < bDate)
+			return 1;
+		return 0;
+	};
+
 	parseDate = (date) => {
 		let parsedDate = new Date (date);
 		return parsedDate.toDateString();
@@ -65,6 +75,7 @@ export default class ManageAgenda extends Component {
 		da.getData('/admin/appointments', (err, res) => {
 			if (!err) {
 				let resultsFromDB = res.message;
+				resultsFromDB.sort (this.sortAppointmentsByDate);
 				for (let i = 0; i < resultsFromDB.length; i++) {
 					if (resultsFromDB[i].canceled) {
 						resultsFromDB.splice(i, 1);
