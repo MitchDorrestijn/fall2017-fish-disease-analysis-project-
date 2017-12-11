@@ -79,14 +79,17 @@ router.get('/admin/appointments/', (req, res) => {
  */
 router.delete('/appointments/:id',isAuthenticated, (req, res) => {
 	const appointmentId = req.params.id;
+	const appointment = db.collection('appointments').doc(appointmentId);
 	db.collection('appointments').doc(appointmentId).update({
 		canceled: true
 	})
-	.then((doc) => {
-		admin.auth().getUser(helperFunctions(doc).reservedBy).then((userRecord) => {
-			sendConsultNewAppointmentMail(userRecord);
+	.then(() => {
+		appointment.get().then((snapshot) => {
+			admin.auth().getUser(helperFunctions.flatData(snapshot).reservedBy).then((userRecord) => {
+				sendAppointmentCanceledMail(userRecord);
+				res.status(204).send('Appointment canceled');
+			});
 		});
-		res.status(204).send('Appointment canceled');
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
@@ -230,8 +233,8 @@ const sendAppointmentApprovedMail = (user) => {
 	mailer.mail(user.email, "Appointment approved Bassleer", "Hello, We are sending you this email to confirm that you have made an appointment with a consultant.");
 };
 
-const sendAppointmentCancelledMail = (user) => {
-	mailer.mail(user.email, "Appointment cancelled Bassleer", "Hello, We are sending you this email to inform you that your appintment has been cancelled.");
+const sendAppointmentCanceledMail = (user) => {
+	mailer.mail(user.email, "Appointment canceled Bassleer", "Hello, We are sending you this email to inform you that your appointment has been canceled.");
 };
 
 const sendConsultNewAppointmentMail = (user) => {
