@@ -4,7 +4,6 @@ import ActionButton from '../../base/ActionButton';
 import * as firebase from 'firebase';
 import DataAccess from '../../../scripts/DataAccess';
 
-//TODO: refactor country select to controlled component
 export default class AccountSettings extends React.Component {
 	constructor(props) {
 		super(props);
@@ -51,7 +50,7 @@ export default class AccountSettings extends React.Component {
 				console.log(err);
 			};
 		});
-		da.getData (`/appointments/user/${this.currentUserId}`, (err, res) => {
+		da.getData (`/appointments/`, (err, res) => {
 			if (!err) {
 				this.setAppointments(res.message);
 			} else {
@@ -59,26 +58,11 @@ export default class AccountSettings extends React.Component {
 			};
 		});
 	};
-	// getTimeslot = () => {
-	// 	let timeslots = {};
-	// 	for (let key in this.state.appointments) {
-	// 		if (this.state.appointments.hasOwnProperty(key)) {
-	// 			let da = new DataAccess ();
-	// 			da.getData(`/timeslots/${this.state.appointments[key].timeslot}/`, (err, res) => {
-	// 				if () {
-	// 					timeslots.push(res.message);
-	// 				} else {
-	// 					console.log(err);
-	// 				};
-	// 			});
-	// 		};
-	// 	};
-	// 	this.setTimeslot(timeslots);
-	// };
 	registerRequest = () => {
 		const appointment = {
 			timeSlotId: document.getElementById('dateTime').value,
 			comment: document.getElementById('comment').value,
+			video: document.getElementById('chatOption').value,
 		};
 		// Validation possibility
 		Object.keys(appointment).forEach( (key) => {
@@ -127,8 +111,7 @@ export default class AccountSettings extends React.Component {
 						<Card>
 							<CardBody>
 								<CardTitle>
-									test
-									{/* Consult on: {this.state.appointments[key].startDate.substring(0, 10)} from {this.state.appointments[key].startDate.substring(11, 16)} till {this.state.appointments[key].endDate.substring(11, 16)} UTC+1 */}
+									Consult on: {this.state.appointments[key].timeslot.startDate.substring(0, 10)} from {this.state.appointments[key].timeslot.startDate.substring(11, 16)} till {this.state.appointments[key].timeslot.endDate.substring(11, 16)} UTC+1
 								</CardTitle>
 								<CardSubtitle>Comment:</CardSubtitle>
 								<CardText>{this.state.appointments[key].comment}</CardText>
@@ -164,8 +147,16 @@ export default class AccountSettings extends React.Component {
 											<Label for='exampleText'>Comment:</Label>
 											<Input type='textarea' name='text' id='comment' value={this.state.comment} onChange={this.onChange.bind(this)}/>
 										</FormGroup>
+										<FormGroup>
+											<Label for='exampleSelect'>Chat option:</Label>
+											<Input type='select' name='select' id='chatOption'>
+												<option value='' disabled selected hidden>Select</option>
+												<option value='true'>With sound and video</option>
+												<option value='false'>Text only</option>
+											</Input>
+										</FormGroup>
 										<div className='text-right'>
-											<ActionButton buttonText='Register consult' onClickAction={this.registerRequest} color='primary btn-transperant'/>
+											<ActionButton buttonText='Register consult' onClickAction={this.registerRequest} color='primary btn-transperant' disabled/>
 										</div>
 									</CardBody>
 								</Card>

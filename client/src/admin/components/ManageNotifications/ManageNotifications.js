@@ -90,12 +90,12 @@ export default class ManageNotifications extends React.Component {
 		return (
 			<div>
 				<h2>Add / edit / remove notification rules</h2>
-				<Form inline className='searchForm' onSubmit={this.getSearchTerm}>
+				{/* <Form inline className='searchForm' onSubmit={this.getSearchTerm}>
 					<FormGroup>
 						<Input type='text' name='searchTerm' placeholder='What do you wanna search?' onChange={this.handleSearchChange} />
 					</FormGroup>
 					<Button className='btn-admin'>Search now</Button>
-				</Form>
+				</Form> */}
 				<Table className='table'>
 					<Thead>
 						<Tr>
