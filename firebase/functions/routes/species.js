@@ -3,6 +3,7 @@ const router = express.Router();
 const admin = require('firebase-admin');
 const gcs = require('@google-cloud/storage');
 const algoliasearch = require('algoliasearch');
+const joi = require("joi"); 
 
 /* Algolia */
 const ALGOLIA_ID = "WPBUCLWL7Y";
@@ -25,7 +26,22 @@ const bucket = admin.storage().bucket();
 const model = {
     name: "species",
     endpoint: "species",
-    keys: ["name", "info", "additional", "picture"]
+    keys: ["name", "info", "additional"]
+}
+
+/* Joi schema */ 
+const schema = {  
+    create: Joi.object().keys({ 
+        name: Joi.string().alphanum().min(3).required(), 
+        info: Joi.string().alphanum().min(3).required(), 
+        additional: Joi.string().alphanum().min(3).required() 
+    }), 
+ 
+    update: Joi.object().keys({ 
+        name: Joi.string().alphanum().min(3), 
+        info: Joi.string().alphanum().min(3), 
+        additional: Joi.string().alphanum().min(3) 
+    }) 
 }
 
 router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
@@ -43,18 +59,6 @@ router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
 })
 
 router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
-	// let promise = new Promise((resolve) => {
-	    //     resolve();
-	    // });
-	    // if(req.body[model.name].image){
-	    //     promise = uploadImage(req.body[model.name].image);
-	    // }
-	    // promise()
-	    // .then((result) => {
-	    //     if(result.imageUrl){
-	    //         req.body[model.name].imageUrl = result.imageUrl;
-	    //     }
-	    //     return
 	    db.collection(model.endpoint).add(req.body[model.name])
 	    .then((newDoc) => {
 	        return newDoc.get()

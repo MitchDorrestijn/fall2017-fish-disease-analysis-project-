@@ -75,6 +75,16 @@ class Checker {
         // Defines the value evaluated
         const value = entry[rule.attribute];
 
+        const isInRange = (value) => { 
+            if (value < rule.min) { 
+                return false; 
+            } 
+ 
+            if (value > rule.max) { 
+                return false; 
+            } 
+        } 
+
         // When no species specified, the rule is applicable for the whole aquarium
         switch (rule.equation) {
             case "range":
@@ -89,16 +99,6 @@ class Checker {
             case "==":
                 return value == rule.compared;
                 break;
-        }
-
-        const isInRange = (value, rule) => {
-            if (value < rule.min) {
-                return false;
-            }
-
-            if (value > rule.max) {
-                return false;
-            }
         }
     }
 
