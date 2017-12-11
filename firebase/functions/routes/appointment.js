@@ -213,7 +213,7 @@ router.put('/admin/appointments/:appointmentId/',isAdmin, validateModel('appoint
 	let appointment = req.body.appointment;
 	appointment.reservedBy = admin.firestore().collection("users").doc(appointment.reservedBy);
 	appointment.timeslotId = admin.firestore().collection("timeslots").doc(appointment.timeslotId);
-	db.collection('appointments').doc(req.params.appointmentId).update(req.body.appointment)
+	db.collection('appointments').doc(req.params.appointmentId).update(appointment)
 	.then((doc) => {
 		res.status(200).send("Ok");
 	})
