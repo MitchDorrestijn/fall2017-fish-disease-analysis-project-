@@ -3,6 +3,7 @@ import {
 	ModalHeader,
 	ModalBody,
 	Button,
+	Form,
 	FormGroup,
 	Label,
 	InputGroup,
@@ -14,7 +15,13 @@ import ForgotPassword from './ForgotPassword';
 import Error from './Error';
 import Translate from 'translate-components';
 
-class Login extends React.Component {
+class Login extends React.Component {	
+
+	sendUserInfo = (e) => {
+		e.preventDefault();
+		this.props.userLogin(document.getElementById("email").value, document.getElementById("password").value);
+	}
+
 	render() {
 		return (
 			<div>
@@ -24,22 +31,24 @@ class Login extends React.Component {
 						<Error errorContent={this.props.errorContent} /> :
 						null
 					}
-					<FormGroup>
-						<Label for="email"><Translate>Email address</Translate></Label>
-						<InputGroup>
-							<InputGroupAddon><i className="fa fa-user"/></InputGroupAddon>
-							<Input type="email" id="email" placeholder="Email address"/>
-						</InputGroup>
-					</FormGroup>
-					<FormGroup>
-						<Label for="password"><Translate>Password</Translate></Label>
-						<InputGroup>
-							<InputGroupAddon><i className="fa fa-lock"/></InputGroupAddon>
-							<Input type="password" id="password" placeholder="Password"/>
-						</InputGroup>
-					</FormGroup>
-					<hr/>
-					<Button outline className="modalLink" color="secondary" onClick={() => this.props.userLogin(document.getElementById("email").value, document.getElementById("password").value)} block><Translate>Login</Translate></Button>
+					<Form onSubmit={(e) => this.sendUserInfo(e)}>
+						<FormGroup>
+							<Label for="email"><Translate>Email address</Translate></Label>
+							<InputGroup>
+								<InputGroupAddon><i className="fa fa-user"/></InputGroupAddon>
+								<Input type="email" id="email" placeholder="Email address"/>
+							</InputGroup>
+						</FormGroup>
+						<FormGroup>
+							<Label for="password"><Translate>Password</Translate></Label>
+							<InputGroup>
+								<InputGroupAddon><i className="fa fa-lock"/></InputGroupAddon>
+								<Input type="password" id="password" placeholder="Password"/>
+							</InputGroup>
+						</FormGroup>
+						<hr/>
+						<Button outline className="modalLink" color="secondary" block><Translate>Login</Translate></Button>
+					</Form>
 					<br/>
 					<p className="center">
 						<Translate>Not registered?</Translate> <u><a className="modalLink" onClick={() => this.props.openModal(Register)}><Translate>Create an account</Translate></a></u>
