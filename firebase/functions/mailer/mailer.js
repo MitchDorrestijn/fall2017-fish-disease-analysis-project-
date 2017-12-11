@@ -5,7 +5,7 @@ const dependency = {};
 
 dependency.mail = (to, subject, html) => {
     // setup email data with unicode symbols
-    return new Promise((resolve, reject) => {
+    //return new Promise((resolve, reject) => {
         let mailOptions = {
             from: '"The Bassleer Team" <info@bassleer.nl>',
             to: to,
@@ -13,11 +13,11 @@ dependency.mail = (to, subject, html) => {
             html: html
         };
 
-        sgMail.send(mailOptions)
-        .then(() => {
-            resolve();
-        })
-    });
+        return sgMail.send(mailOptions)
+        //.then(() => {
+        //    resolve();
+        //})
+    //});
 };
 
 module.exports = dependency;

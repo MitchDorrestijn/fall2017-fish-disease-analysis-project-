@@ -9,7 +9,8 @@ export default class EditSpecies extends Component {
 			name: "",
 			info: "",
 			additional: "",
-			picture: ""
+			picture: "",
+			error: ""
 		}
 	}
 	componentWillMount(){
@@ -33,15 +34,19 @@ export default class EditSpecies extends Component {
 				delete speciesData[key];
 			}
 		}
-		let da = new DataAccess();
-		da.putData(`/species/${this.props.customProps.entry.id}`, {species: speciesData},  (err, res) => {
-			if (!err) {
-				this.props.toggleModal();
-				this.props.customProps.refreshPage();
-			} else {
-				console.log('error');
-			}
-		});
+		if(speciesData.name && speciesData.info && speciesData.additional){
+			let da = new DataAccess();
+			da.putData(`/species/${this.props.customProps.entry.id}`, {species: speciesData},  (err, res) => {
+				if (!err) {
+					this.props.toggleModal();
+					this.props.customProps.refreshPage();
+				} else {
+					this.setState({error: "An error occurred !"});
+				}
+			});
+		} else {
+			this.setState({error: "Please fill in all fields."});
+		}
 	};
 	changeName = (e) => {
 		this.setState({name: e.target.value});
@@ -60,6 +65,7 @@ export default class EditSpecies extends Component {
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Edit {this.state.name}</ModalHeader>
 				<ModalBody>
+					<p className="error">{this.state.error}</p>
 					<Form onSubmit={this.editSpecies}>
 						<FormGroup>
 							<Label for="speciesName">Name:</Label>
@@ -73,12 +79,7 @@ export default class EditSpecies extends Component {
 							<Label for="speciesAdditional">Additional:</Label>
 							<Input id="speciesAdditional" type="textarea" name="speciesAdditional" value={this.state.additional} onChange={this.changeAdditional} />
 						</FormGroup>
-						<FormGroup>
-          		<Label for="speciesPicture">Image</Label>
-          		<Input id="speciesPicture" type="file" name="speciesPicture" />
-          		<FormText color="muted">Images can be uploaded in .jpg and .png.</FormText>
-        		</FormGroup>
-						<Button>Edit</Button>
+				 <Button>Edit</Button>
 					</Form>
 				</ModalBody>
 			</div>

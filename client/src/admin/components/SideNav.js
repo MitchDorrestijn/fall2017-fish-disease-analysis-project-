@@ -7,7 +7,6 @@ import ManageAgenda from './ManageAgenda/ManageAgenda';
 import ManageFish from './ManageFish';
 import ManageNotifications from './ManageNotifications/ManageNotifications';
 import ManageUsers from './ManageUsers';
-import Logout from './Logout';
 import ManageTimeSlots from './ManageTimeSlots/ManageTimeSlots';
 import ManageDesises from './ManageDesises';
 

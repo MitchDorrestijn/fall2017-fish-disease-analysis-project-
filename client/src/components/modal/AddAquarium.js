@@ -27,22 +27,23 @@ class Login extends React.Component {
 		e.preventDefault();
 		console.log(this.state.aquariumName);
 
-			let da = new DataAccess();
-			da.postData ('/aquaria/', {data: {name: this.state.aquariumName}}, (err, res) => {
-				if (!err) {
-					this.props.customProps.refreshPage();
-					this.props.toggleModal();
-				} else {
-					this.setState({error: true});
-				}
-			});
+		let da = new DataAccess();
+		da.postData ('/aquaria/', {data: {name: this.state.aquariumName}}, (err, res) => {
+			console.log(err,res);
+			if (!err) {
+				this.props.customProps.refreshPage();
+				this.props.toggleModal();
+			} else {
+				this.setState({error: true});
+			}
+		});
 	}
 	render() {
 		return (
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Add aquarium</ModalHeader>
 				<ModalBody>
-					{ this.state.error && "Something wnet wrong!"}
+					{ this.state.error && "Something went wrong!"}
 					<FormGroup>
 						<Label for="email">Aquarium name:</Label>
 						<InputGroup>
