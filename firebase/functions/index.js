@@ -155,6 +155,21 @@ const upsertSpeciesToAlgolia = (event) => {
 	return index.saveObject(species);
 };
 
+// Update the search index every time a blog post is written.
+exports.onSpeciesCreated = functions.firestore.document("species/{id}").onCreate(event => {
+	return upsertSpeciesToAlgolia(event);
+});
+
+exports.onSpeciesUpdated = functions.firestore.document("species/{id}").onUpdate(event => {
+	return upsertSpeciesToAlgolia(event);
+});
+
+exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete(event => {
+	// Write to the algolia index
+	const index = client.initIndex("species");
+	return index.deleteObject(event.params.id);
+});
+
 const calculateEndDate = (event) => {
 	// Get the timeslot document
 	const timeslot = event.data.data();
@@ -172,21 +187,6 @@ const calculateEndDate = (event) => {
 	}
 };
 
-
-// Update the search index every time a blog post is written.
-exports.onSpeciesCreated = functions.firestore.document("species/{id}").onCreate(event => {
-	return upsertSpeciesToAlgolia(event);
-});
-
-exports.onSpeciesUpdated = functions.firestore.document("species/{id}").onUpdate(event => {
-	return upsertSpeciesToAlgolia(event);
-});
-
-exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete(event => {
-	// Write to the algolia index
-	const index = client.initIndex("species");
-	return index.deleteObject(event.params.id);
-});
 
 exports.onTimeslotCreated = functions.firestore.document("timeslots/{id}").onCreate(event => {
 	return calculateEndDate(event);

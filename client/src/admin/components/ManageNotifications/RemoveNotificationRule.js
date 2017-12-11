@@ -30,8 +30,8 @@ export default class RemoveNotificationRule extends Component {
 				<ModalBody>
 					Are you sure you want to remove this notification rule?
 					<hr/>
-					<Button onClick={this.deleteNotificationRule} outline className="modalLink" color="secondary" block>Yes</Button>
-					<Button onClick={this.props.toggleModal} outline className="modalLink" color="secondary" block>No</Button>
+					<Button onClick={this.deleteNotificationRule} outline className='modalLink' color='secondary' block>Yes</Button>
+					<Button onClick={this.props.toggleModal} outline className='modalLink' color='secondary' block>No</Button>
 				</ModalBody>
 			</div>
 		);

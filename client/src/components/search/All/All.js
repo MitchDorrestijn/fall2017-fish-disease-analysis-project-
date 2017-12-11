@@ -8,9 +8,10 @@ export default class SavedAdvices extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			species: [],
-			diseases: []
+			results: []
 		};
+		this.noSpeciesFound = false;
+		this.noDiseasesFound = false;
 	}
 	
 	componentDidMount = () => {
@@ -19,15 +20,14 @@ export default class SavedAdvices extends React.Component {
 			da.getData(`/diseases/search?term=` + this.props.searchTerm, (err, res) => {
 				if (!err) {
 					if(res.message.length > 0){
-						let blocks = [];
+						let blocks = this.state.results;
 						for(let i = 0; i < res.message.length; i++){					
 							blocks.push (<DiseaseBlock key={i} picture="schimmel3" title={res.message[i].name} info={res.message[i].description} symptoms={res.message[i].symptoms} treatment={res.message[i].treatment}/>);
 						}
-						this.setState({diseases: blocks});
+						this.setState({results: blocks});
 					}else{
-						let blocks = [];				
-						blocks.push(<p key={0}>No results found</p>);
-						this.setState({diseases: blocks});
+						this.noDiseasesFound = true;
+						this.setNoResult();
 					}
 				} else {
 					console.log(err);
@@ -36,15 +36,14 @@ export default class SavedAdvices extends React.Component {
 			da.getData(`/species/search?term=` + this.props.searchTerm, (err, res) => {
 				if (!err) {
 					if(res.message.length > 0){
-						let blocks = [];
+						let blocks = this.state.results;
 						for(let i = 0; i < res.message.length; i++){					
 							blocks.push (<FishesBlock key={i} picture={res.message[i].picture} title={res.message[i].name} info={res.message[i].info} additional={res.message[i].additional}/>);
 						}
-						this.setState({species: blocks});
+						this.setState({results: blocks});
 					}else{
-						let blocks = [];				
-						blocks.push(<p key={0}>No results found</p>);
-						this.setState({species: blocks});
+						this.noSpeciesFound = true;
+						this.setNoResult();
 					}
 				} else {
 					console.log(err);
@@ -53,7 +52,15 @@ export default class SavedAdvices extends React.Component {
 		}else{
 			let blocks = [];				
 			blocks.push(<p key={0}>No results found</p>);
-			this.setState({diseases: blocks});
+			this.setState({results: blocks});
+		}
+	}
+	
+	setNoResult = () => {
+		if(this.noDiseasesFound && this.noSpeciesFound){
+			let blocks = [];				
+			blocks.push(<p key={0}>No results found</p>);
+			this.setState({results: blocks});
 		}
 	}
 	
@@ -64,8 +71,7 @@ export default class SavedAdvices extends React.Component {
 				<hr/>
 				<Row>
 					<Col lg="12" id="resultList">
-						{this.state.diseases}	
-						{this.state.species}							
+						{this.state.results}						
 					</Col>
 				</Row>
 			</div>

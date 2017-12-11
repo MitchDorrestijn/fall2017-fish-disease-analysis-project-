@@ -1,11 +1,30 @@
 import React, {Component} from 'react';
 import {Button, ModalHeader, ModalBody} from 'reactstrap';
+import DataAccess from '../../../scripts/DataAccess';
 
 export default class ApproveAppointment extends Component {
 	approveAppointment = () => {
-		// Hier moet die putData request gedaan worden
-		this.props.customProps.refreshPage();
-		this.props.toggleModal();
+		const {toggleModal} = this.props;
+		const {refreshPage} = this.props.customProps;
+		let {entry} = this.props.customProps;
+		let response = {
+			canceled: entry.canceled,
+			comment: entry.comment,
+			video: entry.video,
+			approved: true
+		};
+		console.log (entry);
+
+		let da = new DataAccess();
+		da.putData('/appointments/' + entry.id, {appointment: response}, (err, res) => {
+			if (!err) {
+				console.log(res);
+				refreshPage();
+				toggleModal();
+			} else {
+				console.log(err);
+			}
+		});
 	};
 
 	render() {

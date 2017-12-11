@@ -35,20 +35,24 @@ export default class Notifications extends React.Component {
 		let year = date.getFullYear ().toString (10);
 		return `${day}-${month}-${year}`;
 	};
+	checkNotificationType = (type) => {
+		if (type === 1) {
+			return "danger-icon";
+		} else {
+			return "warning-icon";
+		};
+	};
 	getNotifications = () => {
 		let notifications = [];
 		for(var key in this.state.notificationsFromDB) {
     	if(this.state.notificationsFromDB.hasOwnProperty(key)) {
-				console.log(key);
 				notifications.push(
-					<Notification icon="danger-icon" date={this.timeToString(this.state.notificationsFromDB[key].date)} key={parseInt(key,10)} id={parseInt(key,10)} deleteNotification={this.deleteNotification}>
-						<NotificationInfo title="The fish you added is not welcome in your aquarium.">
+					<Notification icon={this.checkNotificationType(this.state.notificationsFromDB[key].type)} key={parseInt(key,10)} id={parseInt(key,10)} deleteNotification={this.deleteNotification}>
+						<NotificationInfo>
 							{this.state.notificationsFromDB[key].message}
 						</NotificationInfo>
 						<NotificationData>
-							Conflicting fish<br/>
-							- Angel Fish<br/>
-							- Betta
+							{this.timeToString(this.state.notificationsFromDB[key].date)}
 						</NotificationData>
 					</Notification>
 				);

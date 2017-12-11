@@ -9,74 +9,68 @@ import {
 	Form,
 	FormText
 } from 'reactstrap';
-import Error from './Error';
 import DataAccess from '../../scripts/DataAccess';
 
-class AddFishADesiseAdmin extends React.Component {
+export default class AddFishADesiseAdmin extends React.Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			error: ""
+		}
+	}
 	addFishDesise = (e) => {
 		e.preventDefault();
 		const diseasesName = e.target.diseasesName.value;
 		const diseasesDescription = e.target.diseasesDescription.value;
 		const diseasesSyntoms = e.target.diseasesSyntoms.value;
-		//const fishImage = e.target.fishImage.value;
 		const diseasesTreatment = e.target.diseasesTreatment.value;
 		let allSyntoms = [];
 		allSyntoms = diseasesSyntoms.split(",");
-  	//console.log(`Submitted form data: fishname: ${diseasesName}, fish description: ${diseasesDescription}, fish syntoms: ${allSyntoms}, fish treatment: ${diseasesTreatment}`);
-
 		let diseaseInfo = {
 			name: diseasesName,
 			symptoms: allSyntoms,
 			description: diseasesDescription,
 			treatment: diseasesTreatment
 		}
-		console.log(diseaseInfo);
 
-		let da = new DataAccess();
-		da.postData ('/diseases/', {disease: diseaseInfo}, (err, res) => {
-			if (!err) {
-				this.props.toggleModal();
-			} else {
-				console.log('error');
-			}
-		});
-
-
-
-
+		if(diseasesName === "" || diseasesDescription === "" || diseasesSyntoms === "" || diseasesTreatment === ""){
+			this.setState({error: "Fill in all fields!"});
+		} else if(diseasesName && diseasesDescription && diseasesSyntoms && diseasesTreatment){
+			let da = new DataAccess();
+			da.postData ('/diseases/', {disease: diseaseInfo}, (err, res) => {
+				if (!err) {
+					this.props.customProps.refreshPage();
+					this.props.toggleModal();
+				} else {
+					this.setState({error: "An error occurred !"});
+				}
+			});
+		}
 	}
 	render() {
 		return (
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Add fish desise</ModalHeader>
 				<ModalBody>
-					{ this.props.isErrorVisible ?
-						<Error errorContent={this.props.errorContent} /> :
-						null
-					}
+					<p className="error">{this.state.error}</p>
 					<Form onSubmit={this.addFishDesise}>
 		        <FormGroup>
 		          <Label for="diseasesName">Name:</Label>
-		          <Input id="diseasesName" type="text" name="diseasesName" placeholder="Name of diseases" />
+		          <Input id="diseasesName" type="text" name="diseasesName" placeholder="Type name here" />
 		        </FormGroup>
 						<FormGroup>
-							<Label for="diseasesSyntoms">Syntoms:</Label>
-							<Input id="diseasesSyntoms" type="text" name="diseasesSyntoms" placeholder="Desise synomes" />
-							<FormText color="muted">Put a comma (,) to separate the syntoms.</FormText>
+							<Label for="diseasesSyntoms">Symptoms:</Label>
+							<Input id="diseasesSyntoms" type="text" name="diseasesSyntoms" placeholder="Type symptoms here" />
+							<FormText color="muted">Put a comma (,) to separate the symptoms.</FormText>
 						</FormGroup>
 		        <FormGroup>
 		          <Label for="diseasesDescription">Description:</Label>
-		          <Input id="diseasesDescription" type="textarea" name="diseasesDescription" />
+		          <Input id="diseasesDescription" type="textarea" name="diseasesDescription" placeholder="Type description here" />
 		        </FormGroup>
 						<FormGroup>
 		          <Label for="diseasesTreatment">Treatment:</Label>
-		          <Input id="diseasesTreatment" type="textarea" name="diseasesTreatment" />
+		          <Input id="diseasesTreatment" type="textarea" name="diseasesTreatment" placeholder="Type treatment here" />
 		        </FormGroup>
-						{/* <FormGroup>
-          		<Label for="fishImage">Image</Label>
-          		<Input id="fishImage" type="file" name="fishImage" />
-          		<FormText color="muted">Images can be uploaded in .jpg and .png.</FormText>
-        		</FormGroup> */}
 		        <Button>Submit</Button>
 		      </Form>
 				</ModalBody>
@@ -84,5 +78,3 @@ class AddFishADesiseAdmin extends React.Component {
 		);
 	}
 }
-
-export default AddFishADesiseAdmin;
