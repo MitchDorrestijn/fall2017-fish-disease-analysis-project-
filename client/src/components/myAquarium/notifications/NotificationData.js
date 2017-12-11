@@ -5,7 +5,7 @@ export default class Notification extends React.Component {
 	render() {
 		return (
 			<Col lg="3" className="no-gutter">
-				<div className="data">
+				<div className="date">
 					<p>{this.props.children}</p>
 				</div>
 			</Col>

@@ -36,7 +36,7 @@ export default class Notifications extends React.Component {
 		return `${day}-${month}-${year}`;
 	};
 	checkNotificationType = (type) => {
-		if (type === 1) {
+		if (type === 'Error') {
 			return "danger-icon";
 		} else {
 			return "warning-icon";
