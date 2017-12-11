@@ -12,27 +12,31 @@ import {
 import Error from './Error';
 import DataAccess from '../../scripts/DataAccess';
 
-class AddFishAdmin extends React.Component {
+export default class AddFishAdmin extends React.Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			error: ""
+		}
+	}
 	addFish = (e) => {
 		e.preventDefault();
-		const fileUploader = document.getElementById("fishImage");
-		// TODO: VALIDATIE AFBEELDING
-		let reader = new FileReader();
-    reader.readAsDataURL(fileUploader.files[0]);
-    reader.onload = () => {
-			const fishToAdd = {
-				name: document.getElementById("fishname").value,
-				info: document.getElementById("fishDescription").value,
-				additional: document.getElementById("fishAdditional").value,
-				picture: reader.result
-			}
+		const fishToAdd = {
+			name: document.getElementById("fishname").value,
+			info: document.getElementById("fishDescription").value,
+			additional: document.getElementById("fishAdditional").value,
+			picture: ""
+		}
+		if(fishToAdd.name == "" || fishToAdd.info == "" || fishToAdd.additional == ""){
+			this.setState({error: "Fill in all fields!"});
+		} else if(fishToAdd.name && fishToAdd.info && fishToAdd.additional){
 			let da = new DataAccess();
 			da.postData(`/species`, {species: fishToAdd},  (err, res) => {
 				if (!err.status) {
 					this.props.customProps.refreshPage();
 					this.props.toggleModal();
 				} else {
-					console.log(err);
+					this.setState({error: "An error occurred !"});
 				}
 			});
 		}
@@ -42,28 +46,20 @@ class AddFishAdmin extends React.Component {
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Add fish</ModalHeader>
 				<ModalBody>
-					{ this.props.isErrorVisible ?
-						<Error errorContent={this.props.errorContent} /> :
-						null
-					}
+					<p className="error">{this.state.error}</p>
 					<Form onSubmit={this.addFish}>
 		        <FormGroup>
 		          <Label for="fishName">Name:</Label>
-		          <Input id="fishname" type="text" name="fishName" placeholder="Name of fish" />
+		          <Input id="fishname" type="text" name="fishName" placeholder="Fish name" />
 		        </FormGroup>
 		        <FormGroup>
 		          <Label for="fishDescription">Description:</Label>
-		          <Input id="fishDescription" type="textarea" name="fishDescription" />
+		          <Input id="fishDescription" type="textarea" name="fishDescription" placeholder="Fish description" />
 		        </FormGroup>
 						<FormGroup>
 							<Label for="fishAdditional">Additional:</Label>
-							<Input id="fishAdditional" type="textarea" name="fishAdditional" />
+							<Input id="fishAdditional" type="textarea" name="fishAdditional" placeholder="Additional fish information"/>
 						</FormGroup>
-						<FormGroup>
-          		<Label for="fishImage">Image</Label>
-          		<Input id="fishImage" type="file" name="fishImage" />
-          		<FormText color="muted">Images can be uploaded in .jpg and .png.</FormText>
-        		</FormGroup>
 		        <Button>Submit</Button>
 		      </Form>
 				</ModalBody>
@@ -71,5 +67,3 @@ class AddFishAdmin extends React.Component {
 		);
 	}
 }
-
-export default AddFishAdmin;

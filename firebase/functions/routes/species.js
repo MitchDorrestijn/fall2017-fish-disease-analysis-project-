@@ -43,30 +43,28 @@ router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
 })
 
 router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
-    let promise = new Promise((resolve) => {
-        resolve();
-    });
-
-    if(req.body[model.name].image){
-        promise = uploadImage(req.body[model.name].image);
-    }
-
-    promise()
-    .then((result) => {
-        if(result.imageUrl){
-            req.body[model.name].imageUrl = result.imageUrl;
-        }
-        return db.collection(model.endpoint).add(req.body[model.name]);
-    })
-    .then((newDoc) => {
-        return newDoc.get()
-    })
-    .then((document) => {
-        res.status(201).send(document.data());
-    })
-    .catch((error) => {
-        res.status(500).send(error.message);
-    })
+	// let promise = new Promise((resolve) => {
+	    //     resolve();
+	    // });
+	    // if(req.body[model.name].image){
+	    //     promise = uploadImage(req.body[model.name].image);
+	    // }
+	    // promise()
+	    // .then((result) => {
+	    //     if(result.imageUrl){
+	    //         req.body[model.name].imageUrl = result.imageUrl;
+	    //     }
+	    //     return
+	    db.collection(model.endpoint).add(req.body[model.name])
+	    .then((newDoc) => {
+	        return newDoc.get()
+	    })
+	    .then((document) => {
+	        res.status(201).send(document.data());
+	    })
+	    .catch((error) => {
+	        res.status(500).send(error.message);
+	    })
 })
 
 router.post('/' + model.endpoint + '/:id/upload', isAdmin, upload.single('image'), (req, res) => {
@@ -83,11 +81,11 @@ router.post('/' + model.endpoint + '/:id/upload', isAdmin, upload.single('image'
             contentType: req.file.mimetype
         }
     });
-  
+
     stream.on('error', (err) => {
         res.sendStatus(500);
     });
-  
+
     stream.on('finish', () => {
         file.makePublic()
         .then(() => {
@@ -111,7 +109,7 @@ router.post('/' + model.endpoint + '/:id/upload', isAdmin, upload.single('image'
             res.status(500).send(err.message);
         })
     });
-  
+
     stream.end(req.file.buffer);
 })
 

@@ -1,5 +1,9 @@
 @import '../settings.scss';
 
+#chatBox {
+	padding-bottom: 80px;
+}
+
 .chat-wrapper {
 	background: url('/images/myAquarium/achtergrond.jpg');
 	background-size: cover;
@@ -7,7 +11,7 @@
 	background-attachment: fixed;
 	height: calc(100vh - 80px); //Minus the height of the navBar
 	overflow-y: scroll;
-	padding-bottom: 80px; //Height of the form area
+	//padding-bottom: 80px; //Height of the form area
 	h3 {
 		color: white;
 	}
@@ -118,8 +122,8 @@
 				background-color: #ddd;
 				border-radius: 7px;
 				margin: 10px 0px 10px 0px;
-				height: 285px;
-				width: 380px;
+				height: 270px;
+				width: 360px;
 			}
 				
 			.videoContainer {

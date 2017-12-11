@@ -5,6 +5,7 @@ const SenderBox = (props) => {
   return (
 		<Col className="sender-spacing" xs="12">
 			<Col className="senderBox" sm="12" md={{ size: 12 }}>
+				<strong>{props.name}:</strong><br/>
 				{props.children}
 			</Col>
 		</Col>

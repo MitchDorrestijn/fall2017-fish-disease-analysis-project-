@@ -56,12 +56,18 @@ export default class ManageFish extends React.Component {
 		for(var key in results) {
     	if(results.hasOwnProperty(key)) {
 				let element = results[key];
+				let image;
+				if(element.imageUrl) {
+					image = <img className="img-fluid" src={element.imageUrl} alt={element.imageUrl} />;
+				} else {
+					image = <span>No image uploaded yet</span>
+				}
 				data.push(
 					<Tr key={parseInt(key,10)}>
+						<Td>{image}</Td>
 						<Td>{element.name}</Td>
 						<Td>{element.info}</Td>
 						<Td>{element.additional}</Td>
-						<Td><img className="img-fluid" src={element.picture} alt="Fish" /></Td>
 						<Td>
 							<ButtonGroup>
 								<ActionButton
@@ -129,10 +135,10 @@ export default class ManageFish extends React.Component {
 				<Table className="table">
 				  <Thead>
 				  	<Tr>
+							<Th>Picture</Th>
 	            <Th>Name</Th>
 	            <Th>Info</Th>
 							<Th>Additional</Th>
-							<Th>Picture</Th>
 							<Th>Edit</Th>
 		        </Tr>
 			    </Thead>
