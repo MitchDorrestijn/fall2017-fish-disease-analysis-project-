@@ -295,8 +295,12 @@ export default class App extends React.Component {
 													<Route exact path="/" render={(props) => {
 														return <Homepage {...props} openModal={this.openModal}/>
 													}}/>
-													<Route exact path="/chat" component={ChatInitializer}/>
-													<Route exact path="/chat/:userId" component={ChatInitializer}/>
+													<Route exact path="/chat" render={(props) => {
+														return <ChatInitializer {...props} loggedIn={this.state.loggedIn} isAdmin={this.state.isAdmin}/>
+													}}/>
+													<Route exact path="/chat/:userId" render={(props) => {
+														return <ChatInitializer {...props} loggedIn={this.state.loggedIn} isAdmin={this.state.isAdmin}/>
+													}}/>
 													<Route path="/myAquarium" render={(props) => {
 														return <MyAquarium {...props} openModal={this.openModal} app={this.app}/>
 													}}/>
