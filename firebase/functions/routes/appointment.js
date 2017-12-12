@@ -16,57 +16,6 @@ const isAdmin = require('../middleware/isAdmin.js');
 const helperFunctions = require('../middleware/functions.js');
 
 /**
- *  Admin
- *  @api {get} /appointments/ Get All Appointments
- *  @apiName Returns all appointments
- *  @apiGroup Appointments
- *
- *  @apiSuccess {Array} appointments List of appointments
- *  @apiUse InternalServerError
- *  @apiUse UserAuthenticated
- *  @apiUse AppointmentSuccess
- */
-// TODO: maybe it could be made more efficient?
-router.get('/admin/appointments/', (req, res) => {
-	db.collection("appointments").get().then((snapshot) => {
-		let appointments = [];
-		let promises = [];
-		snapshot.forEach((doc) => {
-			let appointmentFlat = helperFunctions.flatData(doc);
-			if (appointmentFlat.timeslotId) {
-				promises.push(
-					db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
-					.then((timeslot) => {
-						appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
-						appointments.push(appointmentFlat);
-						return null;
-					})
-				)
-			}
-		});
-		Promise.all(promises).then(() => {
-			return appointments;
-		}).then((appointmentsWithId) => {
-			let appointments = appointmentsWithId;
-			let promises = [];
-			appointmentsWithId.forEach((appointment) => {
-				promises.push(admin.auth().
-					getUser(appointment.reservedBy).
-					then((userRecord) => {
-						appointment.reservedBy = userRecord.toJSON().displayName;
-						return appointment;
-					}));
-			});
-			Promise.all(promises).then(() => {
-				res.send(appointments);
-			});
-		}).catch((err) => {
-			res.status(500).send(err.message);
-		});
-	});
-});
-
-/**
  *  @api {DELETE} /appointment/:id Cancel appointment
  *  @apiName cancel an appointment
  *  @apiGroup Appointments
@@ -201,7 +150,58 @@ router.put('/appointments/:appointmentId/',isAuthenticated, validateModel('appoi
 });
 
 /**
-*  @api {PUT} /appointments/:id updating appointment
+ *  Admin
+ *  @api {get} /appointments/ Get All Appointments
+ *  @apiName Returns all appointments
+ *  @apiGroup Appointments
+ *
+ *  @apiSuccess {Array} appointments List of appointments
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse AppointmentSuccess
+ */
+// TODO: maybe it could be made more efficient?
+router.get('/admin/appointments/',isAdmin, (req, res) => {
+	db.collection("appointments").get().then((snapshot) => {
+		let appointments = [];
+		let promises = [];
+		snapshot.forEach((doc) => {
+			let appointmentFlat = helperFunctions.flatData(doc);
+			if (appointmentFlat.timeslotId) {
+				promises.push(
+					db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
+					.then((timeslot) => {
+						appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
+						appointments.push(appointmentFlat);
+						return null;
+					})
+				)
+			}
+		});
+		Promise.all(promises).then(() => {
+			return appointments;
+		}).then((appointmentsWithId) => {
+			let appointments = appointmentsWithId;
+			let promises = [];
+			appointmentsWithId.forEach((appointment) => {
+				promises.push(admin.auth().
+					getUser(appointment.reservedBy).
+					then((userRecord) => {
+						appointment.reservedBy = userRecord.toJSON().displayName;
+						return appointment;
+					}));
+			});
+			Promise.all(promises).then(() => {
+				res.send(appointments);
+			});
+		}).catch((err) => {
+			res.status(500).send(err.message);
+		});
+	});
+});
+
+/**
+*  @api {PUT} /admin/appointments/:appointmentId/ updating appointment
 *  @apiName Update a appointment
 *  @apiGroup Appointments
 *
@@ -212,25 +212,35 @@ router.put('/appointments/:appointmentId/',isAuthenticated, validateModel('appoi
 *  @apiUse UserAuthenticated
 *  @apiUse Forbidden
 **/
-router.put('/admin/appointments/:appointmentId/',isAdmin, validateModel('appointment',['canceled','comment','video','approved','timeslotId','reservedBy']), (req, res) => {
+router.put('/admin/appointments/:appointmentId/',isAdmin, validateModel('appointment',['approved','timeslotId']), (req, res) => {
 	let appointment = req.body.appointment;
-	appointment.reservedBy = admin.firestore().collection("users").doc(appointment.reservedBy);
-	appointment.timeslotId = admin.firestore().collection("timeslots").doc(appointment.timeslotId);
+	appointment.timeslotId = admin.firestore().collection('timeslots').doc(appointment.timeslotId);
+	appointment.consult = req.user.ref;
+	if (appointment.approved) {
+		admin.firestore().collection('appointments').doc(req.params.appointmentId).get().then((snapshot) => {
+			const appointmentData = helperFunctions.flatData(snapshot);
+			admin.auth().getUser(appointmentData.reservedBy).then((userRecord) => {
+				sendAppointmentApprovedMail(userRecord);
+			});
+		});
+	}
 	db.collection('appointments').doc(req.params.appointmentId).update(appointment)
 	.then((doc) => {
-		res.status(200).send("Ok");
+		res.status(200).send('Ok');
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
 	})
 });
 
+
+
 const sendNewAppointmentMail = (user) => {
 	mailer.mail(user.email, "Appointment Bassleer", "Hello, We are sending you this email to confirm that you have requested an appointment with a consultant of Bassleer.");
 };
 
 const sendAppointmentApprovedMail = (user) => {
-	mailer.mail(user.email, "Appointment approved Bassleer", "Hello, We are sending you this email to confirm that you have made an appointment with a consultant.");
+	mailer.mail(user.email, "Appointment approved Bassleer", "Hello, We are sending you this email to confirm that your appointment has been approved by a consultant.");
 };
 
 const sendAppointmentCanceledMail = (user) => {
