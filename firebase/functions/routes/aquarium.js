@@ -142,11 +142,11 @@ router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (
  *  @apiUse UnprocessableEntity
  */
 router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
-	db.collection('aquaria').
-		where('id', '==', req.params.id).
-		where('user', '==', req.user.ref).
-		get().
-		then((snapshot) => {
+	db.collection('aquaria')
+		.where('id', '==', req.params.id)
+		.where('user', '==', req.user.ref)
+		.get()
+		.then((snapshot) => {
 			if (snapshot.empty) {
 				reject(
 					new Error('Aquarium non existent or not owned by user.'));
@@ -164,7 +164,7 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 				let data = doc.data();
 				data.user = data.user.id;
 				data.aquarium = data.aquarium.id;
-				fish.push(data);
+				fish.push(helperFunctions.flatData(data));
 			});
 			res.send({fish: fish});
 		}).
