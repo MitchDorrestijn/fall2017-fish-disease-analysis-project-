@@ -190,6 +190,7 @@ router.post('/aquaria/:id/fish', isAuthenticated, validateModel("data", ["specie
 
 	let data = req.body.data;
 	data.user = req.user.ref;
+	data.species = db.collection("species").doc(data.species);
 	data.aquarium = aquariumRef;
 
 	db.collection('fish').add(data).then((newDoc) => {
