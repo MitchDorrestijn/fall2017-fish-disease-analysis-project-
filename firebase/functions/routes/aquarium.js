@@ -188,8 +188,9 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 router.post('/aquaria/:id/fish', isAuthenticated, validateModel("data", ["species"]), (req, res) => {
 	const aquariumRef = db.collection('aquaria').doc(req.params.id);
 
-	req.body.data.user = req.user.ref;
-	req.body.data.aquarium = aquariumRef;
+	let data = req.body.data;
+	data.user = req.user.ref;
+	data.aquarium = aquariumRef;
 
 	db.collection('fish').add(data).then((newDoc) => {
 		return newDoc.update({id: newDoc.id});
