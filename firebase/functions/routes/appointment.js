@@ -50,9 +50,11 @@ router.get('/admin/appointments/', (req, res) => {
 			let appointments = appointmentsWithId;
 			let promises = [];
 			appointmentsWithId.forEach((appointment) => {
+			  	let userId = appointment.reservedBy;
 				promises.push(admin.auth().
 					getUser(appointment.reservedBy).
 					then((userRecord) => {
+				  		appointment.reservedById = userId;
 						appointment.reservedBy = userRecord.toJSON().displayName;
 						return appointment;
 					}));
