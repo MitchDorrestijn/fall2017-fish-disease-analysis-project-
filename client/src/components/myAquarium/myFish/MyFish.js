@@ -12,53 +12,7 @@ export default class MyFish extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-				fishData: [
-					{
-						"inAquarium":"aquarium1",
-						"imageURL":"/recources/emerald-catfish.jpg",
-						"title":"Flyingfish",
-						"subtitle":"Flies away",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					},
-					{
-						"inAquarium":"aquarium2",
-						"imageURL":"/recources/catfish.jpg",
-						"title":"Platfish",
-						"subtitle":"Swims quickly",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					},
-					{
-						"inAquarium":"aquarium3",
-						"imageURL":"/recources/loach-catfish.jpg",
-						"title":"Potfish",
-						"subtitle":"Swims slow",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					},
-					{
-						"inAquarium":"aquarium1",
-						"imageURL":"/recources/loach-catfish.jpg",
-						"title":"Potfish",
-						"subtitle":"Swims slow",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					},
-					{
-						"inAquarium":"aquarium2",
-						"imageURL":"/recources/loach-catfish.jpg",
-						"title":"Potfish",
-						"subtitle":"Swims slow",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					}
-			],
+				fishData: [],
 			createdAquariums: "",
 			currentAquarium: ""
 		}
@@ -98,6 +52,7 @@ export default class MyFish extends React.Component {
 		)
 	}
 	showSelectedCategory = (aquariumName) => {
+		console.log(aquariumName);
 		let da = new DataAccess();
 		da.getData(`/aquaria/${aquariumName}/fish`,  (err, res) => {
 			if (!err) {
@@ -106,29 +61,21 @@ export default class MyFish extends React.Component {
 		});
   }
 	filterFish = () => {
-		// const {currentAquarium} = this.state;
-		// if (currentAquarium) {
-		// 	for (const elem of currentAquarium.fish) {
-		// 		//console.log(elem.species._referencePath.segments[1]);
-		// 		let da = new DataAccess();
-		// 		da.getData(`/species/${elem.species._referencePath.segments[1]}`,  (err, res) => {
-		// 			if (!err) {
-		// 				let fishInAquaria = [];
-		// 				fishInAquaria.push(
-		// 					<Card image={res.message.imageURL}>
-		// 						<CardTitle>{res.message.name}</CardTitle>
-		// 						<CardSubtitle>{res.message.additional}</CardSubtitle>
-		// 						<CardText>
-		// 							{res.message.info}
-		// 						</CardText>
-		// 					</Card>
-		// 				);
-		// 				console.log(res.message);
-		// 			}
-		// 		});
-		// 	}
-		// }
-		console.log(this.state.currentAquarium);
+		if (this.state.currentAquarium) {
+			const {fish} = this.state.currentAquarium;
+			const result = fish.map ((elem) => {
+				return (
+					<Card key={elem.id} image={elem.species.imageUrl}>
+						<CardTitle>{elem.species.name}</CardTitle>
+						<CardSubtitle>{elem.species.additional}</CardSubtitle>
+						<CardText>{elem.species.info}</CardText>
+					</Card>
+				);
+			});
+			return result;
+		} else {
+			return null;
+		}
 	}
 	showAddFishModel = (e) => {
 		e.preventDefault ();
@@ -155,6 +102,7 @@ export default class MyFish extends React.Component {
 					</div>
 					<div className="card-columns">
 						{this.filterFish()}
+
 					</div>
 				</div>
 			</div>
