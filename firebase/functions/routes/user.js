@@ -27,7 +27,7 @@ const mailer = require('../mailer/mailer.js');
  */
 router.get('/users/:id/', isAuthenticated, (req, res) => {
 	// Check if user is indeed authenticated user
-	if (req.user.uid !== req.params.id){
+	if (req.user.uid !== req.params.id) {
 		return res.sendStatus(403);
 	}
 	const userId = req.params.id;
@@ -44,28 +44,29 @@ router.get('/users/:id/', isAuthenticated, (req, res) => {
 });
 
 /**
-*  @api {get} /users/:id/ Update user
-*  @apiName Update profile of user from id
-*  @apiGroup Users
-*
-*  @apiSuccess {String} User updated
-*  @apiSuccessExample Success-Response:
-*  HTTP/1.1 200 OK
-*  {
+ *  @api {get} /users/:id/ Update user
+ *  @apiName Update profile of user from id
+ *  @apiGroup Users
+ *
+ *  @apiSuccess {String} User updated
+ *  @apiSuccessExample Success-Response:
+ *  HTTP/1.1 200 OK
+ *  {
 *       User updated
 *  }
-*  @apiUse BadRequest
-*  @apiUse InternalServerError
-*  @apiUse UserAuthenticated
-*  @apiUse Forbidden
-*/
+ *  @apiUse BadRequest
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse Forbidden
+ */
 router.put('/users/:id/', isAuthenticated, (req, res) => {
 	// Check if user is indeed authenticated user
-	if (req.user.uid != req.params.id){
-		return res.status(403).send("User is trying to access other user's credentials.");
+	if (req.user.uid != req.params.id) {
+		return res.status(403).
+			send('User is trying to access other user\'s credentials.');
 	}
 	if (!req.body) {
-		return res.status(400).send("No body provided");
+		return res.status(400).send('No body provided');
 	}
 	const user = req.body;
 	if (!validator.isAlpha(user.firstName) ||
@@ -110,13 +111,11 @@ router.put('/users/:id/', isAuthenticated, (req, res) => {
 
 // Route to test mailer.
 router.post('/user/mail', (req, res) => {
-	mailer.mail("jaapweijland@gmail.com", "Title", "Body")
-	.then(() => {
+	mailer.mail('jaapweijland@gmail.com', 'Title', 'Body').then(() => {
 		res.sendStatus(200);
-	})
-	.catch((error) => {
+	}).catch((error) => {
 		res.send(error.message);
-	})
-})
+	});
+});
 
 module.exports = router;

@@ -24,19 +24,19 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiUse UserAuthenticated
  */
 router.get('/aquaria/', isAuthenticated, (req, res) => {
-	db.collection("aquaria").where("user", "==", req.user.ref).get()
+  db.collection('aquaria').where('user', '==', req.user.ref).get()
 	.then((snapshot) => {
-		let aquaria = [];
-		snapshot.forEach((doc) => {
-			aquaria.push(helperFunctions.flatData(doc));
-		});
-		// for (let i = 0; i < aquaria.length; i++) {
-		// 	aquaria[i].user = aquaria[i].user.id;
-		// }
-		res.send(aquaria);
+	  let aquaria = [];
+	  snapshot.forEach((doc) => {
+		aquaria.push(helperFunctions.flatData(doc));
+	  });
+	  // for (let i = 0; i < aquaria.length; i++) {
+	  // 	aquaria[i].user = aquaria[i].user.id;
+	  // }
+	  res.send(aquaria);
 	}).catch((err) => {
-		res.status(500).send(err.message);
-	});
+	res.status(500).send(err.message);
+  });
 });
 
 /**
@@ -49,19 +49,23 @@ router.get('/aquaria/', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  */
 router.get('/aquaria/:id', isAuthenticated, (req, res) => {
-	db.collection("aquaria").where("id", "==", req.params.id).where("user", "==", req.user.ref).get()
+  db.collection('aquaria')
+	.where('id', '==', req.params.id)
+	.where('user', '==', req.user.ref)
+	.get()
 	.then((snapshot) => {
-		if (snapshot.empty){
-			return Promise.reject(new Error("Aquarium non existent or not owned by user."));
-		}
-		let aquarium = snapshot.docs[0].data();
-		delete aquarium.user;
-		return res.status(200).send({
-			aquarium: aquarium
-		});
+	  if (snapshot.empty) {
+		return Promise.reject(
+		  new Error('Aquarium non existent or not owned by user.'));
+	  }
+	  let aquarium = snapshot.docs[0].data();
+	  delete aquarium.user;
+	  return res.status(200).send({
+		aquarium: aquarium
+	  });
 	})
 	.catch((error) => {
-		res.status(500).send(error.message);
+	  res.status(500).send(error.message);
 	});
 });
 
@@ -75,22 +79,23 @@ router.get('/aquaria/:id', isAuthenticated, (req, res) => {
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
+router.post('/aquaria/', isAuthenticated, validateModel('data', ['name']),
+  (req, res) => {
 	let data = req.body.data;
 	data.user = req.user.ref;
-	db.collection("aquaria").add(data)
-	.then((newDoc) => {
-		return newDoc.get ().then ((obj) => {
-			let newData = obj.data ();
-			newData.id = newDoc.id;
-			delete newData.user;
-			res.status(201).send ({aquarium: newData});
+	db.collection('aquaria').add(data)
+	  .then((newDoc) => {
+		return newDoc.get().then((obj) => {
+		  let newData = obj.data();
+		  newData.id = newDoc.id;
+		  delete newData.user;
+		  res.status(201).send({aquarium: newData});
 		});
-	})
-	.catch((error) => {
+	  })
+	  .catch((error) => {
 		res.status(500).send(error.message);
-	});
-});
+	  });
+  });
 
 /**
  *  @api {post} /aquaria/:id Update aquarium
@@ -103,32 +108,33 @@ router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req,
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (req, res) => {
-	db.collection('aquaria').
-		where('id', '==', req.params.id).
-		where('user', '==', req.user.ref).
-		get().
-		then((snapshot) => {
-			if (snapshot.empty) {
-				return Promise.reject(
-					new Error('Aquarium non existent or not owned by user.'));
-			}
-			return snapshot.docs[0].ref.update(data);
-		})
-		.then((updated) => {
-			return updated.get();
-		})
-		.then((doc) => {
-			const ret = doc.data()
-			if(ret.user){
-				ret.user = ret.user.id
-			}
-			res.status(200).send(ret);
-		})
-		.catch((error) => {
-			res.status(500).send(error.message);
-		});
-});
+router.post('/aquaria/:id', isAuthenticated, validateModel('model', ['name']),
+  (req, res) => {
+	db.collection('aquaria')
+	  .where('id', '==', req.params.id)
+	  .where('user', '==', req.user.ref)
+	  .get()
+	  .then((snapshot) => {
+		if (snapshot.empty) {
+		  return Promise.reject(
+			new Error('Aquarium non existent or not owned by user.'));
+		}
+		return snapshot.docs[0].ref.update(data);
+	  })
+	  .then((updated) => {
+		return updated.get();
+	  })
+	  .then((doc) => {
+		const ret = doc.data();
+		if (ret.user) {
+		  ret.user = ret.user.id;
+		}
+		res.status(200).send(ret);
+	  })
+	  .catch((error) => {
+		res.status(500).send(error.message);
+	  });
+  });
 
 /**
  *  @api {post} /aquaria/:id Return all fish
@@ -142,35 +148,35 @@ router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (
  *  @apiUse UnprocessableEntity
  */
 router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
-	db.collection('aquaria').
-		where('id', '==', req.params.id).
-		where('user', '==', req.user.ref).
-		get().
-		then((snapshot) => {
-			if (snapshot.empty) {
-				reject(
-					new Error('Aquarium non existent or not owned by user.'));
-			}
-			const doc = snapshot.docs[0];
-			return db.collection('fish').
-				where('aquarium', '==', doc.ref).
-				where('user', '==', req.user.ref).
-				get();
-		}).
-		then((snapshot) => {
-			let fish = [];
-			snapshot.forEach((doc) => {
-				// Preventing firebase from sending the document reference over JSON. Replacing the references with ID's.
-				let data = doc.data();
-				data.user = data.user.id;
-				data.aquarium = data.aquarium.id;
-				fish.push(data);
-			});
-			res.send({fish: fish});
-		}).
-		catch((error) => {
-			res.status(500).send(error.message);
-		});
+  db.collection('aquaria')
+	.where('id', '==', req.params.id)
+	.where('user', '==', req.user.ref)
+	.get()
+	.then((snapshot) => {
+	  if (snapshot.empty) {
+		reject(
+		  new Error('Aquarium non existent or not owned by user.'));
+	  }
+	  const doc = snapshot.docs[0];
+	  return db.collection('fish')
+		.where('aquarium', '==', doc.ref)
+		.where('user', '==', req.user.ref)
+		.get();
+	})
+	.then((snapshot) => {
+	  let fish = [];
+	  snapshot.forEach((doc) => {
+		// Preventing firebase from sending the document reference over JSON. Replacing the references with ID's.
+		let data = doc.data();
+		data.user = data.user.id;
+		data.aquarium = data.aquarium.id;
+		fish.push(data);
+	  });
+	  res.send({fish: fish});
+	})
+	.catch((error) => {
+	  res.status(500).send(error.message);
+	});
 });
 
 /**
@@ -185,24 +191,25 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.post('/aquaria/:id/fish', isAuthenticated, validateModel("data", ["species"]), (req, res) => {
+router.post('/aquaria/:id/fish', isAuthenticated,
+  validateModel('data', ['species']), (req, res) => {
 	const aquariumRef = db.collection('aquaria').doc(req.params.id);
 
 	req.body.data.user = req.user.ref;
 	req.body.data.aquarium = aquariumRef;
 
 	db.collection('fish').add(data).then((newDoc) => {
-		return newDoc.update({id: newDoc.id});
+	  return newDoc.update({id: newDoc.id});
 	}).then(() => {
-		res.sendStatus(201);
+	  res.sendStatus(201);
 	}).catch((error) => {
-		res.status(500).send(error.message);
+	  res.status(500).send(error.message);
 	});
-});
+  });
 
 // Edits a fish in aquarium
 router.put('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
-	res.status(500).send('fish edit - not yet implemented');
+  res.status(500).send('fish edit - not yet implemented');
 });
 
 /**
@@ -217,29 +224,28 @@ router.put('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
  *  @apiUse EmptyReturn
  */
 router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
-	const aquarium = db.collection('aquaria').doc(req.params.id);
+  const aquarium = db.collection('aquaria').doc(req.params.id);
 
-	//db.collection("entries").where("aquarium", "==", aquarium).where("user", "==", req.user.ref).get()
-	db.collection('aquaria').doc(req.params.id).collection('entries').get()
+  //db.collection("entries").where("aquarium", "==", aquarium).where("user", "==", req.user.ref).get()
+  db.collection('aquaria').doc(req.params.id).collection('entries').get()
 	.then((snapshot) => {
-		console.log(snapshot);
-		if (snapshot.empty) {
-			res.status(204).send('Nothing found');
-		}
+	  console.log(snapshot);
+	  if (snapshot.empty) {
+		res.status(204).send('Nothing found');
+	  }
 
-		const diary = {};
-		diary.aquarium = aquarium;
-		diary.user = req.user.ref;
-		diary.entries = [];
+	  const diary = {};
+	  diary.aquarium = aquarium;
+	  diary.user = req.user.ref;
+	  diary.entries = [];
 
-		snapshot.forEach((doc) => {
-			diary.entries.push(doc.data());
-		});
-		res.send(diary);
-	}).
-	catch((error) => {
-		res.status(500).send(error.message);
-	});
+	  snapshot.forEach((doc) => {
+		diary.entries.push(doc.data());
+	  });
+	  res.send(diary);
+	}).catch((error) => {
+	res.status(500).send(error.message);
+  });
 });
 
 /**
@@ -253,16 +259,19 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
  *  @apiUse HTTPCreated
  */
 router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
-	const entry = req.body.entry;
+  const entry = req.body.entry;
 
-	// Warning: no model validation
-	return db.collection("aquaria").doc(req.params.id).collection("entries").add(entry)
+  // Warning: no model validation
+  return db.collection('aquaria')
+	.doc(req.params.id)
+	.collection('entries')
+	.add(entry)
 	.then(() => {
-		res.send(201);
+	  res.send(201);
 	})
 	.catch((error) => {
-		res.status(500).send(error.message);
-	})
+	  res.status(500).send(error.message);
+	});
 });
 
 module.exports = router;
