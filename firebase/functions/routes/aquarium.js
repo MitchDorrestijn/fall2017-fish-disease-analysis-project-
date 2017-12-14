@@ -187,17 +187,18 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
  */
 router.post('/aquaria/:id/fish', isAuthenticated, validateModel("data", ["species"]), (req, res) => {
 	const aquariumRef = db.collection('aquaria').doc(req.params.id);
+  let data = req.body.data;
+  data.user = req.user.ref;
+  data.species = db.collection("species").doc(data.species);
+  data.aquarium = aquariumRef;
 
-	req.body.data.user = req.user.ref;
-	req.body.data.aquarium = aquariumRef;
-
-	db.collection('fish').add(data).then((newDoc) => {
-		return newDoc.update({id: newDoc.id});
-	}).then(() => {
-		res.sendStatus(201);
-	}).catch((error) => {
-		res.status(500).send(error.message);
-	});
+  db.collection('fish').add(data).then((newDoc) => {
+      return newDoc.update({id: newDoc.id});
+  }).then(() => {
+      res.sendStatus(201);
+  }).catch((error) => {
+      res.status(500).send(error.message);
+  });
 });
 
 // Edits a fish in aquarium

@@ -11,12 +11,12 @@ import {
 } from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
 
-class Login extends React.Component {
+export default class AddAquarium extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			aquariumName: "",
-			error: false
+			error: ""
 		}
 	}
 	handleChange = (e) => {
@@ -25,25 +25,26 @@ class Login extends React.Component {
   }
 	aquariumNameForDB = (e) => {
 		e.preventDefault();
-		console.log(this.state.aquariumName);
-
-		let da = new DataAccess();
-		da.postData ('/aquaria/', {data: {name: this.state.aquariumName}}, (err, res) => {
-			console.log(err,res);
-			if (!err) {
-				this.props.customProps.refreshPage();
-				this.props.toggleModal();
-			} else {
-				this.setState({error: true});
-			}
-		});
+		if(this.state.aquariumName === ""){
+			this.setState({error: "Please fill in an aquarium name!"});
+		} else {
+			let da = new DataAccess();
+			da.postData ('/aquaria/', {data: {name: this.state.aquariumName}}, (err, res) => {
+				if (!err) {
+					this.props.customProps.refreshPage();
+					this.props.toggleModal();
+				} else {
+					this.setState({error: "Something went wrong, please try again."});
+				}
+			});
+		}
 	}
 	render() {
 		return (
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Add aquarium</ModalHeader>
 				<ModalBody>
-					{ this.state.error && "Something went wrong!"}
+					<p className="error">{this.state.error}</p>
 					<FormGroup>
 						<Label for="email">Aquarium name:</Label>
 						<InputGroup>
@@ -58,5 +59,3 @@ class Login extends React.Component {
 		);
 	}
 }
-
-export default Login;

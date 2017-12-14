@@ -60,7 +60,7 @@ export default class MyFish extends React.Component {
 					}
 			],
 			createdAquariums: "",
-			currentAquarium: "aquarium1"
+			currentAquarium: ""
 		}
 	}
 	componentWillMount(){
@@ -70,7 +70,6 @@ export default class MyFish extends React.Component {
 		let da = new DataAccess();
 		da.getData ('/aquaria', (err, res) => {
 			if (!err) {
-				console.log(res.message);
 				this.setState({createdAquariums: res.message});
 			} else {
 				console.log("De error is: " + err.message);
@@ -78,22 +77,18 @@ export default class MyFish extends React.Component {
 		});
 	}
 	createFilterButtons = () => {
-		// let buttons = []
-		// this.state.createdAquariums.forEach((key) => {
-		// 	if(this.state.createdAquariums.hasOwnProperty(key)) {
-		// 		buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
-		// 	}
-		// });
-		// return (
-		// 	<div>
-		// 		{buttons}
-		// 	</div>
-		// )
-
 		let buttons = [];
 		for(var key in this.state.createdAquariums) {
     	if(this.state.createdAquariums.hasOwnProperty(key)) {
-				buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
+				let {id, name} = this.state.createdAquariums[key];
+				buttons.push(
+					<ActionButton
+						key={key}
+						color="primary btn-transparent"
+						buttonText={name}
+						onClickAction={() => this.showSelectedCategory(id)}
+					/>
+				);
 			}
 		}
 		return (
@@ -101,33 +96,39 @@ export default class MyFish extends React.Component {
 				{buttons}
 			</div>
 		)
-
 	}
-	showSelectedCategory = (button) => {
-    this.setState({ currentAquarium: button });
+	showSelectedCategory = (aquariumName) => {
+		let da = new DataAccess();
+		da.getData(`/aquaria/${aquariumName}/fish`,  (err, res) => {
+			if (!err) {
+				this.setState({ currentAquarium: res.message });
+			}
+		});
   }
 	filterFish = () => {
-		let currentVisibleAquarium = this.state.currentAquarium;
-		let filteredFish = this.state.fishData.filter(function(fish){
-			return fish.inAquarium === currentVisibleAquarium;
-		}).map(function(fish, index){
-			return (
-				<Card key={index} inAquarium={fish.inAquarium} image={fish.imageURL}>
-					<CardTitle>{fish.title}</CardTitle>
-					<CardSubtitle>{fish.subtitle}</CardSubtitle>
-					<CardText>
-						{fish.description}
-						<span>First time this specie was added:<br/>{fish.firstAdded}</span>
-					</CardText>
-					<ActionButton link={true} linkTo={fish.linkTo} color="primary btn-transparent" buttonText="Analyseer vis"/>
-				</Card>
-			);
-		});
-		return (
-			<div>
-				{filteredFish}
-			</div>
-		);
+		// const {currentAquarium} = this.state;
+		// if (currentAquarium) {
+		// 	for (const elem of currentAquarium.fish) {
+		// 		//console.log(elem.species._referencePath.segments[1]);
+		// 		let da = new DataAccess();
+		// 		da.getData(`/species/${elem.species._referencePath.segments[1]}`,  (err, res) => {
+		// 			if (!err) {
+		// 				let fishInAquaria = [];
+		// 				fishInAquaria.push(
+		// 					<Card image={res.message.imageURL}>
+		// 						<CardTitle>{res.message.name}</CardTitle>
+		// 						<CardSubtitle>{res.message.additional}</CardSubtitle>
+		// 						<CardText>
+		// 							{res.message.info}
+		// 						</CardText>
+		// 					</Card>
+		// 				);
+		// 				console.log(res.message);
+		// 			}
+		// 		});
+		// 	}
+		// }
+		console.log(this.state.currentAquarium);
 	}
 	showAddFishModel = (e) => {
 		e.preventDefault ();
@@ -135,11 +136,11 @@ export default class MyFish extends React.Component {
 	};
 	showAddAquariumModel = (e) => {
 		e.preventDefault ();
-		this.props.openModal(AddAquarium);
+		this.props.openModal(AddAquarium, {refreshPage: this.renderAquariums});
 	}
 	showRemoveAquariumModel = (e) => {
 		e.preventDefault ();
-		this.props.openModal(RemoveAquarium);
+		this.props.openModal(RemoveAquarium, {refreshPage: this.renderAquariums});
 	}
 	render() {
 		return (
