@@ -141,12 +141,12 @@ router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
-	db.collection('aquaria').
-		where('id', '==', req.params.id).
-		where('user', '==', req.user.ref).
-		get().
-		then((snapshot) => {
+router.get('/aquaria/:id/fish',isAuthenticated, (req, res) => {
+	db.collection('aquaria')
+		.where('id', '==', req.params.id)
+		.where('user', '==', req.user.ref)
+		.get()
+		.then((snapshot) => {
 			if (snapshot.empty) {
 				reject(
 					new Error('Aquarium non existent or not owned by user.'));
@@ -159,14 +159,23 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 		}).
 		then((snapshot) => {
 			let fish = [];
+	  		let promises = [];
 			snapshot.forEach((doc) => {
-				// Preventing firebase from sending the document reference over JSON. Replacing the references with ID's.
-				let data = doc.data();
-				data.user = data.user.id;
-				data.aquarium = data.aquarium.id;
-				fish.push(data);
+			  let fishData = helperFunctions.flatData(doc);
+			  promises.push(
+				db.collection('species').doc(fishData.species).get()
+				  .then((species) => {
+					fishData.species = helperFunctions.flatData(species);
+					fish.push(fishData);
+					return null;
+				  })
+			  );
 			});
-			res.send({fish: fish});
+			Promise.all(promises).then(() => {
+			  return fish;
+			}).then((fishData) => {
+			  res.send({fish: fishData});
+			})
 		}).
 		catch((error) => {
 			res.status(500).send(error.message);
@@ -187,18 +196,19 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
  */
 router.post('/aquaria/:id/fish', isAuthenticated, validateModel("data", ["species"]), (req, res) => {
 	const aquariumRef = db.collection('aquaria').doc(req.params.id);
-  let data = req.body.data;
-  data.user = req.user.ref;
-  data.species = db.collection("species").doc(data.species);
-  data.aquarium = aquariumRef;
 
-  db.collection('fish').add(data).then((newDoc) => {
-      return newDoc.update({id: newDoc.id});
-  }).then(() => {
-      res.sendStatus(201);
-  }).catch((error) => {
-      res.status(500).send(error.message);
-  });
+	let data = req.body.data;
+	data.user = req.user.ref;
+	data.species = db.collection("species").doc(data.species);
+	data.aquarium = aquariumRef;
+
+	db.collection('fish').add(data).then((newDoc) => {
+		return newDoc.update({id: newDoc.id});
+	}).then(() => {
+		res.sendStatus(201);
+	}).catch((error) => {
+		res.status(500).send(error.message);
+	});
 });
 
 // Edits a fish in aquarium
