@@ -10,17 +10,18 @@ export default class AddFish extends React.Component {
 		super(props);
 		this.state = {
 			fishSpecies: [],
-			availibleAquariums: [],
+			// availibleAquariums: [],
 			selectedAquarium: "", //To display the selected aquaria in the input field
 			selectedFish: "", //To display the selected fish in the input field
 			dataToSendToDB: {},
 			fishImage: null,
-			error: ""
+			error: "",
+			currentAquarium: this.props.customProps.currentAquarium
 		}
 	}
 	componentDidMount(){
 		this.loadSpecies();
-		this.loadAquaria();
+		// this.loadAquaria();
 	}
 	loadSpecies = () => {
 		let da = new DataAccess();
@@ -32,16 +33,16 @@ export default class AddFish extends React.Component {
 			}
 		});
 	}
-	loadAquaria = () => {
-		let da = new DataAccess();
-		da.getData ('/aquaria', (err, res) => {
-			if (!err) {
-				for (let elem of res.message) {
-					this.setState({availibleAquariums: [...this.state.availibleAquariums, { value: elem.id, label: elem.name }]});
-				}
-			}
-		});
-	}
+	// loadAquaria = () => {
+	// 	let da = new DataAccess();
+	// 	da.getData ('/aquaria', (err, res) => {
+	// 		if (!err) {
+	// 			for (let elem of res.message) {
+	// 				this.setState({availibleAquariums: [...this.state.availibleAquariums, { value: elem.id, label: elem.name }]});
+	// 			}
+	// 		}
+	// 	});
+	// }
 	selectFishSpecies = (val) => {
 		let da = new DataAccess();
 		da.getData(`/species/${val}`, (err, res) => {
@@ -55,25 +56,30 @@ export default class AddFish extends React.Component {
 		}
 		this.setState({selectedFish: val, objectToSendToDB: selectedData});
 	}
-	getSelectedAquarium = (val) => {
-		let selectedData = {
-			aquariumName: val,
-			fishName: this.state.selectedFish
-		}
-		this.setState({selectedAquarium: val, objectToSendToDB: selectedData})
-	}
+	// getSelectedAquarium = (val) => {
+	// 	let selectedData = {
+	// 		aquariumName: val,
+	// 		fishName: this.state.selectedFish
+	// 	}
+	// 	this.setState({selectedAquarium: val, objectToSendToDB: selectedData})
+	// }
 	addFish = () => {
-		let aquariaId = this.state.objectToSendToDB.aquariumName;
-		let specieName = this.state.objectToSendToDB.fishName;
-		let da = new DataAccess();
-		da.postData(`/aquaria/${aquariaId}/fish`, {data: {species: specieName}} , (err, res) => {
-			if (!err) {
-				this.props.customProps.refreshPage();
-				this.props.toggleModal();
-			} else {
-				this.setState({error: "Something went wrong, please try again."})
-			}
-		});
+		//let aquariaId = this.state.objectToSendToDB.aquariumName;
+		let aquariaId =  this.state.currentAquarium;
+		if(this.state.objectToSendToDB){
+			let specieName = this.state.objectToSendToDB.fishName;
+			let da = new DataAccess();
+			da.postData(`/aquaria/${aquariaId}/fish`, {data: {species: specieName}} , (err, res) => {
+				if (!err) {
+					this.props.customProps.refreshPage();
+					this.props.toggleModal();
+				} else {
+					this.setState({error: "Something went wrong, please select a aqarium and try again."})
+				}
+			});
+		} else {
+			this.setState({error: "Please provide a fish name."});
+		}
 	}
 	render() {
 		return (
@@ -94,7 +100,7 @@ export default class AddFish extends React.Component {
 								onChange={this.selectFishSpecies}
 							/>
 						</InputGroup>
-						<Label for="addfishtoaquarium">Add fish to aquarium:</Label>
+						{/* <Label for="addfishtoaquarium">Add fish to aquarium:</Label>
 						<InputGroup>
 							<Select
 								simpleValue={true}
@@ -104,7 +110,7 @@ export default class AddFish extends React.Component {
 								options={this.state.availibleAquariums}
 								onChange={this.getSelectedAquarium}
 							/>
-						</InputGroup>
+						</InputGroup> */}
 					</FormGroup>
 					<hr/>
 					<Button onClick={this.addFish} outline className="modalLink" color="secondary" block>Add fish</Button>

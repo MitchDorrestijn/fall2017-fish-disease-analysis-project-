@@ -12,9 +12,10 @@ export default class MyFish extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-				fishData: [],
+			fishData: [],
 			createdAquariums: "",
-			currentAquarium: ""
+			currentAquarium: "",
+			currentAquariumId: ""
 		}
 	}
 	componentWillMount(){
@@ -52,11 +53,10 @@ export default class MyFish extends React.Component {
 		)
 	}
 	showSelectedCategory = (aquariumName) => {
-		console.log(aquariumName);
 		let da = new DataAccess();
 		da.getData(`/aquaria/${aquariumName}/fish`,  (err, res) => {
 			if (!err) {
-				this.setState({ currentAquarium: res.message });
+				this.setState({ currentAquarium: res.message, currentAquariumId: aquariumName });
 			}
 		});
   }
@@ -79,7 +79,8 @@ export default class MyFish extends React.Component {
 	}
 	showAddFishModel = (e) => {
 		e.preventDefault ();
-		this.props.openModal(AddFish, {refreshPage: this.renderAquariums});
+		console.log(this.state.currentAquariumId);
+		this.props.openModal(AddFish, {refreshPage: () => this.showSelectedCategory (this.state.currentAquariumId), currentAquarium: this.state.currentAquariumId});
 	};
 	showAddAquariumModel = (e) => {
 		e.preventDefault ();
