@@ -10,9 +10,9 @@ export default class RemoveNotificationRule extends Component {
 		};
 	};
 
+	//delete data functions:
 	deleteNotificationRule = () => {
 		let da = new DataAccess ();
-		console.log(this.state.data);
 		da.deleteData(`/notifications/rules/${this.state.data.id}`, (err, res) => {
 			if (!err) {
 				this.props.customProps.refreshPage();
@@ -35,5 +35,5 @@ export default class RemoveNotificationRule extends Component {
 				</ModalBody>
 			</div>
 		);
-	}
-}
+	};
+};
