@@ -1,27 +1,74 @@
 import React, {Component} from 'react';
-import {Button, ModalHeader, ModalBody, FormGroup, InputGroup, Input, Label} from 'reactstrap';
+import {Button, ModalHeader, ModalBody, FormGroup, InputGroup, Input, Label, Tooltip} from 'reactstrap';
 import DataAccess from '../../../scripts/DataAccess';
 
 export default class AddNotificationRule extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: this.props.customProps
+			data: this.props.customProps,
+			error: '',
+			tooltipOpen: false
 		};
 		this.attributes = ['Phosphate', 'Nitrate', 'Nitrite', 'Iron', 'gH', 'Temperature', 'Oxygen', 'Carbon', 'Dioxide', 'kH', 'Chlorine'];
-	}
+		this.toggle = this.toggle.bind(this);
+	};
 
+	//changeState functions:
+	toggle() {
+		this.setState({
+			tooltipOpen: !this.state.tooltipOpen
+		});
+	}
+	changeData = (field, evt) => {
+		let data = this.state.data;
+		data[field] = evt.target.value;
+		this.setState({
+			data: data
+		});
+	};
+	changeAttribute = (evt) => {
+		this.changeData('attribute', evt);
+	};
+	changeEquation = (evt) => {
+		this.changeData('equation', evt);
+	};
+	changeCompared = (evt) => {
+		this.changeData('compared', evt);
+	};
+	changeMin = (evt) => {
+		this.changeData('min', evt);
+	};
+	changeMax = (evt) => {
+		this.changeData('max', evt);
+	};
+	changeMessage = (evt) => {
+		this.changeData('message', evt);
+	};
+	changeType = (evt) => {
+		this.changeData('type', evt);
+	};
+
+	//get/post/put data functions:
 	addNotificationRule = () => {
-		if (this.state.data.equation === 'range') {
-			let {data} = this.state;
-			data.compared = null;
-			this.setState({data: data});
-		} else {
-			let {data} = this.state;
-			data.min = data.max = null;
-			this.setState({data: data});
+		//validation
+		if ((!this.state.data.compared && (!this.state.data.min || !this.state.data.max)) ||
+				 !this.state.data.attribute || !this.state.data.equation || !this.state.data.message || !this.state.data.type){
+			this.setState({error: "Fill in all fields!"});
+		} else if ((this.state.data.compared || (this.state.data.min && this.state.data.max)) &&
+								this.state.data.attribute && this.state.data.equation && this.state.data.message  && this.state.data.type) {
+			//remove unnecessary data before inserting it
+			if (this.state.data.equation === 'range') {
+				let {data} = this.state;
+				data.compared = null;
+				this.setState({data: data});
+			} else {
+				let {data} = this.state;
+				data.min = data.max = null;
+				this.setState({data: data});
+			};
+			this.postNotificationRule(this.state.data);
 		};
-		this.postNotificationRule(this.state.data);
 	};
 	postNotificationRule = (dataObject) => {
 		let da = new DataAccess ();
@@ -35,42 +82,7 @@ export default class AddNotificationRule extends Component {
 		});
 	};
 
-	changeData = (field, evt) => {
-		let data = this.state.data;
-		data[field] = evt.target.value;
-		this.setState({
-			data: data
-		});
-	};
-
-	changeAttribute = (evt) => {
-		this.changeData('attribute', evt);
-	};
-
-	changeEquation = (evt) => {
-		this.changeData('equation', evt);
-	};
-
-	changeCompared = (evt) => {
-		this.changeData('compared', evt);
-	};
-
-	changeMin = (evt) => {
-		this.changeData('min', evt);
-	};
-
-	changeMax = (evt) => {
-		this.changeData('max', evt);
-	};
-
-	changeMessage = (evt) => {
-		this.changeData('message', evt);
-	};
-
-	changeType = (evt) => {
-		this.changeData('type', evt);
-	};
-
+	//fill form selections functions:
 	showAttributes = () => {
 		let options = [];
 		this.attributes.forEach( (value, index) => {
@@ -79,6 +91,7 @@ export default class AddNotificationRule extends Component {
 		return options
 	};
 
+	//make needed imputs between range and others in equation:
 	showCompared = (min, max, compared) => {
 		if (this.state.data.equation === 'range') {
 			return (
@@ -112,6 +125,7 @@ export default class AddNotificationRule extends Component {
 			<div>
 				<ModalHeader toggle={toggleModal}>Change notification rule</ModalHeader>
 				<ModalBody>
+					<p className="error">{this.state.error}</p>
 					<FormGroup>
 						<Label>Attribute</Label><br/>
 						<InputGroup>
@@ -135,7 +149,12 @@ export default class AddNotificationRule extends Component {
 					</FormGroup>
 					{this.showCompared(min, max, compared)}
 					<FormGroup>
-						<Label>Notification message</Label><br/>
+						<Label>Notification message <a href="#" id="TooltipMessage">(more info)</a></Label><br/>
+						<Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipMessage" toggle={this.toggle}>
+							Placeholders: <br /><br />
+							{'{aquarium}: will show the concerned aquarium name'} <br /><br />
+							{'{attribute} (like {Iron}): will show the concerned value of, the specific attribute, put in by the user'}
+						</Tooltip>
 						<InputGroup>
 							<Input type='text' onChange={this.changeMessage}/>
 						</InputGroup>

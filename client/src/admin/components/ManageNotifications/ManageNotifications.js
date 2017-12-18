@@ -14,23 +14,43 @@ export default class ManageNotifications extends React.Component {
 			searchTerm: '',
 			dataFromDB: [],
 			data: []
-		}
-	}
+		};
+	};
+
+	//modals functions:
+	removeNotificationRule = (entry) => {
+		this.props.openModal(removeNotificationRule, {
+			refreshPage: this.loadCurrentNotifications,
+			entry: entry
+		});
+	};
+	changeNotificationRule = (entry) => {
+		this.props.openModal(changeNotificationRule, {
+			refreshPage: this.fillData,
+			entry: entry
+		});
+	};
+
+	//component mount/unmount functions:
 	componentDidMount(){
 		this.loadCurrentNotifications();
-	}
+	};
+
+	//get/post/put data functions:
 	loadCurrentNotifications = () => {
 		let da = new DataAccess();
 		da.getData ('/notifications/rules', (err, res) => {
 			if (!err) {
 				this.setState({dataFromDB: res.message});
-				this.getData();
+				this.fillData();
 			} else {
 				console.log('De error is: ' + err.message);
-			}
+			};
 		});
-	}
-	getData = () => {
+	};
+
+	//fill table functions:
+	fillData = () => {
 		let data = [];
 		for(var key in this.state.dataFromDB) {
     	if(this.state.dataFromDB.hasOwnProperty(key)) {
@@ -62,40 +82,13 @@ export default class ManageNotifications extends React.Component {
 		}
 		this.setState({
 			data: data
-		})
-	}
-	removeNotificationRule = (entry) => {
-		this.props.openModal(removeNotificationRule, {
-			refreshPage: this.loadCurrentNotifications,
-			entry: entry
 		});
 	};
-	changeNotificationRule = (entry) => {
-		this.props.openModal(changeNotificationRule, {
-			refreshPage: this.getData,
-			entry: entry
-		});
-	};
-	updateRecord = (recordToUpdate) => {
-  	console.log(recordToUpdate);
-	}
-	getSearchTerm = (e) => {
-		e.preventDefault();
-		console.log('SearchTerm: ' + this.state.searchTerm);
-	}
-	handleSearchChange = (e) => {
-		this.setState({searchTerm: e.target.value});
-	}
+
 	render(){
 		return (
 			<div>
 				<h2>Add / edit / remove notification rules</h2>
-				{/* <Form inline className='searchForm' onSubmit={this.getSearchTerm}>
-					<FormGroup>
-						<Input type='text' name='searchTerm' placeholder='What do you wanna search?' onChange={this.handleSearchChange} />
-					</FormGroup>
-					<Button className='btn-admin'>Search now</Button>
-				</Form> */}
 				<Table className='table'>
 					<Thead>
 						<Tr>
