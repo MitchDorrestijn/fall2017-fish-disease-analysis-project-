@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, ModalHeader, ModalBody, FormGroup, InputGroup, Input, Label} from 'reactstrap';
+import {Button, ModalHeader, ModalBody, FormGroup, InputGroup, Input, Label, Tooltip} from 'reactstrap';
 import DataAccess from '../../../scripts/DataAccess';
 
 export default class ChangeNotificationRule extends Component {
@@ -7,12 +7,19 @@ export default class ChangeNotificationRule extends Component {
 		super(props);
 		this.state = {
 			data: props.customProps.entry,
-			error: ''
+			error: '',
+			tooltipOpen: false
 		};
 		this.attributes = ['Phosphate', 'Nitrate', 'Nitrite', 'Iron', 'gH', 'Temperature', 'Oxygen', 'Carbon', 'Dioxide', 'kH', 'Chlorine'];
+		this.toggle = this.toggle.bind(this);
 	};
 
 	//changeState functions:
+	toggle() {
+		this.setState({
+			tooltipOpen: !this.state.tooltipOpen
+		});
+	}
 	changeData = (field, evt) => {
 		let data = this.state.data;
 		data[field] = evt.target.value;
@@ -140,7 +147,12 @@ export default class ChangeNotificationRule extends Component {
 					</FormGroup>
 					{this.showCompared(min, max, compared)}
 					<FormGroup>
-						<Label>Notification message</Label><br/>
+						<Label>Notification message <a href="#" id="TooltipMessage">(more info)</a></Label><br/>
+						<Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipMessage" toggle={this.toggle}>
+							Placeholders: <br /><br />
+							{'{aquarium}: will show the concerned aquarium name'} <br /><br />
+							{'{attribute} (like {Iron}): will show the concerned value of, the specific attribute, put in by the user'}
+						</Tooltip>
 						<InputGroup>
 							<Input type='text' value={message} onChange={this.changeMessage}/>
 						</InputGroup>
