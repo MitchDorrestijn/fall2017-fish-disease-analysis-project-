@@ -118,13 +118,28 @@ router.post('/appointments/', isAuthenticated,
 	  .collection('timeslots')
 	  .doc(appointmentBody.timeSlotId);
 	admin.auth().getUser(req.user.uid).then((userRecord) => {
-	  sendNewAppointmentMail(userRecord);
+	  //TODO: Now commented out for development
+	  // sendNewAppointmentMail(userRecord);
 	});
-	// At the moment a static user id which is the consultant, if we decide to let the user chose a consultant we can get the consultant
-	// admin.auth().getUser("kXKvHb3WlYWIQu3LxUzyYZVuFHt2").then((userRecord) => {
-	// 	sendConsultNewAppointmentMail(userRecord);
-	// 	console.log('Send email');
-	// });
+	// Send to all consultants
+	db.collection('users')
+	  .where('isAdmin', '==', true)
+	  .get()
+	  .then((snapshot) => {
+		snapshot.forEach(doc => {
+		  db.collection('timeslots').doc(appointmentBody.timeSlotId).get()
+			.then((timeslot) => {
+			  let communicationMethod;
+			  if (appointment.video) {
+				communicationMethod = 'De gebruiker wil graag communiceren via videochat en geluid.';
+			  } else {
+				communicationMethod = 'De gebruiker wil alleen gebruik maken van tekstchat.'
+			  }
+			  //TODO: Now commented out for development
+			  // sendConsultNewAppointmentMail(helperFunctions.flatData(doc), appointment.comment,communicationMethod, helperFunctions.flatData(timeslot));
+			});
+		});
+	  });
 	db.collection('appointments')
 	  .add(appointment)
 	  .then(() => {
@@ -240,7 +255,8 @@ router.put('/admin/appointments/:appointmentId/', isAdmin,
 		  admin.auth()
 			.getUser(appointmentData.reservedBy)
 			.then((userRecord) => {
-			  sendAppointmentApprovedMail(userRecord);
+			  console.log(userRecord);
+			  // sendAppointmentApprovedMail(userRecord);
 			});
 		});
 	}
@@ -270,9 +286,23 @@ const sendAppointmentCanceledMail = (user) => {
 	'Hello, We are sending you this email to inform you that your appointment has been canceled.');
 };
 
-const sendConsultNewAppointmentMail = (user) => {
-  mailer.mail(user.email, 'New Appointment',
-	'Hallo, een gebruiker heeft een aanvraag gedaan voor een afspraak.');
+const sendConsultNewAppointmentMail = (user, appointmentComment,appointmentCommunication, timeslot) => {
+  mailer.mail(user.email, 'Nieuwe afspraak',
+  `Hallo,
+  <br><br>
+  De gebruiker ${user.firstName} ${user.lastName} heeft een aanvraag gedaan voor een afspraak.
+  <br><br>
+  Dit heeft betrekking tot:
+  ${appointmentComment}
+  <br><br>
+  ${appointmentCommunication}
+  <br><br>
+  De startdatum van deze afspraak is:
+  ${timeslot.startDate}
+  <br><br>
+  De duratie van de afspraak is:
+  ${timeslot.duration} minuten
+  `);
 };
 
 module.exports = router;
