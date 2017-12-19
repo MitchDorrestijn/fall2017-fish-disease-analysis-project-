@@ -45,50 +45,8 @@ class Notificator {
             }
         }
         */
-        //return new Promise((resolve, reject) => {
-            return admin.messaging().sendToDevice(token, payload)
-        //    .then((result) => {
-        //        resolve(result);
-        //    })
-        //    .catch((error) => {
-        //        reject(error);
-        //    });
-        //})
+        return admin.messaging().sendToDevice(token, payload)
     }
 }
 
 module.exports = new Notificator();
-
-/* module.exports = {
-    add: (userId, message, type) => {
-        return new Promise((resolve, reject) => {
-            db.collection("notifications").add({
-                user: db.collection('users').doc(userId),
-                message: message,
-                type: type,
-                isRead: false,
-                date: Date.now()
-            })
-            .then((result) => {
-                resolve(result);
-            })
-            .catch((error) => {
-                reject(error);
-            })
-        });
-    },
-    
-    setRead: (id) => {
-        return new Promise((resolve, reject) => {
-            db.collection("notifications").doc(id).update({
-                isRead: true
-            })
-            .then((result) => {
-                resolve(result);
-            })
-            .catch((error) => {
-                reject(error);
-            })
-        });
-    }
-} */

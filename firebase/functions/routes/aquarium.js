@@ -80,11 +80,12 @@ router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req,
 	data.user = req.user.ref;
 	db.collection("aquaria").add(data)
 	.then((newDoc) => {
-		return newDoc.get ().then ((obj) => {
-			let newData = obj.data ();
+		return newDoc.get()
+		.then((obj) => {
+			let newData = obj.data();
 			newData.id = newDoc.id;
 			delete newData.user;
-			res.status(201).send ({aquarium: newData});
+			res.status(201).send({aquarium: newData});
 		});
 	})
 	.catch((error) => {
@@ -224,9 +225,8 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	//db.collection("entries").where("aquarium", "==", aquarium).where("user", "==", req.user.ref).get()
 	db.collection('aquaria').doc(req.params.id).collection('entries').get()
 	.then((snapshot) => {
-		console.log(snapshot);
 		if (snapshot.empty) {
-			res.status(204).send('Nothing found');
+			return res.status(204).send('Nothing found');
 		}
 
 		const diary = {};
@@ -237,9 +237,9 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 		snapshot.forEach((doc) => {
 			diary.entries.push(doc.data());
 		});
-		res.send(diary);
-	}).
-	catch((error) => {
+		return res.send(diary);
+	})
+	.catch((error) => {
 		res.status(500).send(error.message);
 	});
 });
@@ -256,6 +256,10 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
  */
 router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const entry = req.body.entry;
+
+	if(req.params.id == undefined){
+		return res.status(400).send("Id in endpoint is undefined.");
+	}
 
 	// Warning: no model validation
 	return db.collection("aquaria").doc(req.params.id).collection("entries").add(entry)
