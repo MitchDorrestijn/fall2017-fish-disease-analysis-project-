@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {Table, Th, Tr, Td, Thead, Tbody} from 'react-super-responsive-table';
-import {ButtonGroup} from 'reactstrap';
+import {Button, ButtonGroup} from 'reactstrap';
 import ActionButton from '../../../components/base/ActionButton';
 import DataAccess from '../../../scripts/DataAccess';
 import RemoveTimeSlot from './RemoveTimeSlot';
 import ChangeTimeSlot from './ChangeTimeSlot';
+import AddFishDiseaseAdmin from '../../../components/modal/AddFishDiseaseAdmin';
 
 export default class ManageTimeSlot extends Component {
 	constructor(props) {
@@ -30,24 +31,24 @@ export default class ManageTimeSlot extends Component {
 	};
 
 	componentWillMount() {
-		this.getAppointments();
+		this.getTimeslots();
 	}
 
 	cancelTimeSlot = (entry) => {
 		this.props.openModal(RemoveTimeSlot, {
-			refreshPage: this.getTimeSlot,
+			refreshPage: this.getTimeslots,
 			entry: entry
 		});
 	};
 
 	changeTimeSlot = (entry) => {
 		this.props.openModal(ChangeTimeSlot, {
-			refreshPage: this.getTimeSlot,
+			refreshPage: this.getTimeslots,
 			entry: entry
 		});
 	};
 
-	getAppointments = () => {
+	getTimeslots = () => {
 		// Hier moeten afspraken worden opgehaald en in "results" worden gezet
 		// Bij de onClickAction moet het id van de afspraak worden meegegeven
 		let results = [];
@@ -96,7 +97,7 @@ export default class ManageTimeSlot extends Component {
 		return (
 			<div className="manage-agenda">
 				<h1>Timeslots</h1>
-				<Table className="table appointment-table">
+				<Table className="table timeslots-table">
 					<Thead>
 					<Tr>
 						<Th>Date</Th>
@@ -107,6 +108,10 @@ export default class ManageTimeSlot extends Component {
 					</Thead>
 					<Tbody>{this.state.tableEntries}</Tbody>
 				</Table>
+			  <Button
+				onClick={() => this.props.openModal(ChangeTimeSlot)}
+				className="btn-admin">Add timeslot when you are available
+			  </Button>
 			</div>
 		);
 	}
