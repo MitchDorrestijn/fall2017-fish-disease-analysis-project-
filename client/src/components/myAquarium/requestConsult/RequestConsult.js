@@ -142,6 +142,7 @@ export default class AccountSettings extends React.Component {
 	};
 
 	render() {
+		let disabled = true;
 		return (
 			<div className='account-settings'>
 				<div className='container'>
@@ -165,7 +166,8 @@ export default class AccountSettings extends React.Component {
 											<Input type='textarea' name='text' id='comment' value={this.state.comment} onChange={this.onChange.bind(this)}/>
 										</FormGroup>
 										<div className='text-right'>
-											<ActionButton buttonText='Register consult' onClickAction={this.registerRequest} color='primary btn-transperant'/>
+											{this.state.comment ? disabled=false : disabled=true}
+											<button disabled={disabled} onClick={this.registerRequest} className='btn btn-outline-primary btn-transparent'>Register consult</button>
 										</div>
 									</CardBody>
 								</Card>
