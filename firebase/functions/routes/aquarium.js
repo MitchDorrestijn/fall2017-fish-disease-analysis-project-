@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
+const Joi = require('joi');
 
 const db = admin.firestore();
 
@@ -9,10 +10,16 @@ const notifications = require('../notifications/notifications.js');
 
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
-const validateModel = require('../middleware/validateModel.js');
+const validateModel = require('../middleware/validateModel.js'); // DEPRECATED!
+const validate = require('../middleware/validate.js');
 
 /* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
+
+/* JOI Model Validation */
+const aquariumSchema = Joi.object().keys({
+    name: Joi.string().alphanum().min(3).max(30).required()
+});
 
 /**
  *  @api {get} /aquaria/ Get All Aquaria
@@ -30,9 +37,6 @@ router.get('/aquaria/', isAuthenticated, (req, res) => {
 		snapshot.forEach((doc) => {
 			aquaria.push(helperFunctions.flatData(doc));
 		});
-		// for (let i = 0; i < aquaria.length; i++) {
-		// 	aquaria[i].user = aquaria[i].user.id;
-		// }
 		res.send(aquaria);
 	}).catch((err) => {
 		res.status(500).send(err.message);
@@ -75,8 +79,9 @@ router.get('/aquaria/:id', isAuthenticated, (req, res) => {
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
-	let data = req.body.data;
+//router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
+router.post('/aquaria/', isAuthenticated, validate("data", aquariumSchema), (req, res) => {
+	let data = req.body.aquarium;
 	data.user = req.user.ref;
 	let newObj = {};
 	db.collection("aquaria").add(data)
@@ -114,7 +119,8 @@ router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (
 	.then((snapshot) => {
 		if (snapshot.empty) {
 			return Promise.reject(
-				new Error('Aquarium non existent or not owned by user.'));
+				new Error('Aquarium non existent or not owned by user.')
+			);
 		}
 		return snapshot.docs[0].ref.update(data);
 	})
