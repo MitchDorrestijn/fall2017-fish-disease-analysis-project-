@@ -1,0 +1,11 @@
+{
+	"file": "excel.xlsx",
+	"symptoms": {
+		"start": 3,
+		"end": "totaal vergeven punten"
+	},
+	"diseases": {
+		"start": 1,
+		"end": 32
+	}
+}
