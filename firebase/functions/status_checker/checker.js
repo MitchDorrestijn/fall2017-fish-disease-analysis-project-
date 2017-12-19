@@ -3,54 +3,6 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 
 class Checker {
-    digestOld (aquarium, user, entry) {
-        const self = this;
-        return new Promise((resolve, reject) => {
-            // Getting all rules
-            db.collection('notification_rules').get()
-            .then((rulesSnapshot) => {
-                // Iterating through rules
-                rulesSnapshot.docs.forEach((doc) => {
-                    // Checks whether a rule is broken
-                    const rule = doc.data();
-                    // If rule is broken
-                    if(self.isRuleBroken(aquarium, user, entry, rule)){
-                        if(entry.species){
-                            entry.species.get()
-                            .then((doc) => {
-                                const species = doc.data();
-                                const message = self.composeNotification(species, aquarium, entry, rule);
-                                return notifications.add(user.id, message, rule.type)
-                            })
-                            .then(() => {
-                                resolve(true);
-                            })
-                            .catch((error) => {
-                                reject(error)
-                            })
-                        } else {
-                            const message = self.composeNotification(undefined, aquarium, entry, rule);
-                            notifications.add(user.id, message, rule.type)
-                            .then(() => {
-                                resolve(true);
-                            })
-                            .catch((error) => {
-                                reject(error)
-                            })
-                        }
-                    }
-                })
-            })
-            .then(() => {
-                // All rules evaluated
-                resolve(true);
-            })
-            .catch((error) => {
-                reject(error);
-            })
-        });
-    }
-
     digest (aquarium, user, entry) {
         const self = this;
         return new Promise((resolve, reject) => {
@@ -165,42 +117,6 @@ class Checker {
         }
     }
 
-    // isRuleBroken (aquarium, user, entry, rule) {
-    //     if (!entry.hasOwnProperty(rule.attribute)) {
-    //         // If the entry does not own the attribute that the rule is for, then rule is not broken.
-    //         return false;
-    //     }
-
-    //     // Defines the value evaluated
-    //     const value = entry[rule.attribute];
-
-    //     const isInRange = (value) => { 
-    //         if (value < rule.min) { 
-    //             return false; 
-    //         } 
- 
-    //         if (value > rule.max) { 
-    //             return false; 
-    //         } 
-    //     } 
-
-    //     // When no species specified, the rule is applicable for the whole aquarium
-    //     switch (rule.equation) {
-    //         case "range":
-    //             return !isInRange(entry.value);
-    //             break;
-    //         case "<":
-    //             return value < rule.compared;
-    //             break;
-    //         case ">":
-    //             return value > rule.compared;
-    //             break;
-    //         case "==":
-    //             return value == rule.compared;
-    //             break;
-    //     }
-    // }
-
     composeNotification (species, aquarium, entry, triggers, rule) {
         let mapper = [];
         if(species){
@@ -220,27 +136,6 @@ class Checker {
         });
         return message;
     }
-
-    // composeNotification (species, aquarium, entry, rule) {
-    //     const mapper = []
-    //     if(species){
-    //         mapper.push({ key: "{species}", value: species.name})
-    //     }
-    //     mapper.push({ key: "{aquarium}", value: aquarium.name})
-    //     mapper.push({ key: "{attribute}", value: rule.attribute})
-    //     mapper.push({ key: "{value}", value: entry[rule.attribute]})
-    //     mapper.push({ key: "{equation}", value: rule.equation})
-    //     mapper.push({ key: "{compared}", value: rule.compared})
-
-    //     let message = rule.message;
-
-    //     mapper.forEach((pair) => {
-    //         while(message.indexOf(pair.key) != -1){
-    //             message = message.replace(pair.key, pair.value);
-    //         }
-    //     });
-    //     return message;
-    // }
 }
 
 module.exports = new Checker();

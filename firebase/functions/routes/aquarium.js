@@ -78,15 +78,20 @@ router.get('/aquaria/:id', isAuthenticated, (req, res) => {
 router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
 	let data = req.body.data;
 	data.user = req.user.ref;
+	let newObj = {};
 	db.collection("aquaria").add(data)
 	.then((newDoc) => {
-		return newDoc.get()
-		.then((obj) => {
-			let newData = obj.data();
-			newData.id = newDoc.id;
-			delete newData.user;
-			res.status(201).send({aquarium: newData});
-		});
+		return newDoc.get();
+	})
+	.then((obj) => {
+		newObj = obj;
+		return obj.ref.set({ id: obj.id }, { merge: true });
+	})
+	.then(() => {
+		let newData = newObj.data();
+		newData.id = newObj.id;
+		delete newData.user;
+		res.status(201).send({aquarium: newData});
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
@@ -105,30 +110,27 @@ router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req,
  *  @apiUse UnprocessableEntity
  */
 router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (req, res) => {
-	db.collection('aquaria').
-		where('id', '==', req.params.id).
-		where('user', '==', req.user.ref).
-		get().
-		then((snapshot) => {
-			if (snapshot.empty) {
-				return Promise.reject(
-					new Error('Aquarium non existent or not owned by user.'));
-			}
-			return snapshot.docs[0].ref.update(data);
-		})
-		.then((updated) => {
-			return updated.get();
-		})
-		.then((doc) => {
-			const ret = doc.data()
-			if(ret.user){
-				ret.user = ret.user.id
-			}
-			res.status(200).send(ret);
-		})
-		.catch((error) => {
-			res.status(500).send(error.message);
-		});
+	db.collection('aquaria').where('id', '==', req.params.id).where('user', '==', req.user.ref).get()
+	.then((snapshot) => {
+		if (snapshot.empty) {
+			return Promise.reject(
+				new Error('Aquarium non existent or not owned by user.'));
+		}
+		return snapshot.docs[0].ref.update(data);
+	})
+	.then((updated) => {
+		return updated.get();
+	})
+	.then((doc) => {
+		const ret = doc.data()
+		if(ret.user){
+			ret.user = ret.user.id
+		}
+		res.status(200).send(ret);
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	});
 });
 
 /**
@@ -222,7 +224,6 @@ router.put('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
 router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const aquarium = db.collection('aquaria').doc(req.params.id);
 
-	//db.collection("entries").where("aquarium", "==", aquarium).where("user", "==", req.user.ref).get()
 	db.collection('aquaria').doc(req.params.id).collection('entries').get()
 	.then((snapshot) => {
 		if (snapshot.empty) {
@@ -256,6 +257,7 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
  */
 router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const entry = req.body.entry;
+	console.log(req.params.id);
 
 	if(req.params.id == undefined){
 		return res.status(400).send("Id in endpoint is undefined.");
