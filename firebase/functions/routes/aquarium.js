@@ -192,8 +192,7 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 		snapshot.forEach((doc) => {
 			let fishData = helperFunctions.flatData(doc);
 			promises.push(
-				db.collection('species').doc(fishData.species).get()
-				.then((species) => {
+				doc.data().species.get().then((species) => {
 					fishData.species = helperFunctions.flatData(species);
 					fish.push(fishData);
 				})
@@ -205,6 +204,7 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 		})
 	}).
 	catch((error) => {
+		console.log(error);
 		res.status(500).send(error.message);
 	});
 });
