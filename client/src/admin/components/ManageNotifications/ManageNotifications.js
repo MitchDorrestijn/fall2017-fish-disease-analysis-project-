@@ -41,7 +41,6 @@ export default class ManageNotifications extends React.Component {
 		let da = new DataAccess();
 		da.getData ('/notifications/rules', (err, res) => {
 			if (!err) {
-				console.log(res.message);
 				this.setState({dataFromDB: res.message});
 				this.fillData();
 			} else {

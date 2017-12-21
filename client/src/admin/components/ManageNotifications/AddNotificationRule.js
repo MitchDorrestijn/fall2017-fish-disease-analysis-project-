@@ -89,7 +89,7 @@ export default class AddNotificationRule extends Component {
 		if (error.length > 0) {
 			this.setState({error: `Fill in: ${error.toString()}`});
 		} else {
-			this.postNotificationRule(this.state.data);
+			this.postNotificationRule(dataObject);
 		};
 	};
 	postNotificationRule = (dataObject) => {
