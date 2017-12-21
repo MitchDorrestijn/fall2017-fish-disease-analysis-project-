@@ -5,7 +5,8 @@ import ActionButton from '../../../components/base/ActionButton';
 import DataAccess from '../../../scripts/DataAccess';
 import RemoveTimeSlot from './RemoveTimeSlot';
 import ChangeTimeSlot from './ChangeTimeSlot';
-import AddFishDiseaseAdmin from '../../../components/modal/AddFishDiseaseAdmin';
+import AddTimeSlot from './AddTimeSlot';
+import addFishDesiseAdmin from '../../../components/modal/AddFishDiseaseAdmin';
 
 export default class ManageTimeSlot extends Component {
 	constructor(props) {
@@ -25,7 +26,7 @@ export default class ManageTimeSlot extends Component {
 		let hours = parsedDate.getHours();
 		let minutes = parsedDate.getMinutes();
 		if (minutes < 10) {
-			minutes = minutes + "0";
+			minutes = '0' + minutes;
 		}
 		return `${hours}:${minutes}`;
 	};
@@ -49,6 +50,7 @@ export default class ManageTimeSlot extends Component {
 	};
 
 	getTimeslots = () => {
+	  console.log('1 shot, 2 shot, all i hear are guns shots this is where the fun stops');
 		// Hier moeten afspraken worden opgehaald en in "results" worden gezet
 		// Bij de onClickAction moet het id van de afspraak worden meegegeven
 		let results = [];
@@ -109,7 +111,7 @@ export default class ManageTimeSlot extends Component {
 					<Tbody>{this.state.tableEntries}</Tbody>
 				</Table>
 			  <Button
-				onClick={() => this.props.openModal(ChangeTimeSlot)}
+				onClick={() => this.props.openModal(AddTimeSlot, {refreshPage: this.getTimeslots()})}
 				className="btn-admin">Add timeslot when you are available
 			  </Button>
 			</div>

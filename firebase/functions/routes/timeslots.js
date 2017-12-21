@@ -160,7 +160,7 @@ router.put('/timeslots/:id',validateModel("timeslot", ["duration","startDate"]),
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
-	const timeslot = req.body;
+	const timeslot = req.body.timeslot;
 	const timeslotId = req.params.id;
 	if (!validator.isDecimal(timeslot.duration) ||
 		!validator.isISO8601(timeslot.startDate)

@@ -13,6 +13,7 @@ export default class ChangeTimeSlot extends Component {
   }
   componentWillMount() {
 	this.setState({
+	  // we get timestamp from database, change so we can use it as a type date input field
 	  startDate: this.props.customProps.entry.startDate,
 	  duration: this.props.customProps.entry.duration
 	});
@@ -20,16 +21,17 @@ export default class ChangeTimeSlot extends Component {
   editTimeslot = (e) => {
 	e.preventDefault();
 	let timeslotData = {
-	  duration: this.state.name,
-	  startDate: this.state.info
+	  startDate: this.state.startDate,
+	  duration: this.state.duration
 	};
 	for (let key in timeslotData) {
 	  if (!timeslotData[key]) {
 		delete timeslotData[key];
 	  }
 	}
-	if(timeslotData.name && timeslotData.info && timeslotData.additional){
+	if(timeslotData.startDate && timeslotData.duration){
 	  let da = new DataAccess();
+	  console.log(timeslotData);
 	  da.putData(`/timeslots/${this.props.customProps.entry.id}`, {timeslot: timeslotData},  (err, res) => {
 		if (!err) {
 		  this.props.toggleModal();
@@ -43,7 +45,7 @@ export default class ChangeTimeSlot extends Component {
 	}
   };
   changeStartDate = (e) => {
-	this.setState({timeSlotId: e.target.value});
+	this.setState({startDate: e.target.value});
   };
   changeDuration = (e) => {
 	this.setState({duration: e.target.value});
@@ -52,17 +54,17 @@ export default class ChangeTimeSlot extends Component {
   render() {
 	return (
 	  <div>
-		<ModalHeader toggle={() => this.props.toggleModal()}>Edit {this.state.name}</ModalHeader>
+		<ModalHeader toggle={() => this.props.toggleModal()}>Edit Timeslot</ModalHeader>
 		<ModalBody>
 		  <p className="error">{this.state.error}</p>
-		  <Form onSubmit={this.editTimeslot()}>
+		  <Form onSubmit={this.editTimeslot}>
 			<FormGroup>
 			  <Label for="startingDate">Starting Date:</Label>
-			  <Input id="startingDate" type="textarea" name="startingDate" value={this.state.startDate} onChange={this.changeStartDate} />
+			  <Input id="startingDate" type="date" name="startingDate" value={this.state.startDate.slice(0,10)} onChange={this.changeStartDate} />
 			</FormGroup>
 			<FormGroup>
-			  <Label for="timeslotDuration">Duration:</Label>
-			  <Input id="timeslotDuration" type="textarea" name="timeslotDuration" value={this.state.duration} onChange={this.changeDuration} />
+			  <Label for="timeslotDuration">Duration in minutes:</Label>
+			  <Input id="timeslotDuration" type="number" min="0" max="240" name="timeslotDuration" value={this.state.duration} onChange={this.changeDuration} />
 			</FormGroup>
 			<Button>Edit</Button>
 		  </Form>
