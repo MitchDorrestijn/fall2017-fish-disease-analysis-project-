@@ -1,4 +1,4 @@
-// TODO: Add success scenarios examples
+// TODO: Add success scenarios examples to document
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
