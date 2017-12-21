@@ -3,7 +3,7 @@ const router = express.Router();
 const admin = require('firebase-admin');
 const gcs = require('@google-cloud/storage');
 const algoliasearch = require('algoliasearch');
-const Joi = require("joi"); 
+const Joi = require("joi");
 
 /* Algolia */
 const ALGOLIA_ID = "WPBUCLWL7Y";
@@ -43,19 +43,19 @@ const model = {
     }
 }
 
-/* Joi schema */ 
-const schema = {  
-    create: Joi.object().keys({ 
-        name: Joi.string().alphanum().min(3).required(), 
-        info: Joi.string().alphanum().min(3).required(), 
-        additional: Joi.string().alphanum().min(3).required() 
-    }), 
- 
-    update: Joi.object().keys({ 
-        name: Joi.string().alphanum().min(3), 
-        info: Joi.string().alphanum().min(3), 
-        additional: Joi.string().alphanum().min(3) 
-    }) 
+/* Joi schema */
+const schema = {
+    create: Joi.object().keys({
+        name: Joi.string().alphanum().min(3).required(),
+        info: Joi.string().alphanum().min(3).required(),
+        additional: Joi.string().alphanum().min(3).required()
+    }),
+
+    update: Joi.object().keys({
+        name: Joi.string().alphanum().min(3),
+        info: Joi.string().alphanum().min(3),
+        additional: Joi.string().alphanum().min(3)
+    })
 }
 
 router.get('/' + model.endpoint, isAuthenticated, (req, res) => {

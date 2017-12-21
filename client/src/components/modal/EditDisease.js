@@ -9,7 +9,8 @@ export default class EditDisease extends Component {
 			name: "",
 			symptoms: "",
 			description: "",
-			treatment: ""
+			treatment: "",
+			error: ""
 		}
 	}
 	componentWillMount(){
@@ -30,15 +31,20 @@ export default class EditDisease extends Component {
 		};
 		console.log (this.props.customProps.entry.id);
 		console.log (diseaseData);
-		let da = new DataAccess();
-		da.putData(`/diseases/${this.props.customProps.entry.id}`, {disease: diseaseData},  (err, res) => {
-			if (!err) {
-				this.props.customProps.refreshPage();
-				this.props.toggleModal();
-			} else {
-				console.log('error');
-			}
-		});
+
+		if(diseaseData.name === "" || diseaseData.symptoms === "" || diseaseData.description === "" || diseaseData.treatment === ""){
+			this.setState({error: "Fill in all fields!"});
+		} else {
+			let da = new DataAccess();
+			da.putData(`/diseases/${this.props.customProps.entry.id}`, {disease: diseaseData},  (err, res) => {
+				if (!err) {
+					this.props.customProps.refreshPage();
+					this.props.toggleModal();
+				} else {
+					this.setState({error: "An error occurred !"});
+				}
+			});
+		}
 	};
 	changeName = (e) => {
 		this.setState({name: e.target.value});
@@ -57,6 +63,7 @@ export default class EditDisease extends Component {
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Edit Disease</ModalHeader>
 				<ModalBody>
+					<p className="error">{this.state.error}</p>
 					<Form onSubmit={this.editDisease}>
 						<FormGroup>
 							<Label for="diseasesName">Name:</Label>
