@@ -4,7 +4,6 @@ const Symptom = require("./Symptom");
 
 module.exports = class DiseaseSymptomContainer {
 	constructor (fileParser, config) {
-		this.fileParser = fileParser;
 		this.config = config;
 		this.diseaseSymptoms = [];
 
@@ -22,28 +21,36 @@ module.exports = class DiseaseSymptomContainer {
 		}
 	}
 
-	getAll() {
-		return this.diseaseSymptoms;
-	}
-
-	getByDiseaseName(name) {
+	getAll(minScore) {
 		return this.diseaseSymptoms.filter ((elem) => {
-			return elem.getDisease().getName() === name && elem.getScore() > 0;
+			return (elem.getScore() >= (minScore ? minScore : 0));
 		});
 	}
 
-	getBySymptomName(name) {
+	getByDiseaseName(name, minScore) {
 		return this.diseaseSymptoms.filter ((elem) => {
-			return elem.getSymptom().getName() === name && elem.getScore() > 0;
+			return (
+				elem.getDisease().getName() === name &&
+				elem.getScore() >= (minScore ? minScore : 0)
+			);
 		});
 	}
 
-	getByDiseaseAndSymptom(disease, symptom) {
+	getBySymptomName(name, minScore) {
+		return this.diseaseSymptoms.filter ((elem) => {
+			return (
+				elem.getSymptom().getName() === name &&
+				elem.getScore() >= (minScore ? minScore : 0)
+			);
+		});
+	}
+
+	getByDiseaseAndSymptomNames(disease, symptom, minScore) {
 		return this.diseaseSymptoms.filter ((elem) => {
 			return (
 				elem.getDisease().getName() === disease &&
 				elem.getSymptom().getName() === symptom &&
-				elem.getScore() > 0
+				elem.getScore() >= (minScore ? minScore : 0)
 			);
 		});
 	}

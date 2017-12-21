@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const xlsx = require('node-xlsx').default;
+const xlsx = require('xlsx');
 
-module.exports = class FileParser {
+module.exports = class XLSXFileParser {
 	constructor(config, sheetNumber) {
 		this.config = config;
-		this.file = xlsx.parse(fs.readFileSync(path.join(__dirname, '..', this.config.file)));
+		this.file = xlsx.read(fs.readFileSync(path.join(__dirname, '..', this.config.file)));
 		this.sheetNumber = sheetNumber ? sheetNumber : 0;
 	};
 
