@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
 const algoliasearch = require('algoliasearch');
+const Joi = require('joi');
 
 /* Algolia */
 const ALGOLIA_ID = "WPBUCLWL7Y";
@@ -12,6 +13,7 @@ const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const validateModel = require('../middleware/validateModel.js');
+const validate = require('../middleware/validate.js');
 
 const db = admin.firestore();
 
@@ -19,7 +21,14 @@ const db = admin.firestore();
 const model = {
     name: "disease",
     endpoint: "diseases",
-    keys: ["name", "symptoms", "description", "treatment"]
+    keys: ["name", "symptoms", "description", "treatment"],
+    schema: Joi.object().keys({
+        name: Joi.string().alphanum().min(3).max(30).required(),
+        id: Joi.string().alphanum(),
+        symptoms: Joi.string(),
+        description: Joi.string(),
+        treatment: Joi.string()
+    })
 };
 
 /*
@@ -44,7 +53,7 @@ router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
     })
 })
 
-router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
+router.post('/' + model.endpoint, isAuthenticated, validate(model.name, model.schema), (req, res) => {
     db.collection(model.endpoint).add(req.body[model.name])
     .then((newDoc) => {
         return newDoc.get()
@@ -57,7 +66,7 @@ router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, mod
     })
 })
 
-router.put('/' + model.endpoint + '/:id', isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
+router.put('/' + model.endpoint + '/:id', isAuthenticated, validate(model.name, model.schema), (req, res) => {
     db.collection(model.endpoint).doc(req.params.id).update(req.body[model.name])
     .then(() => {
         res.status(200).send();

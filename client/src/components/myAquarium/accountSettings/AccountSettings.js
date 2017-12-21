@@ -95,19 +95,16 @@ export default class AccountSettings extends React.Component {
 			confirmPassword: this.state.confirmPassword,
 		};
 		let user = firebase.auth().currentUser;
-		firebase.auth().currentUser.getIdToken().then((token) => {
-			let userService = new UserService(token);
-			if (this.verifyInput(profile)) {
-				userService.updateUserData(user.uid,
-					profile, (err, res) => {
-						if (!err) {
-							alert('Account has been updated');
-						} else {
-							this.showError('login', true, err.message);
-						}
-					});
-			}
-		});
+		let userService = new UserService();
+		if (this.verifyInput(profile)) {
+			userService.updateUserData(user.uid, profile, (err, res) => {
+				if (!err) {
+					alert('Account has been updated');
+				} else {
+					this.showError('login', true, err.message);
+				}
+			});
+		}
 	};
 
 	/**
