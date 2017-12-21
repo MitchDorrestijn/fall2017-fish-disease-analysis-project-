@@ -47,7 +47,9 @@ export default class AddFish extends React.Component {
 		if(this.state.objectToSendToDB){
 			let specieName = this.state.objectToSendToDB.fishName;
 			let da = new DataAccess();
-			da.postData(`/aquaria/${aquariaId}/fish`, {data: {species: specieName}} , (err, res) => {
+			console.log(aquariaId);
+			console.log(specieName);
+			da.postData(`/aquaria/${aquariaId}/fish`, {fish: {species: specieName}} , (err, res) => {
 				if (!err) {
 					this.props.customProps.refreshPage();
 					this.props.toggleModal();

@@ -173,53 +173,49 @@ router.delete('/aquaria/:id', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
-	db.collection('aquaria')
-		.where('id', '==', req.params.id)
-		.where('user', '==', req.user.ref)
-		.get()
-		.then((snapshot) => {
-router.get('/aquaria/:id/fish',isAuthenticated, (req, res) => {
-	db.collection('aquaria')
-		.where('id', '==', req.params.id)
-		.where('user', '==', req.user.ref)
-		.get()
-		.then((snapshot) => {
-			if (snapshot.empty) {
-				reject(
-					new Error('Aquarium non existent or not owned by user.'));
-			}
-			const doc = snapshot.docs[0];
-			return db.collection('fish').
-				where('aquarium', '==', doc.ref).
-				where('user', '==', req.user.ref).
-				get();
-		})
-		.then((snapshot) => {
-			let fish = [];
-	  		let promises = [];
-			snapshot.forEach((doc) => {
-			  let fishData = helperFunctions.flatData(doc);
-			  promises.push(
-				db.collection('species').doc(fishData.species).get()
-				  .then((species) => {
-					fishData.species = helperFunctions.flatData(species);
-					fish.push(fishData);
-					return null;
-				  })
-			  );
-			});
-			Promise.all(promises).then(() => {
-			  return fish;
-			}).then((fishData) => {
-			  res.send({fish: fishData});
-			})
-		}).
-		catch((error) => {
-			res.status(500).send(error.message);
-		});
-});
-
+ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
+     db.collection('aquaria').where('id', '==', req.params.id).where('user', '==', req.user.ref).get()
+     .then((snapshot) => {
+         if (snapshot.empty) {
+             Promise.reject(new Error('Aquarium non existent or not owned by user.'));
+         }
+         const doc = snapshot.docs[0];
+         return db.collection('fish').
+             where('aquarium', '==', doc.ref).
+             where('user', '==', req.user.ref).
+             get();
+     })
+     .then((snapshot) => {
+         let fish = [];
+         let promises = [];
+         snapshot.forEach((doc) => {
+             let fishData = helperFunctions.flatData(doc);
+             promises.push(
+                 db.collection('species').doc(fishData.species).get()
+                 .then((species) => {
+                     fishData.species = helperFunctions.flatData(species);
+                     fish.push(fishData);
+                     return null;
+                 })
+             );
+         });
+         Promise.all(promises).then(() => {
+             return fish;
+         }).then((fishData) => {
+             res.send({fish: fishData});
+         })
+         // let fish = [];
+         // snapshot.forEach((doc) => {
+         //  // Preventing firebase from sending the document reference over JSON. Replacing the references with ID's.
+         //  fish.push(helperFunctions.flatData(doc));
+         // });
+         // res.send({fish: fish});
+     }).
+     catch((error) => {
+         console.log(error);
+         res.status(500).send(error.message);
+     });
+ });
 /**
  *  @api {post} /aquaria/:id/fish Adds fish
  *  @apiName Adds a fish to an aquarium
@@ -235,7 +231,7 @@ router.get('/aquaria/:id/fish',isAuthenticated, (req, res) => {
 router.post('/aquaria/:id/fish', isAuthenticated, validate('fish', fishSchema), (req, res) => {
 	const aquariumRef = db.collection('aquaria').doc(req.params.id);
 
-	let data = req.body.data;
+	let data = req.body.fish;
 	data.user = req.user.ref;
 	data.species = db.collection("species").doc(data.species);
 	data.aquarium = aquariumRef;

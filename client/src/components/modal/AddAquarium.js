@@ -31,7 +31,7 @@ export default class AddAquarium extends React.Component {
 			this.setState({error: "Please fill in an aquarium name!"});
 		} else {
 			let da = new DataAccess();
-			da.postData ('/aquaria/', {data: {name: this.state.aquariumName}}, (err, res) => {
+			da.postData ('/aquaria/', {aquarium: {name: this.state.aquariumName}}, (err, res) => {
 				if (!err) {
 					this.props.customProps.refreshPage();
 					this.props.toggleModal();
