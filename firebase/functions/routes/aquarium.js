@@ -174,35 +174,39 @@ router.delete('/aquaria/:id', isAuthenticated, (req, res) => {
  *  @apiUse UnprocessableEntity
  */
 router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
-	db.collection('aquaria')
-		.where('id', '==', req.params.id)
-		.where('user', '==', req.user.ref)
-		.get()
-		.then((snapshot) => {
-			if (snapshot.empty) {
-				reject(
-					new Error('Aquarium non existent or not owned by user.'));
-			}
-			const doc = snapshot.docs[0];
-			return db.collection('fish').
-				where('aquarium', '==', doc.ref).
-				where('user', '==', req.user.ref).
-				get();
-		})
-		.then((snapshot) => {
-			let fish = [];
-			snapshot.forEach((doc) => {
-				// Preventing firebase from sending the document reference over JSON. Replacing the references with ID's.
-				let data = doc.data();
-				data.user = data.user.id;
-				data.aquarium = data.aquarium.id;
-				fish.push(helperFunctions.flatData(data));
-			});
-			res.send({fish: fish});
-		}).
-		catch((error) => {
-			res.status(500).send(error.message);
+	db.collection('aquaria').where('id', '==', req.params.id).where('user', '==', req.user.ref).get()
+	.then((snapshot) => {
+		if (snapshot.empty) {
+			Promise.reject(new Error('Aquarium non existent or not owned by user.'));
+		}
+		const doc = snapshot.docs[0];
+		return db.collection('fish').
+			where('aquarium', '==', doc.ref).
+			where('user', '==', req.user.ref).
+			get();
+	})
+	.then((snapshot) => {
+		let fish = [];
+		let promises = [];
+
+		snapshot.forEach((doc) => {
+			let fishData = helperFunctions.flatData(doc);
+			promises.push(
+				db.collection('species').doc(fishData.species).get()
+				.then((species) => {
+					fishData.species = helperFunctions.flatData(species);
+					fish.push(fishData);
+				})
+			);
 		});
+		
+		Promise.all(promises).then(() => {
+			res.send({fish: fish});
+		})
+	}).
+	catch((error) => {
+		res.status(500).send(error.message);
+	});
 });
 
 /**
@@ -289,11 +293,11 @@ router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	console.log(req.params.id);
 
 	if(req.params.id == undefined){
-		return res.status(400).send("Id in endpoint is undefined.");
+		return res.status(400).send('Id in endpoint is undefined.');
 	}
 
 	// Warning: no model validation
-	return db.collection("aquaria").doc(req.params.id).collection("entries").add(entry)
+	return db.collection('aquaria').doc(req.params.id).collection('entries').add(entry)
 	.then(() => {
 		res.send(201);
 	})
