@@ -46,7 +46,7 @@ export default class NavigationBar extends React.Component {
 				window.location.href = "/search/" + searchText;
 			}
 		} else {
-			this.setState({error: 'please fill in a search term.'})
+			this.setState({error: 'Please fill in a search term.'})
 		}
 	};
 
