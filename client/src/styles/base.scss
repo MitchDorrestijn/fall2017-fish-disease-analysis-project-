@@ -58,6 +58,15 @@ a:hover{
 	padding-right: 0;
 }
 
+//FEEDBACK
+.feedbackAlert {
+	position: fixed;
+	z-index: 10;
+	width: 90vw;
+	margin-top: 5px;
+	margin-left: 5vw;
+}
+
 //NAVIGATION
 nav {
 	background-color: $supportColor;

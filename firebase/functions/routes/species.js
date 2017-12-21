@@ -14,6 +14,7 @@ const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const validateModel = require('../middleware/validateModel.js');
+const validate = require('../middleware/validate.js');
 
 const multer  = require('multer');
 const upload = multer();
@@ -26,7 +27,20 @@ const bucket = admin.storage().bucket();
 const model = {
     name: "species",
     endpoint: "species",
-    keys: ["name", "info", "additional"]
+    keys: ["name", "info", "additional", "picture"],
+    schema: {  
+        create: Joi.object().keys({ 
+            name: Joi.string().alphanum().min(3).required(), 
+            info: Joi.string().alphanum().min(3).required(), 
+            additional: Joi.string().alphanum().min(3).required() 
+        }), 
+     
+        update: Joi.object().keys({ 
+            name: Joi.string().alphanum().min(3), 
+            info: Joi.string().alphanum().min(3), 
+            additional: Joi.string().alphanum().min(3) 
+        }) 
+    }
 }
 
 /* Joi schema */
@@ -58,7 +72,7 @@ router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
     })
 })
 
-router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
+router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.schema.create), (req, res) => {
 	    db.collection(model.endpoint).add(req.body[model.name])
 	    .then((newDoc) => {
 	        return newDoc.get()
@@ -117,7 +131,7 @@ router.post('/' + model.endpoint + '/:id/upload', isAdmin, upload.single('image'
     stream.end(req.file.buffer);
 })
 
-router.put('/' + model.endpoint + '/:id', isAuthenticated, validateModel(model.name, model.keys), (req, res) => {
+router.put('/' + model.endpoint + '/:id', isAuthenticated, validate(model.name, model.schema.update), (req, res) => {
     db.collection(model.endpoint).doc(req.params.id).update(req.body[model.name])
     .then(() => {
         res.status(200).send();

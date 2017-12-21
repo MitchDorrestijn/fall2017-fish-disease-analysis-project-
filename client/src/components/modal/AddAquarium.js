@@ -19,10 +19,12 @@ export default class AddAquarium extends React.Component {
 			error: ""
 		}
 	}
+
 	handleChange = (e) => {
 		let aquariumName = e.target.value;
 		this.setState({aquariumName: aquariumName})
-  }
+	}
+
 	aquariumNameForDB = (e) => {
 		e.preventDefault();
 		if(this.state.aquariumName === ""){
@@ -39,6 +41,7 @@ export default class AddAquarium extends React.Component {
 			});
 		}
 	}
+
 	render() {
 		return (
 			<div>

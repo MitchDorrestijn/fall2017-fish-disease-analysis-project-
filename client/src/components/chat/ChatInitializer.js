@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Progress } from 'reactstrap';
 import Senderbox from './Senderbox';
 import Receiverbox from './Receiverbox';
 import Infobox from './Infobox';
@@ -28,22 +28,9 @@ export default class ChatInitializer extends React.Component {
 	
 	componentDidMount = () => {
 		//Setup webcam gebruiker
-		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-		navigator.mediaDevices.getUserMedia({audio:true, video:true})
-			.then((stream) => {
-				const camEl = document.getElementsByClassName("myCam");
-				for(let i = 0; i < camEl.length; i++){
-					camEl[i].srcObject = stream;
-				}
-				this.pc.addStream(stream);
-				this.stream = stream;
-			}).then(() => {
-				this.checkAdmin();
-				this.initializeDatabase();
-				this.checkOnline();
-				
-				this.forceUpdate();
-			});
+		this.checkAdmin();
+		this.initializeDatabase();
+		this.checkOnline();
 	}
 	
 	checkAdmin = () => {
@@ -55,7 +42,7 @@ export default class ChatInitializer extends React.Component {
 	}
 	
 	initializeDatabase = () => {
-		//Setup database ref
+		//Setup database ref en een aantal variablen
 		if(this.pageAdmin){
 			if(this.props.isAdmin){
 				const url = window.location.href.replace(/\/$/, '');
@@ -66,7 +53,7 @@ export default class ChatInitializer extends React.Component {
 				this.addInfoMessage("Niet ingelogd als administrator");
 			}
 		}else{
-			if(firebase.auth().currentUser !== null){
+			if(this.props.loggedIn){
 				this.chatId = this.userId = firebase.auth().currentUser.uid;
 				this.name = firebase.auth().currentUser.displayName;
 			}else{
@@ -125,38 +112,92 @@ export default class ChatInitializer extends React.Component {
 	setupStreamOther = () => {
 		//Setup webcam andere gebruiker en de datachannel
 		this.setupDataChannel();
+		this.createOffer();
+	}
+	
+	createOffer = () => {
+		//Stuur een connection offer
 		this.pc.createOffer()
 			.then(offer => this.pc.setLocalDescription(offer) )
 			.then(() => this.sendMessage(this.userId, "offer", {'sdp': this.pc.localDescription}) );
 	}
 	
-	sendChatMessage = (type, message) => {
+	startWebcam = () => {
+		//Start de webcam stream en voeg hem toe aan de connection
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+		navigator.mediaDevices.getUserMedia({audio:true, video:true})
+		.then((stream) => {
+			const camEl = document.getElementsByClassName("myCam");
+			for(let i = 0; i < camEl.length; i++){
+				camEl[i].srcObject = stream;
+			}
+			this.stream = stream;
+			this.pc.addStream(stream);
+			this.createOffer();
+			this.forceUpdate();
+		}).catch((err) => {
+			this.addInfoMessage("Geen webcam aangesloten of geen toestemming gegeven");
+		});
+	}
+	
+	stopWebcam = () => {
+		//Stop de webcam stream
+		this.stream.getAudioTracks().forEach(function(track) {
+            track.stop();
+        });
+        this.stream.getVideoTracks().forEach(function(track) {
+            track.stop();
+        });
+		this.pc.removeStream(this.stream);
+		this.stream = null;
+		
+		const camEl = document.getElementsByClassName("myCam");
+		for(let i = 0; i < camEl.length; i++){
+			camEl[i].removeAttribute("src");
+			camEl[i].load();
+		}
+		this.forceUpdate();
+	}
+	
+	//Communicatie	
+	sendChatMessage = (type, message, id, current, total) => {
 		//Stuur chat bericht naar andere gebruiker
 		if(this.dataChannel !== undefined){
-			let messageObj = JSON.stringify({'type': type, 'data': message});
+			let messageObj;
+			if(type === "text"){
+				messageObj = JSON.stringify({'type': type, 'data': message});
+			}else{
+				messageObj = JSON.stringify({'type': type, 'id': id, 'progress': {'current': current, 'total': total}, 'data': message});
+			}
 			this.dataChannel.send(messageObj);
 			this.addSenderMessage(messageObj);
 		}
 	}
 	
 	addSenderMessage = (msg) => {
+		//Voeg het verzonden bericht toe
 		let message = JSON.parse(msg);
 		if(message.type === "text"){
-			
 			let chatMessages = this.state.chat;
 			chatMessages.push(<Receiverbox name={message.data.name} key="0">{message.data.message}</Receiverbox>);
 			this.setState({
 				chat: chatMessages
 			}, () => {
-				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+				setTimeout(() => {
+					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+				}, 100);
 			});
 			
-		}else if(message.type === "image"){
-			if(message.data.message === "open"){
-				this.receivedImage = "";
-			}else if(message.data.message === "close"){
+		}else{
+			if(message.data.state === "open"){
+				this.sendFile = "";
+			}else if(message.data.state === "close"){
 				let chatMessages = this.state.chat;
-				chatMessages.push(<Receiverbox name={message.data.name} key="0"><img className="img-fluid" src={this.receivedImage} alt="Send"/></Receiverbox>);
+				if(message.type === "image"){
+					chatMessages.push(<Receiverbox name={message.data.name} key="0">{message.data.message?<p>{message.data.message}</p>:null}<img className="img-fluid" src={this.sendFile} alt="Received"/></Receiverbox>);
+				}else if(message.type === "video"){
+					chatMessages.push(<Receiverbox name={message.data.name} key="0">{message.data.message?<p>{message.data.message}</p>:null}<video className="chatVideo" src={this.sendFile} controls></video></Receiverbox>);
+				}
 				this.setState({
 					chat: chatMessages
 				}, () => {
@@ -165,12 +206,13 @@ export default class ChatInitializer extends React.Component {
 					}, 100);
 				});
 			}else{
-				this.receivedImage += message.data.message;
+				this.sendFile += message.data.message;
 			}
 		}
 	}
 	
 	addReceiverMessage = (msg) => {
+		//Voeg het ontvangen bericht toe
 		let message = JSON.parse(msg);
 		if(message.type === "text"){
 			
@@ -179,29 +221,54 @@ export default class ChatInitializer extends React.Component {
 			this.setState({
 				chat: chatMessages
 			}, () => {
-				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+				setTimeout(() => {
+					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+				}, 100);
 			});
 			
-		}else if(message.type === "image"){
-			if(message.data.message === "open"){
-				this.receivedImage = "";
-			}else if(message.data.message === "close"){
+		}else{
+			if(message.data.state === "open"){
+				this.receivedFile = "";
 				let chatMessages = this.state.chat;
-				chatMessages.push(<Senderbox name={message.data.name} key="0"><img className="img-fluid" src={this.receivedImage} alt="Received"/></Senderbox>);
+				chatMessages.push(<Senderbox name={message.data.name} key="0">{message.data.message?<p>{message.data.message}</p>:null}<Progress animated id={"progressBar_" + message.id} value={100}/></Senderbox>);
 				this.setState({
 					chat: chatMessages
 				}, () => {
 					setTimeout(() => {
 						document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 					}, 100);
+					document.getElementById("progressBar_" + message.id).style.width = 0;
 				});
+			}else if(message.data.state === "close"){
+				const barEl = document.getElementById("progressBar_" + message.id);
+				const parentBarEl = document.getElementById("progressBar_" + message.id).parentNode;
+				parentBarEl.removeChild(barEl);
+				if(message.type === "image"){
+					let imgEl = document.createElement("img");
+					imgEl.className = "img-fluid";
+					imgEl.src = this.receivedFile;
+					imgEl.alt = "Received";
+					parentBarEl.appendChild(imgEl);
+				}else if(message.type === "video"){
+					let videoEl = document.createElement("video");
+					videoEl.className = "chatVideo";
+					videoEl.src = this.receivedFile;
+					videoEl.setAttribute("controls","controls");
+					parentBarEl.appendChild(videoEl);
+				}
+				setTimeout(() => {
+					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+				}, 100);
 			}else{
-				this.receivedImage += message.data.message;
+				this.receivedFile += message.data.message;
+				
+				document.getElementById("progressBar_" + message.id).style.width = Math.floor((100 / message.progress.total) * message.progress.current) + '%';
 			}
 		}
 	}
 	
 	addInfoMessage = (msg) => {
+		//Voeg een info bericht toe
 		let chatMessages = this.state.chat;
 		chatMessages.push(<Infobox key="0">{msg}</Infobox>);
 		this.setState({
@@ -209,15 +276,6 @@ export default class ChatInitializer extends React.Component {
 		}, () => {
 			document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 		});
-	}
-	
-	closeConnection = () => {
-		this.sendMessage(this.userId, "closeConnection", "");
-		this.pc.close();
-		this.pc = null;
-		this.addInfoMessage("De verbinding is verbroken");
-		this.initializeWebRTC();
-		this.pc.addStream(this.stream);
 	}
 	
 	sendMessage = (senderId, type, data) => {
@@ -241,25 +299,25 @@ export default class ChatInitializer extends React.Component {
 					.then(answer => this.pc.setLocalDescription(answer))
 					.then(() => this.sendMessage(this.userId, "answer", {'sdp': this.pc.localDescription}))
 					.then(() => this.setupDataChannel());
-				
-				this.addInfoMessage("De chat is gestart");
 			}else if (type === "answer"){
 				//Andere gebruiker heeft een answer gestuurd op de offer
 				this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-				this.addInfoMessage("De chat is gestart");
 			}else if(type === "checkOnline"){
 				//Andere gebruiker vraagt of de gebruiker online is, stuur een antwoord terug
+				if(this.pc !== undefined){
+					this.pc.close();
+					this.pc = null;
+					this.initializeWebRTC();
+					if(this.stream !== null){
+						this.stopWebcam();
+					}
+				}
 				this.sendMessage(this.userId, "checkOnlineAnswer", "");
+				this.addInfoMessage("De chat is gestart");
 			}else if(type === "checkOnlineAnswer"){
 				//Andere gebruiker heeft gereageerd op de vraag of er iemand online is
 				this.setupStreamOther();
-			}else if(type === "closeConnection"){
-				//Andere gebruiker heeft de connectie verbroken
-				this.pc.close();
-				this.pc = null;
-				this.addInfoMessage("De verbinding is verbroken");
-				this.initializeWebRTC();
-				this.pc.addStream(this.stream);
+				this.addInfoMessage("De chat is gestart");
 			}
 		}
 	}
@@ -269,19 +327,17 @@ export default class ChatInitializer extends React.Component {
 				<div id="chat-main" className="chat-wrapper">
 					<Container>
 						<Row>
-							<VideoboxMobile closeConnection={this.closeConnection} stream={this.stream} checkOnline={this.checkOnline} />
+							<VideoboxMobile startWebcam={this.startWebcam} stopWebcam={this.stopWebcam} stream={this.stream} />
 						</Row>
 						<Row className="inner-chat-wrapper">
 							<Col md="8">
-								{/*<h3>ChatId: {''+this.chatId}</h3>
-								<br/>Is consultant: {''+this.admin}</h3>*/}
 								<div id="chatBox">
 									{this.state.chat}
 								</div>
 								<MessageSender name={this.name} sendChatMessage={this.sendChatMessage} />
 							</Col>
 							<Col md="4" className="removeColumn">
-								<Videobox closeConnection={this.closeConnection} stream={this.stream} checkOnline={this.checkOnline} />
+								<Videobox startWebcam={this.startWebcam} stopWebcam={this.stopWebcam} stream={this.stream} />
 							</Col>
 						</Row>
 					</Container>

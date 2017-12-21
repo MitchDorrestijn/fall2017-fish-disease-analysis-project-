@@ -56,7 +56,7 @@ router.get('/notifications/rules', isAdmin, (req, res) => {
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.post('/notifications/rules', isAdmin, validateModel("rule", ["message", "compared", "min", "max", "equation", "type", "attribute"]), (req, res) => {
+router.post('/notifications/rules', isAdmin, validateModel("rule", ["message", "type", "triggers"]), (req, res) => {
     db.collection('notification_rules').add(req.body.rule)
     .then((newObject) => {
         return newObject.get();
@@ -69,7 +69,7 @@ router.post('/notifications/rules', isAdmin, validateModel("rule", ["message", "
     })
 })
 
-router.put('/notifications/rules/:id', isAdmin, validateModel("rule", ["message", "compared", "min", "max", "equation", "attribute", "type", "id"]), (req, res) => {
+router.put('/notifications/rules/:id', isAdmin, validateModel("rule", ["message", "type", "id", "triggers"]), (req, res) => {
     db.collection('notification_rules').doc(req.params.id).update(req.body.rule)
     .then((doc) => {
         res.status(200).send("Ok");

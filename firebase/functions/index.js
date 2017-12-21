@@ -56,6 +56,23 @@ app.use('/api', timeSlotRoutes);
 
 exports.app = functions.https.onRequest(app);
 
+app.get('/api/species-and-diseases/search', isAuthenticated, (req, res) => {
+    const index = client.initIndex("species-and-diseases");
+    const query = req.query.term;
+
+    if(!query){
+        return res.status(400).send("Please provide '?term=searchterm' in url");
+    }
+
+    index
+    .search({
+        query
+    })
+    .then(responses => {
+        res.send(responses.hits);
+    });
+})
+
 exports.deleteUserFromDatabaseWhenDeleted = functions.auth.user().onDelete(event => {
 	const user = event.data;
 	return admin.firestore().collection("users").doc(user.uid).delete();
@@ -97,6 +114,8 @@ const upsertDiseaseToAlgolia = (event) => {
 
 	// Write to the algolia index
 	const index = client.initIndex("diseases");
+	const both = client.initIndex("species-and-diseases");
+	both.saveObject(disease);
 	return index.saveObject(disease);
 }
 
@@ -140,6 +159,8 @@ exports.onDiseaseUpdated = functions.firestore.document("diseases/{id}").onUpdat
 exports.onDiseaseDeleted = functions.firestore.document("diseases/{id}").onDelete(event => {
 	// Write to the algolia index
 	const index = client.initIndex("diseases");
+	const both = client.initIndex("species-and-diseases");
+	both.deleteObject(event.params.id);
 	return index.deleteObject(event.params.id);
 });
 
@@ -152,6 +173,8 @@ const upsertSpeciesToAlgolia = (event) => {
 
 	// Write to the algolia index
 	const index = client.initIndex("species");
+	const both = client.initIndex("species-and-diseases");
+	both.saveObject(species);
 	return index.saveObject(species);
 };
 
@@ -167,6 +190,8 @@ exports.onSpeciesUpdated = functions.firestore.document("species/{id}").onUpdate
 exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete(event => {
 	// Write to the algolia index
 	const index = client.initIndex("species");
+	const both = client.initIndex("species-and-diseases");
+	both.deleteObject(event.params.id);
 	return index.deleteObject(event.params.id);
 });
 

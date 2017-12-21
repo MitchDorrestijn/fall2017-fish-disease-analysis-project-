@@ -79,11 +79,17 @@ router.get('/admin/appointments/', (req, res) => {
  */
 router.delete('/appointments/:id',isAuthenticated, (req, res) => {
 	const appointmentId = req.params.id;
+	const appointment = db.collection('appointments').doc(appointmentId);
 	db.collection('appointments').doc(appointmentId).update({
 		canceled: true
 	})
 	.then(() => {
-		res.status(204).send('Appointment canceled');
+		appointment.get().then((snapshot) => {
+			admin.auth().getUser(helperFunctions.flatData(snapshot).reservedBy).then((userRecord) => {
+				sendAppointmentCanceledMail(userRecord);
+				res.status(204).send('Appointment canceled');
+			});
+		});
 	})
 	.catch((error) => {
 		res.status(500).send(error.message);
@@ -137,7 +143,7 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
  *  @apiUse Forbidden
  *  @apiUse BadRequest
  */
-router.post('/appointments/',isAuthenticated,validateModel("appointment",["comment","timeSlotId"]), (req, res) => {
+router.post('/appointments/',isAuthenticated,validateModel("appointment",["comment","timeSlotId","video"]), (req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	}
@@ -151,6 +157,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 	appointment.comment = appointmentBody.comment;
 	appointment.canceled = false;
 	appointment.approved = false;
+	appointment.video = appointmentBody.video;
 	appointment.reservedBy = admin.firestore().collection("users").doc(req.user.uid);
 	appointment.timeslotId = admin.firestore().collection("timeslots").doc(appointmentBody.timeSlotId);
 	admin.auth().getUser(req.user.uid).then((userRecord) => {
@@ -159,7 +166,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 	// At the moment a static user id which is the consultant, if we decide to let the user chose a consultant we can get the consultant
 	// admin.auth().getUser("kXKvHb3WlYWIQu3LxUzyYZVuFHt2").then((userRecord) => {
 	// 	sendConsultNewAppointmentMail(userRecord);
-	console.log('Send email');
+	// 	console.log('Send email');
 	// });
 	db.collection('appointments')
 	.add(appointment)
@@ -172,7 +179,7 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
 });
 
 /**
- *  @api {PUT} /appointment/:id updating appointment
+ *  @api {PUT} /appointments/:id updating appointment
  *  @apiName Update a appointment
  *  @apiGroup Appointments
  *
@@ -183,8 +190,33 @@ router.post('/appointments/',isAuthenticated,validateModel("appointment",["comme
  *  @apiUse UserAuthenticated
  *  @apiUse Forbidden
  */
-router.put('/appointments/:appointmentId/',validateModel('appointment',['canceled','comment','video','approved']), (req, res) => {
+router.put('/appointments/:appointmentId/',isAuthenticated, validateModel('appointment',['canceled','comment','video','approved']), (req, res) => {
 	db.collection('appointments').doc(req.params.appointmentId).update(req.body.appointment)
+	.then((doc) => {
+		res.status(200).send("Ok");
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	})
+});
+
+/**
+*  @api {PUT} /appointments/:id updating appointment
+*  @apiName Update a appointment
+*  @apiGroup Appointments
+*
+*  @apiSuccess {String} Appointment updated
+*  @apiSuccessExample Success-Response:
+*  HTTP/1.1 204 OK
+*  @apiUse InternalServerError
+*  @apiUse UserAuthenticated
+*  @apiUse Forbidden
+**/
+router.put('/admin/appointments/:appointmentId/',isAdmin, validateModel('appointment',['canceled','comment','video','approved','timeslotId','reservedBy']), (req, res) => {
+	let appointment = req.body.appointment;
+	appointment.reservedBy = admin.firestore().collection("users").doc(appointment.reservedBy);
+	appointment.timeslotId = admin.firestore().collection("timeslots").doc(appointment.timeslotId);
+	db.collection('appointments').doc(req.params.appointmentId).update(appointment)
 	.then((doc) => {
 		res.status(200).send("Ok");
 	})
@@ -199,6 +231,10 @@ const sendNewAppointmentMail = (user) => {
 
 const sendAppointmentApprovedMail = (user) => {
 	mailer.mail(user.email, "Appointment approved Bassleer", "Hello, We are sending you this email to confirm that you have made an appointment with a consultant.");
+};
+
+const sendAppointmentCanceledMail = (user) => {
+	mailer.mail(user.email, "Appointment canceled Bassleer", "Hello, We are sending you this email to inform you that your appointment has been canceled.");
 };
 
 const sendConsultNewAppointmentMail = (user) => {
