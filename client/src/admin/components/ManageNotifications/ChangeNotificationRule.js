@@ -198,7 +198,7 @@ export default class ChangeNotificationRule extends Component {
 						<Label>Notification type</Label><br/>
 						<InputGroup>
 							<Input type='select' value={type} onChange={this.changeType}>
-								<option value='Error'>Error</option>
+								<option value='Urgent'>Urgent</option>
 								<option value='Warning'>Warning</option>
 							</Input>
 						</InputGroup>
