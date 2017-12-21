@@ -61,6 +61,26 @@
 	}
 }
 
+.multiRowTable {
+	border: 1px solid $adminNavBackground;
+	td {
+		border: 1px solid $adminNavBackground;
+	}
+	thead {
+		border-top: none;
+		color: $supportColor;
+		background: $adminNavBackground;
+		th {
+			font-weight: 100;
+			min-width: 100px;
+			border-bottom: none;
+			@media screen and(max-width: $responsiveBreakPoint){
+				min-width: auto;
+			}
+		}
+	}
+}
+
 .searchForm {
 	margin: $defaultPadding*2 0 $defaultPadding*2 0;
 	.form-group {

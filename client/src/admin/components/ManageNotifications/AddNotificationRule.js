@@ -8,18 +8,19 @@ export default class AddNotificationRule extends Component {
 		this.state = {
 			data: this.props.customProps,
 			error: '',
-			tooltipOpen: false
+			tooltipOpen: false,
+			triggerCount: 1
 		};
 		this.attributes = ['Phosphate', 'Nitrate', 'Nitrite', 'Iron', 'gH', 'Temperature', 'Oxygen', 'Carbon', 'Dioxide', 'kH', 'Chlorine'];
 		this.toggle = this.toggle.bind(this);
 	};
 
-	//changeState functions:
+	//change/set State functions:
 	toggle() {
 		this.setState({
 			tooltipOpen: !this.state.tooltipOpen
 		});
-	}
+	};
 	changeData = (field, evt) => {
 		let data = this.state.data;
 		data[field] = evt.target.value;
@@ -47,6 +48,13 @@ export default class AddNotificationRule extends Component {
 	};
 	changeType = (evt) => {
 		this.changeData('type', evt);
+	};
+
+	//increment triggerCount
+	increaseTriggerCount = () => {
+		this.setState({
+			triggerCount: this.state.triggerCount +1
+		});
 	};
 
 	//get/post/put data functions:
@@ -118,14 +126,13 @@ export default class AddNotificationRule extends Component {
 		};
 	};
 
-	render() {
-		const {attribute, equation, compared, min, max, message, type} = this.state.data;
-		const {toggleModal} = this.props;
-		return (
-			<div>
-				<ModalHeader toggle={toggleModal}>Change notification rule</ModalHeader>
-				<ModalBody>
-					<p className="error">{this.state.error}</p>
+	//Add multiple options based on trigger triggerCount
+	showTrigger = (min, max, compared) => {
+		let returnData = [];
+		for (let i = 0; i < this.state.triggerCount; i++) {
+			returnData.push(
+				<div key={i}>
+					<h5>Notification trigger {i+1}</h5>
 					<FormGroup>
 						<Label>Attribute</Label><br/>
 						<InputGroup>
@@ -148,12 +155,31 @@ export default class AddNotificationRule extends Component {
 						</InputGroup>
 					</FormGroup>
 					{this.showCompared(min, max, compared)}
+					<hr/>
+				</div>
+			);
+		};
+		return returnData;
+	};
+
+	render() {
+		console.log(this.state.data);
+		const {attribute, equation, compared, min, max, message, type} = this.state.data;
+		const {toggleModal} = this.props;
+		return (
+			<div>
+				<ModalHeader toggle={toggleModal}>Change notification rule</ModalHeader>
+				<ModalBody>
+					<p className="error">{this.state.error}</p>
+					{this.showTrigger(min, max, compared)}
+					<Button onClick={this.increaseTriggerCount} outline className='modalLink' color='secondary' block>Add additional notification trigger</Button>
+					<hr/>
 					<FormGroup>
 						<Label>Notification message <a href="#" id="TooltipMessage">(more info)</a></Label><br/>
 						<Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipMessage" toggle={this.toggle}>
 							Placeholders: <br /><br />
 							{'{aquarium}: will show the concerned aquarium name'} <br /><br />
-							{'{attribute} (like {Iron}): will show the concerned value of, the specific attribute, put in by the user'}
+							{'{attribute} (like {Iron}): will show the concerned value, of the specified attribute, put in by the user'}
 						</Tooltip>
 						<InputGroup>
 							<Input type='text' onChange={this.changeMessage}/>

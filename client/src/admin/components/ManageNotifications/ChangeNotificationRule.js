@@ -151,7 +151,7 @@ export default class ChangeNotificationRule extends Component {
 						<Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipMessage" toggle={this.toggle}>
 							Placeholders: <br /><br />
 							{'{aquarium}: will show the concerned aquarium name'} <br /><br />
-							{'{attribute} (like {Iron}): will show the concerned value of, the specific attribute, put in by the user'}
+							{'{attribute} (like {Iron}): will show the concerned value, of the specified attribute, put in by the user'}
 						</Tooltip>
 						<InputGroup>
 							<Input type='text' value={message} onChange={this.changeMessage}/>
