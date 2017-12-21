@@ -7,9 +7,9 @@ export default class AddNotificationRule extends Component {
 		super(props);
 		this.state = {
 			data: this.props.customProps,
+			triggers: [{}],
 			error: '',
-			tooltipOpen: false,
-			triggerCount: 1
+			tooltipOpen: false
 		};
 		this.attributes = ['Phosphate', 'Nitrate', 'Nitrite', 'Iron', 'gH', 'Temperature', 'Oxygen', 'Carbon', 'Dioxide', 'kH', 'Chlorine'];
 		this.toggle = this.toggle.bind(this);
@@ -28,20 +28,27 @@ export default class AddNotificationRule extends Component {
 			data: data
 		});
 	};
+	changeTriggers = (field, evt) => {
+		let triggers = this.state.triggers;
+		triggers[evt.target.id][field] = evt.target.value;
+		this.setState({
+			triggers: triggers
+		});
+	};
 	changeAttribute = (evt) => {
-		this.changeData('attribute', evt);
+		this.changeTriggers('attribute', evt);
 	};
 	changeEquation = (evt) => {
-		this.changeData('equation', evt);
+		this.changeTriggers('equation', evt);
 	};
 	changeCompared = (evt) => {
-		this.changeData('compared', evt);
+		this.changeTriggers('compared', evt);
 	};
 	changeMin = (evt) => {
-		this.changeData('min', evt);
+		this.changeTriggers('min', evt);
 	};
 	changeMax = (evt) => {
-		this.changeData('max', evt);
+		this.changeTriggers('max', evt);
 	};
 	changeMessage = (evt) => {
 		this.changeData('message', evt);
@@ -52,29 +59,36 @@ export default class AddNotificationRule extends Component {
 
 	//increment triggerCount
 	increaseTriggerCount = () => {
+		let triggers = this.state.triggers;
+		triggers.push({});
 		this.setState({
-			triggerCount: this.state.triggerCount +1
+			triggers: triggers
 		});
 	};
 
 	//get/post/put data functions:
 	addNotificationRule = () => {
+		let dataObject = this.state.data;
+		dataObject.triggers = this.state.triggers;
 		//validation
-		if ((!this.state.data.compared && (!this.state.data.min || !this.state.data.max)) ||
-				 !this.state.data.attribute || !this.state.data.equation || !this.state.data.message || !this.state.data.type){
-			this.setState({error: "Fill in all fields!"});
-		} else if ((this.state.data.compared || (this.state.data.min && this.state.data.max)) &&
-								this.state.data.attribute && this.state.data.equation && this.state.data.message  && this.state.data.type) {
-			//remove unnecessary data before inserting it
-			if (this.state.data.equation === 'range') {
-				let {data} = this.state;
-				data.compared = null;
-				this.setState({data: data});
+		let error = [];
+		if (!dataObject.message)	{error.push('message')};
+		if (!dataObject.type)			{error.push('type')};
+		for (let i = 0; i < this.state.triggers.length; i++) {
+			if ((!dataObject.triggers[i].compared && (!dataObject.triggers[i].min && !dataObject.triggers[i].max)) || !dataObject.triggers[i].attribute || !dataObject.triggers[i].equation)	{
+				error.push(`trigger ${i +1}`);
 			} else {
-				let {data} = this.state;
-				data.min = data.max = null;
-				this.setState({data: data});
+				//remove accidental filled-in data
+				if (dataObject.triggers[i].equation === 'range') {
+					dataObject.triggers[i].compared = null;
+				} else {
+					dataObject.triggers[i].min = dataObject.triggers[i].max = null;
+				};
 			};
+		};
+		if (error.length > 0) {
+			this.setState({error: `Fill in: ${error.toString()}`});
+		} else {
 			this.postNotificationRule(this.state.data);
 		};
 	};
@@ -100,26 +114,26 @@ export default class AddNotificationRule extends Component {
 	};
 
 	//make needed imputs between range and others in equation:
-	showCompared = (min, max, compared) => {
-		if (this.state.data.equation === 'range') {
+	showCompared = (id) => {
+		if (this.state.triggers[id].equation === 'range') {
 			return (
 				<FormGroup key='0'>
 					<Label>Min</Label><br/>
 					<InputGroup>
-						<Input type='number' value={min} onChange={this.changeMin}/>
+						<Input id={id} type='number' onChange={this.changeMin}/>
 					</InputGroup>
 					<Label>Max</Label><br/>
 					<InputGroup>
-						<Input type='number' value={max} onChange={this.changeMax}/>
+						<Input id={id} type='number' onChange={this.changeMax}/>
 					</InputGroup>
 				</FormGroup>
 			);
 		} else {
 			return (
-				<FormGroup key='0'>
+				<FormGroup key='1'>
 					<Label>Compared</Label><br/>
 					<InputGroup>
-						<Input type='number' value={compared} onChange={this.changeCompared}/>
+						<Input id={id} type='number' onChange={this.changeCompared}/>
 					</InputGroup>
 				</FormGroup>
 			);
@@ -127,16 +141,16 @@ export default class AddNotificationRule extends Component {
 	};
 
 	//Add multiple options based on trigger triggerCount
-	showTrigger = (min, max, compared) => {
+	showTrigger = () => {
 		let returnData = [];
-		for (let i = 0; i < this.state.triggerCount; i++) {
+		for (let i = 0; i < this.state.triggers.length; i++) {
 			returnData.push(
 				<div key={i}>
 					<h5>Notification trigger {i+1}</h5>
 					<FormGroup>
 						<Label>Attribute</Label><br/>
 						<InputGroup>
-							<Input type='select' onChange={this.changeAttribute}>
+							<Input id={i} type='select' onChange={this.changeAttribute}>
 								<option selected disabled hidden>Choose here</option>
 								{this.showAttributes()}
 							</Input>
@@ -145,7 +159,7 @@ export default class AddNotificationRule extends Component {
 					<FormGroup>
 						<Label>Equation</Label><br/>
 						<InputGroup>
-							<Input type='select' onChange={this.changeEquation}>
+							<Input id={i} type='select' onChange={this.changeEquation}>
 								<option selected disabled hidden>Choose here</option>
 								<option value='>'>bigger than</option>
 								<option value='<'>smaller than</option>
@@ -154,7 +168,7 @@ export default class AddNotificationRule extends Component {
 							</Input>
 						</InputGroup>
 					</FormGroup>
-					{this.showCompared(min, max, compared)}
+					{this.showCompared(i)}
 					<hr/>
 				</div>
 			);
@@ -163,15 +177,13 @@ export default class AddNotificationRule extends Component {
 	};
 
 	render() {
-		console.log(this.state.data);
-		const {attribute, equation, compared, min, max, message, type} = this.state.data;
 		const {toggleModal} = this.props;
 		return (
 			<div>
 				<ModalHeader toggle={toggleModal}>Change notification rule</ModalHeader>
 				<ModalBody>
 					<p className="error">{this.state.error}</p>
-					{this.showTrigger(min, max, compared)}
+					{this.showTrigger()}
 					<Button onClick={this.increaseTriggerCount} outline className='modalLink' color='secondary' block>Add additional notification trigger</Button>
 					<hr/>
 					<FormGroup>
@@ -188,7 +200,7 @@ export default class AddNotificationRule extends Component {
 					<FormGroup>
 						<Label>Notification type</Label><br/>
 						<InputGroup>
-							<Input type='select' value={type} onChange={this.changeType}>
+							<Input type='select' onChange={this.changeType}>
 								<option selected disabled hidden>Choose here</option>
 								<option value='Error'>Error</option>
 								<option value='Warning'>Warning</option>
