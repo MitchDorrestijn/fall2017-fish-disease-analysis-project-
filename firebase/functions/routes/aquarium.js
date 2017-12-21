@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
+const Joi = require('joi');
 
 const db = admin.firestore();
 
@@ -9,10 +10,21 @@ const notifications = require('../notifications/notifications.js');
 
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
-const validateModel = require('../middleware/validateModel.js');
+const validateModel = require('../middleware/validateModel.js'); // DEPRECATED!
+const validate = require('../middleware/validate.js');
 
 /* Helper functions */
 const helperFunctions = require('../middleware/functions.js');
+
+/* JOI Model Validation */
+const aquariumSchema = Joi.object().keys({
+	name: Joi.string().min(3).max(30).required(),
+	id: Joi.string().alphanum()
+});
+
+const fishSchema = Joi.object().keys({
+    species: Joi.string().alphanum().required()
+});
 
 /**
  *  @api {get} /aquaria/ Get All Aquaria
@@ -24,15 +36,12 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiUse UserAuthenticated
  */
 router.get('/aquaria/', isAuthenticated, (req, res) => {
-	db.collection("aquaria").where("user", "==", req.user.ref).get()
+	db.collection('aquaria').where('user', '==', req.user.ref).get()
 	.then((snapshot) => {
 		let aquaria = [];
 		snapshot.forEach((doc) => {
 			aquaria.push(helperFunctions.flatData(doc));
 		});
-		// for (let i = 0; i < aquaria.length; i++) {
-		// 	aquaria[i].user = aquaria[i].user.id;
-		// }
 		res.send(aquaria);
 	}).catch((err) => {
 		res.status(500).send(err.message);
@@ -75,8 +84,9 @@ router.get('/aquaria/:id', isAuthenticated, (req, res) => {
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
-	let data = req.body.data;
+//router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req, res) => {
+router.post('/aquaria/', isAuthenticated, validate('aquarium', aquariumSchema), (req, res) => {
+	let data = req.body.aquarium;
 	data.user = req.user.ref;
 	let newObj = {};
 	db.collection("aquaria").add(data)
@@ -109,12 +119,13 @@ router.post('/aquaria/', isAuthenticated, validateModel("data", ["name"]), (req,
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (req, res) => {
+router.post('/aquaria/:id', isAuthenticated, validateModel('aquarium', aquariumSchema), (req, res) => {
 	db.collection('aquaria').where('id', '==', req.params.id).where('user', '==', req.user.ref).get()
 	.then((snapshot) => {
 		if (snapshot.empty) {
 			return Promise.reject(
-				new Error('Aquarium non existent or not owned by user.'));
+				new Error('Aquarium non existent or not owned by user.')
+			);
 		}
 		return snapshot.docs[0].ref.update(data);
 	})
@@ -132,6 +143,24 @@ router.post('/aquaria/:id', isAuthenticated, validateModel("model", ["name"]), (
 		res.status(500).send(error.message);
 	});
 });
+
+router.delete('/aquaria/:id', isAuthenticated, (req, res) => {
+	db.collection('aquaria').where('id', '==', req.params.id).where('user', '==', req.user.ref).get()
+	.then((snapshot) => {
+		if (snapshot.empty) {
+			return Promise.reject(
+				new Error('Aquarium non existent or not owned by user.')
+			);
+		}
+		return snapshot.docs[0].ref.delete();
+	})
+	.then(() => {
+		res.sendStatus(200);
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	})
+})
 
 /**
  *  @api {post} /aquaria/:id Return all fish
@@ -159,8 +188,8 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 				where('aquarium', '==', doc.ref).
 				where('user', '==', req.user.ref).
 				get();
-		}).
-		then((snapshot) => {
+		})
+		.then((snapshot) => {
 			let fish = [];
 			snapshot.forEach((doc) => {
 				// Preventing firebase from sending the document reference over JSON. Replacing the references with ID's.
@@ -188,10 +217,10 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse UnprocessableEntity
  */
-router.post('/aquaria/:id/fish', isAuthenticated, validateModel("data", ["species"]), (req, res) => {
+router.post('/aquaria/:id/fish', isAuthenticated, validate('fish', fishSchema), (req, res) => {
 	const aquariumRef = db.collection('aquaria').doc(req.params.id);
 
-	let data = req.body.data;
+	let data = req.body.fish;
 	data.user = req.user.ref;
 	data.species = db.collection("species").doc(data.species);
 	data.aquarium = aquariumRef;

@@ -19,16 +19,18 @@ class Login extends React.Component {
 			error: false
 		}
 	}
+
 	handleChange = (e) => {
 		let aquariumName = e.target.value;
 		this.setState({aquariumName: aquariumName})
-  }
+	}
+
 	aquariumNameForDB = (e) => {
 		e.preventDefault();
 		console.log(this.state.aquariumName);
 
 		let da = new DataAccess();
-		da.postData ('/aquaria/', {data: {name: this.state.aquariumName}}, (err, res) => {
+		da.postData ('/aquaria/', {aquarium: {name: this.state.aquariumName}}, (err, res) => {
 			console.log(err,res);
 			if (!err) {
 				this.props.customProps.refreshPage();
@@ -38,6 +40,7 @@ class Login extends React.Component {
 			}
 		});
 	}
+
 	render() {
 		return (
 			<div>

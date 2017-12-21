@@ -1,7 +1,8 @@
 // Middleware to validate with Joi validation (see npm) 
-// Usage: validate(schema, "species") 
+// Usage: validate("species", schema)
+const Joi = require('joi'); 
  
-module.exports = function validate(schema, modelName) { 
+module.exports = function validate(modelName, schema) { 
     return function(req, res, next) { 
         if(!req.body[modelName]){ 
             return res.status(400).send("Missing model: " + modelName + ". (req.body." + modelName + ")"); 
@@ -11,7 +12,7 @@ module.exports = function validate(schema, modelName) {
         if(result.error === null){ 
             next(); 
         } else { 
-            res.status(400).send("Validation failed: " + error.message); 
+            res.status(400).send("Validation failed: " + result.error.message); 
         } 
     } 
 }

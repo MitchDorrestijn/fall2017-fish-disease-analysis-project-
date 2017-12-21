@@ -4,38 +4,38 @@ const admin = require('firebase-admin');
 const validator = require('validator');
 const path = require('path');
 const hasher = require ('node-hasher');
+const Joi = require('joi');
 
 // Custom dependencies
 const mailer = require('../mailer/mailer.js');
+const validate = require('../middleware/validate.js');
+const isAuthenticated = require('../middleware/isAuthenticated.js');
 
 const db = admin.firestore();
 
-// route for a user to register.
-router.post('/register/', (req, res) => {
-	// if no input, then return 400.
-    if (!req.body.user){
-		return res.sendStatus(400);
-	}
-
-	const user = req.body.user;
+const model = {
+	schema: {
+		create: Joi.object().keys({ 
+			email: Joi.string().email().required(), 
+			firstName: Joi.string().alphanum().min(3).required(), 
+			lastName: Joi.string().alphanum().min(3).required(),
+			country: Joi.string().alphanum().min(3).required(),
+			password: Joi.string().min(6).required()
+		}), 
 	
-	// Validate input
-	// TODO: country needs to be validated
-	if (!validator.isEmail(user.email) ||
-		!validator.isAlpha(user.firstName) ||
-		!validator.isAlpha(user.lastName) ||
-		!validator.isAlpha(user.country) ||
-		validator.isEmpty(user.password)
-	){
-		console.log(user);
-		return res.status(400).send(`Input validation failed: 
-		Email: ${validator.isEmail(user.email)}, 
-		firstName: ${validator.isAlpha(user.firstName)},
-		lastName: ${validator.isAlpha(user.lastName)},
-		country: ${validator.isAlpha(user.country)},
-		password: ${validator.isEmpty(user.password)}
-		`);
+		update: Joi.object().keys({
+			id: Joi.string().alphanum(), 
+			firstName: Joi.string().alphanum().min(3), 
+			lastName: Joi.string().alphanum().min(3),
+			country: Joi.string().alphanum().min(3),
+			password: Joi.string().min(6)
+		})
 	}
+}
+
+// route for a user to register.
+router.post('/register/', validate('user', model.schema.create), (req, res) => {
+	const user = req.body.user;
 
     admin.auth().createUser({
         email: user.email,
@@ -71,10 +71,7 @@ router.post('/register/', (req, res) => {
 	});
 });
 
-router.delete('/user/:id', (req, res) => {
-	if (req.user.uid !== req.params.id) {
-		return res.status(401).send("Unauthorized");
-	}
+router.delete('/user/:id', isAuthenticated, (req, res) => {
 	admin.auth().deleteUser(req.user.uid)
 	.then(() => {
 	  	res.sendStatus(204);
