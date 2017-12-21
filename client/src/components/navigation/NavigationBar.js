@@ -66,7 +66,7 @@ export default class NavigationBar extends React.Component {
 						{
 							this.props.loggedIn ?
 							([
-								<NavItem key={0}><Link className="nav-link" to="/myAquarium">My Aquarium</Link></NavItem>,
+								<NavItem key={0}><Link className="nav-link" to="/myAquarium">Dashboard</Link></NavItem>,
 								(this.props.isAdmin ?
 									<NavItem key={1}><Link className="nav-link" to="/admin">Admin</Link></NavItem> :
 									null
