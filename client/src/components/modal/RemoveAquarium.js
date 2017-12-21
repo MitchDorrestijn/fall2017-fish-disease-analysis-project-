@@ -42,14 +42,31 @@ export default class RemoveAquarium extends React.Component {
 		e.preventDefault();
 		//This is where the API call for must take place to remove the selected auaria. Dont forget to call this.props.toggleModal(); in the res to close the modal.
 		let selectedAquaria = document.getElementById("selectedAquaria").value;
+		console.log(this.state.aquariaFromDB);
 		console.log(selectedAquaria);
+		const {aquariaFromDB} = this.state;
+		let aquariumId;
+		for (const elem of aquariaFromDB[0]) {
+			if (elem.name === selectedAquaria) {
+				aquariumId = elem.id;
+			}
+		}
+		let da = new DataAccess();
+		da.deleteData (`/aquaria/${aquariumId}`, (err, res) => {
+			if (!err) {
+				this.props.customProps.refreshPage();
+				this.props.toggleModal();
+			} else {
+				this.setState({error: true});
+			}
+		});
 	}
 	render() {
 		return (
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Remove aquarium</ModalHeader>
 				<ModalBody>
-					{ this.state.error && "Something wnet wrong!"}
+					{ this.state.error && "Something went wrong!"}
 					<FormGroup>
 						<Label for="email">Aquarium name:</Label>
           	<Input type="select" name="select" id="selectedAquaria">
