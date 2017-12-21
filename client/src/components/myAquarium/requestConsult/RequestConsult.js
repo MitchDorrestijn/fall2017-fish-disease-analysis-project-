@@ -58,11 +58,11 @@ export default class AccountSettings extends React.Component {
 			};
 		});
 	};
+
 	registerRequest = () => {
 		const appointment = {
-			timeSlotId: document.getElementById('dateTime').value,
-			comment: document.getElementById('comment').value,
-			video: document.getElementById('chatOption').value,
+			timeslotId: document.getElementById('dateTime').value,
+			comment: document.getElementById('comment').value
 		};
 		// Validation possibility
 		Object.keys(appointment).forEach( (key) => {
@@ -76,7 +76,6 @@ export default class AccountSettings extends React.Component {
 		let da = new DataAccess ();
 		da.postData('/appointments/', {appointment: dataObject}, (err, res) => {
 			if (!err) {
-				console.log('registered');
 				this.initSetters();
 			} else {
 				console.log(err);
@@ -146,14 +145,6 @@ export default class AccountSettings extends React.Component {
 										<FormGroup>
 											<Label for='exampleText'>Comment:</Label>
 											<Input type='textarea' name='text' id='comment' value={this.state.comment} onChange={this.onChange.bind(this)}/>
-										</FormGroup>
-										<FormGroup>
-											<Label for='exampleSelect'>Chat option:</Label>
-											<Input type='select' name='select' id='chatOption'>
-												<option value='' disabled selected hidden>Select</option>
-												<option value='true'>With sound and video</option>
-												<option value='false'>Text only</option>
-											</Input>
 										</FormGroup>
 										<div className='text-right'>
 											<ActionButton buttonText='Register consult' onClickAction={this.registerRequest} color='primary btn-transperant' disabled/>
