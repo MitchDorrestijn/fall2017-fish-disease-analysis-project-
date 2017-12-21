@@ -19,7 +19,8 @@ export default class NavigationBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isOpen: false
+			isOpen: false,
+			error: null
 		};
 	}
 
@@ -33,16 +34,19 @@ export default class NavigationBar extends React.Component {
 			isOpen: !this.state.isOpen,
 		});
 	};
-	
+
 	search = (e) => {
 		e.preventDefault();
-		
 		const searchText = document.getElementById("search").value;
-		
-		if(!searchText){
-			window.location.href = "/search";
-		}else{
-			window.location.href = "/search/" + searchText;
+
+		if(searchText){
+			if(!searchText){
+				window.location.href = "/search";
+			}else{
+				window.location.href = "/search/" + searchText;
+			}
+		} else {
+			this.setState({error: 'please fill in a search term.'})
 		}
 	};
 
@@ -85,6 +89,7 @@ export default class NavigationBar extends React.Component {
 											</Button>
 										</span>
 									</span>
+									<small className="searchError">{this.state.error}</small>
 								</NavItem>
 							</FormGroup>
 						</Form>
