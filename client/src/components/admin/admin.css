@@ -1,0 +1,75 @@
+.appointment-table td {
+  vertical-align: middle; }
+
+.outer-container .adminContentContainer {
+  background: #657D7C; }
+
+.sidebar-wrap .adminSidebar {
+  background: #464A45; }
+
+.sidebar-wrap .adminSidebar a.selected:after {
+  border-left-color: #464A45; }
+
+.sidebar-wrap .adminSidebar a {
+  border-bottom-color: #657D7C; }
+
+.sidebar-wrap .adminSidebar a:first-of-type {
+  border-top-color: #657D7C; }
+
+.sidebar-wrap .aquarium-sidebar {
+  min-height: 100vh; }
+  @media screen and (max-width: 992px) {
+    .sidebar-wrap .aquarium-sidebar {
+      min-height: auto; } }
+
+.editFocus input {
+  width: 100%;
+  padding: 7.5px; }
+  .editFocus input:focus {
+    box-shadow: none;
+    border: none;
+    outline: none; }
+
+.responsiveTable {
+  border: 1px solid #464A45; }
+  .responsiveTable td {
+    border-top: 1px solid #464A45; }
+  .responsiveTable thead {
+    border-top: none;
+    color: #FFFFFF;
+    background: #464A45; }
+    .responsiveTable thead th {
+      font-weight: 100;
+      min-width: 100px;
+      border-bottom: none; }
+      @media screen and (max-width: 992px) {
+        .responsiveTable thead th {
+          min-width: auto; } }
+
+.searchForm {
+  margin: 30px 0 30px 0; }
+  .searchForm .form-group {
+    width: 50%; }
+    .searchForm .form-group input {
+      width: 100%;
+      border-radius: 0;
+      border: 1px solid #FFFFFF; }
+      .searchForm .form-group input:focus {
+        box-shadow: none;
+        border: 1px solid #FFFFFF; }
+
+button.btn-admin {
+  border-radius: 0;
+  background: #464A45;
+  border-color: #464A45; }
+  button.btn-admin:hover {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    border: 1px solid #464A45; }
+  button.btn-admin:focus {
+    outline: none;
+    border: none; }
+
+.search-errors {
+  margin-bottom: 30px; }

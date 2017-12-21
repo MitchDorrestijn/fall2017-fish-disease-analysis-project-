@@ -1,0 +1,32 @@
+.account-settings .pass-alert {
+  text-align: center;
+  background-color: #333333;
+  padding: 15px;
+  margin-bottom: 15px; }
+
+.account-settings input:disabled {
+  background-color: #ccc; }
+
+.account-settings .settings-box {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px 10px 10px 10px;
+  background-color: #1f344a; }
+  .account-settings .settings-box h4 {
+    margin-top: 10px;
+    margin-bottom: 20px; }
+  .account-settings .settings-box input {
+    border-radius: 0;
+    border: none;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  .account-settings .settings-box .custom-select {
+    border-radius: 0;
+    border: none;
+    height: 50px !important;
+    margin-top: 10px;
+    margin-bottom: 20px; }
+  .account-settings .settings-box .row {
+    margin-left: 0px;
+    margin-right: 0px; }

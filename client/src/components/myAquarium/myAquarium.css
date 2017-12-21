@@ -1,0 +1,281 @@
+.outer-container {
+  width: 75%; }
+  @media screen and (max-width: 992px) {
+    .outer-container {
+      width: 100%; } }
+  .outer-container .aquarium-content-container {
+    background: url("/images/myAquarium/achtergrond.jpg");
+    background-size: cover;
+    background-position: bottom;
+    background-attachment: fixed;
+    color: #fff;
+    min-height: 100vh;
+    overflow: auto;
+    padding: 20px 20px 20px 40px; }
+    @media screen and (max-width: 992px) {
+      .outer-container .aquarium-content-container {
+        padding: 20px 20px 20px 20px; } }
+
+.sidebar-wrap {
+  height: 100vh; }
+  @media screen and (max-width: 992px) {
+    .sidebar-wrap {
+      height: auto; } }
+  .sidebar-wrap h2 {
+    word-wrap: break-word; }
+  .sidebar-wrap .aquarium-sidebar {
+    background-color: #1f344a;
+    min-height: calc(100vh - 80px);
+    color: #FFFFFF;
+    position: fixed;
+    z-index: 1; }
+    @media screen and (max-width: 992px) {
+      .sidebar-wrap .aquarium-sidebar {
+        position: relative;
+        min-height: auto; } }
+    .sidebar-wrap .aquarium-sidebar h2 {
+      padding-top: 15px;
+      padding-bottom: 10px;
+      padding-left: 55px;
+      font-size: 40px; }
+    .sidebar-wrap .aquarium-sidebar a:first-of-type {
+      border-top: 1px solid #3b567b; }
+    .sidebar-wrap .aquarium-sidebar a {
+      color: #FFFFFF !important;
+      border-bottom: 1px solid #3b567b;
+      display: block;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      position: relative; }
+    .sidebar-wrap .aquarium-sidebar a.selected:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 1px;
+      border-bottom: 25px solid transparent;
+      border-top: 25px solid transparent;
+      border-left: 25px solid #1f344a;
+      margin-right: -25px; }
+    .sidebar-wrap .aquarium-sidebar img {
+      width: 20px;
+      margin-left: 20px;
+      margin-right: 30px; }
+
+.account-settings .pass-alert {
+  text-align: center;
+  background-color: #333333;
+  padding: 15px;
+  margin-bottom: 15px; }
+
+.account-settings input:disabled {
+  background-color: #ccc; }
+
+.account-settings .settings-box {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px 10px 10px 10px;
+  background-color: #1f344a; }
+  .account-settings .settings-box h4 {
+    margin-top: 10px;
+    margin-bottom: 20px; }
+  .account-settings .settings-box input {
+    border-radius: 0;
+    border: none;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  .account-settings .settings-box .custom-select {
+    border-radius: 0;
+    border: none;
+    height: 50px !important;
+    margin-top: 10px;
+    margin-bottom: 20px; }
+  .account-settings .settings-box .row {
+    margin-left: 0px;
+    margin-right: 0px; }
+
+.notifications .notification {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 100px; }
+  .notifications .notification .icon-container {
+    background-color: #1f344a;
+    display: table;
+    height: 100px;
+    width: 100%; }
+    .notifications .notification .icon-container .icon {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      height: 100px; }
+      .notifications .notification .icon-container .icon img {
+        height: 60px; }
+  .notifications .notification .info {
+    height: 100px;
+    color: #000;
+    background-color: #fff; }
+    .notifications .notification .info p {
+      display: inline-block;
+      height: 60px;
+      margin: 20px; }
+  .notifications .notification .date {
+    height: 100px;
+    color: #fff;
+    background-color: #494949; }
+    .notifications .notification .date p {
+      display: inline-block;
+      height: 60px;
+      margin: 20px; }
+  .notifications .notification .close-container {
+    position: relative; }
+    .notifications .notification .close-container .close {
+      position: absolute;
+      top: 6px;
+      right: 30px;
+      height: 0;
+      width: 0; }
+      .notifications .notification .close-container .close a {
+        color: #fff !important; }
+
+.saved-advices .advice {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+  .saved-advices .advice .treatment-container {
+    color: #333333;
+    text-align: left;
+    padding: 15px; }
+    .saved-advices .advice .treatment-container h5 {
+      margin-top: 15px; }
+  .saved-advices .advice .white-bg {
+    transform-origin: 50% 0%;
+    -ms-transform-origin: 50% 0%;
+    -webkit-transform-origin: 50% 0%;
+    background: #FFFFFF; }
+  .saved-advices .advice .dropdown-link-down, .saved-advices .advice .dropdown-link-up {
+    padding: 15px 19px;
+    border-radius: 30px;
+    color: #FFFFFF;
+    background: #333333;
+    display: table;
+    margin: -40px auto 0 auto; }
+  .saved-advices .advice .header {
+    font-size: 18px;
+    background: #1f344a; }
+  .saved-advices .advice .image-container {
+    background-color: #494949;
+    height: 180px;
+    width: 100%; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .image-container {
+        width: 100%;
+        height: auto; } }
+    .saved-advices .advice .image-container .image {
+      position: absolute;
+      height: 180px;
+      overflow: hidden; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .image-container .image {
+          position: relative;
+          height: auto; } }
+      .saved-advices .advice .image-container .image img {
+        max-width: 100%; }
+  .saved-advices .advice .info {
+    height: 180px;
+    color: #FFFFFF;
+    background-color: #494949; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .info {
+        height: auto; } }
+    .saved-advices .advice .info p {
+      min-height: 180px;
+      padding: 15px;
+      margin-bottom: 0; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .info p {
+          min-height: auto; } }
+  .saved-advices .advice .data {
+    height: 180px;
+    color: #FFFFFF;
+    background-color: #494949; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .data {
+        height: auto;
+        padding-bottom: 15px; } }
+    .saved-advices .advice .data p {
+      display: inline-block;
+      height: 180px;
+      margin: 20px;
+      overflow-y: scroll; }
+    .saved-advices .advice .data ul {
+      padding: 15px; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .data ul {
+          padding: 0 0 0 30px; } }
+
+.table_card {
+  width: 100%;
+  display: table; }
+
+.card-body a {
+  color: #FFFFFF; }
+
+.selectField {
+  width: 100%;
+  margin-bottom: 15px; }
+
+.Select-placeholder {
+  color: inherit; }
+
+.Select-arrow {
+  border: none; }
+
+.Select--multi .Select-value {
+  color: #333333;
+  border: 1px solid #333333;
+  background: #FFFFFF; }
+
+.Select--multi .Select-value-icon {
+  border-right: 1px solid #333333; }
+
+.Select-control {
+  border: none; }
+
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.Select--multi .Select-value,
+.Select--multi a.Select-value-label {
+  color: #333333; }
+
+.Select-option.is-focused {
+  background-color: #FFFFFF; }
+
+.Select-menu-outer {
+  margin-top: 10px; }
+
+.Select--multi .Select-value-icon:active,
+.Select--multi .Select-value-icon:hover {
+  background-color: #333333;
+  color: #FFFFFF; }
+
+.Select-arrow-zone {
+  padding-right: 15px; }
+
+.addBtns {
+  overflow: auto;
+  width: 100%;
+  margin-bottom: 30px; }
+  .addBtns div button {
+    float: left; }
+  .addBtns a {
+    color: #FFFFFF;
+    margin: 7.5px;
+    display: inline-block; }
+
+.row-no-gutter {
+  width: 100%;
+  margin: 0 !important; }
+  @media screen and (max-width: 992px) {
+    .row-no-gutter {
+      overflow-x: hidden; } }

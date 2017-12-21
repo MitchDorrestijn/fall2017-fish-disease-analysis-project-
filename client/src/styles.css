@@ -1,0 +1,818 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+.white {
+  color: #FFFFFF; }
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px !important;
+  overflow-x: hidden; }
+
+.body-margin-top {
+  padding-top: 80px; }
+
+.btn-outline-primary {
+  color: #FFFFFF;
+  border-color: #FFFFFF !important;
+  border-radius: 0px; }
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+  background-color: #FFFFFF;
+  color: #333333 !important;
+  cursor: pointer; }
+
+.btn-outline-primary:focus {
+  box-shadow: none; }
+
+.btn-outline-primary:not([disabled]):not(.disabled):active, .btn-outline-primary:not([disabled]):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {
+  background: #FFFFFF; }
+
+h2 {
+  font-size: 40px; }
+
+a:hover {
+  text-decoration: none;
+  color: #333333; }
+
+.footer {
+  padding: 15px 0px;
+  text-align: center; }
+  .footer a {
+    color: #333333; }
+
+.no-gutter {
+  padding-left: 0;
+  padding-right: 0; }
+
+.feedbackAlert {
+  position: fixed;
+  z-index: 10;
+  width: 90vw;
+  margin-top: 5px;
+  margin-left: 5vw; }
+
+nav {
+  background-color: #FFFFFF; }
+  nav .nav-item {
+    padding: 15px; }
+  @media screen and (max-width: 992px) {
+    nav .navbar-collapse {
+      background: #FFFFFF;
+      text-align: center; }
+    nav .nav-item:hover {
+      background: gainsboro;
+      text-decoration: none; }
+      nav .nav-item:hover a:hover {
+        text-decoration: none; }
+    nav img.logo {
+      margin-top: 15px; }
+    nav button.test.navbar-toggler {
+      border: none;
+      margin-top: 15px; }
+    nav button.test.navbar-toggler:focus,
+    nav button.test.navbar-toggler:active {
+      box-shadow: none;
+      outline: none; }
+    nav button.test.navbar-toggler:hover {
+      cursor: pointer; } }
+  nav img.logo {
+    max-height: 50px; }
+  nav .search-wrap:hover {
+    background: none; }
+
+.navbar-light .navbar-nav .nav-link {
+  color: #333333; }
+
+.navbar.fixed-top {
+  padding-top: 20px; }
+
+@media screen and (min-width: 992px) {
+  .navbar-light:hover .navbar-nav:hover .nav-link:hover {
+    text-decoration: underline; }
+  .navbar.fixed-top {
+    height: 80px; } }
+
+@media screen and (max-width: 992px) {
+  .navbar.fixed-top {
+    top: -20px;
+    right: -14px;
+    left: -15px; }
+  .navbar-brand {
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    padding: 0px 15px 0px 15px; } }
+
+.searchBox-wrapper .search-field {
+  border: none;
+  border-radius: 0px; }
+
+.searchBox-wrapper .search-field:active,
+.searchBox-wrapper .search-field:focus {
+  box-shadow: none;
+  outline: none; }
+
+.searchBox-wrapper .form-control {
+  border-bottom: 1px solid #333333 !important; }
+
+.searchBox-wrapper .searchBtn-wrap {
+  border-bottom: 1px solid #333333; }
+  .searchBox-wrapper .searchBtn-wrap .search-btn {
+    background: none;
+    border: none;
+    color: #333333;
+    cursor: pointer; }
+
+.flags {
+  padding: 0;
+  list-style: none;
+  overflow: auto;
+  margin-top: 20px;
+  display: inline-block; }
+  .flags li {
+    float: left; }
+    .flags li button {
+      padding: 0; }
+      .flags li button img {
+        width: 30px; }
+      .flags li button img:hover {
+        cursor: pointer; }
+
+.inner-content h2 {
+  margin-bottom: 30px; }
+
+.inner-content .card {
+  background: #1f344a;
+  border: none;
+  margin-bottom: 30px; }
+  .inner-content .card .card-text {
+    margin-top: 15px; }
+    .inner-content .card .card-text span {
+      display: block;
+      margin: 7.5px 0; }
+
+.modal-icon {
+  width: 15px; }
+
+.error {
+  color: #e74c3c; }
+
+.responsiveTable td {
+  width: 25%; }
+
+.block-wrapper {
+  margin-left: 0;
+  margin-right: 0; }
+  .block-wrapper .singleBlock {
+    position: relative;
+    background-size: cover;
+    background-position: center right;
+    padding: 50px 50px;
+    min-height: calc(100vh - 150px); }
+    @media screen and (max-width: 992px) {
+      .block-wrapper .singleBlock {
+        padding: 10vh 20px;
+        min-height: auto; } }
+    .block-wrapper .singleBlock .singleBlock-content {
+      position: absolute;
+      top: 50%;
+      margin-top: -50px; }
+      @media screen and (max-width: 992px) {
+        .block-wrapper .singleBlock .singleBlock-content {
+          position: relative;
+          top: 0;
+          margin-top: 0; } }
+
+.center {
+  text-align: center; }
+
+.modalLink {
+  cursor: pointer; }
+
+.outer-container {
+  width: 75%; }
+  @media screen and (max-width: 992px) {
+    .outer-container {
+      width: 100%; } }
+  .outer-container .aquarium-content-container {
+    background: url("/images/myAquarium/achtergrond.jpg");
+    background-size: cover;
+    background-position: bottom;
+    background-attachment: fixed;
+    color: #fff;
+    min-height: 100vh;
+    overflow: auto;
+    padding: 20px 20px 20px 40px; }
+    @media screen and (max-width: 992px) {
+      .outer-container .aquarium-content-container {
+        padding: 20px 20px 20px 20px; } }
+
+.sidebar-wrap {
+  height: 100vh; }
+  @media screen and (max-width: 992px) {
+    .sidebar-wrap {
+      height: auto; } }
+  .sidebar-wrap h2 {
+    word-wrap: break-word; }
+  .sidebar-wrap .aquarium-sidebar {
+    background-color: #1f344a;
+    min-height: calc(100vh - 80px);
+    color: #FFFFFF;
+    position: fixed;
+    z-index: 1; }
+    @media screen and (max-width: 992px) {
+      .sidebar-wrap .aquarium-sidebar {
+        position: relative;
+        min-height: auto; } }
+    .sidebar-wrap .aquarium-sidebar h2 {
+      padding-top: 15px;
+      padding-bottom: 10px;
+      padding-left: 55px;
+      font-size: 40px; }
+    .sidebar-wrap .aquarium-sidebar a:first-of-type {
+      border-top: 1px solid #3b567b; }
+    .sidebar-wrap .aquarium-sidebar a {
+      color: #FFFFFF !important;
+      border-bottom: 1px solid #3b567b;
+      display: block;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      position: relative; }
+    .sidebar-wrap .aquarium-sidebar a.selected:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 1px;
+      border-bottom: 25px solid transparent;
+      border-top: 25px solid transparent;
+      border-left: 25px solid #1f344a;
+      margin-right: -25px; }
+    .sidebar-wrap .aquarium-sidebar img {
+      width: 20px;
+      margin-left: 20px;
+      margin-right: 30px; }
+
+.account-settings .pass-alert {
+  text-align: center;
+  background-color: #333333;
+  padding: 15px;
+  margin-bottom: 15px; }
+
+.account-settings input:disabled {
+  background-color: #ccc; }
+
+.account-settings .settings-box {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px 10px 10px 10px;
+  background-color: #1f344a; }
+  .account-settings .settings-box h4 {
+    margin-top: 10px;
+    margin-bottom: 20px; }
+  .account-settings .settings-box input {
+    border-radius: 0;
+    border: none;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  .account-settings .settings-box .custom-select {
+    border-radius: 0;
+    border: none;
+    height: 50px !important;
+    margin-top: 10px;
+    margin-bottom: 20px; }
+  .account-settings .settings-box .row {
+    margin-left: 0px;
+    margin-right: 0px; }
+
+.notifications .notification {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 100px; }
+  .notifications .notification .icon-container {
+    background-color: #1f344a;
+    display: table;
+    height: 100px;
+    width: 100%; }
+    .notifications .notification .icon-container .icon {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      height: 100px; }
+      .notifications .notification .icon-container .icon img {
+        height: 60px; }
+  .notifications .notification .info {
+    height: 100px;
+    color: #000;
+    background-color: #fff; }
+    .notifications .notification .info p {
+      display: inline-block;
+      height: 60px;
+      margin: 20px; }
+  .notifications .notification .date {
+    height: 100px;
+    color: #fff;
+    background-color: #494949; }
+    .notifications .notification .date p {
+      display: inline-block;
+      height: 60px;
+      margin: 20px; }
+  .notifications .notification .close-container {
+    position: relative; }
+    .notifications .notification .close-container .close {
+      position: absolute;
+      top: 6px;
+      right: 30px;
+      height: 0;
+      width: 0; }
+      .notifications .notification .close-container .close a {
+        color: #fff !important; }
+
+.saved-advices .advice {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+  .saved-advices .advice .treatment-container {
+    color: #333333;
+    text-align: left;
+    padding: 15px; }
+    .saved-advices .advice .treatment-container h5 {
+      margin-top: 15px; }
+  .saved-advices .advice .white-bg {
+    transform-origin: 50% 0%;
+    -ms-transform-origin: 50% 0%;
+    -webkit-transform-origin: 50% 0%;
+    background: #FFFFFF; }
+  .saved-advices .advice .dropdown-link-down, .saved-advices .advice .dropdown-link-up {
+    padding: 15px 19px;
+    border-radius: 30px;
+    color: #FFFFFF;
+    background: #333333;
+    display: table;
+    margin: -40px auto 0 auto; }
+  .saved-advices .advice .header {
+    font-size: 18px;
+    background: #1f344a; }
+  .saved-advices .advice .image-container {
+    background-color: #494949;
+    height: 180px;
+    width: 100%; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .image-container {
+        width: 100%;
+        height: auto; } }
+    .saved-advices .advice .image-container .image {
+      position: absolute;
+      height: 180px;
+      overflow: hidden; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .image-container .image {
+          position: relative;
+          height: auto; } }
+      .saved-advices .advice .image-container .image img {
+        max-width: 100%; }
+  .saved-advices .advice .info {
+    height: 180px;
+    color: #FFFFFF;
+    background-color: #494949; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .info {
+        height: auto; } }
+    .saved-advices .advice .info p {
+      min-height: 180px;
+      padding: 15px;
+      margin-bottom: 0; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .info p {
+          min-height: auto; } }
+  .saved-advices .advice .data {
+    height: 180px;
+    color: #FFFFFF;
+    background-color: #494949; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .data {
+        height: auto;
+        padding-bottom: 15px; } }
+    .saved-advices .advice .data p {
+      display: inline-block;
+      height: 180px;
+      margin: 20px;
+      overflow-y: scroll; }
+    .saved-advices .advice .data ul {
+      padding: 15px; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .data ul {
+          padding: 0 0 0 30px; } }
+
+.table_card {
+  width: 100%;
+  display: table; }
+
+.card-body a {
+  color: #FFFFFF; }
+
+.selectField {
+  width: 100%;
+  margin-bottom: 15px; }
+
+.Select-placeholder {
+  color: inherit; }
+
+.Select-arrow {
+  border: none; }
+
+.Select--multi .Select-value {
+  color: #333333;
+  border: 1px solid #333333;
+  background: #FFFFFF; }
+
+.Select--multi .Select-value-icon {
+  border-right: 1px solid #333333; }
+
+.Select-control {
+  border: none; }
+
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.Select--multi .Select-value,
+.Select--multi a.Select-value-label {
+  color: #333333; }
+
+.Select-option.is-focused {
+  background-color: #FFFFFF; }
+
+.Select-menu-outer {
+  margin-top: 10px; }
+
+.Select--multi .Select-value-icon:active,
+.Select--multi .Select-value-icon:hover {
+  background-color: #333333;
+  color: #FFFFFF; }
+
+.Select-arrow-zone {
+  padding-right: 15px; }
+
+.addBtns {
+  overflow: auto;
+  width: 100%;
+  margin-bottom: 30px; }
+  .addBtns div button {
+    float: left; }
+  .addBtns a {
+    color: #FFFFFF;
+    margin: 7.5px;
+    display: inline-block; }
+
+.row-no-gutter {
+  width: 100%;
+  margin: 0 !important; }
+  @media screen and (max-width: 992px) {
+    .row-no-gutter {
+      overflow-x: hidden; } }
+
+#chatBox {
+  padding-bottom: 80px; }
+
+.chat-wrapper {
+  background: url("/images/myAquarium/achtergrond.jpg");
+  background-size: cover;
+  background-position: bottom;
+  background-attachment: fixed;
+  height: calc(100vh - 80px);
+  overflow-y: scroll; }
+  .chat-wrapper h3 {
+    color: white; }
+  @media screen and (max-width: 992px) {
+    .chat-wrapper .inner-chat-wrapper {
+      margin-top: 200px; } }
+  .chat-wrapper .senderBox,
+  .chat-wrapper .recieverBox,
+  .chat-wrapper .infoBox {
+    position: relative;
+    background: #FFFFFF;
+    margin-top: 15px;
+    margin-bottom: 7.5px;
+    padding: 15px; }
+  .chat-wrapper .senderBox:after,
+  .chat-wrapper .senderBox:before,
+  .chat-wrapper .recieverBox:after,
+  .chat-wrapper .recieverBox:before,
+  .chat-wrapper .infoBox:after,
+  .chat-wrapper .infoBox:before {
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    top: 50%; }
+  .chat-wrapper .senderBox:before,
+  .chat-wrapper .recieverBox:before {
+    border-width: 15px;
+    margin-top: -15px; }
+  .chat-wrapper .senderBox:after, .chat-wrapper .senderBox:before {
+    right: 100%; }
+  .chat-wrapper .recieverBox:after, .chat-wrapper .recieverBox:before {
+    left: 100%; }
+  .chat-wrapper .senderBox:before {
+    border-right-color: #FFFFFF; }
+  .chat-wrapper .recieverBox:before {
+    border-left-color: #FFFFFF; }
+
+.sender-spacing {
+  margin-left: -15px; }
+
+.reciever-spacing {
+  margin-right: -15px; }
+
+.footer {
+  background: #FFFFFF; }
+  .footer .input-group {
+    width: 100%; }
+  .footer .fileUpload-wrapper {
+    cursor: pointer; }
+  .footer .fileUpload-wrapper > input {
+    display: none; }
+  .footer .fileUpload-wrapper label {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    margin: 0; }
+  .footer .removeImage {
+    color: red;
+    margin: 10px 10px 10px 0;
+    cursor: pointer;
+    visibility: hidden; }
+  .footer .messageToSend:focus {
+    outline: none !important;
+    box-shadow: none; }
+  .footer .sendButton:focus {
+    outline: none !important;
+    box-shadow: none; }
+
+.fixed-wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0; }
+  @media screen and (max-width: 992px) {
+    .fixed-wrapper {
+      display: none; } }
+  .fixed-wrapper .inner-video-wrapper {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: table; }
+    .fixed-wrapper .inner-video-wrapper .video-center {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle; }
+      .fixed-wrapper .inner-video-wrapper .video-center video {
+        background-color: #ddd;
+        border-radius: 7px;
+        margin: 10px 0px 10px 0px;
+        height: 270px;
+        width: 360px; }
+      .fixed-wrapper .inner-video-wrapper .video-center .videoContainer {
+        position: relative; }
+      .fixed-wrapper .inner-video-wrapper .video-center .myCam {
+        display: block; }
+      .fixed-wrapper .inner-video-wrapper .video-center .videoOverlay {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        border-radius: 7px;
+        margin: 10px 0px 10px 0px;
+        height: 0px;
+        width: auto;
+        transition: .5s ease; }
+      .fixed-wrapper .inner-video-wrapper .video-center .videoContainer:hover .videoOverlay {
+        height: 30%; }
+      .fixed-wrapper .inner-video-wrapper .video-center .videoOverlayText {
+        white-space: nowrap;
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        overflow: hidden;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%); }
+      .fixed-wrapper .inner-video-wrapper .video-center .btn-circle {
+        width: 50px;
+        height: 50px;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.33;
+        border-radius: 25px;
+        margin: 0 5px 0 5px; }
+      .fixed-wrapper .inner-video-wrapper .video-center .btn:focus {
+        outline: none !important;
+        box-shadow: none; }
+
+.fixed-wrapper-mobile {
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  background: url("/images/myAquarium/achtergrond.jpg");
+  background-position: top;
+  background-attachment: fixed; }
+  @media screen and (min-width: 992px) {
+    .fixed-wrapper-mobile {
+      display: none; } }
+  .fixed-wrapper-mobile .inner-video-wrapper {
+    text-align: center; }
+    .fixed-wrapper-mobile .inner-video-wrapper .video-center {
+      display: inline-block; }
+      .fixed-wrapper-mobile .inner-video-wrapper .video-center video {
+        background-color: #ddd;
+        border-radius: 7px;
+        margin: 20px 5px 10px 5px;
+        height: 120px;
+        width: 160px; }
+      .fixed-wrapper-mobile .inner-video-wrapper .video-center .btns {
+        display: flex;
+        justify-content: center; }
+      .fixed-wrapper-mobile .inner-video-wrapper .video-center .btn-circle {
+        width: 30px;
+        height: 30px;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+        margin: 0 5px 5px 5px; }
+      .fixed-wrapper-mobile .inner-video-wrapper .video-center .btn:focus {
+        outline: none !important;
+        box-shadow: none; }
+
+@media screen and (max-width: 992px) {
+  .removeColumn {
+    display: none; } }
+
+.search-results hr {
+  border-color: white; }
+
+.search-results .result {
+  margin: 20px; }
+  .search-results .result .treatment-container {
+    color: #333333;
+    text-align: left;
+    padding: 0 15px 30px 15px; }
+    .search-results .result .treatment-container h5 {
+      margin-top: 15px; }
+  .search-results .result .dropdown-link-down,
+  .search-results .result .dropdown-link-up {
+    padding: 15px 19px;
+    border-radius: 30px;
+    color: #FFFFFF;
+    background: #333333;
+    display: table;
+    margin: -25px auto 0 auto; }
+  .search-results .result .no-bg {
+    margin-top: -17px; }
+  .search-results .result .white-bg {
+    transform-origin: 50% 0%;
+    -ms-transform-origin: 50% 0%;
+    -webkit-transform-origin: 50% 0%;
+    background: #FFFFFF;
+    margin-top: -17px; }
+    @media screen and (max-width: 992px) {
+      .search-results .result .white-bg {
+        margin-top: auto; } }
+  .search-results .result .header {
+    font-size: 18px;
+    background: #1f344a; }
+  .search-results .result .image-container {
+    background-color: #494949;
+    min-height: 182px; }
+    .search-results .result .image-container .image {
+      position: absolute;
+      min-height: 182px;
+      overflow: hidden; }
+      @media screen and (max-width: 992px) {
+        .search-results .result .image-container .image {
+          min-height: auto;
+          position: relative; } }
+      .search-results .result .image-container .image img {
+        max-width: 100%;
+        max-height: 182px;
+        min-height: 182px; }
+        @media screen and (max-width: 992px) {
+          .search-results .result .image-container .image img {
+            max-width: auto;
+            min-height: auto;
+            min-width: 300px;
+            max-height: auto; } }
+      @media screen and (max-width: 992px) {
+        .search-results .result .image-container .image {
+          position: relative;
+          height: auto; }
+          .search-results .result .image-container .image img {
+            width: 100%;
+            max-height: 182px;
+            min-height: 182px; } }
+  .search-results .result .info {
+    min-height: 182px;
+    color: #FFFFFF;
+    background-color: #494949; }
+    @media screen and (max-width: 992px) {
+      .search-results .result .info {
+        height: auto; } }
+    .search-results .result .info p {
+      display: inline-block;
+      min-height: 142px;
+      margin: 20px; }
+      @media screen and (max-width: 992px) {
+        .search-results .result .info p {
+          height: auto;
+          margin: 15px 15px 15px 15px; } }
+  .search-results .result .data {
+    min-height: 182px;
+    color: #FFFFFF;
+    background-color: #494949; }
+    @media screen and (max-width: 992px) {
+      .search-results .result .data {
+        height: auto;
+        padding-bottom: 15px; } }
+    .search-results .result .data p {
+      display: inline-block;
+      min-height: 142px;
+      margin: 20px; }
+    .search-results .result .data ul {
+      padding-left: 15px;
+      padding-top: 15px; }
+      @media screen and (max-width: 992px) {
+        .search-results .result .data ul {
+          padding: auto;
+          margin-left: 15px; } }
+
+.outer-container {
+  width: 75%; }
+  @media screen and (max-width: 992px) {
+    .outer-container {
+      width: 100%; } }
+  .outer-container .search-content-container {
+    background: url("/images/myAquarium/achtergrond.jpg");
+    background-size: cover;
+    background-position: bottom;
+    background-attachment: fixed;
+    color: #fff;
+    min-height: 100vh;
+    overflow: auto;
+    padding: 20px 20px 20px 40px; }
+    @media screen and (max-width: 992px) {
+      .outer-container .search-content-container {
+        padding: 20px 20px 20px 20px; } }
+
+.sidebar-wrap {
+  height: 100vh; }
+  @media screen and (max-width: 992px) {
+    .sidebar-wrap {
+      height: auto; } }
+  .sidebar-wrap .search-sidebar {
+    background-color: #1f344a;
+    min-height: calc(100vh - 80px);
+    color: #FFFFFF;
+    position: fixed;
+    z-index: 1; }
+    @media screen and (max-width: 992px) {
+      .sidebar-wrap .search-sidebar {
+        position: relative;
+        min-height: auto; } }
+    .sidebar-wrap .search-sidebar h2 {
+      padding-top: 15px;
+      padding-bottom: 10px;
+      padding-left: 55px;
+      font-size: 40px; }
+    .sidebar-wrap .search-sidebar a:first-of-type {
+      border-top: 1px solid #3b567b; }
+    .sidebar-wrap .search-sidebar a {
+      color: #FFFFFF !important;
+      border-bottom: 1px solid #3b567b;
+      display: block;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      position: relative; }
+    .sidebar-wrap .search-sidebar a.selected:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 1px;
+      border-bottom: 25px solid transparent;
+      border-top: 25px solid transparent;
+      border-left: 25px solid #1f344a;
+      margin-right: -25px; }
+    .sidebar-wrap .search-sidebar img {
+      width: 20px;
+      margin-left: 20px;
+      margin-right: 30px; }
+
+.row-no-gutter {
+  width: 100%;
+  margin: 0 !important; }
+  @media screen and (max-width: 992px) {
+    .row-no-gutter {
+      overflow-x: hidden; } }

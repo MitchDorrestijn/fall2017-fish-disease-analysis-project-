@@ -1,0 +1,53 @@
+.selectField {
+  width: 100%;
+  margin-bottom: 15px; }
+
+.Select-placeholder {
+  color: inherit; }
+
+.Select-arrow {
+  border: none; }
+
+.Select--multi .Select-value {
+  color: #333333;
+  border: 1px solid #333333;
+  background: #FFFFFF; }
+
+.Select--multi .Select-value-icon {
+  border-right: 1px solid #333333; }
+
+.Select-control {
+  border: none; }
+
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.Select--multi .Select-value,
+.Select--multi a.Select-value-label {
+  color: #333333; }
+
+.Select-option.is-focused {
+  background-color: #FFFFFF; }
+
+.Select-menu-outer {
+  margin-top: 10px; }
+
+.Select--multi .Select-value-icon:active,
+.Select--multi .Select-value-icon:hover {
+  background-color: #333333;
+  color: #FFFFFF; }
+
+.Select-arrow-zone {
+  padding-right: 15px; }
+
+.addBtns {
+  overflow: auto;
+  width: 100%;
+  margin-bottom: 30px; }
+  .addBtns div button {
+    float: left; }
+  .addBtns a {
+    color: #FFFFFF;
+    margin: 7.5px;
+    display: inline-block; }

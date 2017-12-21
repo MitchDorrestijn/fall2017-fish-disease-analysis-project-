@@ -1,0 +1,17 @@
+.outer-container {
+  width: 75%; }
+  @media screen and (max-width: 992px) {
+    .outer-container {
+      width: 100%; } }
+  .outer-container .search-content-container {
+    background: url("/images/myAquarium/achtergrond.jpg");
+    background-size: cover;
+    background-position: bottom;
+    background-attachment: fixed;
+    color: #fff;
+    min-height: 100vh;
+    overflow: auto;
+    padding: 20px 20px 20px 40px; }
+    @media screen and (max-width: 992px) {
+      .outer-container .search-content-container {
+        padding: 20px 20px 20px 20px; } }

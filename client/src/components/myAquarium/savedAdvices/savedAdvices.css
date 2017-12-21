@@ -1,0 +1,74 @@
+.saved-advices .advice {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+  .saved-advices .advice .treatment-container {
+    color: #333333;
+    text-align: left;
+    padding: 15px; }
+    .saved-advices .advice .treatment-container h5 {
+      margin-top: 15px; }
+  .saved-advices .advice .white-bg {
+    transform-origin: 50% 0%;
+    -ms-transform-origin: 50% 0%;
+    -webkit-transform-origin: 50% 0%;
+    background: #FFFFFF; }
+  .saved-advices .advice .dropdown-link-down, .saved-advices .advice .dropdown-link-up {
+    padding: 15px 19px;
+    border-radius: 30px;
+    color: #FFFFFF;
+    background: #333333;
+    display: table;
+    margin: -40px auto 0 auto; }
+  .saved-advices .advice .header {
+    font-size: 18px;
+    background: #1f344a; }
+  .saved-advices .advice .image-container {
+    background-color: #494949;
+    height: 180px;
+    width: 100%; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .image-container {
+        width: 100%;
+        height: auto; } }
+    .saved-advices .advice .image-container .image {
+      position: absolute;
+      height: 180px;
+      overflow: hidden; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .image-container .image {
+          position: relative;
+          height: auto; } }
+      .saved-advices .advice .image-container .image img {
+        max-width: 100%; }
+  .saved-advices .advice .info {
+    height: 180px;
+    color: #FFFFFF;
+    background-color: #494949; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .info {
+        height: auto; } }
+    .saved-advices .advice .info p {
+      min-height: 180px;
+      padding: 15px;
+      margin-bottom: 0; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .info p {
+          min-height: auto; } }
+  .saved-advices .advice .data {
+    height: 180px;
+    color: #FFFFFF;
+    background-color: #494949; }
+    @media screen and (max-width: 992px) {
+      .saved-advices .advice .data {
+        height: auto;
+        padding-bottom: 15px; } }
+    .saved-advices .advice .data p {
+      display: inline-block;
+      height: 180px;
+      margin: 20px;
+      overflow-y: scroll; }
+    .saved-advices .advice .data ul {
+      padding: 15px; }
+      @media screen and (max-width: 992px) {
+        .saved-advices .advice .data ul {
+          padding: 0 0 0 30px; } }

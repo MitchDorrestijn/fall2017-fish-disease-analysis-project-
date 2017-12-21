@@ -1,0 +1,42 @@
+.notifications .notification {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 100px; }
+  .notifications .notification .icon-container {
+    background-color: #1f344a;
+    display: table;
+    height: 100px;
+    width: 100%; }
+    .notifications .notification .icon-container .icon {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      height: 100px; }
+      .notifications .notification .icon-container .icon img {
+        height: 60px; }
+  .notifications .notification .info {
+    height: 100px;
+    color: #000;
+    background-color: #fff; }
+    .notifications .notification .info p {
+      display: inline-block;
+      height: 60px;
+      margin: 20px; }
+  .notifications .notification .date {
+    height: 100px;
+    color: #fff;
+    background-color: #494949; }
+    .notifications .notification .date p {
+      display: inline-block;
+      height: 60px;
+      margin: 20px; }
+  .notifications .notification .close-container {
+    position: relative; }
+    .notifications .notification .close-container .close {
+      position: absolute;
+      top: 6px;
+      right: 30px;
+      height: 0;
+      width: 0; }
+      .notifications .notification .close-container .close a {
+        color: #fff !important; }
