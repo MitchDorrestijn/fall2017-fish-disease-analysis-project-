@@ -5,20 +5,29 @@ const Symptom = require("./Symptom");
 module.exports = class DiseaseSymptomContainer {
 	constructor (fileParser, config) {
 		this.config = config;
-		this.diseaseSymptoms = [];
+		this.diseaseSymptoms = DiseaseSymptomContainer._fillDiseaseSymptoms(fileParser, config);
+	}
 
-		const {start: diseasesStart, end: diseasesEnd} = this.config.diseases;
-		const {start: symptomsStart, end: symptomsEnd} = this.config.symptoms;
+	static _fillDiseaseSymptoms(fileParser, config) {
+		const {start: diseasesStart, end: diseasesEnd} = config.diseases;
+		const {start: symptomsStart, end: symptomsEnd} = config.symptoms;
 		const diseasesList = fileParser.getColumn (0, diseasesStart, diseasesEnd);
 		const symptomsList = fileParser.getRow (0, symptomsStart, symptomsEnd);
+		let diseaseSymptoms = [];
 
 		for (let i = 0; i < diseasesList.length; i++) {
-			const disease = new Disease (diseasesList[i]);
 			for (let j = 0; j < symptomsList.length; j++) {
-				const symptom = new Symptom (symptomsList[j]);
-				this.diseaseSymptoms.push(new DiseaseSymptom(disease, symptom, fileParser.getField (j+symptomsStart, i+diseasesStart)));
+				diseaseSymptoms.push(
+					new DiseaseSymptom(
+						new Disease(diseasesList[i]),
+						new Symptom(symptomsList[j]),
+						fileParser.getField (j+symptomsStart, i+diseasesStart)
+					)
+				);
 			}
 		}
+
+		return diseaseSymptoms;
 	}
 
 	getAll(minScore) {

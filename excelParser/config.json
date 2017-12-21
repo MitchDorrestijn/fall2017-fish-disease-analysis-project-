@@ -1,6 +1,7 @@
 {
 	"diseasesAndSymptoms": {
 		"file": "symptomenEnZiektes.xlsx",
+		"sheetNumber": 0,
 		"symptoms": {
 			"start": 3,
 			"end": "totaal vergeven punten"
@@ -8,6 +9,26 @@
 		"diseases": {
 			"start": 1,
 			"end": 32
+		}
+	},
+	"questions": {
+		"file": "vragen.xlsx",
+		"questionsAndFollowUpQuestions": {
+			"sheetNumber": 0,
+			"start": 2,
+			"end": null
+		},
+		"questionAnswersAndSymptoms": {
+			"file": "vragen.xlsx",
+			"sheetNumber": 1,
+			"questions": {
+				"start": 1,
+				"end": 29
+			},
+			"symptoms": {
+				"start": 4,
+				"end": 21
+			}
 		}
 	}
 }
