@@ -12,55 +12,10 @@ export default class MyFish extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-				fishData: [
-					{
-						"inAquarium":"aquarium1",
-						"imageURL":"/recources/emerald-catfish.jpg",
-						"title":"Flyingfish",
-						"subtitle":"Flies away",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					},
-					{
-						"inAquarium":"aquarium2",
-						"imageURL":"/recources/catfish.jpg",
-						"title":"Platfish",
-						"subtitle":"Swims quickly",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					},
-					{
-						"inAquarium":"aquarium3",
-						"imageURL":"/recources/loach-catfish.jpg",
-						"title":"Potfish",
-						"subtitle":"Swims slow",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large. Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					},
-					{
-						"inAquarium":"aquarium1",
-						"imageURL":"/recources/loach-catfish.jpg",
-						"title":"Potfish",
-						"subtitle":"Swims slow",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					},
-					{
-						"inAquarium":"aquarium2",
-						"imageURL":"/recources/loach-catfish.jpg",
-						"title":"Potfish",
-						"subtitle":"Swims slow",
-						"description":"Amphiliids are generally small catfish with tapering, elongated bodies. The pectoral and ventral fins are large.",
-						"firstAdded":"09 - 07 - 2016",
-						"linkTo":"/"
-					}
-			],
+			fishData: [],
 			createdAquariums: "",
-			currentAquarium: "aquarium1"
+			currentAquarium: "",
+			currentAquariumId: ""
 		}
 	}
 	componentWillMount(){
@@ -70,7 +25,6 @@ export default class MyFish extends React.Component {
 		let da = new DataAccess();
 		da.getData ('/aquaria', (err, res) => {
 			if (!err) {
-				console.log(res.message);
 				this.setState({createdAquariums: res.message});
 			} else {
 				console.log("De error is: " + err.message);
@@ -78,22 +32,18 @@ export default class MyFish extends React.Component {
 		});
 	}
 	createFilterButtons = () => {
-		// let buttons = []
-		// this.state.createdAquariums.forEach((key) => {
-		// 	if(this.state.createdAquariums.hasOwnProperty(key)) {
-		// 		buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
-		// 	}
-		// });
-		// return (
-		// 	<div>
-		// 		{buttons}
-		// 	</div>
-		// )
-
 		let buttons = [];
 		for(var key in this.state.createdAquariums) {
     	if(this.state.createdAquariums.hasOwnProperty(key)) {
-				buttons.push(<ActionButton key={key} color="primary btn-transparent" buttonText={this.state.createdAquariums[key].name} onClickAction={(arr) => this.showSelectedCategory(this.state.createdAquariums[key].name)} />);
+				let {id, name} = this.state.createdAquariums[key];
+				buttons.push(
+					<ActionButton
+						key={key}
+						color="primary btn-transparent"
+						buttonText={name}
+						onClickAction={() => this.showSelectedCategory(id)}
+					/>
+				);
 			}
 		}
 		return (
@@ -101,45 +51,44 @@ export default class MyFish extends React.Component {
 				{buttons}
 			</div>
 		)
-
 	}
-	showSelectedCategory = (button) => {
-    this.setState({ currentAquarium: button });
+	showSelectedCategory = (aquariumName) => {
+		let da = new DataAccess();
+		da.getData(`/aquaria/${aquariumName}/fish`,  (err, res) => {
+			if (!err) {
+				this.setState({ currentAquarium: res.message, currentAquariumId: aquariumName });
+			}
+		});
   }
 	filterFish = () => {
-		let currentVisibleAquarium = this.state.currentAquarium;
-		let filteredFish = this.state.fishData.filter(function(fish){
-			return fish.inAquarium === currentVisibleAquarium;
-		}).map(function(fish, index){
-			return (
-				<Card key={index} inAquarium={fish.inAquarium} image={fish.imageURL}>
-					<CardTitle>{fish.title}</CardTitle>
-					<CardSubtitle>{fish.subtitle}</CardSubtitle>
-					<CardText>
-						{fish.description}
-						<span>First time this specie was added:<br/>{fish.firstAdded}</span>
-					</CardText>
-					<ActionButton link={true} linkTo={fish.linkTo} color="primary btn-transparent" buttonText="Analyseer vis"/>
-				</Card>
-			);
-		});
-		return (
-			<div>
-				{filteredFish}
-			</div>
-		);
+		if (this.state.currentAquarium) {
+			const {fish} = this.state.currentAquarium;
+			const result = fish.map ((elem) => {
+				return (
+					<Card key={elem.id} image={elem.species.imageUrl}>
+						<CardTitle>{elem.species.name}</CardTitle>
+						<CardSubtitle>{elem.species.additional}</CardSubtitle>
+						<CardText>{elem.species.info}</CardText>
+					</Card>
+				);
+			});
+			return result;
+		} else {
+			return null;
+		}
 	}
 	showAddFishModel = (e) => {
 		e.preventDefault ();
-		this.props.openModal(AddFish, {refreshPage: this.renderAquariums});
+		console.log(this.state.currentAquariumId);
+		this.props.openModal(AddFish, {refreshPage: () => this.showSelectedCategory (this.state.currentAquariumId), currentAquarium: this.state.currentAquariumId});
 	};
 	showAddAquariumModel = (e) => {
 		e.preventDefault ();
-		this.props.openModal(AddAquarium);
+		this.props.openModal(AddAquarium, {refreshPage: this.renderAquariums});
 	}
 	showRemoveAquariumModel = (e) => {
 		e.preventDefault ();
-		this.props.openModal(RemoveAquarium);
+		this.props.openModal(RemoveAquarium, {refreshPage: this.renderAquariums});
 	}
 	render() {
 		return (
@@ -154,6 +103,7 @@ export default class MyFish extends React.Component {
 					</div>
 					<div className="card-columns">
 						{this.filterFish()}
+
 					</div>
 				</div>
 			</div>

@@ -69,7 +69,7 @@ router.post('/notifications/rules', isAdmin, validateModel("rule", ["message", "
     })
 })
 
-router.put('/notifications/rules/:id', isAdmin, validateModel("rule", ["message", "compared", "min", "max", "equation", "attribute", "type", "id"]), (req, res) => {
+router.put('/notifications/rules/:id', isAdmin, validateModel("rule", ["message", "type", "id", "triggers"]), (req, res) => {
     db.collection('notification_rules').doc(req.params.id).update(req.body.rule)
     .then((doc) => {
         res.status(200).send("Ok");

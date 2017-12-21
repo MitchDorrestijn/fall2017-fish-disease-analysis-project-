@@ -173,7 +173,8 @@ export default class ManageDiseases extends React.Component {
 				</Table>
 				<Button
 					onClick={() => this.props.openModal(AddFishDiseaseAdmin)}
-					className="btn-admin">Add fish disease</Button>
+					className="btn-admin">Add fish disease
+				</Button>
 			</div>
 		);
 	}
