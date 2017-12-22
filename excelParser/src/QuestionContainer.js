@@ -6,7 +6,7 @@ module.exports = class QuestionContainer {
 	constructor(fileParser, config) {
 		this.config = config;
 		this.questions = QuestionContainer._fillQuestions(fileParser, config);
-		for (let elem of this.questions) {
+		for (const elem of this.questions) {
 			console.log (elem);
 		}
 	}
@@ -14,31 +14,54 @@ module.exports = class QuestionContainer {
 	static _fillQuestions(fileParser, config) {
 		const {start: questionsStart, end: questionsEnd} = config.questionAnswersAndSymptoms.questions;
 		const {start: symptomsStart, end: symptomsEnd} = config.questionAnswersAndSymptoms.symptoms;
+		const {
+			questionsColumn,
+			answersColumn,
+			answersYOffset,
+			picturesColumn,
+			symptomsRow
+		} = config.questionAnswersAndSymptoms;
+
 		let questions = [];
-		for (let i = questionsStart; !(fileParser.getField(1, i) === undefined && fileParser.getField(2, i+1) === undefined); i++) {
+		for (
+			let i = questionsStart;
+			!(
+				fileParser.getField(questionsColumn, i) === undefined &&
+				fileParser.getField(answersColumn, i) === undefined
+			);
+			i++
+		) {
+			console.log (i);
 			// Gaat door de hele lijst heen tot dat er gee vragen+antwoorden meer zijn.
-			if (fileParser.getField(1, i) !== undefined) {
+			if (fileParser.getField(questionsColumn, i) !== undefined) {
 				let answers = [];
-				for (let j = 1; fileParser.getField(2, i+j) !== undefined; j++) {
+				for (let j = answersYOffset; fileParser.getField(answersColumn, i+j) !== undefined; j++) {
 					// Gaat door alle antwoorden van de vraag heen
 					let symptoms = [];
-					for (let k = symptomsStart; fileParser.getField(k, 0) !== undefined; k++) {
+					for (let k = symptomsStart; fileParser.getField(k, symptomsRow) !== undefined; k++) {
 						// Gaat door alle vakjes van de symptomen van de antwoorden heen
 						if (fileParser.getField(k, i+j) === 'x') {
-							symptoms.push(new Symptom(fileParser.getField(k, 0)));
+							symptoms.push(new Symptom(fileParser.getField(k, symptomsRow)));
 						}
 					}
-					let pictures = fileParser.getField(3, i+j);
-					pictures = pictures ? pictures.split(/;/g).filter(elem => elem !== " ").map(elem => elem.trim()) : pictures;
+					let pictures = fileParser.getField(picturesColumn, i+j);
+					pictures = pictures ? (
+						pictures.split(/;/g).filter(elem => elem !== ' ').map(elem => elem.trim())
+					) : (
+						pictures
+					);
 					answers.push(
 						new Answer(
-							fileParser.getField(2, i+j), // naam
+							fileParser.getField(answersColumn, i+j), // naam
 							pictures, // foto
 							symptoms
 						)
 					);
 				}
-				questions.push(new Question(fileParser.getField(1, i), answers));
+				if (answers.length > 0) {
+					// Vragen zonder antwoorden worden niet opgeslagen.
+					questions.push(new Question(fileParser.getField(questionsColumn, i), answers));
+				}
 			}
 		}
 		return questions;

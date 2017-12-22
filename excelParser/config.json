@@ -21,13 +21,18 @@
 		"questionAnswersAndSymptoms": {
 			"file": "vragen.xlsx",
 			"sheetNumber": 1,
+			"questionsColumn": 0,
+			"answersColumn": 1,
+			"picturesColumn": 2,
+			"symptomsRow": 0,
+			"answersYOffset": 1,
 			"questions": {
 				"start": 1,
 				"end": 29
 			},
 			"symptoms": {
-				"start": 4,
-				"end": 21
+				"start": 3,
+				"end": 20
 			}
 		}
 	}

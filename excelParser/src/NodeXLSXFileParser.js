@@ -39,6 +39,10 @@ module.exports = class NodeXLSXFileParser {
 	}
 
 	getField(x, y) {
-		return NodeXLSXFileParser._stripNewLines(this.file[this.config.sheetNumber].data[y][x]);
+		try {
+			return NodeXLSXFileParser._stripNewLines(this.file[this.config.sheetNumber].data[y][x]);
+		} catch (e) {
+			return undefined;
+		}
 	}
 };
