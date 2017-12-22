@@ -104,7 +104,7 @@ router.get('/timeslots/:id/', isAuthenticated, (req, res) => {
 	  return Promise.reject(
 		new Error('timeslot does not exist'));
 	}
-	return res.send(timeslotObject.data()).status(200);
+	return res.send(helperFunctions.flatData(timeslotObject)).status(200);
   }).catch(err => {
 	res.status(400).send(err.message);
   });

@@ -16,6 +16,29 @@ const isAdmin = require('../middleware/isAdmin.js');
 const helperFunctions = require('../middleware/functions.js');
 
 /**
+ *  @api {get} /appointment/:id Get Appointment By ID
+ *  @apiName Returns an appointment
+ *  @apiGroup Appointments
+ *
+ *  @apiSuccess {Object} appointment with appointment data
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ */
+router.get('/appointments/:id',isAuthenticated, (req, res) => {
+  const appointmentId = req.params.id;
+  const appointmentRef = db.collection('appointments').doc(appointmentId);
+  appointmentRef.get().then(appointmentObject => {
+	if (appointmentObject.empty) {
+	  return Promise.reject(
+		new Error('Appointment does not exist'));
+	}
+	return res.send(helperFunctions.flatData(appointmentObject)).status(200);
+  }).catch(err => {
+	res.status(400).send(err.message);
+  });
+});
+
+/**
  *  @api {DELETE} /appointment/:id Cancel appointment
  *  @apiName cancel an appointment
  *  @apiGroup Appointments
