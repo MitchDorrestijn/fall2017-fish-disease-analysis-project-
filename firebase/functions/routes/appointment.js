@@ -117,14 +117,13 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
  *  @apiUse Forbidden
  *  @apiUse BadRequest
  */
-router.post('/appointments/', isAuthenticated,
-  validateModel('appointment', ['comment', 'timeSlotId', 'video']),
+router.post('/appointments/', isAuthenticated, validateModel('appointment', ['comment', 'timeslotId']),
   (req, res) => {
 	if (!req.body) {
 	  return res.sendStatus(400);
 	}
 	const appointmentBody = req.body.appointment;
-	// check timeSlotId
+	// check timeslotId
 	if (!validator.isAscii(appointmentBody.comment)
 	) {
 	  return res.status(400).send('Input validation failed.');
@@ -132,14 +131,14 @@ router.post('/appointments/', isAuthenticated,
 	const appointment = {};
 	appointment.comment = appointmentBody.comment;
 	appointment.canceled = false;
-	appointment.approved = false;
-	appointment.video = appointmentBody.video;
+	appointment.status = false;
+	appointment.chatLog = [];
 	appointment.reservedBy = admin.firestore()
 	  .collection('users')
 	  .doc(req.user.uid);
 	appointment.timeslotId = admin.firestore()
 	  .collection('timeslots')
-	  .doc(appointmentBody.timeSlotId);
+	  .doc(appointmentBody.timeslotId);
 	admin.auth().getUser(req.user.uid).then((userRecord) => {
 	  //TODO: Now commented out for development
 	  // sendNewAppointmentMail(userRecord);
@@ -150,14 +149,9 @@ router.post('/appointments/', isAuthenticated,
 	  .get()
 	  .then((snapshot) => {
 		snapshot.forEach(doc => {
-		  db.collection('timeslots').doc(appointmentBody.timeSlotId).get()
+		  db.collection('timeslots').doc(appointmentBody.timeslotId).get()
 			.then((timeslot) => {
 			  let communicationMethod;
-			  if (appointment.video) {
-				communicationMethod = 'De gebruiker wil graag communiceren via videochat en geluid.';
-			  } else {
-				communicationMethod = 'De gebruiker wil alleen gebruik maken van tekstchat.'
-			  }
 			  //TODO: Now commented out for development
 			  // sendConsultNewAppointmentMail(helperFunctions.flatData(doc), appointment.comment,communicationMethod, helperFunctions.flatData(timeslot));
 			});
@@ -186,7 +180,7 @@ router.post('/appointments/', isAuthenticated,
  *  @apiUse Forbidden
  */
 router.put('/appointments/:appointmentId/', isAuthenticated,
-  validateModel('appointment', ['canceled', 'comment', 'video', 'approved']),
+  validateModel('appointment', ['canceled', 'comment', 'status']),
   (req, res) => {
 	db.collection('appointments')
 	  .doc(req.params.appointmentId)
@@ -262,13 +256,13 @@ router.get('/admin/appointments/', isAdmin, (req, res) => {
  *  @apiUse Forbidden
  **/
 router.put('/admin/appointments/:appointmentId/', isAdmin,
-  validateModel('appointment', ['approved', 'timeslotId']), (req, res) => {
+  validateModel('appointment', ['status', 'timeslotId']), (req, res) => {
 	let appointment = req.body.appointment;
 	appointment.timeslotId = admin.firestore()
 	  .collection('timeslots')
 	  .doc(appointment.timeslotId);
 	appointment.consult = req.user.ref;
-	if (appointment.approved) {
+	if (appointment.status) {
 	  admin.firestore()
 		.collection('appointments')
 		.doc(req.params.appointmentId)
@@ -279,7 +273,7 @@ router.put('/admin/appointments/:appointmentId/', isAdmin,
 			.getUser(appointmentData.reservedBy)
 			.then((userRecord) => {
 			  console.log(userRecord);
-			  // sendAppointmentApprovedMail(userRecord);
+			  // sendAppointmentstatusMail(userRecord);
 			});
 		});
 	}
@@ -299,8 +293,8 @@ const sendNewAppointmentMail = (user) => {
 	'Hello, We are sending you this email to confirm that you have requested an appointment with a consultant of Bassleer.');
 };
 
-const sendAppointmentApprovedMail = (user) => {
-  mailer.mail(user.email, 'Appointment approved Bassleer',
+const sendAppointmentstatusMail = (user) => {
+  mailer.mail(user.email, 'Appointment status Bassleer',
 	'Hello, We are sending you this email to confirm that your appointment has been approved by a consultant.');
 };
 
@@ -317,8 +311,6 @@ const sendConsultNewAppointmentMail = (user, appointmentComment,appointmentCommu
   <br><br>
   Dit heeft betrekking tot:
   ${appointmentComment}
-  <br><br>
-  ${appointmentCommunication}
   <br><br>
   De startdatum van deze afspraak is:
   ${timeslot.startDate}
