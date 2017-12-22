@@ -90,7 +90,8 @@ export default class ManageAgenda extends Component {
 							<Td>{this.parseTime(elem.timeslot.endDate)}</Td>
 							<Td>{elem.reservedBy}</Td>
 							<Td>{elem.comment}</Td>
-							<Td>{elem.video ? "Yes" : "No"}</Td>
+						  	<Td>-</Td>
+							<Td>{elem.status ? "Yes" : "No"}</Td>
 							<Td>{elem.approved ? "Yes" : "No"}</Td>
 							<Td>
 								<ButtonGroup>
@@ -132,8 +133,9 @@ export default class ManageAgenda extends Component {
 							<Th>End time</Th>
 							<Th>Person</Th>
 							<Th>Description</Th>
-							<Th>Video</Th>
-							<Th>Approved</Th>
+							<Th>Status</Th>
+							<Th>Cancelled</Th>
+						  	<Th>Chat Log</Th>
 							<Th/>
 						</Tr>
 					</Thead>

@@ -24,7 +24,7 @@ const helperFunctions = require('../middleware/functions.js');
  *  @apiUse InternalServerError
  *  @apiUse UserAuthenticated
  */
-router.get('/appointments/:id',isAuthenticated, (req, res) => {
+router.get('/appointments/:id', isAuthenticated, (req, res) => {
   const appointmentId = req.params.id;
   const appointmentRef = db.collection('appointments').doc(appointmentId);
   appointmentRef.get().then(appointmentObject => {
@@ -117,8 +117,8 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
  *  @apiUse Forbidden
  *  @apiUse BadRequest
  */
-router.post('/appointments/', isAuthenticated, validateModel('appointment', ['comment', 'timeslotId']),
-  (req, res) => {
+router.post('/appointments/', isAuthenticated,
+  validateModel('appointment', ['comment', 'timeslotId']), (req, res) => {
 	if (!req.body) {
 	  return res.sendStatus(400);
 	}
@@ -288,6 +288,62 @@ router.put('/admin/appointments/:appointmentId/', isAdmin,
 	  });
   });
 
+/**
+ *  @api {get} /appointments/:id/chatlogs Get ChatLog By ID
+ *  @apiName Return chatlogs from appointment
+ *  @apiGroup Chatlogs
+ *
+ *  @apiSuccess {Array} Array with chatlogs
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ */
+router.get('/appointments/:id/chatlogs', isAuthenticated, (req, res) => {
+  const appointmentId = req.params.id;
+  const appointmentRef = db.collection('appointments').doc(appointmentId);
+  appointmentRef.get().then(appointmentObject => {
+	if (appointmentObject.empty) {
+	  return Promise.reject(
+		new Error('Appointment does not exist'));
+	}
+	return res.send(helperFunctions.flatData(appointmentObject).chatLog)
+	  .status(200);
+  }).catch(err => {
+	res.status(400).send(err.message);
+  });
+});
+
+/**
+ *  @api {POST} /appointments/:id Create chat log
+ *  @apiName Add a chat log to an appointment
+ *  @apiGroup Chatlogs
+ *
+ *  @apiUse HTTPCreated
+ *  @apiUse InternalServerError
+ *  @apiUse UserAuthenticated
+ *  @apiUse Forbidden
+ *  @apiUse BadRequest
+ */
+router.post('/appointments/:id/chatlogs', isAuthenticated, (req, res) => {
+  const appointmentId = req.params.id;
+  if (!req.body) {
+	return res.sendStatus(400);
+  }
+  const body = req.body;
+  const chatLog = body.chatLog;
+  db.collection('appointments').doc(appointmentId).get().then((snapshot) => {
+	const allChatLogs = helperFunctions.flatData(snapshot)
+	  .chatLog
+	  .concat(chatLog);
+	db.collection('appointments').doc(appointmentId).update({
+	  chatLog: allChatLogs
+	}).then(() => {
+	  res.send(200);
+	});
+  }).catch((error) => {
+	res.status(500).send(error.message);
+  });
+});
+
 const sendNewAppointmentMail = (user) => {
   mailer.mail(user.email, 'Appointment Bassleer',
 	'Hello, We are sending you this email to confirm that you have requested an appointment with a consultant of Bassleer.');
@@ -303,9 +359,10 @@ const sendAppointmentCanceledMail = (user) => {
 	'Hello, We are sending you this email to inform you that your appointment has been canceled.');
 };
 
-const sendConsultNewAppointmentMail = (user, appointmentComment,appointmentCommunication, timeslot) => {
+const sendConsultNewAppointmentMail = (
+  user, appointmentComment, appointmentCommunication, timeslot) => {
   mailer.mail(user.email, 'Nieuwe afspraak',
-  `Hallo,
+	`Hallo,
   <br><br>
   De gebruiker ${user.firstName} ${user.lastName} heeft een aanvraag gedaan voor een afspraak.
   <br><br>
