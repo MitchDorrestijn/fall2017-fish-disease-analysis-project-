@@ -31,7 +31,6 @@ module.exports = class QuestionContainer {
 			);
 			i++
 		) {
-			console.log (i);
 			// Gaat door de hele lijst heen tot dat er gee vragen+antwoorden meer zijn.
 			if (fileParser.getField(questionsColumn, i) !== undefined) {
 				let answers = [];
