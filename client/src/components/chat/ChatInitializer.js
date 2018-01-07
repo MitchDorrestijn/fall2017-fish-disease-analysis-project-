@@ -6,6 +6,7 @@ import Infobox from './Infobox';
 import MessageSender from './MessageSender';
 import Videobox from './Videobox';
 import VideoboxMobile from './VideoboxMobile';
+import DataAccess from '../../scripts/DataAccess';
 import * as firebase from 'firebase';
 
 export default class ChatInitializer extends React.Component {
@@ -14,52 +15,105 @@ export default class ChatInitializer extends React.Component {
 		super(props);
 		
 		this.state = {
-			chat: []
+			chat: [],
+			chatStatus: false
 		}
 
 		this.chatId = null;
 		this.userId = null;
 		this.name = "";
-		this.pageAdmin = false;
 		this.stream = null;
+		this.interval = null;
+		this.checkIfOnline = false;
+		this.appointment = null;
 		
 		this.initializeWebRTC();
 	}
 	
 	componentDidMount = () => {
 		//Setup webcam gebruiker
-		this.checkAdmin();
-		this.initializeDatabase();
-		this.checkOnline();
+		this.checkUserInfo();
 	}
 	
-	checkAdmin = () => {
+	componentWillUnmount = () => {
+		if(this.interval !== null){
+			clearInterval(this.interval);
+		}
+	}
+	
+	checkUserInfo = () => {
 		//Controleer of de gebruiker een admin(consultant) is
 		const url = window.location.href.replace(/\/$/, '');
-		if(url.substr(url.lastIndexOf('/') + 1) !== "chat"){
-			this.pageAdmin = true;
+		const appointmentId = url.substr(url.lastIndexOf('/') + 1);
+		
+		if(appointmentId !== "chat" && appointmentId !== "admin"){
+			let da = new DataAccess ();
+			da.getData ('/appointments/' + appointmentId, (err, res) => {
+				if(!err){
+					const appointment = res.message;
+					this.appointment = appointment;
+					
+					if(this.props.adminPage){
+						if(this.props.isAdmin){
+							this.showAppointmentInfo(appointment);
+							
+							if(appointment.status){
+								this.chatId = appointmentId;
+								this.userId = "admin";
+								this.name = "Consultant";
+								
+								this.initializeDatabase();
+								this.startConnection();
+							}else{
+								this.props.showFeedback("danger", "This chat session is closed. It is not possible to start a connection while the session is closed. You have to reopen the session to start a connection.");
+							}
+						}else{
+							this.props.showFeedback("danger", "You are not logged in as an administrator.");
+						}
+					}else{
+						if(this.props.loggedIn){
+							this.userId = firebase.auth().currentUser.uid;
+							if(this.userId === appointment.reservedBy){
+								if(appointment.status){
+									this.chatId = appointmentId;
+									this.userId = firebase.auth().currentUser.uid;
+									this.name = firebase.auth().currentUser.displayName;
+									
+									this.showAppointmentInfo(appointment);
+									this.initializeDatabase();
+									this.startConnection();
+								}else{
+									this.props.showFeedback("danger", "This chat session is closed.");
+								}
+							}else{
+								this.props.showFeedback("danger", "This chat session does not belong to this account.");
+							}
+						}else{
+							this.props.showFeedback("danger", "You are not logged in.");
+						}
+					}
+				}else{
+					this.props.showFeedback("danger", "There is no appointment registered with the given ID.");
+				}
+			});
 		}
+	}
+	
+	showAppointmentInfo = (appointment) => {
+		let da = new DataAccess ();
+		da.getData ('/timeslots/' + appointment.timeslotId, (err, res) => {
+			if (!err) {
+				const timeslot = res.message;
+				const appointmentTime = timeslot.startDate.substring(0, 10) + " from " + timeslot.startDate.substring(11, 16) + " till " + timeslot.endDate.substring(11, 16) + " UTC+1";
+				this.addInfoMessage("Appointment information:\n - Time: " + appointmentTime + "\n - Your appointment description: " + appointment.comment);
+			} else {
+				console.log(err.message);
+			}
+		});
 	}
 	
 	initializeDatabase = () => {
-		//Setup database ref en een aantal variablen
-		if(this.pageAdmin){
-			if(this.props.isAdmin){
-				const url = window.location.href.replace(/\/$/, '');
-				this.chatId = url.substr(url.lastIndexOf('/') + 1);
-				this.userId = "admin";
-				this.name = "Consultant";
-			}else{
-				this.addInfoMessage("Niet ingelogd als administrator");
-			}
-		}else{
-			if(this.props.loggedIn){
-				this.chatId = this.userId = firebase.auth().currentUser.uid;
-				this.name = firebase.auth().currentUser.displayName;
-			}else{
-				this.addInfoMessage("U bent niet ingelogd");
-			}
-		}
+		//Setup database ref en een event handler. Als er een bericht binnen komt op die database ref dan word de functie this.readMessage uitgevoerd
 		this.database = firebase.database().ref('/chat/' + this.chatId);
 		this.database.on('child_added', this.readMessage);
 	}
@@ -87,15 +141,15 @@ export default class ChatInitializer extends React.Component {
 		};
 	}
 	
-	checkOnline = () => {
+	startConnection = () => {
 		//Controleer of er een gebruiker online is in deze chatruimte
-		if(firebase.auth().currentUser !== null){
-			if(this.pageAdmin && this.props.isAdmin){
-				this.sendMessage(this.userId, "checkOnline", "");
-			}else{
-				this.sendMessage(this.userId, "checkOnline", "");
-			}
-		}
+		this.sendMessage(this.userId, "startConnection", "");
+	}
+	
+	setupStreamOther = () => {
+		//Setup webcam andere gebruiker en de datachannel
+		this.setupDataChannel();
+		this.createOffer();
 	}
 	
 	setupDataChannel = () => {
@@ -109,17 +163,30 @@ export default class ChatInitializer extends React.Component {
 		};
 	}
 	
-	setupStreamOther = () => {
-		//Setup webcam andere gebruiker en de datachannel
-		this.setupDataChannel();
-		this.createOffer();
-	}
-	
 	createOffer = () => {
 		//Stuur een connection offer
 		this.pc.createOffer()
 			.then(offer => this.pc.setLocalDescription(offer) )
 			.then(() => this.sendMessage(this.userId, "offer", {'sdp': this.pc.localDescription}) );
+	}
+	
+	checkOnline = () => {
+		this.interval = setInterval(() => {
+			if(this.checkIfOnline){
+				this.sendMessage(this.userId, "checkOnline", "");
+				this.checkIfOnline = false;
+			}else{
+				clearInterval(this.interval);
+				this.setState({
+					chatStatus: false
+				});
+				this.pc.close();
+				this.pc = null;
+				this.initializeWebRTC();
+				this.stopWebcam();
+				this.addInfoMessage("The other user left this chat session.");
+			}
+		}, 5000);
 	}
 	
 	startWebcam = () => {
@@ -136,27 +203,56 @@ export default class ChatInitializer extends React.Component {
 			this.createOffer();
 			this.forceUpdate();
 		}).catch((err) => {
-			this.addInfoMessage("Geen webcam aangesloten of geen toestemming gegeven");
+			this.addInfoMessage("There is no webcam connected to this device or there is no permission granted to use the webcam");
 		});
 	}
 	
 	stopWebcam = () => {
 		//Stop de webcam stream
-		this.stream.getAudioTracks().forEach(function(track) {
-            track.stop();
-        });
-        this.stream.getVideoTracks().forEach(function(track) {
-            track.stop();
-        });
-		this.pc.removeStream(this.stream);
-		this.stream = null;
-		
-		const camEl = document.getElementsByClassName("myCam");
-		for(let i = 0; i < camEl.length; i++){
-			camEl[i].removeAttribute("src");
-			camEl[i].load();
+		if(this.stream !== null){
+			this.stream.getAudioTracks().forEach(function(track) {
+				track.stop();
+			});
+			this.stream.getVideoTracks().forEach(function(track) {
+				track.stop();
+			});
+			this.pc.removeStream(this.stream);
+			this.stream = null;
+			
+			const camEl = document.getElementsByClassName("myCam");
+			for(let i = 0; i < camEl.length; i++){
+				camEl[i].removeAttribute("src");
+				camEl[i].load();
+			}
+			
+			this.forceUpdate();
 		}
-		this.forceUpdate();
+	}
+	
+	closeChat = () => {
+		//Sluit de chat(Alleen door de consultant). Stuur een bericht naar de gebruiker dat de chat gesloten is zodat hij/zij hiervan op de hoogte
+		//word gesteld. Bij de gebruiker verschijnt er een bericht en het invoerveld word uitgeschakeld.
+		this.sendMessage(this.userId, "closeChat", "");
+		this.setState({
+			chatStatus: false
+		});
+		this.pc.close();
+		this.pc = null;
+		this.stopWebcam();
+		
+		//Update de appointment status
+		if(this.appointment !== null){
+			let da = new DataAccess ();
+			da.putData ('/admin/appointments/' + this.appointment.id, {appointment: {status: false, timeslotId: this.appointment.timeslotId}}, (err, res) => {
+				if (!err) {
+					console.log("Status updated");
+				} else {
+					console.log(err.message);
+				}
+			});
+		}
+		
+		this.addInfoMessage("The chat is now closed.");
 	}
 	
 	//Communicatie	
@@ -174,6 +270,15 @@ export default class ChatInitializer extends React.Component {
 		}
 	}
 	
+	addChatLog = (message) => {
+		let da = new DataAccess ();
+		da.postData('/appointments/' + this.chatId + '/chatlogs', {chatLog: message}, (err, res) => {
+			if (err) {
+				console.log(err.message);
+			};
+		});
+	}
+	
 	addSenderMessage = (msg) => {
 		//Voeg het verzonden bericht toe
 		let message = JSON.parse(msg);
@@ -183,11 +288,10 @@ export default class ChatInitializer extends React.Component {
 			this.setState({
 				chat: chatMessages
 			}, () => {
-				setTimeout(() => {
-					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
-				}, 100);
+				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 			});
 			
+			this.addChatLog(message.data.name + ": " + message.data.message);
 		}else{
 			if(message.data.state === "open"){
 				this.sendFile = "";
@@ -201,10 +305,10 @@ export default class ChatInitializer extends React.Component {
 				this.setState({
 					chat: chatMessages
 				}, () => {
-					setTimeout(() => {
-						document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
-					}, 100);
+					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 				});
+				
+				this.addChatLog(message.data.name + ": [Media file] " + message.data.message);
 			}else{
 				this.sendFile += message.data.message;
 			}
@@ -221,9 +325,7 @@ export default class ChatInitializer extends React.Component {
 			this.setState({
 				chat: chatMessages
 			}, () => {
-				setTimeout(() => {
-					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
-				}, 100);
+				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 			});
 			
 		}else{
@@ -234,12 +336,11 @@ export default class ChatInitializer extends React.Component {
 				this.setState({
 					chat: chatMessages
 				}, () => {
-					setTimeout(() => {
-						document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
-					}, 100);
+					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 					document.getElementById("progressBar_" + message.id).style.width = 0;
 				});
 			}else if(message.data.state === "close"){
+				let chatMessages = this.state.chat;
 				const barEl = document.getElementById("progressBar_" + message.id);
 				const parentBarEl = document.getElementById("progressBar_" + message.id).parentNode;
 				parentBarEl.removeChild(barEl);
@@ -256,9 +357,8 @@ export default class ChatInitializer extends React.Component {
 					videoEl.setAttribute("controls","controls");
 					parentBarEl.appendChild(videoEl);
 				}
-				setTimeout(() => {
-					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
-				}, 100);
+				
+				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 			}else{
 				this.receivedFile += message.data.message;
 				
@@ -302,22 +402,45 @@ export default class ChatInitializer extends React.Component {
 			}else if (type === "answer"){
 				//Andere gebruiker heeft een answer gestuurd op de offer
 				this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-			}else if(type === "checkOnline"){
-				//Andere gebruiker vraagt of de gebruiker online is, stuur een antwoord terug
+			}else if(type === "startConnection"){
+				//Andere gebruiker vraagt of de gebruiker klaar is om de chat te starten
 				if(this.pc !== undefined){
 					this.pc.close();
 					this.pc = null;
 					this.initializeWebRTC();
-					if(this.stream !== null){
-						this.stopWebcam();
-					}
+					this.stopWebcam();
 				}
+				this.sendMessage(this.userId, "startConnectionAnswer", "");
+				this.checkIfOnline = true;
+				this.checkOnline();
+				this.addInfoMessage("The chat has been started.");
+				this.setState({
+					chatStatus: true
+				});
+			}else if(type === "startConnectionAnswer"){
+				//Andere gebruiker heeft gereageerd op de vraag of hij klaar is om een chat te starten
+				this.setupStreamOther();
+				this.addInfoMessage("The chat has been started.");
+				this.checkIfOnline = true;
+				this.checkOnline();
+				this.setState({
+					chatStatus: true
+				});
+			}else if(type === "checkOnline"){
+				//Andere gebruiker vraagt of de gebruiker online is, stuur een antwoord terug
 				this.sendMessage(this.userId, "checkOnlineAnswer", "");
-				this.addInfoMessage("De chat is gestart");
 			}else if(type === "checkOnlineAnswer"){
 				//Andere gebruiker heeft gereageerd op de vraag of er iemand online is
-				this.setupStreamOther();
-				this.addInfoMessage("De chat is gestart");
+				this.checkIfOnline = true;
+			}else if(type === "closeChat"){
+				//Consultant heeft de chat gesloten. Peer connection wordt gesloten en invoerveld wordt disabled
+				this.addInfoMessage("The chat is closed by the consultant.");
+				this.setState({
+					chatStatus: false
+				});
+				this.pc.close();
+				this.pc = null;
+				this.stopWebcam();
 			}
 		}
 	}
@@ -327,17 +450,17 @@ export default class ChatInitializer extends React.Component {
 				<div id="chat-main" className="chat-wrapper">
 					<Container>
 						<Row>
-							<VideoboxMobile startWebcam={this.startWebcam} stopWebcam={this.stopWebcam} stream={this.stream} />
+							<VideoboxMobile startWebcam={this.startWebcam} stopWebcam={this.stopWebcam} chatStatus={this.state.chatStatus} closeChat={this.closeChat} adminPage={this.props.adminPage} stream={this.stream} />
 						</Row>
 						<Row className="inner-chat-wrapper">
 							<Col md="8">
 								<div id="chatBox">
 									{this.state.chat}
 								</div>
-								<MessageSender name={this.name} sendChatMessage={this.sendChatMessage} />
+								<MessageSender name={this.name} chatStatus={this.state.chatStatus} showFeedback={this.props.showFeedback} sendChatMessage={this.sendChatMessage} />
 							</Col>
 							<Col md="4" className="removeColumn">
-								<Videobox startWebcam={this.startWebcam} stopWebcam={this.stopWebcam} stream={this.stream} />
+								<Videobox startWebcam={this.startWebcam} chatStatus={this.state.chatStatus} closeChat={this.closeChat} stopWebcam={this.stopWebcam} adminPage={this.props.adminPage} stream={this.stream} />
 							</Col>
 						</Row>
 					</Container>

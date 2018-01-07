@@ -22,6 +22,20 @@ export default class Videobox extends React.Component {
 	}
 
 	render(){
+		let buttons = [];
+		if(this.props.stream !== null){
+			buttons = [
+				<Button key={0} id="toggleAudio" onClick={() => this.toggleAudio()} title="Mute/unmute audio" className="btn-circle" color="primary"><i className="fa fa-microphone-slash"/></Button>,
+				<Button key={1} id="toggleVideo" onClick={() => this.toggleVideo()} title="Turn video on/off"className="btn-circle" color="primary"><i className="fa fa-video-camera"/></Button>,
+				<Button key={2} id="stopWebcam" onClick={() => this.props.stopWebcam()} title="Stop video call" className="btn-circle" color="danger"><i className="fa fa-phone fa-rotate-90"/></Button>
+			]
+		}else{
+			buttons.push(<Button key={3} id="startWebcam" onClick={() => this.props.startWebcam()} title="Start video call" className="btn-circle" color="success"><i className="fa fa-phone"/></Button>);
+		}
+		if(this.props.adminPage){
+			buttons.push(<Button key={4} id="closeChat" onClick={() => this.props.closeChat()} title="Close chat" className="btn-circle" color="danger"><i className="fa fa-commenting-o"/></Button>);
+		}
+		
 		return (
 			<div className="fixed-wrapper">
 				<div className="inner-video-wrapper">
@@ -31,22 +45,18 @@ export default class Videobox extends React.Component {
 						</Row>
 						<Row className="no-gutter videoContainer">
 							<video className="myCam" id="myCam" autoPlay muted></video>
-							<div className="videoOverlay">
-								<div className="videoOverlayText">
-									{
-										(this.props.stream !== null) ?
-										([
-											<Button key={0} id="toggleAudio" onClick={() => this.toggleAudio()} className="btn-circle" color="primary"><i className="fa fa-microphone-slash"/></Button>,
-											<Button key={1} id="toggleVideo" onClick={() => this.toggleVideo()} className="btn-circle" color="primary"><i className="fa fa-video-camera"/></Button>,
-											<Button key={2} id="stopWebcam" onClick={() => this.props.stopWebcam()} className="btn-circle" color="danger"><i className="fa fa-phone fa-rotate-90"/></Button>
-										])
-										:
-										(
-											<Button id="startWebcam" onClick={() => this.props.startWebcam()} className="btn-circle" color="success"><i className="fa fa-phone"/></Button>
-										)
-									}
-								</div>
-							</div>
+							{
+								this.props.chatStatus ?
+								(
+									<div className="videoOverlay">
+										<div className="videoOverlayText">
+											{
+												buttons
+											}
+										</div>
+									</div>
+								):null
+							}
 						</Row>
 					</div>
 				</div>

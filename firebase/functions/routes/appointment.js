@@ -131,7 +131,7 @@ router.post('/appointments/', isAuthenticated,
 	const appointment = {};
 	appointment.comment = appointmentBody.comment;
 	appointment.canceled = false;
-	appointment.status = false;
+	appointment.status = true;
 	appointment.chatLog = [];
 	appointment.reservedBy = admin.firestore()
 	  .collection('users')

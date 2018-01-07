@@ -33,7 +33,7 @@ export default class MessageSender extends React.Component {
 				}else if(uploadEl.files[0].name.match(/.(mp4|avi|mov|flv|wmv|m4p)$/i)){
 					this.sendFile("video", uploadEl.files[0], message);
 				}else{
-					this.sendFile("file", uploadEl.files[0], message);
+					this.props.showFeedback("danger", "This file type is not supported. The supported file types are: images(.jpg, .jpeg, .png, .gif) and videos(.mp4, .avi, .mov, .flv, .wmv, .m4p).");
 				}
 				uploadEl.value = "";
 				messageEl.value = "";
@@ -61,10 +61,7 @@ export default class MessageSender extends React.Component {
 						previewEl = <div className="filePreview"><img src={fr.result} id="filePreview" alt="Preview" />{uploadEl.files[0].name}</div>
 					}else if(uploadEl.files[0].name.match(/.(mp4|avi|mov|flv|wmv|m4p)$/i)){
 						previewEl = <div className="filePreview"><video src={fr.result} id="filePreview" autoPlay muted></video>{uploadEl.files[0].name}</div>
-					}else{
-						previewEl = <div className="filePreview"><img src={fr.result} id="filePreview" alt="Preview" />{uploadEl.files[0].name}</div>
-					}
-					
+					}					
 					this.setState({
 						preview: previewEl
 					});
@@ -130,7 +127,7 @@ export default class MessageSender extends React.Component {
 							}
 							
 							<Input type="text" className="messageToSend" id="messageToSend" placeholder="Type your message" />
-							<InputGroupButton className="sendButton" id="sendButton" color="dark">Send message</InputGroupButton>
+							<InputGroupButton className="sendButton" id="sendButton" color="dark" disabled={!this.props.chatStatus}>Send message</InputGroupButton>
 						</InputGroup>
 					</Form>
 				</Col>
