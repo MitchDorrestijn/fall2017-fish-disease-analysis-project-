@@ -4,7 +4,19 @@
 .addBtns {
 	overflow: auto;
 	width: 100%;
-	margin-bottom: $defaultPadding*2;
+	margin-bottom: $defaultPadding;
+	.btn-wrapper {
+		overflow: auto;
+		margin-bottom: $defaultPadding/2;
+		.focus {
+			background: $supportColor;
+			color: $alternativeColor;
+			box-shadow: none;
+		}
+		.btn-outline-primary:focus, .btn-outline-primary.focus {
+			box-shadow: none;
+		}
+	}
 	div {
 		button {
 			float: left;
@@ -15,5 +27,38 @@
 		color: $supportColor;
 		margin: $defaultPadding/2;
 		display: inline-block;
+	}
+	.action-btn-wrapper {
+		position: relative;
+		display: block;
+		background: $alternativeColor;
+		border-radius: $defaultBorderWidth;
+		box-shadow: none;
+		border: none;
+		outline: none;
+		height: 40px;
+		overflow: hidden;
+		.fishCRUDbtns {
+			display: inline-block;
+		}
+		a {
+			float: right;
+		}
+	}
+}
+
+.inline-text {
+	display: block;
+}
+.inline-btn {
+	padding: 0;
+	display: inline-block;
+	color: $supportColor;
+	text-decoration: underline;
+	margin: -10px;
+	&:hover {
+		color: $supportColor;
+		text-decoration: none;
+		cursor: pointer;
 	}
 }

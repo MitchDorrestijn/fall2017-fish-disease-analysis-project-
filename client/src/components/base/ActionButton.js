@@ -21,7 +21,7 @@ export default class ActionButton extends React.Component {
 	render(){
 		return(
 			<div>
-				<Button outline color={this.props.color} onClick={this.onClickAction}>{this.props.buttonText}</Button>
+				<Button id={this.props.id} outline color={this.props.color} onClick={this.onClickAction}>{this.props.buttonText}</Button>
 				{this.state.redirect}
 			</div>
 		);

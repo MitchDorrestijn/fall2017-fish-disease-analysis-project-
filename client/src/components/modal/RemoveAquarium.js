@@ -2,10 +2,7 @@ import React from 'react';
 import {
 	ModalHeader,
 	ModalBody,
-	Button,
-	FormGroup,
-	Label,
-	Input
+	Button
 } from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
 
@@ -13,68 +10,31 @@ export default class RemoveAquarium extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			aquariaFromDB: [],
-			aquaria: [],
-			error: false
+			error: null
 		}
 	}
-	componentWillMount(){
+	removeAquaria = () => {
 		let da = new DataAccess();
-		da.getData ('/aquaria/', (err, res) => {
+		da.deleteData(`/aquaria/${this.props.customProps.currentAquarium}`, (err, res) => {
 			if (!err) {
-				this.setState({ aquariaFromDB: [...this.state.aquariaFromDB, res.message] });
-				this.getAquaria ();
-			} else {
-				this.setState({error: true});
-			}
-		});
-	}
-	getAquaria = () => {
-		let aquaria = [];
-		for(var key in this.state.aquariaFromDB[0]) {
-			aquaria.push(<option key={key}>{this.state.aquariaFromDB[0][key].name}</option>);
-		}
-		this.setState ({
-			aquaria: aquaria
-		});
-	}
-	removeAquaria = (e) => {
-		e.preventDefault();
-		//This is where the API call for must take place to remove the selected auaria. Dont forget to call this.props.toggleModal(); in the res to close the modal.
-		let selectedAquaria = document.getElementById("selectedAquaria").value;
-		console.log(this.state.aquariaFromDB);
-		console.log(selectedAquaria);
-		const {aquariaFromDB} = this.state;
-		let aquariumId;
-		for (const elem of aquariaFromDB[0]) {
-			if (elem.name === selectedAquaria) {
-				aquariumId = elem.id;
-			}
-		}
-		let da = new DataAccess();
-		da.deleteData (`/aquaria/${aquariumId}`, (err, res) => {
-			if (!err) {
-				this.props.customProps.refreshPage();
 				this.props.toggleModal();
+				this.props.customProps.reset();
+				this.props.customProps.refreshPage();
 			} else {
-				this.setState({error: true});
+				this.setState({error: 'Something went wrong, please try again.'});
 			}
 		});
-	}
+	};
 	render() {
 		return (
 			<div>
 				<ModalHeader toggle={() => this.props.toggleModal()}>Remove aquarium</ModalHeader>
 				<ModalBody>
-					{ this.state.error && "Something went wrong!"}
-					<FormGroup>
-						<Label for="email">Aquarium name:</Label>
-          	<Input type="select" name="select" id="selectedAquaria">
-							{this.state.aquaria}
-          	</Input>
-					</FormGroup>
+					<p className="error">{this.state.error}</p>
+					Are you sure you want to remove this aquarium?
 					<hr/>
-					<Button onClick={this.removeAquaria} outline className="modalLink" color="secondary" block>Remove aquarium</Button>
+					<Button onClick={this.removeAquaria} outline className="modalLink" color="secondary" block>Yes</Button>
+					<Button onClick={this.props.toggleModal} outline className="modalLink" color="secondary" block>No</Button>
 				</ModalBody>
 			</div>
 		);

@@ -25,6 +25,10 @@ export default class AddFish extends React.Component {
 		da.getData ('/species', (err, res) => {
 			if (!err) {
 				for (let elem of res.message) {
+					console.log(this.props.customProps.fishInAquaria.fish.species.name);
+					console.log(res.message[0].name);
+
+					// console.log(this.props.customProps.fishInAquaria.fish.length);
 					this.setState({fishSpecies: [...this.state.fishSpecies, { value: elem.id, label: elem.name }]});
 				}
 			}
