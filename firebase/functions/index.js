@@ -160,8 +160,8 @@ exports.onDiseaseDeleted = functions.firestore.document("diseases/{id}").onDelet
 	// Write to the algolia index
 	const index = client.initIndex("diseases");
 	const both = client.initIndex("species-and-diseases");
-	both.deleteObject(event.params.id);
-	return index.deleteObject(event.params.id);
+	
+	return Promise.all([index.deleteObject(event.params.id), both.deleteObject(event.params.id)]);
 });
 
 const upsertSpeciesToAlgolia = (event) => {
@@ -174,8 +174,8 @@ const upsertSpeciesToAlgolia = (event) => {
 	// Write to the algolia index
 	const index = client.initIndex("species");
 	const both = client.initIndex("species-and-diseases");
-	both.saveObject(species);
-	return index.saveObject(species);
+	
+	return Promise.all([index.saveObject(species), both.saveObject(species)]);
 };
 
 // Update the search index every time a blog post is written.
@@ -191,8 +191,8 @@ exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete
 	// Write to the algolia index
 	const index = client.initIndex("species");
 	const both = client.initIndex("species-and-diseases");
-	both.deleteObject(event.params.id);
-	return index.deleteObject(event.params.id);
+	
+	return Promise.all([index.deleteObject(event.params.id), both.deleteObject(event.params.id)]);
 });
 
 const calculateEndDate = (event) => {

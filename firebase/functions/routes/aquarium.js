@@ -199,8 +199,11 @@ router.get('/aquaria/:id/fish', isAuthenticated, (req, res) => {
 			);
 		});
 		
-		Promise.all(promises).then(() => {
+		Promise.all(promises)
+		.then(() => {
 			res.send({fish: fish});
+		}).catch((error) => {
+			Promise.reject(error);
 		})
 	}).
 	catch((error) => {
