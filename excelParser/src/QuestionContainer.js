@@ -19,7 +19,8 @@ module.exports = class QuestionContainer {
 			answersColumn,
 			answersYOffset,
 			picturesColumn,
-			symptomsRow
+			symptomsRow,
+			symptomMarker
 		} = config.questionAnswersAndSymptoms;
 
 		let questions = [];
@@ -39,7 +40,7 @@ module.exports = class QuestionContainer {
 					let symptoms = [];
 					for (let k = symptomsStart; fileParser.getField(k, symptomsRow) !== undefined; k++) {
 						// Gaat door alle vakjes van de symptomen van de antwoorden heen
-						if (fileParser.getField(k, i+j) === 'x') {
+						if (fileParser.getField(k, i+j) === symptomMarker) {
 							symptoms.push(new Symptom(fileParser.getField(k, symptomsRow)));
 						}
 					}

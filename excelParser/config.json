@@ -26,6 +26,7 @@
 			"picturesColumn": 2,
 			"symptomsRow": 0,
 			"answersYOffset": 1,
+			"symptomMarker": "x",
 			"questions": {
 				"start": 1,
 				"end": 29
