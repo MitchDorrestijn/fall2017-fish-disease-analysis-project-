@@ -90,25 +90,18 @@ export default class ManageAgenda extends Component {
 							<Td>{this.parseTime(elem.timeslot.endDate)}</Td>
 							<Td>{elem.reservedBy}</Td>
 							<Td>{elem.comment}</Td>
-						  	<Td>-</Td>
-							<Td>{elem.status ? "Yes" : "No"}</Td>
-							<Td>{elem.approved ? "Yes" : "No"}</Td>
+							<Td>{elem.status ? "Open" : "Closed"}</Td>
+							{/*<Td>{elem.approved ? "Yes" : "No"}</Td>*/}
 							<Td>
 								<ButtonGroup>
-									{elem.approved ?
-										<ActionButton
-											buttonText={<span className="fa fa-edit"/>}
-											color="primary"
-											onClickAction={() => this.changeAppointment(elem)}/> :
-										<ActionButton
-											buttonText={<span className="fa fa-check"/>}
-											color="primary"
-											onClickAction={() => this.approveAppointment(elem)}/>
-									}
+
 									<ActionButton
 										buttonText={<span className="fa fa-close"/>}
 										color="primary"
 										onClickAction={() => this.cancelAppointment(elem)}/>
+								  <ActionButton buttonText='Chat room'
+												linkTo={"/chat/admin/" + elem.id}
+												color='primary btn-transperant'/>
 								</ButtonGroup>
 							</Td>
 						</Tr>
@@ -134,8 +127,8 @@ export default class ManageAgenda extends Component {
 							<Th>Person</Th>
 							<Th>Description</Th>
 							<Th>Status</Th>
-							<Th>Cancelled</Th>
-						  	<Th>Chat Log</Th>
+							{/*<Th>Cancelled</Th>*/}
+						  	<Th></Th>
 							<Th/>
 						</Tr>
 					</Thead>
