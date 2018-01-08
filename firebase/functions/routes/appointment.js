@@ -87,6 +87,7 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
 	  let promises = [];
 	  snapshot.forEach((doc) => {
 		let appointmentFlat = helperFunctions.flatData(doc);
+		appointmentFlat.id = doc.id;
 		if (appointmentFlat.timeslotId) {
 		  promises.push(
 			db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
@@ -131,7 +132,7 @@ router.post('/appointments/', isAuthenticated,
 	const appointment = {};
 	appointment.comment = appointmentBody.comment;
 	appointment.canceled = false;
-	appointment.status = false;
+	appointment.status = true;
 	appointment.chatLog = [];
 	appointment.reservedBy = admin.firestore()
 	  .collection('users')
