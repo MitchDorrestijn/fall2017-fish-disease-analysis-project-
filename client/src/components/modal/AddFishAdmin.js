@@ -22,8 +22,7 @@ export default class AddFishAdmin extends React.Component {
 		const fishToAdd = {
 			name: document.getElementById("fishname").value,
 			info: document.getElementById("fishDescription").value,
-			additional: document.getElementById("fishAdditional").value,
-			picture: ""
+			additional: document.getElementById("fishAdditional").value
 		}
 		if(fishToAdd.name === "" || fishToAdd.info === "" || fishToAdd.additional === ""){
 			this.setState({error: "Fill in all fields!"});

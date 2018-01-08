@@ -28,35 +28,36 @@ const model = {
     name: "species",
     endpoint: "species",
     keys: ["name", "info", "additional", "picture"],
-    schema: {  
-        create: Joi.object().keys({ 
-            name: Joi.string().alphanum().min(3).required(), 
-            info: Joi.string().alphanum().min(3).required(), 
-            additional: Joi.string().alphanum().min(3).required() 
-        }), 
-     
-        update: Joi.object().keys({ 
-            name: Joi.string().alphanum().min(3), 
-            info: Joi.string().alphanum().min(3), 
-            additional: Joi.string().alphanum().min(3) 
-        }) 
+    schema: {
+        create: Joi.object().keys({
+            name: Joi.string().min(3).required(),
+            info: Joi.string().min(3).required(),
+            additional: Joi.string().min(3).required(),
+						picture: Joi.string().optional()
+        }),
+
+        update: Joi.object().keys({
+            name: Joi.string().min(3),
+            info: Joi.string().min(3),
+            additional: Joi.string().min(3)
+        })
     }
 }
 
 /* Joi schema */
-const schema = {
-    create: Joi.object().keys({
-        name: Joi.string().alphanum().min(3).required(),
-        info: Joi.string().alphanum().min(3).required(),
-        additional: Joi.string().alphanum().min(3).required()
-    }),
-
-    update: Joi.object().keys({
-        name: Joi.string().alphanum().min(3),
-        info: Joi.string().alphanum().min(3),
-        additional: Joi.string().alphanum().min(3)
-    })
-}
+// const schema = {
+//     create: Joi.object().keys({
+//         name: Joi.string().min(3).required(),
+//         info: Joi.string().min(3).required(),
+//         additional: Joi.string().min(3).required()
+//     }),
+//
+//     update: Joi.object().keys({
+//         name: Joi.string().min(3),
+//         info: Joi.string().min(3),
+//         additional: Joi.string().min(3)
+//     })
+// }
 
 router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
     db.collection(model.endpoint).get()
@@ -72,7 +73,7 @@ router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
     })
 })
 
-router.post('/' + model.endpoint, isAuthenticated, validateModel(model.name, model.schema.create), (req, res) => {
+router.post('/' + model.endpoint, isAuthenticated, validate(model.name, model.schema.create), (req, res) => {
 	    db.collection(model.endpoint).add(req.body[model.name])
 	    .then((newDoc) => {
 	        return newDoc.get()
