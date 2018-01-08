@@ -60,9 +60,6 @@ export default class NavigationBar extends React.Component {
 						<NavItem>
 							<Link className="nav-link" to="" onClick={e => e.preventDefault()}><Translate>Analysis</Translate></Link>
 						</NavItem>
-						<NavItem>
-							<Link className="nav-link" to="" onClick={e => e.preventDefault()}><Translate>Request Consult</Translate></Link>
-						</NavItem>
 						{
 							this.props.loggedIn ?
 							([
