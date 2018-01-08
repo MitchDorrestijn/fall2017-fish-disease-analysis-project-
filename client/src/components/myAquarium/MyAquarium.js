@@ -13,12 +13,12 @@ import RequestConsult from './requestConsult/RequestConsult';
 export default class MyAquarium extends React.Component {
 	render() {
 		// Cheap fix voor de newline in het kopje in de sidebar, misschien forceren met CSS?
-		let title = <span>My<br/>Aquarium</span>;
+		let title = <span>Dashboard</span>;
 		return (
 				<div className="row row-no-gutter sidebar-wrap">
 					<Sidebar size="3" title={title}>
 						<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/myAquarium/myFish">
-							My Fish
+							My fish
 						</SidebarLink>
 						<SidebarLink img="/images/myAquarium/graph-icon.png" target="/myAquarium/todaysData">
 							Today's data
@@ -30,7 +30,7 @@ export default class MyAquarium extends React.Component {
 							Notifications
 						</SidebarLink>
 						<SidebarLink img="/images/myAquarium/calendar-icon.png" target="/myAquarium/requestConsult">
-							Register a consult
+							Request consult
 						</SidebarLink>
 						<SidebarLink img="/images/myAquarium/profile-icon.png" target="/myAquarium/accountSettings">
 							Account settings

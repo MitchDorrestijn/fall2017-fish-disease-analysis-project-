@@ -21,8 +21,13 @@
 		h2 {
 			padding-top: $defaultPadding;
 			padding-bottom: 10px;
-			padding-left: 55px;
+			text-align: center;
 			font-size: 40px;
+
+			span {
+				display: block;
+				margin: 20px 0 20px 0;
+			}
 		}
 		a:first-of-type {
 			border-top: 1px solid $alternativeColor;

@@ -7,72 +7,52 @@ class Checker {
         const self = this;
         return new Promise((resolve, reject) => {
             // Getting all rules
+            let promises = [];
             db.collection('notification_rules').get()
             .then((rulesSnapshot) => {
                 // Iterating through rules
+
                 rulesSnapshot.docs.forEach((doc) => {
                     // Checks whether a rule is broken
                     const rule = doc.data();
-                    let triggers = [];
-                    // Get triggers for the rule
-                    db.collection('notification_rules').doc(rule.id).collection("triggers").get()
-                    .then((triggerSnapshot) => {
-                        // If no triggers, return.
-                        if(triggerSnapshot.docs.length == 0){
-                            resolve();
-                            return;
+                    
+                    let isAllFired = true;
+                    rule.triggers.forEach((trigger) => {
+                        // isAllFired will be false when 1 trigger is not fired. All triggers need to be fired
+                        // for the notification to happen.
+                        if(!self.isTriggerFired(aquarium, user, entry, trigger)){
+                            isAllFired = false;
                         }
-                        let isAllFired = true;
-                        triggerSnapshot.docs.forEach((doc) => {
-                            const trigger = doc.data();
-                            triggers.push(trigger);
-                            // isAllFired will be false when 1 trigger is not fired. All triggers need to be fired
-                            // for the notification to happen.
-                            if(!self.isTriggerFired(aquarium, user, entry, trigger)){
-                                isAllFired = false;
-                            }
-                        });
+                    });
 
-                        // When isAllFired == false, cancel and return.
-                        if(!isAllFired){
-                            resolve(true);
-                            return;
-                        }
+                    // When isAllFired == false, cancel and return.
+                    if(!isAllFired){
+                        return;
+                    }
 
-                        if(entry.species){
-                            entry.species.get()
-                            .then((doc) => {
-                                const species = doc.data();
-                                const message = self.composeNotification(species, aquarium, entry, triggers, rule);
-                                return notifications.add(user.id, message, rule.type)
-                            })
-                            .then(() => {
-                                resolve(true);
-                            })
-                            .catch((error) => {
-                                reject(error)
-                            })
-                        } else {
-                            const message = self.composeNotification(undefined, aquarium, entry, triggers, rule);
-                            console.log("Message: " + message);
-                            notifications.add(user.id, message, rule.type)
-                            .then(() => {
-                                console.log("noti added!");
-                                resolve(true);
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                reject(error)
-                            })
+                    let promise = Promise.resolve();
+
+                    if(entry.species) {
+                        promise = entry.species.get()
+                    }
+
+                    promise.then((doc) => {
+                        let species = undefined;
+                        if(doc) {
+                            species = doc.data();
                         }
+                        const message = self.composeNotification(species, aquarium, entry, rule.triggers, rule);
+                        return notifications.add(user.id, message, rule.type)
                     })
-                    .catch((error) => {
-                        reject(error);
-                    })
+
+                    promises.push(promise);
                 })
             })
             .then(() => {
                 // All rules evaluated
+                return Promise.all(promises)
+            })
+            .then(() => {
                 resolve(true);
             })
             .catch((error) => {
