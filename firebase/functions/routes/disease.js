@@ -25,7 +25,7 @@ const model = {
     schema: Joi.object().keys({
         name: Joi.string().alphanum().min(3).max(30).required(),
         id: Joi.string().alphanum(),
-        symptoms: Joi.string(),
+        symptoms: Joi.array(),
         description: Joi.string(),
         treatment: Joi.string()
     })
