@@ -4,6 +4,19 @@
 	padding-bottom: 80px;
 }
 
+.recieverBox {
+	background: $chatBackground !important;
+	color: $alternativeTextColor !important;
+	&:before {
+		border-color: transparent  transparent  transparent $chatBackground !important;
+	}
+}
+
+.infoBox {
+	background: $chatInfoColor !important;
+	color: $alternativeTextColor !important;
+}
+
 .filePreview {
 	width: 100%;
 	height: 100%;
@@ -25,10 +38,6 @@
 	background-attachment: fixed;
 	height: calc(100vh - 80px); //Minus the height of the navBar
 	overflow-y: scroll;
-	//padding-bottom: 80px; //Height of the form area
-	h3 {
-		color: white;
-	}
 	.chatVideo {
 		width: 100%;
 	}
@@ -83,6 +92,9 @@
 }
 .reciever-spacing {
 	margin-right: -$defaultPadding;
+}
+.info-spacing {
+	width: calc(100% - 15px);
 }
 .footer {
 	background: $supportColor;
@@ -142,7 +154,7 @@
 				-webkit-transform:rotateY(180deg);
 				-moz-transform:rotateY(180deg);
 			}
-				
+
 			.videoContainer {
 				position: relative;
 			}
@@ -164,9 +176,9 @@
 			.videoContainer:hover .videoOverlay {
 				height: 30%;
 			}
-			
+
 			.videoOverlayText {
-				white-space: nowrap; 
+				white-space: nowrap;
 				color: white;
 				font-size: 20px;
 				position: absolute;

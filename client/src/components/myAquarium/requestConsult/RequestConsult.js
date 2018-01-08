@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Input, Card, CardBody, CardTitle, CardText, FormGroup, Label, CardSubtitle} from 'reactstrap';
+import {Col, Input, Card, CardHeader, CardBody, CardFooter, Badge, CardTitle, CardText, FormGroup, Label, UncontrolledTooltip, CardSubtitle} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import * as firebase from 'firebase';
 import DataAccess from '../../../scripts/DataAccess';
@@ -58,7 +58,6 @@ export default class AccountSettings extends React.Component {
 			};
 		});
 	};
-
 	registerRequest = () => {
 		const appointment = {
 			timeslotId: document.getElementById('dateTime').value,
@@ -76,12 +75,26 @@ export default class AccountSettings extends React.Component {
 		let da = new DataAccess ();
 		da.postData('/appointments/', {appointment: dataObject}, (err, res) => {
 			if (!err) {
+				console.log('registered');
 				this.initSetters();
 			} else {
 				console.log(err);
 			};
 		});
 	};
+	
+	downloadLog = (appointmentId) => {
+		let da = new DataAccess ();
+		da.getData ('/appointments/' + appointmentId + "/chatLogs", (err, res) => {
+			if (!err) {
+				//Server side moet er een txt file worden gemaakt en een download link moet worden terug gestuurd
+				console.log(res.message);
+			} else {
+				console.log(err.message);
+			}
+		});
+	}
+	
 	//option filler for the selector
 	fillDateSelector = () => {
 		let options = [];
@@ -104,17 +117,34 @@ export default class AccountSettings extends React.Component {
 				cards.push(<Col key='header'><h1 className='center'>Current registered consults.</h1></Col>)
 			};
 			if (this.state.appointments.hasOwnProperty(key)) {
-				//this.getTimeslot();
+				let cardHeaderContent;
+				let cardFooterContent;
+				if(this.state.appointments[key].status){
+					cardHeaderContent = (<Badge color="success">Open</Badge>);
+					cardFooterContent = (<ActionButton buttonText='Go to chat room' linkTo={"/chat/" + this.state.appointments[key].id} color='primary btn-transperant'/>)
+				}else{
+					cardHeaderContent = (<Badge color="danger">Closed</Badge>);
+					cardFooterContent = (<ActionButton buttonText='Download chatlog' onClickAction={() => this.downloadLog(this.state.appointments[key].id)} color='primary btn-transperant'/>)
+				}
+				
 				cards.push(
 					<Col key={key}>
 						<Card>
+							<CardHeader>
+								<h5>
+									{cardHeaderContent}
+								</h5>
+							</CardHeader>
 							<CardBody>
 								<CardTitle>
 									Consult on: {this.state.appointments[key].timeslot.startDate.substring(0, 10)} from {this.state.appointments[key].timeslot.startDate.substring(11, 16)} till {this.state.appointments[key].timeslot.endDate.substring(11, 16)} UTC+1
 								</CardTitle>
-								<CardSubtitle>Comment:</CardSubtitle>
+								<CardSubtitle>Description:</CardSubtitle>
 								<CardText>{this.state.appointments[key].comment}</CardText>
 							</CardBody>
+							<CardFooter>
+								{cardFooterContent}
+							</CardFooter>
 						</Card>
 					</Col>
 				);
@@ -124,7 +154,6 @@ export default class AccountSettings extends React.Component {
 	};
 
 	render() {
-		let disabled = true;
 		return (
 			<div className='account-settings'>
 				<div className='container'>
@@ -144,12 +173,14 @@ export default class AccountSettings extends React.Component {
 											</Input>
 										</FormGroup>
 										<FormGroup>
-											<Label for='exampleText'>Comment:</Label>
+											<UncontrolledTooltip placement="top" target="descriptionTip">
+												Try to give as many information as possible in your description. The consultant will prepare for your consult by your given information here
+											</UncontrolledTooltip>
+											<Label for='exampleText'>Description <i className="fa fa-question-circle" id="descriptionTip"/></Label>
 											<Input type='textarea' name='text' id='comment' value={this.state.comment} onChange={this.onChange.bind(this)}/>
 										</FormGroup>
 										<div className='text-right'>
-											{this.state.comment ? disabled=false : disabled=true}
-											<button disabled={disabled} onClick={this.registerRequest} className='btn btn-outline-primary btn-transparent'>Register consult</button>
+											<ActionButton buttonText='Register consult' onClickAction={this.registerRequest} color='primary btn-transperant' disabled/>
 										</div>
 									</CardBody>
 								</Card>
