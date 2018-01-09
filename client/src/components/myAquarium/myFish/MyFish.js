@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import AddFish from '../../modal/AddFish';
 import AddAquarium from '../../modal/AddAquarium';
 import RemoveAquarium from '../../modal/RemoveAquarium';
+import RemoveFish from '../../modal/RemoveFish';
 import DataAccess from '../../../scripts/DataAccess';
 
 export default class MyFish extends React.Component {
@@ -78,6 +79,10 @@ export default class MyFish extends React.Component {
 	  }
 	  return result;
 	}
+	removeFish = (e, fid, fname) => {
+		e.preventDefault();
+		this.props.openModal(RemoveFish, {refreshPage: () => this.showSelectedCategory (this.state.currentAquariumId), currentAquarium: this.state.currentAquariumId, fishId: fid, fishName: fname});
+	}
 	filterFish = () => {
 		let amountOfFishInAqauria = this.objectLength(this.state.currentAquarium.fish);
 		if(amountOfFishInAqauria > 0){
@@ -85,7 +90,7 @@ export default class MyFish extends React.Component {
 				const {fish} = this.state.currentAquarium;
 				const result = fish.map ((elem) => {
 					return (
-						<Card key={elem.id} image={elem.species.imageUrl}>
+						<Card key={elem.id} image={elem.species.imageUrl} onRemove={(e) => this.removeFish(e, elem.species.id, elem.species.name)}>
 							<CardTitle>{elem.species.name}</CardTitle>
 							<CardSubtitle>{elem.species.additional}</CardSubtitle>
 							<CardText>{elem.species.info}</CardText>
@@ -106,7 +111,6 @@ export default class MyFish extends React.Component {
 	}
 	showAddFishModel = (e) => {
 		e.preventDefault ();
-		console.log(this.state.currentAquariumId);
 		this.props.openModal(AddFish, {refreshPage: () => this.showSelectedCategory (this.state.currentAquariumId), currentAquarium: this.state.currentAquariumId, fishInAquaria: this.state.currentAquarium});
 	};
 	showAddAquariumModel = (e) => {
@@ -123,7 +127,6 @@ export default class MyFish extends React.Component {
 	render() {
 		return (
 			<div className="container">
-				{console.log(this.state.currentAquariumId)}
 				<div className="row inner-content">
 					<h2>My fish</h2>
 					<div className="addBtns">
