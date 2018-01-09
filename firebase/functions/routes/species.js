@@ -44,21 +44,6 @@ const model = {
     }
 }
 
-/* Joi schema */
-// const schema = {
-//     create: Joi.object().keys({
-//         name: Joi.string().min(3).required(),
-//         info: Joi.string().min(3).required(),
-//         additional: Joi.string().min(3).required()
-//     }),
-//
-//     update: Joi.object().keys({
-//         name: Joi.string().min(3),
-//         info: Joi.string().min(3),
-//         additional: Joi.string().min(3)
-//     })
-// }
-
 router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
     db.collection(model.endpoint).get()
     .then((snapshot) => {

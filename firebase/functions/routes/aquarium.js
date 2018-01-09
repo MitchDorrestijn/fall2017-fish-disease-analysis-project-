@@ -246,6 +246,24 @@ router.put('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
 	res.status(500).send('fish edit - not yet implemented');
 });
 
+// Deletes fish
+router.delete('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
+	db.collection('fish')
+	.where('aquarium', '==', db.collection('aquaria').doc(req.params.id))
+	.where('user', '==', req.user.ref)
+	.where('id', '==', req.params.fid).get()
+	.then((snapshot) => {
+		console.log(snapshot.docs);
+		return snapshot.docs[0].ref.delete();
+	})
+	.then(() => {
+		res.send("deleted");
+	})
+	.catch((err) => {
+		res.status(500).send(err.message);
+	})
+});
+
 /**
  *  @api {get} /aquaria/:id/entries  Get all aquarium entries
  *  @apiName Get all entries from aquarium
