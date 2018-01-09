@@ -247,11 +247,11 @@ router.put('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
 });
 
 // Deletes fish
-router.delete('/aquaria/:id/fish/:fid', isAuthenticated, (req, res) => {
+router.delete('/aquaria/:id/species/:sid', isAuthenticated, (req, res) => {
 	db.collection('fish')
 	.where('aquarium', '==', db.collection('aquaria').doc(req.params.id))
 	.where('user', '==', req.user.ref)
-	.where('id', '==', req.params.fid).get()
+	.where('species', '==', db.collection('aquaria').doc(req.params.sid)).get()
 	.then((snapshot) => {
 		console.log(snapshot.docs);
 		return snapshot.docs[0].ref.delete();
