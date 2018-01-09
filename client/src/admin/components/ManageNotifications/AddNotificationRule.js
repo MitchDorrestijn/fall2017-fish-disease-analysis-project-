@@ -65,6 +65,13 @@ export default class AddNotificationRule extends Component {
 			triggers: triggers
 		});
 	};
+	removeTrigger = (index) => {
+		let triggers = this.state.triggers;
+		triggers.splice(index, 1);
+		this.setState({
+			triggers: triggers
+		});
+	};
 
 	//get/post/put data functions:
 	addNotificationRule = () => {
@@ -120,11 +127,11 @@ export default class AddNotificationRule extends Component {
 				<FormGroup key='0'>
 					<Label>Min</Label><br/>
 					<InputGroup>
-						<Input id={id} type='number' onChange={this.changeMin}/>
+						<Input id={id} type='number' value={this.state.triggers[id].min} onChange={this.changeMin}/>
 					</InputGroup>
 					<Label>Max</Label><br/>
 					<InputGroup>
-						<Input id={id} type='number' onChange={this.changeMax}/>
+						<Input id={id} type='number' value={this.state.triggers[id].max} onChange={this.changeMax}/>
 					</InputGroup>
 				</FormGroup>
 			);
@@ -133,7 +140,7 @@ export default class AddNotificationRule extends Component {
 				<FormGroup key='1'>
 					<Label>Compared</Label><br/>
 					<InputGroup>
-						<Input id={id} type='number' onChange={this.changeCompared}/>
+						<Input id={id} type='number' value={this.state.triggers[id].compared} onChange={this.changeCompared}/>
 					</InputGroup>
 				</FormGroup>
 			);
@@ -145,12 +152,14 @@ export default class AddNotificationRule extends Component {
 		let returnData = [];
 		for (let i = 0; i < this.state.triggers.length; i++) {
 			returnData.push(
-				<div key={i}>
-					<h5>Notification trigger {i+1}</h5>
+				<div key={i* this.state.triggers.length* 1.33}>
+					<h5>Notification trigger {i+1}
+						{this.drawRemoveTriggerButton(i)}
+					</h5>
 					<FormGroup>
 						<Label>Attribute</Label><br/>
 						<InputGroup>
-							<Input id={i} type='select' onChange={this.changeAttribute}>
+							<Input id={i} type='select' value={this.state.triggers[i].attribute} onChange={this.changeAttribute}>
 								<option selected disabled hidden>Choose here</option>
 								{this.showAttributes()}
 							</Input>
@@ -159,7 +168,7 @@ export default class AddNotificationRule extends Component {
 					<FormGroup>
 						<Label>Equation</Label><br/>
 						<InputGroup>
-							<Input id={i} type='select' onChange={this.changeEquation}>
+							<Input id={i} type='select' value={this.state.triggers[i].equation} onChange={this.changeEquation}>
 								<option selected disabled hidden>Choose here</option>
 								<option value='>'>bigger than</option>
 								<option value='<'>smaller than</option>
@@ -174,6 +183,17 @@ export default class AddNotificationRule extends Component {
 			);
 		};
 		return returnData;
+	};
+
+	//check if there is only one trigger which can't be removed
+	drawRemoveTriggerButton = (index) => {
+		if (this.state.triggers.length > 1) {
+			return (
+				<div className="close">
+					<a onClick={() => this.removeTrigger(index)}><span className="fa fa-close"/></a>
+				</div>
+			);
+		};
 	};
 
 	render() {
