@@ -22,15 +22,30 @@ export default class AddFish extends React.Component {
 	}
 	loadSpecies = () => {
 		let da = new DataAccess();
+		let fishSpecies = [];
 		da.getData ('/species', (err, res) => {
 			if (!err) {
 				for (let elem of res.message) {
-
-					// console.log(this.props.customProps.fishInAquaria.fish.length);
-					this.setState({fishSpecies: [...this.state.fishSpecies, { value: elem.id, label: elem.name }]});
+					fishSpecies.push({ value: elem.id, label: elem.name })
 				}
+				for(let i=0; i<this.props.customProps.fishInAquaria.fish.length; i++){
+					if(this.contains(fishSpecies, this.props.customProps.fishInAquaria.fish[i].species.name)){
+						fishSpecies.splice(fishSpecies[i], 1);
+						i--;
+					}
+				}
+				this.setState({fishSpecies: fishSpecies});
 			}
 		});
+	}
+	contains = (a, obj) => {
+    let i = a.length;
+    while (i--) {
+  		if (a[i].label === obj) {
+      	return true;
+       }
+    }
+    return false;
 	}
 	selectFishSpecies = (val) => {
 		let da = new DataAccess();
