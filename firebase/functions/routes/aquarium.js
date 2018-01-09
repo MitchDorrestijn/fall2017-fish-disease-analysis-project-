@@ -251,7 +251,7 @@ router.delete('/aquaria/:id/species/:sid', isAuthenticated, (req, res) => {
 	db.collection('fish')
 	.where('aquarium', '==', db.collection('aquaria').doc(req.params.id))
 	.where('user', '==', req.user.ref)
-	.where('species', '==', db.collection('aquaria').doc(req.params.sid)).get()
+	.where('species', '==', db.collection('species').doc(req.params.sid)).get()
 	.then((snapshot) => {
 		console.log(snapshot.docs);
 		return snapshot.docs[0].ref.delete();
