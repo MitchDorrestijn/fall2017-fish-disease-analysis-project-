@@ -66,5 +66,8 @@
 	i {
 		float: right;
 		padding: $defaultPadding;
+		&:hover {
+			cursor: pointer;
+		}
 	}
 }
