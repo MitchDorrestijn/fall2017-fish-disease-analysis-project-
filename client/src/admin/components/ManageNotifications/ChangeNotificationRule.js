@@ -64,6 +64,13 @@ export default class ChangeNotificationRule extends Component {
 			data: data
 		});
 	};
+	removeTrigger = (index) => {
+		let data = this.state.data;
+		data.triggers.splice(index, 1);
+		this.setState({
+			data: data
+		});
+	};
 
 	//get/post/put data functions:
 	changeNotificationRule = () => {
@@ -142,8 +149,10 @@ export default class ChangeNotificationRule extends Component {
 		let returnData = [];
 		for (let i = 0; i < this.state.data.triggers.length; i++) {
 			returnData.push(
-				<div key={i}>
-					<h5>Notification trigger {i+1}</h5>
+				<div key={i* this.state.data.length* 1.33}>
+					<h5>Notification trigger {i+1}
+						{this.drawRemoveTriggerButton(i)}
+					</h5>
 					<FormGroup>
 						<Label>Attribute</Label><br/>
 						<InputGroup>
@@ -171,6 +180,17 @@ export default class ChangeNotificationRule extends Component {
 			);
 		};
 		return returnData;
+	};
+
+	//check if there is only one trigger which can't be removed
+	drawRemoveTriggerButton = (index) => {
+		if (this.state.data.triggers.length > 1) {
+			return (
+				<div className="close">
+					<a onClick={() => this.removeTrigger(index)}><span className="fa fa-close"/></a>
+				</div>
+			);
+		};
 	};
 
 	render() {

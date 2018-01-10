@@ -14,6 +14,7 @@ export default class AddFish extends React.Component {
 			dataToSendToDB: {},
 			fishImage: null,
 			error: "",
+			disabled: false,
 			currentAquarium: this.props.customProps.currentAquarium
 		}
 	}
@@ -60,6 +61,7 @@ export default class AddFish extends React.Component {
 		this.setState({selectedFish: val, objectToSendToDB: selectedData});
 	}
 	addFish = () => {
+		this.setState({disabled: true});
 		let aquariaId =  this.state.currentAquarium;
 		if(this.state.objectToSendToDB){
 			let specieName = this.state.objectToSendToDB.fishName;
@@ -99,7 +101,7 @@ export default class AddFish extends React.Component {
 						</InputGroup>
 					</FormGroup>
 					<hr/>
-					<Button onClick={this.addFish} outline className="modalLink" color="secondary" block>Add fish</Button>
+					<Button disabled={this.state.disabled} onClick={this.addFish} outline className="modalLink" color="secondary" block>Add fish</Button>
 				</ModalBody>
 			</div>
 		);
