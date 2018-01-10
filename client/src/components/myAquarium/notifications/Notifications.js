@@ -106,7 +106,7 @@ export default class Notifications extends React.Component {
 	render() {
 		return (
 			<div className="notifications">
-				{this.drawNewNotificationColumn}
+				{this.drawNewNotificationColumn()}
 				<h1 className="text-center">Older notifications</h1>
 				<Col lg={{size: 10, offset: 1}}>
 					{this.state.notificationsRead}
