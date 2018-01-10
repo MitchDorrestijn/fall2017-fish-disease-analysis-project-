@@ -21,13 +21,24 @@ export default class Notifications extends React.Component {
 		let da = new DataAccess();
 		da.getData ('/notifications', (err, res) => {
 			if (!err) {
-				console.log (res.message);
 				this.setState({notificationsFromDB: res.message});
 				this.getNotifications();
+				this.setReadToTrue();
 			} else {
 				console.log("De error is: " + err.message);
 			};
 		});
+	};
+	setReadToTrue = () => {
+		let da = new DataAccess();
+		for (let i = 0; i < this.state.notificationsFromDB.length; i++) {
+			da.putData (`/notifications/${this.state.notificationsFromDB[i].id}/setRead`, {}, (err, res) => {
+				if (!err) {
+				} else {
+					console.log("De error is: " + err.message);
+				};
+			});
+		};
 	};
 	timeToString = (input) => {
 		let date = new Date (input);
@@ -80,25 +91,23 @@ export default class Notifications extends React.Component {
 			notificationsUnread: notificationsUnread
 		});
 	};
-	// deleteNotification = (key) => {
-	// 	let notifications = this.state.notificationsRead;
-	// 	for (let i = 0; i < notifications.length; i++) {
-	// 		if (i === key) {
-	// 			notifications[i] = null;
-	// 		}
-	// 	}
-	// 	this.setState ({
-	// 		notificationsRead: notifications
-	// 	});
-	// };
+	drawNewNotificationColumn = () => {
+		if (this.state.notificationsUnread.length > 0) {
+			return (
+				<div>
+					<h1 className="text-center">New notifications</h1>
+					<Col lg={{size: 10, offset: 1}}>
+						{this.state.notificationsUnread}
+					</Col>
+				</div>
+			);
+		};
+	};
 	render() {
 		return (
 			<div className="notifications">
-				<h1 className="text-center">New notifications</h1>
-				<Col lg={{size: 10, offset: 1}}>
-					{this.state.notificationsUnread}
-				</Col>
-				<h1 className="text-center">Old notifications</h1>
+				{this.drawNewNotificationColumn}
+				<h1 className="text-center">Older notifications</h1>
 				<Col lg={{size: 10, offset: 1}}>
 					{this.state.notificationsRead}
 				</Col>
