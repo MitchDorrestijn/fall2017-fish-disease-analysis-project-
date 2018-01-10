@@ -9,10 +9,10 @@ const isAuthenticated = require('../middleware/isAuthenticated.js');
 const isAdmin = require('../middleware/isAdmin.js');
 const validateModel = require('../middleware/validateModel.js');
 
-router.get("/notifications", isAuthenticated, (req, res) => {
-    db.collection("notifications").where("user", "==", req.user.ref).orderBy('date', 'desc').get()
+router.get('/notifications', isAuthenticated, (req, res) => {
+    db.collection('notifications').where('user', '==', req.user.ref).orderBy('date', 'desc').get()
     .then((snapshot) => {
-        var notifications = []
+        var notifications = [];
         snapshot.forEach((doc) => {
             notifications.push(doc.data());
         })
@@ -21,6 +21,25 @@ router.get("/notifications", isAuthenticated, (req, res) => {
     .catch((error) => {
         console.log(error);
         res.status(500).send(error.message);
+    })
+})
+
+router.put('/notifications/:id/setRead', isAuthenticated, (req, res) => {
+    db.collection('notifications').doc(req.params.id).get()
+    .then((notificationSnapshot) => {
+        if (notificationSnapshot.data().user.id != req.user.ref.id) {
+            return Promise.reject(new Error('Notification with id: '+ req.params.id +' not owned by user.'));
+        }
+
+        return notificationSnapshot.ref.update({
+            isRead: true
+        })
+    })
+    .then(() => {
+        res.send('isRead set to true');
+    })
+    .catch((err) => {
+        res.status(500).send(err.message);
     })
 })
 
