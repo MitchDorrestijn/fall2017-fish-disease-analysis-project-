@@ -114,7 +114,7 @@ Hier zullen de non-functionele aspecten worden verwoord.
   * Safari 11+
 * Het beheersysteem/CMS is alleen beschikbaar voor consultants/beheerders van de website.
 * De videochat wordt niet ondersteund met het gebruik van Microsoft IE, dit komt door de missende ondersteuning voor WebRTC.
-* De code zal volgens de “code conventie” worden geïmplementeerd. Zie hoofdstuk 5.
+* De code zal volgens de “code conventie” worden geïmplementeerd. Zie bijlage.
 * Het design is duidelijk geïnspireerd van het voorgaande CMD-groep, met kleine uitzonderingen waaronder het beheersysteem/CMS.
 * Het product wordt geleverd met een softwareguidebook.
 
