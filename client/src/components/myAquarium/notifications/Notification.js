@@ -13,11 +13,11 @@ export default class Notification extends React.Component {
 			<Row className="notification">
 				<NotificationIcon icon={this.props.icon} date={this.props.date}/>
 				{this.props.children}
-				<div className="close-container">
+				{/* <div className="close-container">
 					<div className="close text-right">
 						<a href="" onClick={this.deleteNotification}><span className="fa fa-close"/></a>
 					</div>
-				</div>
+				</div> */}
 			</Row>
 		);
 	}
