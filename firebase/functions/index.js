@@ -202,12 +202,12 @@ const calculateEndDate = (event) => {
 	const startDate = new Date(timeslot.startDate);
 	const duration = timeslot.duration;
 	// Add an "end timestamp" field
-	const endDate = startDate.setMinutes(startDate.getMinutes() + duration);
+	const endDate = new Date(startDate.getTime() + duration * 60000);
 
 	if (endDate !== timeslot.endDate){
 		// Write timestamp to the timestamp
 		return event.data.ref.set({
-			endDate: new Date(endDate)
+			endDate: endDate
 		}, {merge: true});
 	}
 };

@@ -54,6 +54,9 @@ Dhr.   Burgers,   onze   opdrachtgever,   wil   samen   met   dhr.   Bassleer   
 
 Dit   project   zal   worden   uitgevoerd   door   S.   Scheffer,   R.   Mulleman,   M.   Dorrestijn,   C.   Severein,   R. Meijer   en   J.   Weijland.   Zijnde   studenten   Hogeschool   van   Arnhem   en   Nijmegen   zijn   zij verantwoordelijk   voor   het   voltooien   van   het   project.
 
+Er zijn al meerdere ICA-teams die aan de visanalysetool hebben gewerkt. Hieronder twee CMD-teams die het concept hebben uitgewerkt en een HTML en CSS-design hebben geleverd en een ICT-team wat een
+databasestructuur heeft opgezet.
+
 Het   project   is   opgezet   als   opdracht   vanuit   de   HAN.   Dit   proces   wordt   begeleid   door   de   volgende docenten:   mevr.   Danes,   dhr.   Leer   en   dhr.   Holwerda.
 
 #### 1.1. Gerald Bassleer
