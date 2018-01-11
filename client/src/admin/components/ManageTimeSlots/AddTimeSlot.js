@@ -29,6 +29,7 @@ export default class AddTimeSlot extends Component {
 	  da.postData(`/timeslots/`, {timeslot: timeslotData},  (err, res) => {
 		if (!err) {
 		  this.props.toggleModal();
+		  console.log(this.props.customProps);
 		  this.props.customProps.refreshPage();
 		} else {
 		  this.setState({error: "An error occurred!"});

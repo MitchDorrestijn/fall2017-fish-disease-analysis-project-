@@ -111,7 +111,7 @@ export default class ManageTimeSlot extends Component {
 					<Tbody>{this.state.tableEntries}</Tbody>
 				</Table>
 			  <Button
-				onClick={() => this.props.openModal(AddTimeSlot, {refreshPage: this.getTimeslots()})}
+				onClick={() => this.props.openModal(AddTimeSlot, {refreshPage: this.getTimeslots})}
 				className="btn-admin">Add timeslot when you are available
 			  </Button>
 			</div>
