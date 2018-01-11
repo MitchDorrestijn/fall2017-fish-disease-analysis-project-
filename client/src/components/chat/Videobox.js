@@ -30,37 +30,44 @@ export default class Videobox extends React.Component {
 				<Button key={2} id="stopWebcam" onClick={() => this.props.stopWebcam()} title="Stop video call" className="btn-circle" color="danger"><i className="fa fa-phone fa-rotate-90"/></Button>
 			]
 		}else{
-			buttons.push(<Button key={3} id="startWebcam" onClick={() => this.props.startWebcam()} title="Start video call" className="btn-circle" color="success"><i className="fa fa-phone"/></Button>);
+			buttons.push(<Button key={3} id="startWebcam" onClick={() => this.props.startWebcam()} title="Start video call" className="btn-circle" color="success" disabled={!this.props.chatStatus}><i className="fa fa-phone"/></Button>);
 		}
 		if(this.props.adminPage){
 			buttons.push(<Button key={4} id="closeChat" onClick={() => this.props.closeChat()} title="Close chat" className="btn-circle" color="danger"><i className="fa fa-commenting-o"/></Button>);
 		}
-		
-		return (
-			<div className="fixed-wrapper">
-				<div className="inner-video-wrapper">
-					<div className="video-center">
-						<Row className="no-gutter">
-							<video className="otherCam" id="otherCam" autoPlay></video>
-						</Row>
-						<Row className="no-gutter videoContainer">
-							<video className="myCam" id="myCam" autoPlay muted></video>
-							{
-								this.props.chatStatus ?
-								(
-									<div className="videoOverlay">
-										<div className="videoOverlayText">
-											{
-												buttons
-											}
-										</div>
-									</div>
-								):null
-							}
-						</Row>
+
+		if(this.props.type === 'other'){
+			return (
+				<div className="fixed-wrapper">
+					<div className="inner-video-wrapper">
+						<div className="video-center">
+							<Row className="no-gutter">
+								<video className="otherCam" id="otherCam" autoPlay></video>
+							</Row>
+						</div>
 					</div>
 				</div>
-			</div>
-		);
+			);
+		} else if(this.props.type === 'you') {
+			return (
+				<div className="fixed-wrapper">
+					<div className="inner-video-wrapper">
+						<div className="video-center">
+							<Row className="no-gutter videoContainer">
+								<video className="myCam" id="myCam" autoPlay muted></video>
+								<div className="videoOverlay">
+									<div className="videoOverlayText">
+										{
+											buttons
+										}
+									</div>
+								</div>
+							</Row>
+						</div>
+					</div>
+				</div>
+			)
+		}
+
 	};
 }
