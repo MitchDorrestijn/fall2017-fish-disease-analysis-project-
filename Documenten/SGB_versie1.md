@@ -71,10 +71,19 @@ De webapplicatie die wordt gemaakt zal ervoor moeten zorgen dat een gebruiker:
 
 - informatie kan vinden over de ziektes van hun vis,
 - zelfstandig een analyse kan doorlopen om te kijken welke ziekte hun vis zou kunnen hebben,
+- Aquarium gegevens invoeren en genotificeerd worden over mogelijke gevaren 
 - een afspraak kan maken met een consultant,
 - een gesprek kan voeren met deze consultant.
 
-De webapplicatie zal tevens een beheersysteem bevatten voor consultants.
+De webapplicatie zal tevens een beheersysteem bevatten dit bevat de volgende functionaliteiten:
+
+- Beheer van vissen
+- Beheer van ziektes
+- Inzien van afspraken
+  - Chatlogs inzien
+  - Naar de chatroom navigeren
+- Aangeven op welke tijden een consultant aanwezig kan zijn
+- Notificaties regels aanpassen
 
 #### 2.1 Zoeken van informatie over visziektes.
 De gebruiker kan op de site van Bassleer een zoekterm invoeren in het zoekvenster en het systeem zal vervolgens de zoekresultaten laten zien. Hierna kan de gebruiker de zoekresultaten filteren op bijvoorbeeld vissen of ziekten.
@@ -89,6 +98,8 @@ Op het einde van de analyse wordt er een lijst getoond van ziektes die het meest
 #### 2.3 Bijhouden van aquarium gegevens.
 Een gebruiker kan ook zijn aquariumgegevens bijhouden. Gegevens die we hieronder zoal zien zijn, vissen, tempratuur, iron en zuurstof. Aangezien verschillende vissen verschillende standaarden hebben voor deze waarden, is het van belang dat de gebruiker op de hoogte word gehouden van mogelijke gevaren. Dit wordt gedaan wanneer de gebruiker deze waarden invult of vissen aan zijn digitale aquarium toevoegt. Het systeem zal vervolgens nagaan of de waarden binnen acceptabele normen liggen. Zo niet, dan krijgt de gebruiker hier een notificatie van.
 
+![user_register](.\images\todays_data.PNG)
+
 #### 2.4 Beheersysteem/CMS.
 Informatie over vissen en ziektes en analysepunten kunnen worden beheerd in het CMS-gedeelte van de web-applicatie. In dit gedeelte kunnen alleen beheerders komen. Onder andere de volgende gegevens kunnen hier worden bewerkt:
 * Vis ziekten (symptomen, beschrijving, behandeling)
@@ -100,6 +111,8 @@ Informatie over vissen en ziektes en analysepunten kunnen worden beheerd in het 
 
 #### 2.5 Inschrijven voor een consult.
 Als de gebruiker een consult wilt, kan hij hiervoor een afspraak inplannen. De gebruiker kan bij het maken van een afspraak een kleine beschrijving toevoegen en de datum + tijd kiezen uit een lijst. Deze lijst wordt door de consultant in het beheersysteem samengesteld. Hij kan hier aangeven wanneer hij tijd heeft voor een gesprek. Wanneer de gebruiker zich heeft ingeschreven zal het systeem een mail sturen naar de consultant en de aanvraag verwerken in het systeem.
+
+![user_register](.\images\user_register.PNG)
 
 #### 2.6 Het consult gesprek.
 Het uitvoeren van een consult gesprek gebeurt ook via de web-applicatie. De applicatie krijgt de mogelijkheid om een videochat te starten. Voor gebruikers die geen beschikking hebben over een microfoon, zal er een mogelijkheid zijn om met de consultant te chatten d.m.v. tekst. Ook kunnen de gebruiker en de consultant afbeeldingen naar elkaar sturen.

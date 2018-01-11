@@ -56,7 +56,7 @@ app.use('/api', timeSlotRoutes);
 
 exports.app = functions.https.onRequest(app);
 
-app.get('/api/species-and-diseases/search', isAuthenticated, (req, res) => {
+app.get('/api/species-and-diseases/search', (req, res) => {
     const index = client.initIndex("species-and-diseases");
     const query = req.query.term;
 

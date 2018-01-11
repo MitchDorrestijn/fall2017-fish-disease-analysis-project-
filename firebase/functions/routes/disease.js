@@ -86,7 +86,7 @@ router.delete('/' + model.endpoint + '/:id', isAuthenticated, (req, res) => {
     })
 })
 
-router.get('/diseases/search', isAuthenticated, (req, res) => {
+router.get('/diseases/search', (req, res) => {
     const index = client.initIndex(model.endpoint);
     const query = req.query.term;
 
