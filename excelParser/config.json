@@ -12,14 +12,21 @@
 		}
 	},
 	"questions": {
-		"file": "vragen.xlsx",
 		"questionsAndFollowUpQuestions": {
-			"sheetNumber": 0,
-			"start": 2,
-			"end": null
+			"file": "Vraagziektekruisjes.xlsx",
+			"questionsColumn": 1,
+			"questions": {
+				"start": 2
+			},
+			"followUpQuestions": {
+				"start": 2
+			}
 		},
+		"sheetNumber": 0,
+		"start": 2,
+		"end": null,
 		"questionAnswersAndSymptoms": {
-			"file": "vragen.xlsx",
+			"file": "Vraagziektekruisjes.xlsx",
 			"sheetNumber": 1,
 			"questionsColumn": 0,
 			"answersColumn": 1,
@@ -27,13 +34,17 @@
 			"symptomsRow": 0,
 			"answersYOffset": 1,
 			"symptomMarker": "x",
+			"diseaseMarker": "OK",
 			"questions": {
 				"start": 1,
 				"end": 29
 			},
 			"symptoms": {
-				"start": 3,
-				"end": 20
+				"start": "Symptoms",
+				"end": "Diseases (visible)"
+			},
+			"diseases": {
+				"start": "Diseases (visible)"
 			}
 		}
 	}

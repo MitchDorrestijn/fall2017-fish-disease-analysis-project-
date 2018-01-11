@@ -1,6 +1,7 @@
 module.exports = class Question {
-	constructor(name, answers) {
+	constructor(name, pictures, answers) {
 		this.name = name;
+		this.pictures = pictures;
 		this.answers = answers;
 	}
 
