@@ -39,11 +39,11 @@ router.get('/appointments/:id', isAuthenticated, (req, res) => {
 });
 
 /**
- *  @api {DELETE} /appointment/:id Cancel appointment
- *  @apiName cancel an appointment
+ *  @api {DELETE} /appointment/:id Delete appointment
+ *  @apiName delete an appointment
  *  @apiGroup Appointments
  *
- *  @apiSuccess {String} Appointment canceled
+ *  @apiSuccess {String} Appointment deleted
  *  @apiSuccessExample Success-Response:
  *  HTTP/1.1 204 OK
  *  @apiUse InternalServerError
@@ -51,23 +51,13 @@ router.get('/appointments/:id', isAuthenticated, (req, res) => {
  */
 router.delete('/appointments/:id', isAuthenticated, (req, res) => {
   const appointmentId = req.params.id;
-  const appointment = db.collection('appointments').doc(appointmentId);
-  db.collection('appointments').doc(appointmentId).update({
-	canceled: true
+  db.collection('appointments').doc(appointmentId).delete()
+  .then(() => {
+	res.status(204).send('Appointment is deleted');
   })
-	.then(() => {
-	  appointment.get().then((snapshot) => {
-		admin.auth()
-		  .getUser(helperFunctions.flatData(snapshot).reservedBy)
-		  .then((userRecord) => {
-			sendAppointmentCanceledMail(userRecord);
-			res.status(204).send('Appointment canceled');
-		  });
-	  });
-	})
-	.catch((error) => {
-	  res.status(500).send(error.message);
-	});
+  .catch((error) => {
+	res.status(500).send(error.message);
+  });
 });
 
 /**

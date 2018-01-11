@@ -198,7 +198,7 @@ router.delete('/timeslots/:id', isAdmin, (req, res) => {
   const timeslotsId = req.params.id;
   db.collection('timeslots').doc(timeslotsId).delete()
 	.then(() => {
-	  res.status(204).send('Timeslot id deleted');
+	  res.status(204).send('Timeslot is deleted');
 	})
 	.catch((error) => {
 	  res.status(500).send(error.message);

@@ -13,6 +13,7 @@ export default class RemoveAppointment extends Component {
 	cancelAppointment = () => {
 		const {entry, refreshPage} = this.props.customProps;
 		const {toggleModal} = this.props;
+		// console.log('Hello to the other side:-_');
 		let da = new DataAccess();
 		da.deleteData ('/appointments/' + entry.id, (err, res) => {
 			if (!err) {
