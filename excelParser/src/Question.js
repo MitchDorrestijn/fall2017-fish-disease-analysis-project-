@@ -1,7 +1,7 @@
 module.exports = class Question {
 	constructor(name, pictures, answers) {
 		this.name = name;
-		this.pictures = pictures;
+		this.pictures = pictures ? pictures : [];
 		this.answers = answers;
 	}
 
@@ -11,6 +11,10 @@ module.exports = class Question {
 
 	getAnswers() {
 		return this.answers;
+	}
+
+	getPictures() {
+		return this.pictures;
 	}
 
 	getAnswerByName(name) {

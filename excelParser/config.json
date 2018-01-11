@@ -14,7 +14,10 @@
 	"questions": {
 		"questionsAndFollowUpQuestions": {
 			"file": "Vraagziektekruisjes.xlsx",
-			"questionsColumn": 1,
+			"sheetNumber": 0,
+			"answersColumn": 1,
+			"symptomMarker": "x",
+			"followUpQuestionsRow": "0",
 			"questions": {
 				"start": 2
 			},

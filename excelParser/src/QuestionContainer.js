@@ -6,17 +6,83 @@ const Disease = require("./Disease");
 module.exports = class QuestionContainer {
 	constructor(fileParserQuestions, fileParserFollowUpQuestions, config) {
 		this.config = config;
-		this.questions = QuestionContainer._addFollowUpQuestions(
-			QuestionContainer._fillQuestions(
-				fileParserQuestions,
+		this.questions = QuestionContainer._stripFollowUpDuplicates(
+			QuestionContainer._addFollowUpQuestions(
+				QuestionContainer._fillQuestions(
+					fileParserQuestions,
+					config
+				),
+				fileParserFollowUpQuestions,
 				config
-			),
-			fileParserFollowUpQuestions,
-			config
+			)
 		);
 	}
 
+	static _stripFollowUpDuplicates (questions) {
+		let allFollowUpQuestionNames = [];
+
+		for (const question of questions) {
+			for (const answer of question.getAnswers()) {
+				for (const followUpQuestion of answer.getFollowUpQuestions()) {
+					allFollowUpQuestionNames.push (followUpQuestion.getName());
+				}
+			}
+		}
+
+		allFollowUpQuestionNames = allFollowUpQuestionNames.filter(function(item, pos) {
+			return allFollowUpQuestionNames.indexOf(item) === pos;
+		});
+
+		for (let i = 0; i < questions.length; i++) {
+			for (const elem of allFollowUpQuestionNames) {
+				if (questions[i].getName() === elem) {
+					questions.splice (i, 1);
+					i--;
+				}
+			}
+		}
+
+		return questions;
+	}
+
 	static _addFollowUpQuestions(questions, fileParser, config) {
+		const {answersColumn} = config.questionsAndFollowUpQuestions;
+		const {followUpQuestionsRow} = config.questionsAndFollowUpQuestions;
+		const {start: questionsStart} = config.questionsAndFollowUpQuestions.questions;
+		const {start: followUpQuestionsStart} = config.questionsAndFollowUpQuestions.followUpQuestions;
+
+		for (
+			let i = questionsStart + 1;
+			!(
+				fileParser.getField(answersColumn, i) === undefined &&
+				fileParser.getField(answersColumn, i+1) === undefined &&
+				fileParser.getField(answersColumn, i+2) === undefined
+			);
+			i++
+		) {
+			if (fileParser.getField (answersColumn, i) !== undefined) {
+				for (let j = followUpQuestionsStart; fileParser.getField(j, followUpQuestionsRow); j++) {
+					if (fileParser.getField(j, i) === "x") {
+						for (let k = 0; k < questions.length; k++) {
+							// Loop door alle vragen
+							for (let l = 0; l < questions[k].getAnswers().length; l++) {
+								// Loop door alle antwoorden van die vraag
+								if (questions[k].getAnswers()[l].getName() === fileParser.getField(answersColumn, i)) {
+									// Als het antwoord overeenkomt met het antwoord in deze sheet
+									for (let m = 0; m < questions.length; m++) {
+										// Push de vraag uit de hoofdvragen naar de followUpQuestions
+										if (questions[m].name === fileParser.getField(j, followUpQuestionsRow)) {
+											questions[k].getAnswers()[l].addFollowUpQuestion(questions[m]);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		return questions;
 	}
 
@@ -99,7 +165,6 @@ module.exports = class QuestionContainer {
 							fileParser.getField(answersColumn, i+j), // naam
 							pictures, // foto
 							symptoms,
-							null, //followUpQuestions
 							directDiseases
 						)
 					);
@@ -124,15 +189,19 @@ module.exports = class QuestionContainer {
 		return this.questions;
 	}
 
-	getFirstRoundQuestions() {
-		return this.questions.filter (a => {
-			return a.getAnswers().filter (b => {
-				return (b.getFollowUpQuestions());
-			}).length > 0;
-		});
-	}
-
 	getQuestionByName(name) {
-		for (const elem of this.questions) if (elem.name === name) return elem;
+		for (const question of this.questions) {
+			if (question.getName() === name) {
+				return question;
+			} else {
+				for (const answer of question.getAnswers()) {
+					for (const followUpQuestion of answer.getFollowUpQuestions()) {
+						if (followUpQuestion.getName() === name) {
+							return followUpQuestion;
+						}
+					}
+				}
+			}
+		}
 	}
 };

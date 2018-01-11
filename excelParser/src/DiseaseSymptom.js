@@ -16,4 +16,8 @@ module.exports = class DiseaseSymptom {
 	getScore() {
 		return this.score;
 	}
+
+	addPoints(points) {
+		this.score += points;
+	}
 };

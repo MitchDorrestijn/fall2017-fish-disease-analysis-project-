@@ -1,9 +1,9 @@
 module.exports = class Answer {
-	constructor(name, picture, symptoms, followUpQuestion, directDiseases) {
+	constructor(name, picture, symptoms, directDiseases) {
 		this.name = name;
-		this.picture = picture;
+		this.picture = picture ? picture : [];
 		this.symptoms = symptoms;
-		this.followUpQuestions = followUpQuestion;
+		this.followUpQuestions = [];
 		this.directDiseases = directDiseases;
 	}
 
@@ -13,6 +13,10 @@ module.exports = class Answer {
 
 	getPictures() {
 		return this.picture;
+	}
+
+	getSymptoms() {
+		return this.symptoms;
 	}
 
 	getFollowUpQuestions() {
@@ -29,5 +33,9 @@ module.exports = class Answer {
 
 	getDirectDiseasesByName(name) {
 		for (const elem of this.directDiseases) if (name === elem.getName()) return elem;
+	}
+
+	addFollowUpQuestion (followUpQuestion) {
+		this.followUpQuestions.push(followUpQuestion);
 	}
 };
