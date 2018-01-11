@@ -370,6 +370,40 @@ Het is niet nodig om dit project te builden.
 #### 10.3 Deploy
 Om het project te deployen naar de servers van Firebase, navigeer naar de map /functions, en type "firebase deploy". Mocht je alleen bepaalde facetten willen deployen, doe dan firebase deploy --only functions[,firestore,...].
 
+#### 10.4 API Keys & andere configuratie
+Om de applicatie te kunnen draaien, heb je de volgende API-Keys nodig:
+- Firebase Admin. Deze "key" lever je aan in de vorm van een serviceAccount.
+- Firebase Storage. Hiervoor is geen key nodig, wel enige configuratie.
+- Algolia. De keys die nodig zijn om deze service te gebruiken, zijn de "access key" en de "admin key".
+- SendGrid. Hiervoor is 1 API-key nodig.
+
+De applicatie maakt gebruik van Cloud Functions Triggers. Deze draaien niet lokaal, maar op de live Firebase-server. Deze triggers zijn nodig om reads en writes naar Firestore te verwerken. De applicatie werkt niet goed zonder deze triggers.
+
+Om deze triggers te activeren, moet men de applicatie deployen naar de live server. Dit kan met `firebase deploy --only functions`. Aangezien Firestore altijd live draait, werken de triggers ook alleen op de live server. Mocht je de server lokaal draaien, dan worden de triggers niet aangeroepen wanneer in Firestore een read of write uitgevoerd wordt.
+
+##### 10.4.1 Firebase Admin
+Om hiervan de keys te krijgen, dien je deze(https://firebase.google.com/docs/admin/setup#add_firebase_to_your_app) stappen te volgen. Als het goed is heb je nu een .json bestand gedownload (standaard naam; private_key.json). Dit is de zogenaamde service file. Plaats deze file in de root van het Cloud Functions-project, in dit geval in de map ~/firebase/functions. Zorg ervoor dat dit bestand 'geinclude' wordt in de `index.js`. De include-functie staat op het moment van schrijven op regel 5 van index.js:
+```const serviceAccount = require("./private-key.json");```
+Firebase Admin zou nu moeten draaien. Mocht je er niet uitkomen, dan kan je altijd navigeren naar je "Project Settings", tabje "Firebase Admin SDK". Hier staat uitgelegd wat je moet doen om je SDK toe te voegen.
+
+##### 10.4.2 Firebase Storage
+Om storage toe te voegen, voeg de regel `storageBucket: '****.appspot.com'` toe aan het `admin.initializeApp()` object, zodat hij er zo uit komt te zien:
+
+```
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: "https://****.firebaseio.com",
+	storageBucket: '****.appspot.com'
+});
+```
+Wat er op de plek van de sterretjes moet komen te staan, is te vinden in de console onder de tab "storage".
+
+##### 10.4.3 Algolia
+Om Algolia werkend te krijgen, moet je 2 keys verkrijgen: de "access key" en de "admin key". Deze zijn eenvoudig te verkrijgen wanneer je je hebt geregistreerd bij Algolia. Zie de documentatie van Algolia om erachter te komen hoe dat moet. Wanneer je deze keys hebt, dien je de keys te vervangen die zijn gedefinieerd op regel 20 en 21 in `index.js`.
+
+##### 10.4.4 SendGrid
+Om SendGrid werkend te krijgen, heb je 1 key nodig. Deze kan je verkrijgen door je te registeren op sendgrid.com. Zie de documentatie van SendGrid om erachter te komen hoe deze key te verkrijgen is. Wanneer je deze hebt ontvangen, vervang dan de key de te vinden is op regel 2 in `mailer/mailer.js`.
+
 ----
 
 ## 11. Operation and Support
