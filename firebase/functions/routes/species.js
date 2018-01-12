@@ -4,6 +4,7 @@ const admin = require('firebase-admin');
 const gcs = require('@google-cloud/storage');
 const algoliasearch = require('algoliasearch');
 const Joi = require("joi");
+const Busboy = require("busboy");
 
 /* Algolia */
 const ALGOLIA_ID = "WPBUCLWL7Y";
@@ -72,50 +73,118 @@ router.post('/' + model.endpoint, isAuthenticated, validate(model.name, model.sc
 })
 
 router.post('/' + model.endpoint + '/:id/upload', isAdmin, upload.single('image'), (req, res) => {
-    if(!req.file){
-        res.status(400).send("No image provided");
+    if(req.file){
+        return uploadViaMulter(req.file, req.params.id).then(() => {
+            res.send('success');
+        });
+    } else if (req.rawBody) {
+        return uploadViaBusboy(req.rawBody, req).then(() => {
+            res.send('success');
+        });
+    } else {
+        return res.status(400).send('No image provided');
     }
-    const gcsname = 'species/' + req.params.id + '/' + Date.now() + req.file.originalname;
-    const file = bucket.file(gcsname);
-
-    let url = "";
-
-    const stream = file.createWriteStream({
-        metadata: {
-            contentType: req.file.mimetype
-        }
-    });
-
-    stream.on('error', (err) => {
-        res.sendStatus(500);
-    });
-
-    stream.on('finish', () => {
-        file.makePublic()
-        .then(() => {
-            return file.getSignedUrl({
-                action: 'read',
-                expires: '03-09-2491'
-            })
-        })
-        .then(signedUrls => {
-            console.log(url);
-            url = signedUrls[0];
-
-            return db.collection(model.endpoint).doc(req.params.id).set({
-                imageUrl: url
-            }, { merge: true })
-        })
-        .then(() => {
-            res.status(200).send(url);
-        })
-        .catch((err) => {
-            res.status(500).send(err.message);
-        })
-    });
-
-    stream.end(req.file.buffer);
 })
+
+const uploadViaBusboy = (image, req) => {
+    return new Promise((resolve, reject) => {
+        const busboy = new Busboy({ headers: req.headers });
+
+        // This callback will be invoked for each file uploaded
+        busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+            let url;
+            let gcsname = 'species/' + req.params.id + '/' + Date.now() + filename;
+            const bucketfile = bucket.file(gcsname);
+
+            const stream = bucketfile.createWriteStream({
+                metadata: {
+                    contentType: mimetype
+                }
+            });
+
+            stream.on('finish', () => {
+                return bucketfile.makePublic()
+                .then(() => {
+                    return bucketfile.getSignedUrl({
+                        action: 'read',
+                        expires: '03-09-2491'
+                    })
+                })
+                .then(signedUrls => {
+                    url = signedUrls[0];
+        
+                    return db.collection(model.endpoint).doc(req.params.id).set({
+                        imageUrl: url
+                    }, { merge: true })
+                })
+                .then(() => {
+                    return resolve(url);
+                })
+                .catch((err) => {
+                    return reject(err.message);
+                })
+            });
+
+            stream.on('error', (err) => {
+                return reject(err.message)
+            });
+
+            file.pipe(stream);
+        });
+
+        busboy.on('finish', () => {
+            resolve('success');
+        })
+
+        // The raw bytes of the upload will be in req.rawBody.  Send it to busboy, and get
+        // a callback when it's finished.
+        busboy.end(req.rawBody);
+    });
+}
+
+const uploadViaMulter = (image, id) => {
+    return new Promise((resolve, reject) => {
+        let gcsname = 'species/' + req.params.id + '/' + Date.now() + image.originalname;
+        const file = bucket.file(gcsname);
+
+        let url = "";
+
+        const stream = file.createWriteStream({
+            metadata: {
+                contentType: image.mimetype
+            }
+        });
+
+        stream.on('error', (err) => {
+            res.sendStatus(500);
+        });
+
+        stream.on('finish', () => {
+            file.makePublic()
+            .then(() => {
+                return file.getSignedUrl({
+                    action: 'read',
+                    expires: '03-09-2491'
+                })
+            })
+            .then(signedUrls => {
+                url = signedUrls[0];
+
+                return db.collection(model.endpoint).doc(req.params.id).set({
+                    imageUrl: url
+                }, { merge: true })
+            })
+            .then(() => {
+                res.status(200).send(url);
+            })
+            .catch((err) => {
+                res.status(500).send(err.message);
+            })
+        });
+
+        stream.end(image.buffer);
+    });
+}
 
 router.put('/' + model.endpoint + '/:id', isAuthenticated, validate(model.name, model.schema.update), (req, res) => {
     db.collection(model.endpoint).doc(req.params.id).update(req.body[model.name])

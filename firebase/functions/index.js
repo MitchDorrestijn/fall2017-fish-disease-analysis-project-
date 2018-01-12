@@ -30,6 +30,7 @@ const notificationRoutes = require('./routes/notification.js');
 const speciesRoutes = require('./routes/species.js');
 const appointmentRoutes = require('./routes/appointment.js');
 const timeSlotRoutes = require('./routes/timeslots.js');
+const questionRoutes = require('./routes/question.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
@@ -53,6 +54,7 @@ app.use('/api', notificationRoutes);
 app.use('/api', speciesRoutes);
 app.use('/api', appointmentRoutes);
 app.use('/api', timeSlotRoutes);
+app.use('/api', questionRoutes);
 
 exports.app = functions.https.onRequest(app);
 
