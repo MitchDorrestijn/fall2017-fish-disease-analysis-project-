@@ -10,7 +10,7 @@ import EditDisease from '../../components/modal/EditDisease';
 import EditImageDisease from '../../components/modal/EditImageDisease';
 
 
-export default class ManageDeseases extends React.Component {
+export default class ManageDiseases extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
