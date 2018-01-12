@@ -121,7 +121,6 @@ router.post('/appointments/', isAuthenticated,
 	}
 	const appointment = {};
 	appointment.comment = appointmentBody.comment;
-	appointment.canceled = false;
 	appointment.status = true;
 	appointment.chatLog = [];
 	appointment.reservedBy = admin.firestore()
@@ -171,7 +170,7 @@ router.post('/appointments/', isAuthenticated,
  *  @apiUse Forbidden
  */
 router.put('/appointments/:appointmentId/', isAuthenticated,
-  validateModel('appointment', ['canceled', 'comment', 'status']),
+  validateModel('appointment', ['comment', 'status']),
   (req, res) => {
 	db.collection('appointments')
 	  .doc(req.params.appointmentId)

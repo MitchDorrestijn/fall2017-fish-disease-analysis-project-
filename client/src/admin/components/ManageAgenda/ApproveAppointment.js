@@ -8,7 +8,6 @@ export default class ApproveAppointment extends Component {
 		const {refreshPage} = this.props.customProps;
 		let {entry} = this.props.customProps;
 		let response = {
-			canceled: entry.canceled,
 			comment: entry.comment,
 			video: entry.video,
 			approved: true
