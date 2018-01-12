@@ -128,14 +128,14 @@ Het uitvoeren van een consult gesprek gebeurt ook via de web-applicatie. De appl
 Hier zullen de non-functionele aspecten worden verwoord.
 * De webapplicatie is beschikbaar voor alle gebruikers met een browser.
 * De webapplicatie ondersteunt de volgende browsers:
-  * Microsoft IE 11+ (consultgesprekken)
+  * Microsoft IE 11+ (zonder consultgesprekken)
   * Microsoft Edge 15+
   * Google Chrome 46+
   * Mozilla Firefox 52+
   * Safari 11+
 * Het beheersysteem/CMS is alleen beschikbaar voor consultants/beheerders van de website.
-* De videochat wordt niet ondersteund met het gebruik van Microsoft IE 11+.
-* De code zal volgens de “code conventie” worden geïmplementeerd. Zie hoofdstuk 5.
+* De videochat wordt niet ondersteund met het gebruik van Microsoft IE, dit komt door de missende ondersteuning voor WebRTC.
+* De code zal volgens de “code conventie” worden geïmplementeerd. Zie bijlage.
 * Het design is duidelijk geïnspireerd van het voorgaande CMD-groep, met kleine uitzonderingen waaronder het beheersysteem/CMS.
 * Het product wordt geleverd met een softwareguidebook.
 
