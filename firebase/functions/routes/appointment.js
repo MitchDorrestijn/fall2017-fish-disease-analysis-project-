@@ -52,12 +52,12 @@ router.get('/appointments/:id', isAuthenticated, (req, res) => {
 router.delete('/appointments/:id', isAuthenticated, (req, res) => {
   const appointmentId = req.params.id;
   db.collection('appointments').doc(appointmentId).delete()
-  .then(() => {
-	res.status(204).send('Appointment is deleted');
-  })
-  .catch((error) => {
-	res.status(500).send(error.message);
-  });
+	.then(() => {
+	  res.status(204).send('Appointment is deleted');
+	})
+	.catch((error) => {
+	  res.status(500).send(error.message);
+	});
 });
 
 /**
@@ -76,18 +76,18 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
 	  let appointments = [];
 	  let promises = [];
 	  snapshot.forEach((doc) => {
-			let appointmentFlat = helperFunctions.flatData(doc);
-			appointmentFlat.id = doc.id;
-			if (appointmentFlat.timeslotId) {
-				promises.push(
-				db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
-					.then((timeslot) => {
-					appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
-					appointments.push(appointmentFlat);
-					return appointments;
-					})
-				);
-			}
+		let appointmentFlat = helperFunctions.flatData(doc);
+		appointmentFlat.id = doc.id;
+		if (appointmentFlat.timeslotId) {
+		  promises.push(
+			db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
+			  .then((timeslot) => {
+				appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
+				appointments.push(appointmentFlat);
+				return appointments;
+			  })
+		  );
+		}
 	  });
 	  Promise.all(promises).then(() => {
 		res.send(appointments);
@@ -147,14 +147,28 @@ router.post('/appointments/', isAuthenticated,
 			});
 		});
 	  });
-	db.collection('appointments')
-	  .add(appointment)
-	  .then(() => {
-		res.status(201).send();
-	  })
-	  .catch((error) => {
-		res.status(500).send(error.message);
-	  });
+	//Check if this appointment is in use
+	const appointmentsRef = db.collection('appointments');
+	appointmentsRef.get()
+	  .then((docSnapshot) => {
+		let appointmentAvailable = true;
+		docSnapshot.forEach((doc) => {
+		  if (appointmentAvailable && appointmentBody.timeslotId === helperFunctions.flatData(doc).timeslotId) {
+			appointmentAvailable = false;
+			res.status(409).send('This timeslot is already in use');
+		  }
+		});
+		// Save appointment
+		if (appointmentAvailable){
+		  db.collection('appointments')
+			.add(appointment)
+			.then(() => {
+			  res.status(201).send();
+			});
+		  }
+	  }).catch((error) => {
+	  res.status(500).send(error.message);
+	});
   });
 
 /**
@@ -262,7 +276,6 @@ router.put('/admin/appointments/:appointmentId/', isAdmin,
 		  admin.auth()
 			.getUser(appointmentData.reservedBy)
 			.then((userRecord) => {
-			  console.log(userRecord);
 			  // sendAppointmentstatusMail(userRecord);
 			});
 		});

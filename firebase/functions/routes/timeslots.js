@@ -28,7 +28,6 @@ router.get('/opentimeslots/', isAuthenticated, (req, res) => {
 	  let appointmentsTimeslots = [];
 	  snapshot.forEach((doc) => {
 		const flatData = helperFunctions.flatData(doc);
-		console.log(flatData);
 		appointmentsTimeslots.push({
 		  id: flatData.timeslotId,
 		});
@@ -42,7 +41,6 @@ router.get('/opentimeslots/', isAuthenticated, (req, res) => {
 		let appointmentCheck = true;
 		data.forEach((appointment) => {
 		  // Check if the appointment id equals the id of the timeslot
-		  console.log(appointment.id + '+ timeslot.id +' + timeslot.id);
 		  if (appointment.id === timeslot.id) {
 			appointmentCheck = false;
 		  }
