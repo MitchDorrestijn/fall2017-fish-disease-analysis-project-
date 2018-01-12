@@ -29,9 +29,7 @@ module.exports = class QuestionContainer {
 			}
 		}
 
-		allFollowUpQuestionNames = allFollowUpQuestionNames.filter(function(item, pos) {
-			return allFollowUpQuestionNames.indexOf(item) === pos;
-		});
+		allFollowUpQuestionNames = allFollowUpQuestionNames.filter((item, pos) => allFollowUpQuestionNames.indexOf(item) === pos);
 
 		for (let i = 0; i < questions.length; i++) {
 			for (const elem of allFollowUpQuestionNames) {

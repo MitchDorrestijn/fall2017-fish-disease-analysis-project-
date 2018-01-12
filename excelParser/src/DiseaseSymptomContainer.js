@@ -30,36 +30,23 @@ module.exports = class DiseaseSymptomContainer {
 		return diseaseSymptoms;
 	}
 
-	getAll(minScore) {
-		return this.diseaseSymptoms.filter ((elem) => {
-			return (elem.getScore() >= (minScore ? minScore : 0));
-		});
+	getAll() {
+		return this.diseaseSymptoms;
 	}
 
-	getByDiseaseName(name, minScore) {
-		return this.diseaseSymptoms.filter ((elem) => {
-			return (
-				elem.getDisease().getName() === name &&
-				elem.getScore() >= (minScore ? minScore : 0)
-			);
-		});
+	getByDiseaseName(name) {
+		return this.diseaseSymptoms.filter (elem => elem.getDisease().getName() === name);
 	}
 
-	getBySymptomName(name, minScore) {
-		return this.diseaseSymptoms.filter ((elem) => {
-			return (
-				elem.getSymptom().getName() === name &&
-				elem.getScore() >= (minScore ? minScore : 0)
-			);
-		});
+	getBySymptomName(name) {
+		return this.diseaseSymptoms.filter (elem => elem.getSymptom().getName() === name);
 	}
 
 	getByDiseaseAndSymptomNames(disease, symptom, minScore) {
-		return this.diseaseSymptoms.filter ((elem) => {
+		return this.diseaseSymptoms.filter (elem => {
 			return (
 				elem.getDisease().getName() === disease &&
-				elem.getSymptom().getName() === symptom &&
-				elem.getScore() >= (minScore ? minScore : 0)
+				elem.getSymptom().getName() === symptom
 			);
 		});
 	}
