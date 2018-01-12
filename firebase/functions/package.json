@@ -13,6 +13,7 @@
     "@google-cloud/storage": "^1.5.1",
     "@sendgrid/mail": "^6.1.4",
     "algoliasearch": "^3.24.7",
+    "busboy": "^0.2.14",
     "cors": "^2.8.4",
     "express": "latest",
     "firebase": "^4.7.0",
