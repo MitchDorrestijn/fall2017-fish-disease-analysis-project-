@@ -8,7 +8,7 @@ import ManageFish from './ManageFish';
 import ManageNotifications from './ManageNotifications/ManageNotifications';
 import ManageUsers from './ManageUsers';
 import ManageTimeSlots from './ManageTimeSlots/ManageTimeSlots';
-import ManageDesises from './ManageDesises';
+import ManageDiseases from './ManageDiseases';
 
 export default class SideNav extends React.Component {
 	render() {
@@ -28,7 +28,7 @@ export default class SideNav extends React.Component {
 						return <ManageFish {...props} openModal={this.props.openModal} />
 					}}/>
 					<Route exact path="/admin/diseases" render={(props) => {
-						return <ManageDesises {...props} openModal={this.props.openModal} />
+						return <ManageDiseases {...props} openModal={this.props.openModal} />
 					}}/>
 					<Route exact path="/admin/appointments" render={(props) => {
 						return <ManageAgenda {...props} openModal={this.props.openModal} />

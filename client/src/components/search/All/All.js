@@ -23,7 +23,7 @@ export default class SavedAdvices extends React.Component {
 						let blocks = [];
 						for(let i = 0; i < res.message.length; i++){
 							if(res.message[i].symptoms){
-								blocks.push (<DiseaseBlock key={i} picture="schimmel3" title={res.message[i].name} info={res.message[i].description} symptoms={res.message[i].symptoms} treatment={res.message[i].treatment}/>);
+								blocks.push (<DiseaseBlock key={i} picture={res.message[i].imageUrl} title={res.message[i].name} info={res.message[i].description} symptoms={res.message[i].symptoms} treatment={res.message[i].treatment}/>);
 							}else{
 								blocks.push (<FishesBlock key={i} picture={res.message[i].imageUrl} title={res.message[i].name} info={res.message[i].info} additional={res.message[i].additional}/>);
 							}

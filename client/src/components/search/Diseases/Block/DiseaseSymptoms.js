@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Col} from 'reactstrap';
 
-export default class AdvicePicture extends Component {
+export default class DiseasePicture extends Component {
 
 	componentDidMount(){
 		if(this.props.symptoms){

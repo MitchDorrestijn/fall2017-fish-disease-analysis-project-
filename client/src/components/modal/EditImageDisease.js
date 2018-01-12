@@ -13,7 +13,7 @@ import {
 } from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
 
-export default class EditImageAddFish extends React.Component {
+export default class EditImageDisease extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -22,7 +22,7 @@ export default class EditImageAddFish extends React.Component {
 	}
 	addFishImage = (e) => {
 		e.preventDefault();
-		const inputElement = document.getElementById('fishImage');
+		const inputElement = document.getElementById('diseaseImage');
 
 		if((/\.(gif|jpg|jpeg|tiff|png)$/i).test(inputElement.value)){
 			const file = inputElement.files[0];
@@ -31,7 +31,7 @@ export default class EditImageAddFish extends React.Component {
 			firebase.auth ().currentUser.getIdToken ().then ((result) => {
 				const token = result;
 				let da = new DataAccess();
-				fetch(`${da.getApi()}/species/${this.props.customProps.entry.id}/upload`, {
+				fetch(`${da.getApi()}/diseases/${this.props.customProps.entry.id}/upload`, {
 		   			method: 'POST',
 		   			headers: {
 				 			'Authorization': 'Token ' + token
@@ -42,7 +42,7 @@ export default class EditImageAddFish extends React.Component {
 					this.props.customProps.refreshPage();
 					this.props.toggleModal();
 				}).catch ((error) => {
-						this.setState({error: "An error occurred"});
+						this.setState({error: "An error occurred " + error});
 				});
 			});
 		} else {
@@ -52,13 +52,13 @@ export default class EditImageAddFish extends React.Component {
 	render() {
 		return (
 			<div>
-				<ModalHeader toggle={() => this.props.toggleModal()}>Change/add fish image</ModalHeader>
+				<ModalHeader toggle={() => this.props.toggleModal()}>Change/add disease image</ModalHeader>
 				<ModalBody>
 					<p className="error">{this.state.error}</p>
 					<Form onSubmit={this.addFishImage}>
 						<FormGroup>
-							<Label for="fishImage">Image</Label>
-							<Input id="fishImage" type="file" name="fishImage" />
+							<Label for="diseaseImage">Image</Label>
+							<Input id="diseaseImage" type="file" name="diseaseImage" />
 							<FormText color="muted">Images can be uploaded in .jpg and .png.</FormText>
 						</FormGroup>
 						<Button>Submit</Button>
