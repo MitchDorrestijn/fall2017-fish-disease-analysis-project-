@@ -503,6 +503,8 @@ De afspraken die je op deze pagina kan beheren worden gebruikt in de volgende on
 * De request consult sectie voor de gebruikers in hun dashboard.
 * Chat functionaliteiten.
 
+Er zijn drie verschillende koppen op deze pagina te vinden. De knop met het kruisje zorgt voor het verwijderen van een appointment, wanneer dit gebeurd word de ingeschreven gebruiker hiervan op de hoogte gesteld. De knop met de tekst "Chat room" geeft de consultant toegang tot de chat room van dat specifieke appointment. Nadat een de "status" veranderd naar closed, wat gebeurd als de consultant de chat room aflsuit, veranderd de knop "Chat room" naar een knop "Chatlog". Met deze knop kan je de chatlog van dit appointment inzien. Afbeeldingen en andere files die gedeeld zijn worden niet weergegeven.
+
 Appointments worden gemaakt door de normale geregistreerde gebruiker, door een open tijdslot te bezetten. Dit is de reden waarom de consultant geen appointments hoeft toe te voegen.
 ### foto
 
