@@ -1,20 +1,12 @@
-const fs = require("fs");
-const path = require("path");
-const NodeXLSXFileParser = require("./NodeXLSXFileParser");
-const DiseaseSymptomContainer = require("./DiseaseSymptomContainer");
-const QuestionContainer = require("./QuestionContainer");
-const Analysis = require("./Analysis");
-console.log("Parsing config...");
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json")));
-console.log ("Parsing Excel sheets...");
-const diseaseSymptomContainer = new DiseaseSymptomContainer(new NodeXLSXFileParser(config.diseasesAndSymptoms), config.diseasesAndSymptoms);
-const questionContainer = new QuestionContainer(
-	new NodeXLSXFileParser(config.questions.questionAnswersAndSymptoms),
-	new NodeXLSXFileParser(config.questions.questionsAndFollowUpQuestions),
-	config.questions
-);
-console.log ("Done");
+/*
+ * Analyse black magic
+ * - Sjoerd Scheffer
+ *
+ * Alle paths zijn relatief aan de excelParser directory (dus eentje hoger dan deze directory).
+ * Dit geldt ook voor de bestandsnamen in de config file.
+ */
 
+const analysisFactory = require("./AnalysisFactory");
 const voorbeeldAntwoord = [
 	{
 		question: "Select pictures that matches the symptoms on your fish (multiple possible)",
@@ -25,6 +17,8 @@ const voorbeeldAntwoord = [
 		answers: ["Cotton growth"]
 	}
 ];
-const analysis = new Analysis(questionContainer, diseaseSymptomContainer);
+
+const analysis = analysisFactory.getAnalysis("config.json");
+
 console.log(analysis.getResults(voorbeeldAntwoord));
 console.log(analysis.getNextQuestions(voorbeeldAntwoord)[0]);
