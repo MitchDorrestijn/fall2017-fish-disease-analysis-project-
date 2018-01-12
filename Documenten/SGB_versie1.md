@@ -378,7 +378,10 @@ Een STUN server stelt NAT-clients (computers achter een firewall) in staat om te
 (Bron: https://www.3cx.nl/voip-sip/stun-server/)
 
 #### 9.5 Sidenotes
-Google Firebase is verantwoordelijk voor het updaten en onderhouden van de servers. Dhr. Bassleer is verantwoordelijk voor het maken van back-ups, de resources zijn staan ook op naam van Dhr. Bassleer.
+Op het moment worden er geen back-ups gemaakt van de data op firebase, dit kan dhr. Bassleer of dhr. Burgers zelf regelen door de volgende link te volgen:
+https://firebase.google.com/docs/database/backups
+
+De aangeleverde foto's/video's in de database zijn gemaakt en van dhr. Bassleer, hij wilt niet dat deze voor gebruikt voor persoonlijke doeleinden.
 
 ----
 
