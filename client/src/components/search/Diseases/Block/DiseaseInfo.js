@@ -7,7 +7,7 @@ export default class AdviceInfo extends Component {
 			<Col lg="7" xs="12" className="no-gutter">
 				<div className="info">
 					<p>
-						<strong>{this.props.title}</strong><br/>
+						<img className="searchResultIcon" src="/images/search/plus-icon.png" alt="icon"/> <strong>{this.props.title}</strong><br/>
 						{this.props.info}
 					</p>
 				</div>

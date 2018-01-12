@@ -13,7 +13,7 @@ export default class Diseases extends React.Component {
 	
 	componentDidMount = () => {
 		if(this.props.searchTerm !== ""){
-			let da = new DataAccess ();
+			let da = new DataAccess (true);
 			da.getData(`/diseases/search?term=` + this.props.searchTerm, (err, res) => {
 				if (!err) {
 					if(res.message.length > 0){

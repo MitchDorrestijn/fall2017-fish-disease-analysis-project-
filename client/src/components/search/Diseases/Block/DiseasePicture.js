@@ -7,8 +7,7 @@ export default class AdvicePicture extends Component {
 			<Col lg="3" xs="12" className="no-gutter">
 				<div className="image-container">
 					<div className="image">
-						{ /* Dit zal waarschijnlijk een ander pad worden */ }
-						<img src={`/images/myAquarium/savedAdvices/${this.props.src}.jpg`} alt="icon"/><br/>
+						<img className="resultPicture" src={`/images/myAquarium/savedAdvices/${this.props.src}.jpg`} alt="icon"/><br/>
 					</div>
 				</div>
 			</Col>
