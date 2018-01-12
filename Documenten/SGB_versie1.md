@@ -13,7 +13,7 @@ DWA project 2017
 ## Inhoud
 
 1. **Context**
-  * *1.1 Gerald Bassleer*
+  * *1.1 Gerald Bassleer.*
 2. **Functional Overview**
   * *2.1 Zoeken van informatie over visziektes,*
   * *2.2 Analyse tool voor gebruikers met zieke vis(sen),*
@@ -30,10 +30,15 @@ DWA project 2017
   * *4.5 Opleveren.*
 5. **Principles**
   * *5.1 Code principles,*
-  * *5.2 Groeps principles.*
+  * *5.2 Groeps principles*
 6. **Software Architecture**
-  * *6.1 Overzicht,*
-  * *6.2 Web Applicatie.*
+  * *6.1 System model,*
+  * *6.2 Container model,*
+  * *6.3 Component main model,*
+  * *6.4 Component myaquarium model,*
+  * *6.5 Component admin model,*
+  * *6.6 Component chat model,*
+  * *6.7 Component express model.*
 7. **External Interfaces**
 8. **Code**
 9. **Infrastructure Architecture**
@@ -230,23 +235,33 @@ https://google.github.io/styleguide/jsguide.html
 ## 6. Software architectuur
 Dit hoofdstuk laat een overzicht zien van onze software architectuur.
 
-#### 6.1 Overzicht
-Hieronder staat een overzicht van de componenten waaruit ons product is opgebouwd en welke technieken daarbij gebruikt worden. De componenten worden daaronder kort beschreven.
+#### 6.1 System model.
+In het onderstaande model word een overzicht gegeven van de aplicatie en de relatie hiermee met gebruikers en andere softwarepacketten.
+![SA_system_model](images/SA_System.png)
 
-![Diagram](images/software-architecture-1.png)
+#### 6.2 Container model.
+Hieronder staat het container model. Dit model geeft weer wat er werkend moet zijn om ervoor te zorgen dat de aplicatie werkt. 
+![SA_container_model](images/SA_Container.png)
 
-* **Web applicatie:** Een React applicatie waar elke bezoeker terecht komt.
-* **Admin applicatie:** Een deel van de React applicatie waar de adminstrator de content voor de applicatie kan beheren, en geplande consults kan beheren en starten.
-* **Chat:** Een deel van de WebApplicatie die d.m.v. WebRTC een realtime peer to peer verbinding tussen een consultant en een geregistreerde gebruiker opzet. Hier kan gebruik worden gemaakt van videochat, tekstchat en het versturen van foto's.
-* **Tekst chat log:** Een Firebase realtime database waar de tekst wordt gelogd.
-* **Content Management REST API:** Een Express applicatie waar (met uitzondering van chat) al het dataverkeer afgehandeld wordt.
-* **Database:** Firestore database waar alle gebruikersinformatie en applicatiecontent wordt bewaard en opgehaald.
-* **Bestandssysteem:** Firebase Cloud Storage waar alle afbeeldingen worden opgeslagen.
+#### 6.3 Component main model.
+Het onderstaande component model geeft de functionaliteiten weer, soms worden deze functionaliteiten verder verdeelt in een los component diagram. Dit is het geval bij de components met een gekleurde rand eromheen. Het component model met dezelfde kleur schema zal de opdeling van dit component beter weergeven.
+![SA_main_model](images/SA_Comp_Main.png)
 
-#### 6.2 Web Applicatie
-Hieronder staat een sitemap van de Web Applicatie, inclusief het administratieve gedeelte.
+#### 6.4 Component myaquarium model.
+Een uitbereidingde weergave van de "MyAquarium" component in het "Component main model".
+![SA_myaquarium_model](images/SA_Comp_Aqua.png)
 
-![Diagram](images/software-architecture-2.png)
+#### 6.5 Component admin model.
+Een uitbereidingde weergave van de "Admin" component in het "Component main model".
+![SA_admin_model](images/SA_Comp_Admin.png)
+
+#### 6.6 Component chat model.
+Een uitbereidingde weergave van de "Chat" component in het "Component main model".
+![SA_chat_model](images/SA_Comp_Chat.png)
+
+#### 6.7 Component express model.
+Een uitbereidingde weergave van de "Express" component in het "Component main model".
+![SA_express_model](images/SA_Comp_Express.png)
 
 ----
 
