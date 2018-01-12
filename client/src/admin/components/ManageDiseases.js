@@ -7,9 +7,10 @@ import DataAccess from '../../scripts/DataAccess';
 import ActionButton from '../../components/base/ActionButton';
 import RemoveDisease from '../../components/modal/RemoveDisease';
 import EditDisease from '../../components/modal/EditDisease';
+import EditImageDisease from '../../components/modal/EditImageDisease';
 
 
-export default class ManageDesises extends React.Component {
+export default class ManageDeseases extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -45,6 +46,12 @@ export default class ManageDesises extends React.Component {
 			entry: entry
 		});
 	};
+	editImage = (entry) => {
+		this.props.openModal(EditImageDisease, {
+			refreshPage: this.loadCurrentDiseases,
+			entry: entry
+		});
+	}
 	getData = (results) => {
 		let data = [];
 		for(var key in results) {
@@ -56,8 +63,15 @@ export default class ManageDesises extends React.Component {
 					});
 				}
 				let element = results[key];
+				let image;
+				if(element.imageUrl) {
+					image = <img className="img-fluid" src={element.imageUrl} alt={element.imageUrl} />;
+				} else {
+					image = <span>No image uploaded yet</span>
+				}
 				data.push(
 					<Tr key={parseInt(key,10)}>
+						<Td>{image}</Td>
 						<Td>{element.name}</Td>
 						<Td><ul>{symptoms}</ul></Td>
 						<Td>{element.description}</Td>
@@ -75,6 +89,13 @@ export default class ManageDesises extends React.Component {
 									buttonText={<span className="fa fa-edit"/>}
 									color="primary"
 									onClickAction={() => this.editDisease(element)}
+								/>
+							</ButtonGroup>
+							<ButtonGroup>
+								<ActionButton
+									buttonText={<span className="fa fa-image"/>}
+									color="primary"
+									onClickAction={() => this.editImage(element)}
 								/>
 							</ButtonGroup>
 						</Td>
@@ -109,13 +130,13 @@ export default class ManageDesises extends React.Component {
 		this.setState({searchTerm: e.target.value});
 	}
 	render(){
-  	return (
+		return (
 			<div>
 				<h2>Add / edit / remove fish diseases</h2>
 				<Form inline className="searchForm" onSubmit={this.getSearchTerm}>
-        	<FormGroup>
-          	<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
-        	</FormGroup>
+					<FormGroup>
+						<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
+					</FormGroup>
 					<Button className="btn-admin">Search now</Button>
 					&nbsp; {this.state.userHasSearched && <Button className="btn-admin" onClick={this.loadCurrentDiseases}><i className="fa fa-arrow-circle-left"></i> Go back</Button>}
 				</Form>
@@ -123,21 +144,22 @@ export default class ManageDesises extends React.Component {
 					{this.state.error}
 				</div>
 				<Table className="table">
-				  <Thead>
-				  	<Tr>
-	            <Th>Name</Th>
-	            <Th>Symptoms</Th>
+					<Thead>
+						<Tr>
+							<Th>Picture</Th>
+							<Th>Name</Th>
+							<Th>Symptoms</Th>
 							<Th>Description</Th>
 							<Th>Treatment</Th>
 							<Th>Edit</Th>
-		        </Tr>
-			    </Thead>
+						</Tr>
+					</Thead>
 				    <Tbody>
-							{this.state.data}
+						{this.state.data}
 				    </Tbody>
 				</Table>
 				<Button onClick={() => this.props.openModal(addFishDesiseAdmin, {refreshPage: this.loadCurrentDiseases})} className="btn-admin">Add fish diseases</Button>
 			</div>
-  	);
+		);
 	}
 };
