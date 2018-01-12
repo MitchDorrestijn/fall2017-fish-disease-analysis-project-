@@ -248,19 +248,19 @@ Het onderstaande component model geeft de functionaliteiten weer, soms worden de
 ![SA_main_model](images/SA_Comp_Main.png)
 
 #### 6.4 Component myaquarium model.
-Een uitbereidingde weergave van de "MyAquarium" component in het "Component main model".
+Een uitbreidende weergave van de "MyAquarium" component in het "Component main model".
 ![SA_myaquarium_model](images/SA_Comp_Aqua.png)
 
 #### 6.5 Component admin model.
-Een uitbereidingde weergave van de "Admin" component in het "Component main model".
+Een uitbreidende weergave van de "Admin" component in het "Component main model".
 ![SA_admin_model](images/SA_Comp_Admin.png)
 
 #### 6.6 Component chat model.
-Een uitbereidingde weergave van de "Chat" component in het "Component main model".
+Een uitbreidende weergave van de "Chat" component in het "Component main model".
 ![SA_chat_model](images/SA_Comp_Chat.png)
 
 #### 6.7 Component express model.
-Een uitbereidingde weergave van de "Express" component in het "Component main model".
+Een uitbreidende weergave van de "Express" component in het "Component main model".
 ![SA_express_model](images/SA_Comp_Express.png)
 
 ----
