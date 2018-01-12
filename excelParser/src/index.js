@@ -10,11 +10,11 @@ const analysisFactory = require("./AnalysisFactory");
 const voorbeeldAntwoord = [
 	{
 		question: "Select pictures that matches the symptoms on your fish (multiple possible)",
-		answers: ["White grub disease (encapsulated worm larvae, NO ICH)"]
+		answers: ["Oodinium/Velvet disease"]
 	},
 	{
-		question: 1,
-		answers: ["Cotton growth"]
+		question: 15,
+		answers: ["Fungus (mostly Saprolegnia)"]
 	}
 ];
 

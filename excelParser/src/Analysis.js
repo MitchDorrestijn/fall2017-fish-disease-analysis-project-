@@ -4,14 +4,21 @@ module.exports = class Analysis {
 		this.diseaseSymptomContainer = diseaseSymptomContainer;
 	}
 
-	static _removeArrayDoubles(array) {
+	static _removeArrayDoubles(array, property) {
 		let result = array;
 
 		for (let i = 0; i < result.length; i++) {
 			for (let j = i+1; j < result.length; j++) {
-				if (result[i] === result[j]) {
-					result.splice(j, 1);
-					j--;
+				if (property) {
+					if (result[i][property] === result[j][property]) {
+						result.splice(j, 1);
+						j--;
+					}
+				} else {
+					if (result[i] === result[j]) {
+						result.splice(j, 1);
+						j--;
+					}
 				}
 			}
 		}
@@ -62,14 +69,22 @@ module.exports = class Analysis {
 
 		// Zet om naar standaard JavaScript object, gesorteerd op score (aflopend)
 		return result.map(elem => {
-			return {
-				disease: elem.getDisease().getName(),
-				score: elem.getScore()
-			};
+			if (elem.getDisease().getCode()) {
+				return {
+					disease: elem.getDisease().getName(),
+					diseaseCode: elem.getDisease().getCode(),
+					score: elem.getScore()
+				};
+			} else {
+				return {
+					disease: elem.getDisease().getName(),
+					score: elem.getScore()
+				};
+			}
 		}).sort((a, b) => a.score > b.score ? -1 : 1);
 	}
 
-	static _addDirectDiseases (answers, diseaseSymptoms, questionContainer) {
+	static _addDirectDiseases (answers, diseaseSymptoms, questionContainer, diseaseSymptomContainer) {
 		let directDiseases = [];
 		let result = diseaseSymptoms;
 
@@ -77,15 +92,30 @@ module.exports = class Analysis {
 			for (const questionAnswer of questionContainer.getQuestionByName(answer.question).getAnswers()) {
 				if (questionAnswer.getDirectDiseases().length > 0) {
 					directDiseases.push(questionAnswer.getDirectDiseases().map(elem => {
-						return {
-							disease: elem.getName()
-						};
+						const diseaseCode = diseaseSymptomContainer
+							.getByDiseaseName(elem.getName())[0]
+							.getDisease()
+							.getCode();
+						if (diseaseCode) {
+							return {
+								disease: elem.getName(),
+								diseaseCode: diseaseCode
+							};
+						} else {
+							return {
+								disease: elem.getName()
+							};
+						}
 					})[0]);
 				}
 			}
 		}
 
-		directDiseases = directDiseases.sort((a, b) => a.disease > b.disease ? -1 : 1);
+		directDiseases = Analysis._removeArrayDoubles(
+			directDiseases.sort((a, b) => a.disease > b.disease ? -1 : 1),
+			"disease"
+		);
+
 		for (const elem of directDiseases) {
 			result.unshift(elem);
 		}
@@ -132,8 +162,9 @@ module.exports = class Analysis {
 				),
 				this.diseaseSymptomContainer
 			),
-			this.questionContainer
-		)
+			this.questionContainer,
+			this.diseaseSymptomContainer
+		);
 	}
 
 	getResultsAsPercentage(answers) {

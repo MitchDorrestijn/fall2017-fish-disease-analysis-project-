@@ -69,7 +69,7 @@ module.exports = class QuestionContainer {
 									// Als het antwoord overeenkomt met het antwoord in deze sheet
 									for (let m = 0; m < questions.length; m++) {
 										// Push de vraag uit de hoofdvragen naar de followUpQuestions
-										if (questions[m].name === fileParser.getField(j, followUpQuestionsRow)) {
+										if (questions[m].getName() === fileParser.getField(j, followUpQuestionsRow)) {
 											questions[k].getAnswers()[l].addFollowUpQuestion(questions[m]);
 										}
 									}
