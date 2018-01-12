@@ -18,7 +18,7 @@ console.log ("Done");
 const voorbeeldAntwoord = [
 	{
 		question: "Select pictures that matches the symptoms on your fish (multiple possible)",
-		answers: ["Black spot disease (mostly encapsulated worm larvae)"]
+		answers: ["White grub disease (encapsulated worm larvae, NO ICH)"]
 	},
 	{
 		question: 1,
@@ -26,11 +26,5 @@ const voorbeeldAntwoord = [
 	}
 ];
 const analysis = new Analysis(questionContainer, diseaseSymptomContainer);
-//console.log(analysis.getFirstQuestions());
 console.log(analysis.getResults(voorbeeldAntwoord));
-//console.log(analysis.getResultsAsPercentage(voorbeeldAntwoord));
-
-//diseaseSymptomContainer.getAll(1).forEach(elem => console.log(elem));
-//questionContainer.getAll().forEach(elem => console.log(elem));
-//console.log (JSON.stringify(analysis.getFirstQuestions()));
-//questionContainer.getFirstRoundQuestions().forEach(elem => console.log(elem));
+console.log(analysis.getNextQuestions(voorbeeldAntwoord)[0]);

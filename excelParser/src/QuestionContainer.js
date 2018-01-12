@@ -202,4 +202,24 @@ module.exports = class QuestionContainer {
 			}
 		}
 	}
+
+	getFollowUpQuestionsByName(question, answers) {
+		let result = [];
+
+		for (const storedQuestion of this.getAll()) {
+			if (storedQuestion.getName() === question) {
+				for (const answer of storedQuestion.getAnswers()) {
+					for (const givenAnswer of answers) {
+						if (answer.getName() === givenAnswer) {
+							for (const followUpQuestion of answer.getFollowUpQuestions()) {
+								result.push (followUpQuestion);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return result;
+	}
 };

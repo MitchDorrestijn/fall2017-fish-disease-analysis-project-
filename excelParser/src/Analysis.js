@@ -4,6 +4,21 @@ module.exports = class Analysis {
 		this.diseaseSymptomContainer = diseaseSymptomContainer;
 	}
 
+	static _removeArrayDoubles(array) {
+		let result = array;
+
+		for (let i = 0; i < result.length; i++) {
+			for (let j = i+1; j < result.length; j++) {
+				if (result[i] === result[j]) {
+					result.splice(j, 1);
+					j--;
+				}
+			}
+		}
+
+		return result;
+	}
+
 	static _convertAnswersToDiseaseSymptoms(answers, questionContainer) {
 		// Zet de gegeven antwoorden om in bijbehorende symptomen
 		let result = [];
@@ -54,6 +69,44 @@ module.exports = class Analysis {
 		}).sort((a, b) => a.score > b.score ? -1 : 1);
 	}
 
+	static _addDirectDiseases (answers, diseaseSymptoms, questionContainer) {
+		let directDiseases = [];
+		let result = diseaseSymptoms;
+
+		for (const answer of answers) {
+			for (const questionAnswer of questionContainer.getQuestionByName(answer.question).getAnswers()) {
+				if (questionAnswer.getDirectDiseases().length > 0) {
+					directDiseases.push(questionAnswer.getDirectDiseases().map(elem => {
+						return {
+							disease: elem.getName()
+						};
+					})[0]);
+				}
+			}
+		}
+
+		directDiseases = directDiseases.sort((a, b) => a.disease > b.disease ? -1 : 1);
+		for (const elem of directDiseases) {
+			result.unshift(elem);
+		}
+
+		for (let i = 0; i < result.length; i++) {
+			if (!result[i].hasOwnProperty("score")) {
+				for (let j = i+1; j < result.length; j++) {
+					if (
+						result[j].disease === result[i].disease &&
+						result[j].hasOwnProperty("score")
+					) {
+						result.splice (j, 1);
+						j--;
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
 	getFirstQuestions() {
 		return this.questionContainer.getAll().map (elem => {
 			return {
@@ -70,42 +123,17 @@ module.exports = class Analysis {
 	}
 
 	getResults(answers) {
-		let symptoms = Analysis._convertAnswersToDiseaseSymptoms(answers, this.questionContainer);
-		let diseaseSymptoms = Analysis._convertDiseaseSymptomsToDiseaseScores(symptoms, this.diseaseSymptomContainer);
-		let directDiseases = [];
-
-		for (const answer of answers) {
-			for (const questionAnswer of this.questionContainer.getQuestionByName(answer.question).getAnswers()) {
-				if (questionAnswer.getDirectDiseases().length > 0) {
-					directDiseases.push(questionAnswer.getDirectDiseases().map(elem => {
-						return {
-							disease: elem.getName()
-						};
-					})[0]);
-				}
-			}
-		}
-
-		directDiseases = directDiseases.sort((a, b) => a.disease > b.disease ? -1 : 1);
-		for (const elem of directDiseases) {
-			diseaseSymptoms.unshift(elem);
-		}
-
-		for (let i = 0; i < diseaseSymptoms.length; i++) {
-			if (!diseaseSymptoms[i].hasOwnProperty("score")) {
-				for (let j = i+1; j < diseaseSymptoms.length; j++) {
-					if (
-						diseaseSymptoms[j].disease === diseaseSymptoms[i].disease &&
-						diseaseSymptoms[j].hasOwnProperty("score")
-					) {
-						diseaseSymptoms.splice (j, 1);
-						j--;
-					}
-				}
-			}
-		}
-
-		return diseaseSymptoms;
+		return Analysis._addDirectDiseases(
+			answers,
+			Analysis._convertDiseaseSymptomsToDiseaseScores(
+				Analysis._convertAnswersToDiseaseSymptoms(
+					answers,
+					this.questionContainer
+				),
+				this.diseaseSymptomContainer
+			),
+			this.questionContainer
+		)
 	}
 
 	getResultsAsPercentage(answers) {
@@ -127,5 +155,26 @@ module.exports = class Analysis {
 	}
 
 	getNextQuestions(answers) {
+		let result = [];
+
+		for (const answer of answers) {
+			const followUpQuestions = this.questionContainer.getFollowUpQuestionsByName(answer.question, answer.answers).map(elem => {
+				return {
+					name: elem.getName(),
+					pictures: elem.getPictures(),
+					answers: elem.getAnswers().map(elem2 => {
+						return {
+							name: elem2.getName(),
+							pictures: elem2.getPictures()
+						}
+					})
+				}
+			});
+			for (const followUpQuestion of followUpQuestions) {
+				result.push(followUpQuestion);
+			}
+		}
+
+		return Analysis._removeArrayDoubles(result);
 	}
 };
