@@ -2,6 +2,7 @@ import React from 'react';
 import {Col, Input, Card, CardHeader, CardBody, CardFooter, Badge, CardTitle, CardText, FormGroup, Label, UncontrolledTooltip, CardSubtitle} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import * as firebase from 'firebase';
+import ShowChatLog from '../../modal/ShowChatLog';
 import DataAccess from '../../../scripts/DataAccess';
 
 export default class AccountSettings extends React.Component {
@@ -75,7 +76,6 @@ export default class AccountSettings extends React.Component {
 		let da = new DataAccess ();
 		da.postData('/appointments/', {appointment: dataObject}, (err, res) => {
 			if (!err) {
-				console.log('registered');
 				this.initSetters();
 			} else {
 				console.log(err);
@@ -83,16 +83,44 @@ export default class AccountSettings extends React.Component {
 		});
 	};
 	
-	downloadLog = (appointmentId) => {
+	showLog = (appointmentId) => {		
 		let da = new DataAccess ();
-		da.getData ('/appointments/' + appointmentId + "/chatLogs", (err, res) => {
-			if (!err) {
-				//Server side moet er een txt file worden gemaakt en een download link moet worden terug gestuurd
-				console.log(res.message);
-			} else {
+		da.getData ('/appointments/' + appointmentId, (err, res) => {
+			if(!err){
+				this.appointment = res.message;
+				da.getData ('/timeslots/' + this.appointment.timeslotId, (err, res) => {
+					if (!err) {
+						this.appointment.timeslot = res.message;
+						let parsedDate = this.parseAppointmentDate(this.appointment.timeslot);
+						
+						this.props.openModal(ShowChatLog, {chatLog: this.appointment.chatLog, timeSlot: parsedDate});
+					}else{
+						console.log(err.message);
+					}
+				});
+			}else{
 				console.log(err.message);
 			}
 		});
+	}
+	
+	parseAppointmentDate = (timeslot) => {
+		return this.parseDate(timeslot.startDate) + " from " + this.parseTime(timeslot.startDate) + " till " + this.parseTime(timeslot.endDate);
+	}
+	
+	parseDate = (date) => {
+		let parsedDate = new Date (date);
+		return parsedDate.toDateString();
+	}
+
+	parseTime = (date) => {
+		let parsedDate = new Date (date);
+		let hours = parsedDate.getHours();
+		let minutes = parsedDate.getMinutes();
+		if (minutes < 10) {
+			minutes = "0" + minutes;
+		}
+		return `${hours}:${minutes}`;
 	}
 	
 	//option filler for the selector
@@ -114,7 +142,7 @@ export default class AccountSettings extends React.Component {
 		let cards = [];
 		for (let key in this.state.appointments) {
 			if (cards.length === 0) {
-				cards.push(<Col key='header'><h1 className='center'>Current registered consults.</h1></Col>)
+				cards.push(<Col key='header'><h1 className='center'>Current requested consults</h1></Col>)
 			};
 			if (this.state.appointments.hasOwnProperty(key)) {
 				let cardHeaderContent;
@@ -124,7 +152,7 @@ export default class AccountSettings extends React.Component {
 					cardFooterContent = (<ActionButton buttonText='Go to chat room' linkTo={"/chat/" + this.state.appointments[key].id} color='primary btn-transperant'/>)
 				}else{
 					cardHeaderContent = (<Badge color="danger">Closed</Badge>);
-					cardFooterContent = (<ActionButton buttonText='Download chatlog' onClickAction={() => this.downloadLog(this.state.appointments[key].id)} color='primary btn-transperant'/>)
+					cardFooterContent = (<ActionButton buttonText='Download chatlog' onClickAction={() => this.showLog(this.state.appointments[key].id)} color='primary btn-transperant'/>)
 				}
 				
 				cards.push(
@@ -161,7 +189,7 @@ export default class AccountSettings extends React.Component {
 						<div className='col-md-12 no-gutter'>
 							{this.drawConsultsCards()}
 							<Col>
-								<h1 className='center'>Register new consult.</h1>
+								<h1 className='center'>Request new consult</h1>
 							</Col>
 							<Col>
 								<Card>
