@@ -16,6 +16,7 @@ const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const validateModel = require('../middleware/validateModel.js');
 const validate = require('../middleware/validate.js');
+const isAdmin = require('../middleware/isAdmin.js');
 
 const multer  = require('multer');
 const upload = multer();
@@ -74,7 +75,7 @@ router.post('/' + model.endpoint, isAuthenticated, validate(model.name, model.sc
 
 router.post('/' + model.endpoint + '/:id/upload', isAdmin, upload.single('image'), (req, res) => {
     if(req.file){
-        return uploadViaMulter(req.file, req.params.id).then(() => {
+        return uploadViaMulter(req, req.params.id).then(() => {
             res.send('success');
         });
     } else if (req.rawBody) {
@@ -133,7 +134,7 @@ const uploadViaBusboy = (image, req) => {
         });
 
         busboy.on('finish', () => {
-            resolve('success');
+            //resolve('success');
         })
 
         // The raw bytes of the upload will be in req.rawBody.  Send it to busboy, and get
@@ -142,21 +143,21 @@ const uploadViaBusboy = (image, req) => {
     });
 }
 
-const uploadViaMulter = (image, id) => {
+const uploadViaMulter = (req, id) => {
     return new Promise((resolve, reject) => {
-        let gcsname = 'species/' + req.params.id + '/' + Date.now() + image.originalname;
+        let gcsname = 'species/' + req.params.id + '/' + Date.now() + req.file.originalname;
         const file = bucket.file(gcsname);
 
         let url = "";
 
         const stream = file.createWriteStream({
             metadata: {
-                contentType: image.mimetype
+                contentType: req.file.mimetype
             }
         });
 
         stream.on('error', (err) => {
-            res.sendStatus(500);
+            reject(err.message);
         });
 
         stream.on('finish', () => {
@@ -175,14 +176,14 @@ const uploadViaMulter = (image, id) => {
                 }, { merge: true })
             })
             .then(() => {
-                res.status(200).send(url);
+                return resolve(url);
             })
             .catch((err) => {
-                res.status(500).send(err.message);
+                return reject(err.message);
             })
         });
 
-        stream.end(image.buffer);
+        stream.end(req.file.buffer);
     });
 }
 

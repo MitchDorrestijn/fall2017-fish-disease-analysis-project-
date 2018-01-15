@@ -5,6 +5,8 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
+const AnalysisFactory = require('../../../excelParser/src/AnalysisFactory');
+
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const validate = require('../middleware/validate.js');
@@ -14,6 +16,18 @@ const bucket = admin.storage().bucket();
 
 let symptomenEnZiektesPath = path.join(os.tmpdir(), 'symptomenEnZiektes.xlsx');
 let kruisjes_path;
+let analysis;
+
+const voorbeeldAntwoord = [
+	{
+		question: "Select pictures that matches the symptoms on your fish (multiple possible)",
+		answers: ["White grub disease (encapsulated worm larvae, NO ICH)"]
+	},
+	{
+		question: 1,
+		answers: ["Cotton growth"]
+	}
+];
 
 const getExcelFileLocalPath = (fileName) => {
     return path.join(os.tmpdir(), fileName + '.xlsx');
@@ -38,13 +52,39 @@ const getExcelFile = (fileName, force) => {
     })
 }
 
-router.get('/question/excel/:fname', (req, res) => {
-    getsymptomenEnZiektesContent(req.params.fname, req.query.force).then((contents) => {
-        res.send(contents);
-    })
-    .catch((err) => {
-        res.status(500).send(err.message);
-    })
+const p1 = getExcelFile('symptomenEnZiektes');
+const p2 = getExcelFile('Vraagziektekruisjes');
+
+// First download files, then call the shit.
+Promise.all([p1, p2]).then(() => {
+    let config = AnalysisFactory._parseConfig('config.json');
+    config.diseasesAndSymptoms.file = getExcelFileLocalPath('symptomenEnZiektes');
+    config.questions.questionsAndFollowUpQuestions.file = getExcelFileLocalPath('Vraagziektekruisjes');
+    config.questions.questionAnswersAndSymptoms.file = getExcelFileLocalPath('Vraagziektekruisjes');
+    analysis = AnalysisFactory.getAnalysisWithCustomConfig(config);
+
+    console.log(analysis.getResults(voorbeeldAntwoord));
+    console.log(analysis.getNextQuestions(voorbeeldAntwoord)[0]);
+}).catch((err) => {
+    console.log(err);
 })
+
+router.get('/questions/shallow', (req, res) => {
+    res.send(analysis.getFirstQuestions());
+});
+
+router.post('/questions/deep', (req, res) => {
+    if(!req.body.answers){
+        return res.status(400).send('Please send answers');
+    }
+    res.send(analysis.getNextQuestions(req.body.answers));
+});
+
+router.post('/questions/results', (req, res) => {
+    if(!req.body.answers){
+        return res.status(400).send('Please send answers');
+    }
+    res.send(analysis.getResults(req.body.answers));
+});
 
 module.exports = router;
