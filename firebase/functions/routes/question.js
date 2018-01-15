@@ -5,7 +5,7 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const AnalysisFactory = require('../../../excelParser/src/AnalysisFactory');
+const AnalysisFactory = require('../excelParser/src/AnalysisFactory');
 
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
@@ -63,8 +63,8 @@ Promise.all([p1, p2]).then(() => {
     config.questions.questionAnswersAndSymptoms.file = getExcelFileLocalPath('Vraagziektekruisjes');
     analysis = AnalysisFactory.getAnalysisWithCustomConfig(config);
 
-    console.log(analysis.getResults(voorbeeldAntwoord));
-    console.log(analysis.getNextQuestions(voorbeeldAntwoord)[0]);
+    //console.log(analysis.getResults(voorbeeldAntwoord));
+    //console.log(analysis.getNextQuestions(voorbeeldAntwoord)[0]);
 }).catch((err) => {
     console.log(err);
 })
