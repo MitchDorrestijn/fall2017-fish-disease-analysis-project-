@@ -7,8 +7,7 @@
 			"end": "totaal vergeven punten"
 		},
 		"diseases": {
-			"start": 1,
-			"end": 32
+			"start": 1
 		}
 	},
 	"questions": {
@@ -39,8 +38,7 @@
 			"symptomMarker": "x",
 			"diseaseMarker": "OK",
 			"questions": {
-				"start": 1,
-				"end": 29
+				"start": 1
 			},
 			"symptoms": {
 				"start": "Symptoms",

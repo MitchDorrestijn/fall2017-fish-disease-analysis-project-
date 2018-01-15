@@ -85,7 +85,7 @@ module.exports = class QuestionContainer {
 	}
 
 	static _fillQuestions(fileParser, config) {
-		const {start: questionsStart, end: questionsEnd} = config.questionAnswersAndSymptoms.questions;
+		const {start: questionsStart} = config.questionAnswersAndSymptoms.questions;
 		let {start: symptomsStart, end: symptomsEnd} = config.questionAnswersAndSymptoms.symptoms;
 		let {start: diseasesStart} = config.questionAnswersAndSymptoms.diseases;
 		const {
