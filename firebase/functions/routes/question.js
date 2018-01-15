@@ -41,7 +41,9 @@ const getExcelFile = (fileName, force) => {
     const localPath = getExcelFileLocalPath(fileName);
     if (fs.existsSync(localPath) && !force) {
         console.log('Getting file ' + fileName + ' from local file system.');
+				console.log(localPath);
         return Promise.resolve(fs.readFileSync(localPath));
+
     }
 
     console.log('File ' + fileName + ' not in memory, downloading it.');
@@ -62,7 +64,7 @@ Promise.all([p1, p2]).then(() => {
     config.questions.questionsAndFollowUpQuestions.file = getExcelFileLocalPath('Vraagziektekruisjes');
     config.questions.questionAnswersAndSymptoms.file = getExcelFileLocalPath('Vraagziektekruisjes');
     analysis = AnalysisFactory.getAnalysisWithCustomConfig(config);
-
+		console.log('hallo: ' +analysis);
     //console.log(analysis.getResults(voorbeeldAntwoord));
     //console.log(analysis.getNextQuestions(voorbeeldAntwoord)[0]);
 }).catch((err) => {

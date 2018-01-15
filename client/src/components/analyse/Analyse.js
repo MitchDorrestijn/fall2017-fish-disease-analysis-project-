@@ -2,6 +2,8 @@ import React from 'react';
 import ContentContainer from '../myAquarium/ContentContainer';
 import Checkbox from './Checkbox';
 import ActionButton from '../base/ActionButton';
+import { UncontrolledCarousel } from 'reactstrap';
+
 
 export default class Analyse extends React.Component {
 	constructor(props){
@@ -30,7 +32,6 @@ export default class Analyse extends React.Component {
 				{
 					name: "Dit is vraag 2",
 					pictures: [
-						"/images/fish/catfish.jpg",
 						"/images/fish/catfish.jpg",
 						"/images/fish/catfish.jpg"
 					],
@@ -80,7 +81,7 @@ export default class Analyse extends React.Component {
 		questions.push(
 			<div key={questionNumber}>
 				<h2 className='question'>{this.state.questions[questionNumber].name}</h2>
-				{pictures.length > 0 && <div className='question_pictures'><span>{pictures}</span></div>}
+				{pictures.length > 0 && <div className='question_pictures centerBlock'><span>{pictures}</span></div>}
 			</div>
 		);
 
@@ -107,17 +108,31 @@ export default class Analyse extends React.Component {
 
 			//Create <img> tags for every image
 			let answerPictures = object.pictures.map ((elem, i) => {
-				return <img key={i} src={elem}/>;
+				if(object.pictures.length > 1) {
+					return {
+						src: elem,
+						key: i,
+						altText: '',
+	 					caption: ''
+					}
+				} else {
+					return <img key={i} src={elem}/>;
+				}
 			});
 
 			//Prepare images and checkbox layout
 			answers.push(
-				<div>
-				<li>
-					<span className='checkbox_wrapper'>{object.name}<br /><Checkbox name='answer' value={object.name} disabled={false} value={object.name} /></span>
-					{answerPictures}
-				</li>
-			</div>
+				<div key={answers.length}>
+					<li>
+						<span className='checkbox_wrapper'>{object.name}<br /><Checkbox name='answer' value={object.name} disabled={false} value={object.name} /></span>
+						{answerPictures.length > 0  ?
+							<div>
+								{answerPictures.length > 1 ? <UncontrolledCarousel items={answerPictures} /> : answerPictures}
+							</div> :
+							null
+						}
+					</li>
+				</div>
 			);
 		}
 
