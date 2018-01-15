@@ -30,10 +30,10 @@ export default class VideoboxMobile extends React.Component {
 				<Button key={7} id="stopWebcam" onClick={() => this.props.stopWebcam()} className="btn-circle" color="danger"><i className="fa fa-phone fa-rotate-90"/></Button>
 			]
 		}else{
-			buttonsMobile.push(<Button key={8} id="startWebcam" onClick={() => this.props.startWebcam()} title="Start video call" className="btn-circle" color="success"><i className="fa fa-phone"/></Button>);
+			buttonsMobile.push(<Button key={8} id="startWebcam" onClick={() => this.props.startWebcam()} title="Start video call" className="btn-circle" color="success" disabled={!this.props.chatStatus}><i className="fa fa-phone"/></Button>);
 		}
 		if(this.props.adminPage){
-			buttonsMobile.push(<Button key={9} id="closeChat" onClick={() => this.props.closeChat()} title="Close chat" className="btn-circle" color="danger"><i className="fa fa-commenting-o"/></Button>);
+			buttonsMobile.push(<Button key={9} id="closeChat" onClick={() => this.props.closeChat()} title="Close chat" className="btn-circle" color="danger" disabled={!this.props.appointmentStatus}><i className="fa fa-commenting-o"/></Button>);
 		}
 		
 		return (
@@ -44,16 +44,11 @@ export default class VideoboxMobile extends React.Component {
 							<video className="otherCam" id="otherCam" autoPlay></video>
 							<video className="myCam" id="myCam" autoPlay muted></video>
 						</Row>
-						{
-							this.props.chatStatus ?
-							(
-								<Row className="no-gutter btns">
-									{
-										buttonsMobile
-									}
-								</Row>
-							):null
-						}
+						<Row className="no-gutter btns">
+							{
+								buttonsMobile
+							}
+						</Row>
 					</div>
 				</div>
 			</div>

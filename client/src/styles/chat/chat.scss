@@ -234,6 +234,9 @@
 				margin: 20px 5px 10px 5px;
 				height: 120px;
 				width: 160px;
+				transform: rotateY(180deg);
+				-webkit-transform:rotateY(180deg);
+				-moz-transform:rotateY(180deg);
 			}
 			.btns {
 				display: flex;
