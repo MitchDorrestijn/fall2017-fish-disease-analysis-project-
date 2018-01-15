@@ -30,6 +30,7 @@ const notificationRoutes = require('./routes/notification.js');
 const speciesRoutes = require('./routes/species.js');
 const appointmentRoutes = require('./routes/appointment.js');
 const timeSlotRoutes = require('./routes/timeslots.js');
+const questionRoutes = require('./routes/question.js');
 
 // Import middleware
 const authenticate = require('./middleware/authenticate.js');
@@ -53,10 +54,11 @@ app.use('/api', notificationRoutes);
 app.use('/api', speciesRoutes);
 app.use('/api', appointmentRoutes);
 app.use('/api', timeSlotRoutes);
+app.use('/api', questionRoutes);
 
 exports.app = functions.https.onRequest(app);
 
-app.get('/api/species-and-diseases/search', isAuthenticated, (req, res) => {
+app.get('/api/species-and-diseases/search', (req, res) => {
     const index = client.initIndex("species-and-diseases");
     const query = req.query.term;
 
@@ -202,12 +204,12 @@ const calculateEndDate = (event) => {
 	const startDate = new Date(timeslot.startDate);
 	const duration = timeslot.duration;
 	// Add an "end timestamp" field
-	const endDate = startDate.setMinutes(startDate.getMinutes() + duration);
+	const endDate = new Date(startDate.getTime() + duration * 60000);
 
 	if (endDate !== timeslot.endDate){
 		// Write timestamp to the timestamp
 		return event.data.ref.set({
-			endDate: new Date(endDate)
+			endDate: endDate
 		}, {merge: true});
 	}
 };

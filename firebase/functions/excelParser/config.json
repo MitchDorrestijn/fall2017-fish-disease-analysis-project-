@@ -1,0 +1,54 @@
+{
+	"diseasesAndSymptoms": {
+		"file": "/var/folders/5m/n_tbc2bx67g4v_m03dyqryhc0000gn/T/symptomenEnZiektes.xlsx",
+		"sheetNumber": 0,
+		"symptoms": {
+			"start": 3,
+			"end": "totaal vergeven punten"
+		},
+		"diseases": {
+			"start": 1,
+			"end": 32
+		}
+	},
+	"questions": {
+		"questionsAndFollowUpQuestions": {
+			"file": "/var/folders/5m/n_tbc2bx67g4v_m03dyqryhc0000gn/T/Vraagziektekruisjes.xlsx",
+			"sheetNumber": 0,
+			"answersColumn": 1,
+			"symptomMarker": "x",
+			"followUpQuestionsRow": "0",
+			"questions": {
+				"start": 2
+			},
+			"followUpQuestions": {
+				"start": 2
+			}
+		},
+		"sheetNumber": 0,
+		"start": 2,
+		"end": null,
+		"questionAnswersAndSymptoms": {
+			"file": "Vraagziektekruisjes.xlsx",
+			"sheetNumber": 1,
+			"questionsColumn": 0,
+			"answersColumn": 1,
+			"picturesColumn": 2,
+			"symptomsRow": 0,
+			"answersYOffset": 1,
+			"symptomMarker": "x",
+			"diseaseMarker": "OK",
+			"questions": {
+				"start": 1,
+				"end": 29
+			},
+			"symptoms": {
+				"start": "Symptoms",
+				"end": "Diseases (visible)"
+			},
+			"diseases": {
+				"start": "Diseases (visible)"
+			}
+		}
+	}
+}

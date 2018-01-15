@@ -13,7 +13,7 @@ DWA project 2017
 ## Inhoud
 
 1. **Context**
-  * *1.1 Gerald Bassleer*
+  * *1.1 Gerald Bassleer.*
 2. **Functional Overview**
   * *2.1 Zoeken van informatie over visziektes,*
   * *2.2 Analyse tool voor gebruikers met zieke vis(sen),*
@@ -30,10 +30,15 @@ DWA project 2017
   * *4.5 Opleveren.*
 5. **Principles**
   * *5.1 Code principles,*
-  * *5.2 Groeps principles.*
+  * *5.2 Groeps principles*
 6. **Software Architecture**
-  * *6.1 Overzicht,*
-  * *6.2 Web Applicatie.*
+  * *6.1 System model,*
+  * *6.2 Container model,*
+  * *6.3 Component main model,*
+  * *6.4 Component myaquarium model,*
+  * *6.5 Component admin model,*
+  * *6.6 Component chat model,*
+  * *6.7 Component express model.*
 7. **External Interfaces**
 8. **Code**
 9. **Infrastructure Architecture**
@@ -54,6 +59,9 @@ Dhr.   Burgers,   onze   opdrachtgever,   wil   samen   met   dhr.   Bassleer   
 
 Dit   project   zal   worden   uitgevoerd   door   S.   Scheffer,   R.   Mulleman,   M.   Dorrestijn,   C.   Severein,   R. Meijer   en   J.   Weijland.   Zijnde   studenten   Hogeschool   van   Arnhem   en   Nijmegen   zijn   zij verantwoordelijk   voor   het   voltooien   van   het   project.
 
+Er zijn al meerdere ICA-teams die aan de visanalysetool hebben gewerkt. Hieronder twee CMD-teams die het concept hebben uitgewerkt en een HTML en CSS-design hebben geleverd en een ICT-team wat een
+databasestructuur heeft opgezet.
+
 Het   project   is   opgezet   als   opdracht   vanuit   de   HAN.   Dit   proces   wordt   begeleid   door   de   volgende docenten:   mevr.   Danes,   dhr.   Leer   en   dhr.   Holwerda.
 
 #### 1.1. Gerald Bassleer
@@ -68,10 +76,19 @@ De webapplicatie die wordt gemaakt zal ervoor moeten zorgen dat een gebruiker:
 
 - informatie kan vinden over de ziektes van hun vis,
 - zelfstandig een analyse kan doorlopen om te kijken welke ziekte hun vis zou kunnen hebben,
+- Aquarium gegevens invoeren en genotificeerd worden over mogelijke gevaren 
 - een afspraak kan maken met een consultant,
 - een gesprek kan voeren met deze consultant.
 
-De webapplicatie zal tevens een beheersysteem bevatten voor consultants.
+De webapplicatie zal tevens een beheersysteem bevatten dit bevat de volgende functionaliteiten:
+
+- Beheer van vissen
+- Beheer van ziektes
+- Inzien van afspraken
+  - Chatlogs inzien
+  - Naar de chatroom navigeren
+- Aangeven op welke tijden een consultant aanwezig kan zijn
+- Notificaties regels aanpassen
 
 #### 2.1 Zoeken van informatie over visziektes.
 De gebruiker kan op de site van Bassleer een zoekterm invoeren in het zoekvenster en het systeem zal vervolgens de zoekresultaten laten zien. Hierna kan de gebruiker de zoekresultaten filteren op bijvoorbeeld vissen of ziekten.
@@ -86,6 +103,8 @@ Op het einde van de analyse wordt er een lijst getoond van ziektes die het meest
 #### 2.3 Bijhouden van aquarium gegevens.
 Een gebruiker kan ook zijn aquariumgegevens bijhouden. Gegevens die we hieronder zoal zien zijn, vissen, tempratuur, iron en zuurstof. Aangezien verschillende vissen verschillende standaarden hebben voor deze waarden, is het van belang dat de gebruiker op de hoogte word gehouden van mogelijke gevaren. Dit wordt gedaan wanneer de gebruiker deze waarden invult of vissen aan zijn digitale aquarium toevoegt. Het systeem zal vervolgens nagaan of de waarden binnen acceptabele normen liggen. Zo niet, dan krijgt de gebruiker hier een notificatie van.
 
+![user_register](.\images\todays_data.PNG)
+
 #### 2.4 Beheersysteem/CMS.
 Informatie over vissen en ziektes en analysepunten kunnen worden beheerd in het CMS-gedeelte van de web-applicatie. In dit gedeelte kunnen alleen beheerders komen. Onder andere de volgende gegevens kunnen hier worden bewerkt:
 * Vis ziekten (symptomen, beschrijving, behandeling)
@@ -98,6 +117,8 @@ Informatie over vissen en ziektes en analysepunten kunnen worden beheerd in het 
 #### 2.5 Inschrijven voor een consult.
 Als de gebruiker een consult wilt, kan hij hiervoor een afspraak inplannen. De gebruiker kan bij het maken van een afspraak een kleine beschrijving toevoegen en de datum + tijd kiezen uit een lijst. Deze lijst wordt door de consultant in het beheersysteem samengesteld. Hij kan hier aangeven wanneer hij tijd heeft voor een gesprek. Wanneer de gebruiker zich heeft ingeschreven zal het systeem een mail sturen naar de consultant en de aanvraag verwerken in het systeem.
 
+![user_register](.\images\user_register.PNG)
+
 #### 2.6 Het consult gesprek.
 Het uitvoeren van een consult gesprek gebeurt ook via de web-applicatie. De applicatie krijgt de mogelijkheid om een videochat te starten. Voor gebruikers die geen beschikking hebben over een microfoon, zal er een mogelijkheid zijn om met de consultant te chatten d.m.v. tekst. Ook kunnen de gebruiker en de consultant afbeeldingen naar elkaar sturen.
 
@@ -107,14 +128,14 @@ Het uitvoeren van een consult gesprek gebeurt ook via de web-applicatie. De appl
 Hier zullen de non-functionele aspecten worden verwoord.
 * De webapplicatie is beschikbaar voor alle gebruikers met een browser.
 * De webapplicatie ondersteunt de volgende browsers:
-  * Microsoft IE 11+ (consultgesprekken)
+  * Microsoft IE 11+ (zonder consultgesprekken)
   * Microsoft Edge 15+
   * Google Chrome 46+
   * Mozilla Firefox 52+
   * Safari 11+
 * Het beheersysteem/CMS is alleen beschikbaar voor consultants/beheerders van de website.
-* De videochat wordt niet ondersteund met het gebruik van Microsoft IE 11+.
-* De code zal volgens de “code conventie” worden geïmplementeerd. Zie hoofdstuk 5.
+* De videochat wordt niet ondersteund met het gebruik van Microsoft IE, dit komt door de missende ondersteuning voor WebRTC.
+* De code zal volgens de “code conventie” worden geïmplementeerd. Zie bijlage.
 * Het design is duidelijk geïnspireerd van het voorgaande CMD-groep, met kleine uitzonderingen waaronder het beheersysteem/CMS.
 * Het product wordt geleverd met een softwareguidebook.
 
@@ -214,23 +235,33 @@ https://google.github.io/styleguide/jsguide.html
 ## 6. Software architectuur
 Dit hoofdstuk laat een overzicht zien van onze software architectuur.
 
-#### 6.1 Overzicht
-Hieronder staat een overzicht van de componenten waaruit ons product is opgebouwd en welke technieken daarbij gebruikt worden. De componenten worden daaronder kort beschreven.
+#### 6.1 System model.
+In het onderstaande model word een overzicht gegeven van de aplicatie en de relatie hiermee met gebruikers en andere softwarepacketten.
+![SA_system_model](images/SA_System.png)
 
-![Diagram](images/software-architecture-1.png)
+#### 6.2 Container model.
+Hieronder staat het container model. Dit model geeft weer wat er werkend moet zijn om ervoor te zorgen dat de aplicatie werkt. 
+![SA_container_model](images/SA_Container.png)
 
-* **Web applicatie:** Een React applicatie waar elke bezoeker terecht komt.
-* **Admin applicatie:** Een deel van de React applicatie waar de adminstrator de content voor de applicatie kan beheren, en geplande consults kan beheren en starten.
-* **Chat:** Een deel van de WebApplicatie die d.m.v. WebRTC een realtime peer to peer verbinding tussen een consultant en een geregistreerde gebruiker opzet. Hier kan gebruik worden gemaakt van videochat, tekstchat en het versturen van foto's.
-* **Tekst chat log:** Een Firebase realtime database waar de tekst wordt gelogd.
-* **Content Management REST API:** Een Express applicatie waar (met uitzondering van chat) al het dataverkeer afgehandeld wordt.
-* **Database:** Firestore database waar alle gebruikersinformatie en applicatiecontent wordt bewaard en opgehaald.
-* **Bestandssysteem:** Firebase Cloud Storage waar alle afbeeldingen worden opgeslagen.
+#### 6.3 Component main model.
+Het onderstaande component model geeft de functionaliteiten weer, soms worden deze functionaliteiten verder verdeelt in een los component diagram. Dit is het geval bij de components met een gekleurde rand eromheen. Het component model met dezelfde kleur schema zal de opdeling van dit component beter weergeven.
+![SA_main_model](images/SA_Comp_Main.png)
 
-#### 6.2 Web Applicatie
-Hieronder staat een sitemap van de Web Applicatie, inclusief het administratieve gedeelte.
+#### 6.4 Component myaquarium model.
+Een uitbreidende weergave van de "MyAquarium" component in het "Component main model".
+![SA_myaquarium_model](images/SA_Comp_Aqua.png)
 
-![Diagram](images/software-architecture-2.png)
+#### 6.5 Component admin model.
+Een uitbreidende weergave van de "Admin" component in het "Component main model".
+![SA_admin_model](images/SA_Comp_Admin.png)
+
+#### 6.6 Component chat model.
+Een uitbreidende weergave van de "Chat" component in het "Component main model".
+![SA_chat_model](images/SA_Comp_Chat.png)
+
+#### 6.7 Component express model.
+Een uitbreidende weergave van de "Express" component in het "Component main model".
+![SA_express_model](images/SA_Comp_Express.png)
 
 ----
 
@@ -347,7 +378,10 @@ Een STUN server stelt NAT-clients (computers achter een firewall) in staat om te
 (Bron: https://www.3cx.nl/voip-sip/stun-server/)
 
 #### 9.5 Sidenotes
-Google Firebase is verantwoordelijk voor het updaten en onderhouden van de servers. Dhr. Bassleer is verantwoordelijk voor het maken van back-ups, de resources zijn staan ook op naam van Dhr. Bassleer.
+Op het moment worden er geen back-ups gemaakt van de data op firebase, dit kan dhr. Bassleer of dhr. Burgers zelf regelen door de volgende link te volgen:
+https://firebase.google.com/docs/database/backups
+
+De aangeleverde foto's/video's in de database zijn gemaakt en van dhr. Bassleer, hij wilt niet dat deze voor gebruikt voor persoonlijke doeleinden.
 
 ----
 
@@ -369,6 +403,40 @@ Het is niet nodig om dit project te builden.
 
 #### 10.3 Deploy
 Om het project te deployen naar de servers van Firebase, navigeer naar de map /functions, en type "firebase deploy". Mocht je alleen bepaalde facetten willen deployen, doe dan firebase deploy --only functions[,firestore,...].
+
+#### 10.4 API Keys & andere configuratie
+Om de applicatie te kunnen draaien, heb je de volgende API-Keys nodig:
+- Firebase Admin. Deze "key" lever je aan in de vorm van een serviceAccount.
+- Firebase Storage. Hiervoor is geen key nodig, wel enige configuratie.
+- Algolia. De keys die nodig zijn om deze service te gebruiken, zijn de "access key" en de "admin key".
+- SendGrid. Hiervoor is 1 API-key nodig.
+
+De applicatie maakt gebruik van Cloud Functions Triggers. Deze draaien niet lokaal, maar op de live Firebase-server. Deze triggers zijn nodig om reads en writes naar Firestore te verwerken. De applicatie werkt niet goed zonder deze triggers.
+
+Om deze triggers te activeren, moet men de applicatie deployen naar de live server. Dit kan met `firebase deploy --only functions`. Aangezien Firestore altijd live draait, werken de triggers ook alleen op de live server. Mocht je de server lokaal draaien, dan worden de triggers niet aangeroepen wanneer in Firestore een read of write uitgevoerd wordt.
+
+##### 10.4.1 Firebase Admin
+Om hiervan de keys te krijgen, dien je deze(https://firebase.google.com/docs/admin/setup#add_firebase_to_your_app) stappen te volgen. Als het goed is heb je nu een .json bestand gedownload (standaard naam; private_key.json). Dit is de zogenaamde service file. Plaats deze file in de root van het Cloud Functions-project, in dit geval in de map ~/firebase/functions. Zorg ervoor dat dit bestand 'geinclude' wordt in de `index.js`. De include-functie staat op het moment van schrijven op regel 5 van index.js:
+```const serviceAccount = require("./private-key.json");```
+Firebase Admin zou nu moeten draaien. Mocht je er niet uitkomen, dan kan je altijd navigeren naar je "Project Settings", tabje "Firebase Admin SDK". Hier staat uitgelegd wat je moet doen om je SDK toe te voegen.
+
+##### 10.4.2 Firebase Storage
+Om storage toe te voegen, voeg de regel `storageBucket: '****.appspot.com'` toe aan het `admin.initializeApp()` object, zodat hij er zo uit komt te zien:
+
+```
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: "https://****.firebaseio.com",
+	storageBucket: '****.appspot.com'
+});
+```
+Wat er op de plek van de sterretjes moet komen te staan, is te vinden in de console onder de tab "storage".
+
+##### 10.4.3 Algolia
+Om Algolia werkend te krijgen, moet je 2 keys verkrijgen: de "access key" en de "admin key". Deze zijn eenvoudig te verkrijgen wanneer je je hebt geregistreerd bij Algolia. Zie de documentatie van Algolia om erachter te komen hoe dat moet. Wanneer je deze keys hebt, dien je de keys te vervangen die zijn gedefinieerd op regel 20 en 21 in `index.js`.
+
+##### 10.4.4 SendGrid
+Om SendGrid werkend te krijgen, heb je 1 key nodig. Deze kan je verkrijgen door je te registeren op sendgrid.com. Zie de documentatie van SendGrid om erachter te komen hoe deze key te verkrijgen is. Wanneer je deze hebt ontvangen, vervang dan de key de te vinden is op regel 2 in `mailer/mailer.js`.
 
 ----
 
@@ -402,4 +470,59 @@ Om Firebase lokaal te draaien gebruik je het volgende commando:
 Om de bestanden van Firebase online te zetten gebruik je:
 
 ``` firebase deploy --only hosting,functions```
+
+## 11.3 Beheerssysteem/CMS
+Het berheerssysteem, of control management system, kan worden gebruikt om gegevens op de site aan te passen. Het redelijk duidelijk te snappen, maar er is voor elke pagina een kopje gemaakt om het wat beter toe te lichten. Alle invoervelden moeten ingevuld worden in elke edit/add mogelijkheid van de pagina's. Word dit niet gedaan is dat geen ramp, de applicatie zal dan een error geven en de record nog niet aanmaken.
+
+### Vissoorten beheren.
+De vissoorten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicaite:
+* Gebruikers kunnen zoeken naar vissoorten voor informatie hierover.
+* Gebruikers kunnen vissoorten aan hen aquarium toevoegen.
+
+In de "edit" column staan drie icoontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen, buiten de afbeelding om. Het icoontje met het schilderijtje geeft de gebruiker de mogelijkheid een afbeelding toe te voegen/te wijzigen van de record.
+
+Onderin de pagina staat een knop genaamd "Add fish". Deze zorgt ervoor dat er een nieuwe vissoort kan worden toegevoegd. Na het aanmaken van een nieuwe vissoort is er nog geen afbeelding aan de record gevoegd.
+
+Deze pagina bevat een zoekbalk. Waarmee de gebruiker snel kan navigeren binnen de pagina.
+### foto
+
+### Vis ziektes beheren.
+De vis ziektes die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
+* Gebruikers kunnen zoeken naar ziektes voor informatie hierover.
+* Ziektes zijn de eindresultaten na een analyse.
+
+In de "edit" column staan drie icoontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen, buiten de afbeelding om. Het icoontje met het schilderijtje geeft de gebruiker de mogelijkheid een afbeelding toe te voegen/te wijzigen van de record.
+
+Onderin de pagina staat een knop genaamd "Add fish disease". Deze zorgt ervoor dat er een nieuwe vis ziekte kan worden toegevoegd. Na het aanmaken van een nieuwe vis ziekte is er nog geen afbeelding aan de record gevoegd.
+
+Deze pagina bevat een zoekbalk. Waarmee de gebruiker snel kan navigeren binnen de pagina.
+### foto
+
+### Afspraken beheren.
+De afspraken die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
+* De request consult sectie voor de gebruikers in hun dashboard.
+* Chat functionaliteiten.
+
+Er zijn drie verschillende koppen op deze pagina te vinden. De knop met het kruisje zorgt voor het verwijderen van een appointment, wanneer dit gebeurd word de ingeschreven gebruiker hiervan op de hoogte gesteld. De knop met de tekst "Chat room" geeft de consultant toegang tot de chat room van dat specifieke appointment. Nadat een de "status" veranderd naar closed, wat gebeurd als de consultant de chat room aflsuit, veranderd de knop "Chat room" naar een knop "Chatlog". Met deze knop kan je de chatlog van dit appointment inzien. Afbeeldingen en andere files die gedeeld zijn worden niet weergegeven.
+
+Appointments worden gemaakt door de normale geregistreerde gebruiker, door een open tijdslot te bezetten. Dit is de reden waarom de consultant geen appointments hoeft toe te voegen.
+### foto
+
+### Tijdsloten beheren.
+De tijdsloten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
+* De request consult sectie voor de gebruikers in hun dashboard.
+
+In de "edit" Column staan twee iccontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen.
+
+Onderin de pagina staat een knop genaamd "Add timeslot when you are available". Deze zorgt ervoor dat er een nieuwe tijdslot kan worden toegevoegd. Denk eraan dat doormiddel van de start-time en de duration de end time door de applicatie word berekent.
+### foto
+
+### Notificatie regels beheren.
+De notification regels die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
+* Word gebruikt bij het triggeren van een notificatie nadat een gebruiker nieuwe data invoerd bij "todaysdata".
+
+In de "edit" Column staan twee icoontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen.
+
+Onderin de pagina staat een knop genaamd "Add notification rule". Deze zorgt ervoor dat er een nieuwe tijdslot kan worden toegevoegd. Wanneer het invoerveld dan opkomt is er een mogelijkheid om meer dan één trigger voor de regel toe te voegen. Je kan ook triggers weghalen. De applicatie laat niet toe dat er minder dan één trigger aanwezig is.
+### foto
 

@@ -31,7 +31,6 @@ export default class ChangeTimeSlot extends Component {
 	}
 	if(timeslotData.startDate && timeslotData.duration){
 	  let da = new DataAccess();
-	  console.log(timeslotData);
 	  da.putData(`/timeslots/${this.props.customProps.entry.id}`, {timeslot: timeslotData},  (err, res) => {
 		if (!err) {
 		  this.props.toggleModal();
@@ -60,7 +59,7 @@ export default class ChangeTimeSlot extends Component {
 		  <Form onSubmit={this.editTimeslot}>
 			<FormGroup>
 			  <Label for="startingDate">Starting Date:</Label>
-			  <Input id="startingDate" type="date" name="startingDate" value={this.state.startDate.slice(0,10)} onChange={this.changeStartDate} />
+			  <Input id="startingDate" type="datetime-local" name="startingDate" value={this.state.startDate.slice(0,16)} onChange={this.changeStartDate} />
 			</FormGroup>
 			<FormGroup>
 			  <Label for="timeslotDuration">Duration in minutes:</Label>

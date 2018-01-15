@@ -50,7 +50,7 @@ export default class ManageTimeSlot extends Component {
 	};
 
 	getTimeslots = () => {
-	  console.log('1 shot, 2 shot, all i hear are guns shots this is where the fun stops');
+
 		// Hier moeten afspraken worden opgehaald en in "results" worden gezet
 		// Bij de onClickAction moet het id van de afspraak worden meegegeven
 		let results = [];

@@ -5,7 +5,7 @@ import DataAccess from '../../../scripts/DataAccess';
 export default class AddTimeSlot extends Component {
   constructor(props){
 	super(props);
-	const today = new Date().toISOString().slice(0,10);
+	const today = new Date().toISOString().slice(0,16);
 	this.state = {
 	  duration: "",
 	  startDate: today,
@@ -38,9 +38,11 @@ export default class AddTimeSlot extends Component {
 	  this.setState({error: "Please fill in all fields."});
 	}
   };
+
   changeStartDate = (e) => {
 	this.setState({startDate: e.target.value});
   };
+
   changeDuration = (e) => {
 	this.setState({duration: e.target.value});
   };
@@ -54,7 +56,7 @@ export default class AddTimeSlot extends Component {
 		  <Form onSubmit={this.addTimeslot}>
 			<FormGroup>
 			  <Label for="startingDate">Starting Date:</Label>
-			  <Input id="startingDate" type="date" name="startingDate" value={this.state.startDate} onChange={this.changeStartDate}/>
+			  <Input id="startingDate" type="datetime-local" name="startingDate" value={this.state.startDate} onChange={this.changeStartDate}/>
 			</FormGroup>
 			<FormGroup>
 			  <Label for="timeslotDuration">Duration in minutes:</Label>
