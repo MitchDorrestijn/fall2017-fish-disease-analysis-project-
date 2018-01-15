@@ -39,6 +39,15 @@ module.exports = class AnalysisFactory {
 		);
 	}
 
+	static getAnalysisWithCustomConfig(config) {
+		console.log ("Parsing Excel sheets...");
+		const parsers = AnalysisFactory._parseExcel(config);
+
+		console.log ("Done");
+
+		return AnalysisFactory._createAnalysisInstance(parsers);
+	}
+
 	static getAnalysis(configPath) {
 		console.log("Parsing config...");
 		const config = AnalysisFactory._parseConfig(configPath);

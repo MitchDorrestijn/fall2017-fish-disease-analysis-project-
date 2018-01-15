@@ -5,7 +5,7 @@ const xlsx = require('node-xlsx').default;
 module.exports = class NodeXLSXFileParser {
 	constructor(config) {
 		this.config = config;
-		this.file = xlsx.parse(fs.readFileSync(path.join(__dirname, '..', this.config.file)));
+		this.file = xlsx.parse(fs.readFileSync(this.config.file));
 	};
 
 	static _stripNewLines(value) {

@@ -1,6 +1,6 @@
 {
 	"diseasesAndSymptoms": {
-		"file": "symptomenEnZiektes.xlsx",
+		"file": "/var/folders/5m/n_tbc2bx67g4v_m03dyqryhc0000gn/T/symptomenEnZiektes.xlsx",
 		"sheetNumber": 0,
 		"symptoms": {
 			"start": 3,
@@ -13,7 +13,7 @@
 	},
 	"questions": {
 		"questionsAndFollowUpQuestions": {
-			"file": "Vraagziektekruisjes.xlsx",
+			"file": "/var/folders/5m/n_tbc2bx67g4v_m03dyqryhc0000gn/T/Vraagziektekruisjes.xlsx",
 			"sheetNumber": 0,
 			"answersColumn": 1,
 			"symptomMarker": "x",
