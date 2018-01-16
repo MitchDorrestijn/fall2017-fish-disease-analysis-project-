@@ -10,6 +10,7 @@ const notifications = require('../notifications/notifications.js');
 
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
+const isAdmin = require('../middleware/isAdmin.js');
 const validateModel = require('../middleware/validateModel.js'); // DEPRECATED!
 const validate = require('../middleware/validate.js');
 
@@ -37,6 +38,23 @@ const fishSchema = Joi.object().keys({
  */
 router.get('/aquaria/', isAuthenticated, (req, res) => {
 	db.collection('aquaria').where('user', '==', req.user.ref).get()
+	.then((snapshot) => {
+		let aquaria = [];
+		snapshot.forEach((doc) => {
+			aquaria.push(helperFunctions.flatData(doc));
+		});
+		res.send(aquaria);
+	}).catch((err) => {
+		res.status(500).send(err.message);
+	});
+});
+
+router.get('/aquaria/', isAdmin, (req, res) => {
+	if(!req.query.user){
+		return res.status(400).send('Please provide user: ?user=134aa32fq');
+	}
+	const user = db.collection('users').doc(req.query.user);
+	db.collection('aquaria').where('user', '==', user).get()
 	.then((snapshot) => {
 		let aquaria = [];
 		snapshot.forEach((doc) => {
