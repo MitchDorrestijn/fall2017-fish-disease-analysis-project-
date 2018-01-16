@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import NavigationBar from './navigation/NavigationBar';
 import Feedback from './feedback/Feedback';
 import Homepage from './homepage/Homepage';
+import Analyse from './analyse/Analyse';
 import MyAquarium from './myAquarium/MyAquarium';
 import ModalBase from './modal/ModalBase';
 import Login from './modal/Login';
@@ -247,13 +248,13 @@ export default class App extends React.Component {
 			console.log("Something went wrong: " + error);
 		});
 	};
-	
+
 	closeFeedback = () => {
 		this.setState({
 			showFeedback: false
 		});
 	};
-	
+
 	showFeedback = (color, message) => {
 		this.setState({
 			showFeedback: true,
@@ -303,6 +304,9 @@ export default class App extends React.Component {
 													}}/>
 													<Route path="/myAquarium" render={(props) => {
 														return <MyAquarium {...props} openModal={this.openModal} app={this.app}/>
+													}}/>
+													<Route path="/analyse" render={(props) => {
+														return <Analyse {...props} openModal={this.openModal} app={this.app}/>
 													}}/>
 													<Route path="/forgot-password" render={(props) => {
 														return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
