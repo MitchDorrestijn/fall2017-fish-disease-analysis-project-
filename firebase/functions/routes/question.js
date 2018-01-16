@@ -40,12 +40,11 @@ const fileExists = (fileName) => {
 }
 
 const getExcelFile = (fileName, force) => {
-    console.log ("SJOERD!!@#@#$@#$@");
     const localPath = getExcelFileLocalPath(fileName);
 
     return fileExists(fileName).then((exists) => {
         if (!force && exists) {
-            console.log('Getting file ' + fileName + ' from local file system.');
+            console.log('Getting file ' + fileName + ' from local file system: ' + localPath + '.');
 
             return Promise.resolve(fs.readFileSync(localPath));
         } else {
@@ -69,8 +68,7 @@ const p1 = getExcelFile('symptomenEnZiektes');
 const p2 = getExcelFile('Vraagziektekruisjes');
 
 // First download files, then call the shit.
-Promise.all([p1, p2]).then(() => {
-    console.log('promises resolved');
+const loadingIsReady = Promise.all([p1, p2]).then(() => {
     let config = AnalysisFactory._parseConfig('config.json');
     config.diseasesAndSymptoms.file = getExcelFileLocalPath('symptomenEnZiektes');
     config.questions.questionsAndFollowUpQuestions.file = getExcelFileLocalPath('Vraagziektekruisjes');
@@ -81,7 +79,11 @@ Promise.all([p1, p2]).then(() => {
 })
 
 router.get('/questions/shallow', (req, res) => {
-    res.send(analysis.getFirstQuestions());
+    loadingIsReady.then(() => {
+        res.send(analysis.getFirstQuestions());
+    }).catch((err) => {
+        res.status(500).send(err.message);
+    })
 });
 
 router.get('/questions/refresh', (req, res) => {
@@ -99,14 +101,24 @@ router.post('/questions/deep', (req, res) => {
     if(!req.body.answers){
         return res.status(400).send('Please send answers');
     }
-    res.send(analysis.getNextQuestions(req.body.answers));
+
+    loadingIsReady.then(() => {
+        res.send(analysis.getNextQuestions(req.body.answers));
+    }).catch((err) => {
+        res.status(500).send(err.message);
+    })
 });
 
 router.post('/questions/results', (req, res) => {
     if(!req.body.answers){
         return res.status(400).send('Please send answers');
     }
-    res.send(analysis.getResults(req.body.answers));
+    
+    loadingIsReady.then(() => {
+        res.send(analysis.getResults(req.body.answers));
+    }).catch((err) => {
+        res.status(500).send(err.message);
+    })
 });
 
 module.exports = router;
