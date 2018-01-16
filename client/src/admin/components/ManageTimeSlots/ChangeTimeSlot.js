@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Button, ModalHeader, ModalBody, Input, Form, FormGroup, Label, FormText} from 'reactstrap';
 import DataAccess from '../../../scripts/DataAccess';
+import * as Datetime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css'
 
 export default class ChangeTimeSlot extends Component {
   constructor(props){
@@ -21,7 +23,7 @@ export default class ChangeTimeSlot extends Component {
   editTimeslot = (e) => {
 	e.preventDefault();
 	let timeslotData = {
-	  startDate: this.state.startDate,
+	  startDate: this.state.startDate.format(),
 	  duration: this.state.duration
 	};
 	for (let key in timeslotData) {
@@ -30,6 +32,7 @@ export default class ChangeTimeSlot extends Component {
 	  }
 	}
 	if(timeslotData.startDate && timeslotData.duration){
+	  console.log(new Date(timeslotData.startDate));
 	  let da = new DataAccess();
 	  da.putData(`/timeslots/${this.props.customProps.entry.id}`, {timeslot: timeslotData},  (err, res) => {
 		if (!err) {
@@ -43,24 +46,27 @@ export default class ChangeTimeSlot extends Component {
 	  this.setState({error: "Please fill in all fields."});
 	}
   };
-  changeStartDate = (e) => {
-	this.setState({startDate: e.target.value});
-  };
+
   changeDuration = (e) => {
 	this.setState({duration: e.target.value});
   };
 
+  changeDate = (e) => {
+	this.setState({startDate: e});
+  };
+
   render() {
+	const yesterday = Datetime.moment().subtract( 1, 'day');
+	const valid = function(current) {
+	  return current.isAfter( yesterday );
+	};
 	return (
 	  <div>
 		<ModalHeader toggle={() => this.props.toggleModal()}>Edit Timeslot</ModalHeader>
 		<ModalBody>
 		  <p className="error">{this.state.error}</p>
 		  <Form onSubmit={this.editTimeslot}>
-			<FormGroup>
-			  <Label for="startingDate">Starting Date:</Label>
-			  <Input id="startingDate" type="datetime-local" name="startingDate" value={this.state.startDate.slice(0,16)} onChange={this.changeStartDate} />
-			</FormGroup>
+			<Datetime onChange={this.changeDate} isValidDate={ valid } />
 			<FormGroup>
 			  <Label for="timeslotDuration">Duration in minutes:</Label>
 			  <Input id="timeslotDuration" type="number" min="0" max="240" name="timeslotDuration" value={this.state.duration} onChange={this.changeDuration} />

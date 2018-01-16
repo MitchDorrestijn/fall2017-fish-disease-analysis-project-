@@ -61,7 +61,6 @@ export default class RemoveAppointment extends Component {
 		console.log ("Remove "+this.props.customProps.id);
 		let {data} = this.state;
 		let response = {
-			canceled: data.canceled,
 			comment: data.comment,
 			video: data.video,
 			approved: data.approved,

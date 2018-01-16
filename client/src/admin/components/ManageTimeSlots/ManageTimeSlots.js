@@ -60,13 +60,6 @@ export default class ManageTimeSlot extends Component {
 		da.getData('/timeslots', (err, res) => {
 			if (!err) {
 				let resultsFromDB = res.message;
-				console.log (resultsFromDB);
-				for (let i = 0; i < resultsFromDB.length; i++) {
-					if (resultsFromDB[i].canceled) {
-						resultsFromDB.splice(i, 1);
-						i--;
-					}
-				}
 				results = resultsFromDB.map ((elem) => {
 					return (
 						<Tr key={elem.id}>
@@ -111,7 +104,7 @@ export default class ManageTimeSlot extends Component {
 					<Tbody>{this.state.tableEntries}</Tbody>
 				</Table>
 			  <Button
-				onClick={() => this.props.openModal(AddTimeSlot, {refreshPage: this.getTimeslots()})}
+				onClick={() => this.props.openModal(AddTimeSlot, {refreshPage: this.getTimeslots})}
 				className="btn-admin">Add timeslot when you are available
 			  </Button>
 			</div>

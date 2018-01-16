@@ -29,8 +29,7 @@ router.get('/opentimeslots/', isAuthenticated, (req, res) => {
 	  snapshot.forEach((doc) => {
 		const flatData = helperFunctions.flatData(doc);
 		appointmentsTimeslots.push({
-		  id: flatData.timeslot,
-		  canceled: flatData.canceled
+		  id: flatData.timeslotId,
 		});
 	  });
 	  return appointmentsTimeslots;
@@ -41,8 +40,8 @@ router.get('/opentimeslots/', isAuthenticated, (req, res) => {
 		let timeslot = helperFunctions.flatData(doc);
 		let appointmentCheck = true;
 		data.forEach((appointment) => {
-		  // Check if canceled is false and the appointment id equals the id of the timeslot
-		  if (appointment.id === timeslot.id && !appointment.canceled) {
+		  // Check if the appointment id equals the id of the timeslot
+		  if (appointment.id === timeslot.id) {
 			appointmentCheck = false;
 		  }
 		});
@@ -198,7 +197,7 @@ router.delete('/timeslots/:id', isAdmin, (req, res) => {
   const timeslotsId = req.params.id;
   db.collection('timeslots').doc(timeslotsId).delete()
 	.then(() => {
-	  res.status(204).send('Timeslot id deleted');
+	  res.status(204).send('Timeslot is deleted');
 	})
 	.catch((error) => {
 	  res.status(500).send(error.message);
