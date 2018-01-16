@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import {Button, ModalHeader, ModalBody, Input, Form, FormGroup, Label, FormText} from 'reactstrap';
 import DataAccess from '../../../scripts/DataAccess';
+import * as Datetime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css'
 
 export default class AddTimeSlot extends Component {
   constructor(props){
 	super(props);
-	const today = new Date().toISOString().slice(0,16);
+	// const today = new Date().toISOString().slice(0,16);
 	this.state = {
 	  duration: "",
-	  startDate: today,
+	  startDate: Datetime.moment().startOf('minute'),
 	  error: ""
 	}
   }
@@ -16,7 +18,7 @@ export default class AddTimeSlot extends Component {
   addTimeslot = (e) => {
 	e.preventDefault();
 	let timeslotData = {
-	  startDate: this.state.startDate,
+	  startDate: this.state.startDate.format(),
 	  duration: this.state.duration
 	};
 	for (let key in timeslotData) {
@@ -40,25 +42,27 @@ export default class AddTimeSlot extends Component {
 	}
   };
 
-  changeStartDate = (e) => {
-	this.setState({startDate: e.target.value});
-  };
-
   changeDuration = (e) => {
 	this.setState({duration: e.target.value});
   };
 
+  changeDate = (e) => {
+	this.setState({startDate: e});
+  };
+
   render() {
+	const yesterday = Datetime.moment().subtract( 1, 'day' );
+	const valid = function(current) {
+	  return current.isAfter( yesterday );
+	};
+
 	return (
 	  <div>
 		<ModalHeader toggle={() => this.props.toggleModal()}>Add a new timeslot</ModalHeader>
 		<ModalBody>
 		  <p className="error">{this.state.error}</p>
 		  <Form onSubmit={this.addTimeslot}>
-			<FormGroup>
-			  <Label for="startingDate">Starting Date:</Label>
-			  <Input id="startingDate" type="datetime-local" name="startingDate" value={this.state.startDate} onChange={this.changeStartDate}/>
-			</FormGroup>
+			<Datetime onChange={this.changeDate} isValidDate={ valid } />
 			<FormGroup>
 			  <Label for="timeslotDuration">Duration in minutes:</Label>
 			  <Input id="timeslotDuration" type="number" min="0" max="240" name="timeslotDuration" value={this.state.duration} onChange={this.changeDuration}/>
