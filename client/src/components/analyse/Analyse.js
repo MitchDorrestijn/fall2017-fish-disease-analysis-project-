@@ -2,8 +2,9 @@ import React from 'react';
 import ContentContainer from '../myAquarium/ContentContainer';
 import Checkbox from './Checkbox';
 import ActionButton from '../base/ActionButton';
-import { UncontrolledCarousel } from 'reactstrap';
+import { UncontrolledCarousel, Row, Col } from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
+import FishesBlock from '../search/Fishes/Block/FishesBlock';
 
 export default class Analyse extends React.Component {
 	constructor(props){
@@ -262,10 +263,11 @@ export default class Analyse extends React.Component {
 		let diseases = [];
 		for(var key in this.state.results) {
 			if(this.state.results.hasOwnProperty(key)) {
-				let {disease, score} = this.state.results[key];
+				let {disease, score, diseaseCode} = this.state.results[key];
 				if(score > 0){
 					diseases.push(
-						<p key={key}>Score: {score} | Ziekte: {disease}</p>
+						// <p key={key}>Score: {score} | Ziekte: {disease} | Code: {diseaseCode}</p>
+						<FishesBlock key={diseaseCode} picture={disease} title={disease} info={disease} additional={score}/>
 					)
 				}
 			}
@@ -283,20 +285,24 @@ export default class Analyse extends React.Component {
 
 
 
+
+
+
+
 	render(){
 		return(
 			<div className='analyse_wrapper'>
 			<ContentContainer size="12" widthClass='full'>
 				{this.state.showResults ?
-					<div>
+					<div className='search-results'>
 						{this.state.allAnswers.length === 0 ?
-							<p>You did not answer any questions :(</p> :
+							<h2>You did not answer any questions :(</h2> :
 							<div>
-								<p>Based on your given answers you fish might have one of the following diseases:</p>
+								<h2>Based on your given answers you fish might have one of the following diseases:</h2>
+								{this.state.showFollowUpBtn && <button className='btn btn-outline-primary btn-transparent' disabled={this.state.allAnswers.length === 0} onClick={this.startDeepAnalyse}>Do a more detailed analysis</button>}
 								{this.displayResults()}
 							</div>
 						}
-						{this.state.showFollowUpBtn && <button disabled={this.state.allAnswers.length === 0} onClick={this.startDeepAnalyse}>Ga door</button>}
 					</div> :
 					<div className='analyse_wrapper'>
 						{this.state.loaded &&

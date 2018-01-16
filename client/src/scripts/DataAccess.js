@@ -22,7 +22,7 @@ export default class DataAccess {
 				resolve ();
 			});
 		}
-		this.api = "http://localhost:5000/api";
+		this.api = "https://bassleer.nl/api";
 	}
 
 	_fetchApi (request, cb) {

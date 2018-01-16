@@ -7,6 +7,9 @@
 
 .analyse_wrapper {
 	overflow: auto;
+	h2, button {
+		margin-left: ($defaultPadding*2) - ($defaultPadding/3);
+	}
 	.progress {
 		background: transparent;
 		padding: $defaultPadding;
