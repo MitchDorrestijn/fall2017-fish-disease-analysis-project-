@@ -58,7 +58,7 @@ export default class NavigationBar extends React.Component {
 				<Collapse isOpen={this.state.isOpen} navbar>
 					<Nav className="ml-auto" navbar>
 						<NavItem>
-							<Link className="nav-link" to="" onClick={e => e.preventDefault()}><Translate>Analysis</Translate></Link>
+							<Link className="nav-link" to="/analyse"><Translate>Analysis</Translate></Link>
 						</NavItem>
 						{
 							this.props.loggedIn ?

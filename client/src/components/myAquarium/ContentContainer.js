@@ -4,7 +4,7 @@ import {Col} from 'reactstrap';
 export default class ContentContainer extends React.Component {
 	render() {
 		return (
-			<div className="outer-container">
+			<div className={"outer-container " + this.props.widthClass}>
 				<Col lg={this.props.size} className={"no-gutter aquarium-content-container " + this.props.extraClass}>
 					{this.props.children}
 				</Col>
