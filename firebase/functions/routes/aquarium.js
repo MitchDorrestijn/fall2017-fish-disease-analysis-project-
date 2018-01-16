@@ -299,6 +299,32 @@ router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	});
 });
 
+router.get('/aquaria/:id/entries/latest', isAuthenticated, (req, res) => {
+	const aquarium = db.collection('aquaria').doc(req.params.id);
+
+	db.collection('aquaria').doc(req.params.id).collection('entries').orderBy('createdAt', 'desc').limit(1).get()
+	.then((snapshot) => {
+		if (snapshot.empty) {
+			return res.status(204).send('Nothing found');
+		}
+
+		const diary = {};
+		diary.aquarium = aquarium.id;
+		diary.user = req.user.uid;
+		diary.entries = [];
+
+		snapshot.forEach((doc) => {
+			diary.entries.push(
+				doc.data()
+			);
+		});
+		return res.send(diary);
+	})
+	.catch((error) => {
+		res.status(500).send(error.message);
+	});
+});
+
 /**
  *  @api {post} /aquaria/:id/entries Adding An Entry
  *  @apiName Add entry to an aquaria
