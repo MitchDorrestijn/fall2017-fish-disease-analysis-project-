@@ -116,3 +116,11 @@ button.btn-admin {
 .search-errors {
 	margin-bottom: $defaultPadding*2;
 }
+
+
+.card {
+  background-color: $adminNavBackground;
+	padding: 15px 10px 0 10px;
+	margin: 60px 15px 10px 0;
+	border-radius: 0;
+	border-style: none;}
