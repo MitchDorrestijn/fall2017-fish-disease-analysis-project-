@@ -3,7 +3,7 @@ import ContentContainer from '../myAquarium/ContentContainer';
 import Checkbox from './Checkbox';
 import ActionButton from '../base/ActionButton';
 import { UncontrolledCarousel } from 'reactstrap';
-
+import DataAccess from '../../scripts/DataAccess';
 
 export default class Analyse extends React.Component {
 	constructor(props){
@@ -13,57 +13,73 @@ export default class Analyse extends React.Component {
 			showResults: false,
 			answerForCurrentQuestion: null,
 			allAnswers: [],
+			loaded: false,
+			showFollowUpBtn: true,
+			results: null,
 			questions: [
-				{
-					name: "Dit is een vraag",
-					answers: [
-						{
-							name: "Antwoord 1",
-							pictures: [
-								"/images/fish/catfish.jpg",
-								"/images/fish/goldfish.jpg"
-							]
-						},
-						{
-							name: "Antwoorw2"
-						}
-					]
-				},
-				{
-					name: "Dit is vraag 2",
-					pictures: [
-						"/images/fish/catfish.jpg",
-						"/images/fish/catfish.jpg"
-					],
-					answers: [
-						{
-							name: "Antwoord 3434",
-							pictures: [
-								"/images/fish/catfish.jpg",
-								"/images/fish/catfish.jpg",
-								"/images/fish/catfish.jpg",
-								"/images/fish/catfish.jpg",
-								"/images/fish/catfish.jpg",
-								"/images/fish/catfish.jpg"
-							]
-						},
-						{
-							name: "Antwoorw2",
-							pictures: [
-								"/images/fish/catfish.jpg",
-								"/images/fish/catfish.jpg"
-							]
-						},
-						{
-							name: "Antwoorw3",
-							pictures: [
-								"/images/fish/catfish.jpg"
-							]
-						}
-					]
-				}
+				// {
+				// 	name: "Dit is een vraag",
+				// 	answers: [
+				// 		{
+				// 			name: "Antwoord 1",
+				// 			pictures: [
+				// 				"/images/fish/catfish.jpg",
+				// 				"/images/fish/goldfish.jpg"
+				// 			]
+				// 		},
+				// 		{
+				// 			name: "Antwoorw2"
+				// 		}
+				// 	]
+				// },
+				// {
+				// 	name: "Dit is vraag 2",
+				// 	pictures: [
+				// 		"/images/fish/catfish.jpg",
+				// 		"/images/fish/catfish.jpg"
+				// 	],
+				// 	answers: [
+				// 		{
+				// 			name: "Antwoord 3434",
+				// 			pictures: [
+				// 				"/images/fish/catfish.jpg",
+				// 				"/images/fish/catfish.jpg",
+				// 				"/images/fish/catfish.jpg",
+				// 				"/images/fish/catfish.jpg",
+				// 				"/images/fish/catfish.jpg",
+				// 				"/images/fish/catfish.jpg"
+				// 			]
+				// 		},
+				// 		{
+				// 			name: "Antwoorw2",
+				// 			pictures: [
+				// 				"/images/fish/catfish.jpg",
+				// 				"/images/fish/catfish.jpg"
+				// 			]
+				// 		},
+				// 		{
+				// 			name: "Antwoorw3",
+				// 			pictures: [
+				// 				"/images/fish/catfish.jpg"
+				// 			]
+				// 		}
+				// 	]
+				// }
 			]
 		}
+	}
+
+	componentWillMount(){
+		let da = new DataAccess();
+		da.getData(`/questions/shallow/`, (err, res) => {
+			if(!err){
+				this.setState({questions: res.message}, () => {
+					this.setState({loaded: true});
+				});
+			} else {
+				console.log(err);
+			}
+		});
 	}
 
 	//Renders a question based on the given questionNumber
@@ -83,7 +99,7 @@ export default class Analyse extends React.Component {
 				<h2 className='question'>{this.state.questions[questionNumber].name}</h2>
 				{pictures.length > 0 && <div className='question_pictures centerBlock'><span>{pictures}</span></div>}
 			</div>
-		);
+		)
 
 		//Return the question structure
 		return questions
@@ -178,14 +194,24 @@ export default class Analyse extends React.Component {
     		return {questionNumber: previousState.questionNumber + 1, answerForCurrentQuestion: null};
     	});
 		} else {
-			// TODO: DO API CALL TO CALCULATE THE RESULTS AND SEND THIS.STATE.ALLANSWERS, WHEN IT RETURNS A RESULT UPDATE THE STATE
-			//There are no more questions so show the results
-			this.setState({showResults: true, answerForCurrentQuestion: null});
+			let da = new DataAccess();
+			da.postData(`/questions/results`, {answers: this.state.allAnswers}, (err, res) => {
+				if(!err){
+					console.log('Tonen op het scherm:');
+					console.log(res.message);
+					//There are no more questions so show the results
+					this.setState({showResults: true, answerForCurrentQuestion: null, results: res.message}, () => {
+					});
+				} else {
+					console.log(err);
+				}
+			})
 		}
 
 		//Uncheck all checkboxes
 		this.checkAll('answers', false);
 	}
+
 
 	//Checks or unchecks all checkboxes in a form
 	checkAll = (formname, checktoggle) => {
@@ -198,11 +224,7 @@ export default class Analyse extends React.Component {
 		}
 	}
 
-	printAllAnswers = () => {
-		console.log(this.state.allAnswers);
-	}
-
-
+	//Renders the progress on the right side of the screen
 	renderProgress = () => {
 		return this.state.allAnswers.map((elem, iterator) => {
 			return (
@@ -220,24 +242,75 @@ export default class Analyse extends React.Component {
 		});
 	}
 
+	//Starts a deep analyse by submitting all answers, the system will provide new questions.
+	startDeepAnalyse = () => {
+		let da = new DataAccess();
+		da.postData(`/questions/deep/`, {answers: this.state.allAnswers}, (err, res) => {
+			if(!err){
+				console.log('Vervolgvragen:');
+				console.log(res.message);
+				//Reset the states to show the new questions
+				this.setState({questions: res.message, showResults: false, allAnswers: [], questionNumber: 0, showFollowUpBtn: false});
+			} else {
+				console.log(err);
+			}
+		});
+	}
+
+
+	displayResults = () => {
+		let diseases = [];
+		for(var key in this.state.results) {
+			if(this.state.results.hasOwnProperty(key)) {
+				let {disease, score} = this.state.results[key];
+				if(score > 0){
+					diseases.push(
+						<p key={key}>Score: {score} | Ziekte: {disease}</p>
+					)
+				}
+			}
+		}
+		return (
+			<div className="results-wrapper">
+				{diseases}
+			</div>
+		)
+	}
+
+
+
+
+
+
+
 	render(){
 		return(
 			<div className='analyse_wrapper'>
 			<ContentContainer size="12" widthClass='full'>
-				<button onClick={this.printAllAnswers}>Print allAnswers</button>
 				{this.state.showResults ?
-					<p>Resultaten hier renderen</p> :
+					<div>
+						{this.state.allAnswers.length === 0 ?
+							<p>You did not answer any questions :(</p> :
+							<div>
+								<p>Based on your given answers you fish might have one of the following diseases:</p>
+								{this.displayResults()}
+							</div>
+						}
+						{this.state.showFollowUpBtn && <button disabled={this.state.allAnswers.length === 0} onClick={this.startDeepAnalyse}>Ga door</button>}
+					</div> :
 					<div className='analyse_wrapper'>
-						{this.renderQuestions(this.state.questionNumber)}
-						<hr />
-							<form name='answers' onChange={this.getAnswers}>
-								<ul>
-										{this.renderAnswers(this.state.questionNumber)}
-								</ul>
-								{/* {this.fixDieTabel(this.state.questions[this.state.questionNumber].answers)} */}
-							</form>
-							<ActionButton buttonText="Next question" onClickAction={this.incrementQuestionNumber} color="primary btn-transperant full-width"/>
-						{/* <button className='primary btn-transparent' onClick={this.incrementQuestionNumber}>Volgende</button> */}
+						{this.state.loaded &&
+						<div>
+							{this.renderQuestions(this.state.questionNumber)}
+							<hr />
+								<form name='answers' onChange={this.getAnswers}>
+									<ul>
+											{this.renderAnswers(this.state.questionNumber)}
+									</ul>
+								</form>
+								<ActionButton buttonText="Next question" onClickAction={this.incrementQuestionNumber} color="primary btn-transperant full-width"/>
+						</div>
+					}
 					</div>
 				}
 			</ContentContainer>
