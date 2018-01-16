@@ -6,7 +6,6 @@ import ContentContainer from '../../components/myAquarium/ContentContainer';
 import ManageAgenda from './ManageAgenda/ManageAgenda';
 import ManageFish from './ManageFish';
 import ManageNotifications from './ManageNotifications/ManageNotifications';
-import ManageUsers from './ManageUsers';
 import ManageTimeSlots from './ManageTimeSlots/ManageTimeSlots';
 import ManageAnalyse from './ManageAnalyse/ManageAnalyse';
 import ManageDesises from './ManageDesises';
@@ -22,7 +21,6 @@ export default class SideNav extends React.Component {
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/timeslots">Timeslots</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/notifications">Notifications</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/analyse">Analyse</SidebarLink>
-					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/users">Users</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/exit">Exit</SidebarLink>
 				</Sidebar>
 				<ContentContainer extraClass="adminContentContainer" size="12">
@@ -42,7 +40,6 @@ export default class SideNav extends React.Component {
 						return <ManageNotifications {...props} openModal={this.props.openModal} />
 					}}/>
 					<Route exact path="/admin/analyse" component={ManageAnalyse}/>
-					<Route exact path="/admin/users" component={ManageUsers}/>
 					<Route exact path="/admin/exit" render={() => <Redirect to="/"/>}/>
 				</ContentContainer>
 			</div>
