@@ -6,6 +6,7 @@ import RemoveAppointment from './RemoveAppointment';
 import ChangeAppointment from './ChangeAppointment';
 import ApproveAppointment from './ApproveAppointment';
 import DataAccess from '../../../scripts/DataAccess';
+import ShowChatLog from '../../../components/modal/ShowChatLog';
 
 export default class ManageAgenda extends Component {
 	constructor(props) {
@@ -76,12 +77,6 @@ export default class ManageAgenda extends Component {
 			if (!err) {
 				let resultsFromDB = res.message;
 				resultsFromDB.sort (this.sortAppointmentsByDate);
-				for (let i = 0; i < resultsFromDB.length; i++) {
-					if (resultsFromDB[i].canceled) {
-						resultsFromDB.splice(i, 1);
-						i--;
-					}
-				}
 				results = resultsFromDB.map ((elem) => {
 					return (
 						<Tr key={elem.id}>
@@ -91,7 +86,6 @@ export default class ManageAgenda extends Component {
 							<Td>{elem.reservedBy}</Td>
 							<Td>{elem.comment}</Td>
 							<Td>{elem.status ? "Open" : "Closed"}</Td>
-							{/*<Td>{elem.approved ? "Yes" : "No"}</Td>*/}
 							<Td>
 								<ButtonGroup>
 
@@ -99,9 +93,13 @@ export default class ManageAgenda extends Component {
 										buttonText={<span className="fa fa-close"/>}
 										color="primary"
 										onClickAction={() => this.cancelAppointment(elem)}/>
+								  {elem.status ?
 								  <ActionButton buttonText='Chat room'
 												linkTo={"/chat/admin/" + elem.id}
-												color='primary btn-transperant'/>
+												color='primary btn-transperant'/> :
+									<ActionButton buttonText='Chat log'
+												  onClickAction={() => this.showLog(elem.id)}
+												  color='primary btn-transperant'/>}
 								</ButtonGroup>
 							</Td>
 						</Tr>
@@ -113,6 +111,32 @@ export default class ManageAgenda extends Component {
 			}
 		});
 	};
+
+	//TODO: Same function as RequestConsult, maybe extract to another file
+  parseAppointmentDate = (timeslot) => {
+	return this.parseDate(timeslot.startDate) + " from " + this.parseTime(timeslot.startDate) + " till " + this.parseTime(timeslot.endDate);
+  };
+
+  //TODO: Same function as RequestConsult, maybe extract to another file
+  showLog = (appointmentId) => {
+	let da = new DataAccess ();
+	da.getData ('/appointments/' + appointmentId, (err, res) => {
+	  if(!err){
+		this.appointment = res.message;
+		da.getData ('/timeslots/' + this.appointment.timeslotId, (err, res) => {
+		  if (!err) {
+			this.appointment.timeslot = res.message;
+			let parsedDate = this.parseAppointmentDate(this.appointment.timeslot);
+			this.props.openModal(ShowChatLog, {chatLog: this.appointment.chatLog, timeSlot: parsedDate});
+		  }else{
+			console.log(err.message);
+		  }
+		});
+	  }else{
+		console.log(err.message);
+	  }
+	});
+  };
 
 	render() {
 		return (
@@ -127,7 +151,6 @@ export default class ManageAgenda extends Component {
 							<Th>Person</Th>
 							<Th>Description</Th>
 							<Th>Status</Th>
-							{/*<Th>Cancelled</Th>*/}
 						  	<Th></Th>
 							<Th/>
 						</Tr>

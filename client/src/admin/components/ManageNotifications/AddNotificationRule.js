@@ -103,6 +103,8 @@ export default class AddNotificationRule extends Component {
 		let da = new DataAccess ();
 		da.postData('/notifications/rules', {rule: dataObject}, (err, res) => {
 			if (!err.status) {
+			  	console.log('CUSTOM PROPS: ');
+			  	console.log(this.props.customProps);
 				this.props.customProps.refreshPage();
 				this.props.toggleModal();
 			} else {

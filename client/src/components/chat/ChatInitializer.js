@@ -100,6 +100,7 @@ export default class ChatInitializer extends React.Component {
 	}
 	
 	showAppointmentInfo = (appointment) => {
+		//Haal dmv een GET request gegevens op over het timeslot van de appointment die word meegegeven en voeg daarna een info bericht toe aan de chat.
 		let da = new DataAccess ();
 		da.getData ('/timeslots/' + appointment.timeslotId, (err, res) => {
 			if (!err) {
@@ -136,7 +137,11 @@ export default class ChatInitializer extends React.Component {
 		this.pc.ondatachannel = (event) => {
 			this.dataChannel = event.channel;
 			this.dataChannel.onmessage = (event) => { 
-				this.addReceiverMessage(event.data);
+				if(JSON.parse(event.data).type === "confirmImage" || JSON.parse(event.data).type === "confirmVideo"){
+					this.addSenderMessage(event.data);
+				}else{
+					this.addReceiverMessage(event.data);
+				}
 			};
 		};
 	}
@@ -158,8 +163,12 @@ export default class ChatInitializer extends React.Component {
 			reliable:true 
 		};
 		this.dataChannel = this.pc.createDataChannel(this.chatId, dataChannelOptions);
-		this.dataChannel.onmessage = (event) => { 
-			this.addReceiverMessage(event.data);
+		this.dataChannel.onmessage = (event) => {
+			if(JSON.parse(event.data).type === "confirmImage" || JSON.parse(event.data).type === "confirmVideo"){
+				this.addSenderMessage(event.data);
+			}else{
+				this.addReceiverMessage(event.data);
+			}
 		};
 	}
 	
@@ -262,11 +271,11 @@ export default class ChatInitializer extends React.Component {
 			let messageObj;
 			if(type === "text"){
 				messageObj = JSON.stringify({'type': type, 'data': message});
+				this.addSenderMessage(messageObj);
 			}else{
 				messageObj = JSON.stringify({'type': type, 'id': id, 'progress': {'current': current, 'total': total}, 'data': message});
 			}
 			this.dataChannel.send(messageObj);
-			this.addSenderMessage(messageObj);
 		}
 	}
 	
@@ -279,38 +288,58 @@ export default class ChatInitializer extends React.Component {
 		});
 	}
 	
+	giveTime = () => {
+		let currentDate = new Date();
+		return currentDate.getHours() + ":" + ('0' + currentDate.getMinutes()).slice(-2);
+	}
+	
 	addSenderMessage = (msg) => {
 		//Voeg het verzonden bericht toe
 		let message = JSON.parse(msg);
 		if(message.type === "text"){
 			let chatMessages = this.state.chat;
-			chatMessages.push(<Receiverbox name={message.data.name} key="0">{message.data.message}</Receiverbox>);
+			chatMessages.push(<Senderbox name={this.giveTime() + " " + message.data.name} key="0">{message.data.message}</Senderbox>);
 			this.setState({
 				chat: chatMessages
 			}, () => {
 				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 			});
 			
-			this.addChatLog(message.data.name + ": " + message.data.message);
+			this.addChatLog({'time': this.giveTime(), 'userId': this.userId, 'name': message.data.name, 'message': message.data.message});
 		}else{
 			if(message.data.state === "open"){
 				this.sendFile = "";
-			}else if(message.data.state === "close"){
 				let chatMessages = this.state.chat;
-				if(message.type === "image"){
-					chatMessages.push(<Receiverbox name={message.data.name} key="0">{message.data.message?<p>{message.data.message}</p>:null}<img className="img-fluid" src={this.sendFile} alt="Received"/></Receiverbox>);
-				}else if(message.type === "video"){
-					chatMessages.push(<Receiverbox name={message.data.name} key="0">{message.data.message?<p>{message.data.message}</p>:null}<video className="chatVideo" src={this.sendFile} controls></video></Receiverbox>);
-				}
+				chatMessages.push(<Senderbox name={this.giveTime() + " " + message.data.name} key="0">{message.data.message?<p>{message.data.message}</p>:null}<Progress animated id={"progressBar_" + message.id} value={100}/></Senderbox>);
 				this.setState({
 					chat: chatMessages
 				}, () => {
 					document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
+					document.getElementById("progressBar_" + message.id).style.width = 0;
 				});
+			}else if(message.data.state === "close"){
+				const barEl = document.getElementById("progressBar_" + message.id);
+				const parentBarEl = document.getElementById("progressBar_" + message.id).parentNode;
+				parentBarEl.removeChild(barEl);
+				if(message.type === "image" || message.type === "confirmImage"){
+					let imgEl = document.createElement("img");
+					imgEl.className = "img-fluid";
+					imgEl.src = this.sendFile;
+					imgEl.alt = "Received";
+					parentBarEl.appendChild(imgEl);
+				}else if(message.type === "video" || message.type === "confirmVideo"){
+					let videoEl = document.createElement("video");
+					videoEl.className = "chatVideo";
+					videoEl.src = this.sendFile;
+					videoEl.setAttribute("controls","controls");
+					parentBarEl.appendChild(videoEl);
+				}
 				
-				this.addChatLog(message.data.name + ": [Media file] " + message.data.message);
+				document.getElementById("chat-main").scrollTop = document.getElementById("chat-main").scrollHeight;
 			}else{
 				this.sendFile += message.data.message;
+				
+				document.getElementById("progressBar_" + message.id).style.width = Math.floor((100 / message.progress.total) * message.progress.current) + '%';
 			}
 		}
 	}
@@ -321,7 +350,7 @@ export default class ChatInitializer extends React.Component {
 		if(message.type === "text"){
 			
 			let chatMessages = this.state.chat;
-			chatMessages.push(<Senderbox name={message.data.name} key="0">{message.data.message}</Senderbox>);
+			chatMessages.push(<Receiverbox name={this.giveTime() + " " + message.data.name} key="0">{message.data.message}</Receiverbox>);
 			this.setState({
 				chat: chatMessages
 			}, () => {
@@ -329,10 +358,15 @@ export default class ChatInitializer extends React.Component {
 			});
 			
 		}else{
+			if(message.type === "image"){
+				this.sendChatMessage("confirmImage", message.data, message.id, message.progress.current, message.progress.total);
+			}else if(message.type === "video"){
+				this.sendChatMessage("confirmVideo", message.data, message.id, message.progress.current, message.progress.total);
+			}
 			if(message.data.state === "open"){
 				this.receivedFile = "";
 				let chatMessages = this.state.chat;
-				chatMessages.push(<Senderbox name={message.data.name} key="0">{message.data.message?<p>{message.data.message}</p>:null}<Progress animated id={"progressBar_" + message.id} value={100}/></Senderbox>);
+				chatMessages.push(<Receiverbox name={this.giveTime() + " " + message.data.name} key="0">{message.data.message?<p>{message.data.message}</p>:null}<Progress animated id={"progressBar_" + message.id} value={100}/></Receiverbox>);
 				this.setState({
 					chat: chatMessages
 				}, () => {
@@ -340,7 +374,6 @@ export default class ChatInitializer extends React.Component {
 					document.getElementById("progressBar_" + message.id).style.width = 0;
 				});
 			}else if(message.data.state === "close"){
-				let chatMessages = this.state.chat;
 				const barEl = document.getElementById("progressBar_" + message.id);
 				const parentBarEl = document.getElementById("progressBar_" + message.id).parentNode;
 				parentBarEl.removeChild(barEl);
@@ -453,15 +486,20 @@ export default class ChatInitializer extends React.Component {
 							<VideoboxMobile startWebcam={this.startWebcam} stopWebcam={this.stopWebcam} chatStatus={this.state.chatStatus} closeChat={this.closeChat} adminPage={this.props.adminPage} stream={this.stream} />
 						</Row>
 						<Row className="inner-chat-wrapper">
-							<Col md="8">
+							<Col md="4" className="removeColumn">
+								<Videobox type='other' startWebcam={this.startWebcam} chatStatus={this.state.chatStatus} closeChat={this.closeChat} stopWebcam={this.stopWebcam} adminPage={this.props.adminPage} stream={this.stream} />
+							</Col>
+
+							<Col md="6">
 								<div id="chatBox">
 									{this.state.chat}
 								</div>
 								<MessageSender name={this.name} chatStatus={this.state.chatStatus} showFeedback={this.props.showFeedback} sendChatMessage={this.sendChatMessage} />
 							</Col>
-							<Col md="4" className="removeColumn">
-								<Videobox startWebcam={this.startWebcam} chatStatus={this.state.chatStatus} closeChat={this.closeChat} stopWebcam={this.stopWebcam} adminPage={this.props.adminPage} stream={this.stream} />
+							<Col md="2" className="removeColumn">
+								<Videobox type='you' startWebcam={this.startWebcam} chatStatus={this.state.chatStatus} closeChat={this.closeChat} stopWebcam={this.stopWebcam} adminPage={this.props.adminPage} stream={this.stream} />
 							</Col>
+
 						</Row>
 					</Container>
 				</div>
