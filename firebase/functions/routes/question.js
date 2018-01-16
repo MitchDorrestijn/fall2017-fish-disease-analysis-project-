@@ -7,6 +7,9 @@ const fs = require('fs');
 
 const AnalysisFactory = require('../excelParser/src/AnalysisFactory');
 
+/* Helper functions */
+const helperFunctions = require('../middleware/functions.js');
+
 /* Middleware */
 const isAuthenticated = require('../middleware/isAuthenticated.js');
 const validate = require('../middleware/validate.js');
@@ -113,9 +116,28 @@ router.post('/questions/results', (req, res) => {
     if(!req.body.answers){
         return res.status(400).send('Please send answers');
     }
+
+    let results;
     
     loadingIsReady.then(() => {
-        res.send(analysis.getResults(req.body.answers));
+        results = analysis.getResults(req.body.answers);
+        let promises = [];
+
+        results.forEach((result) => {
+            promises.push(
+                db.collection('diseases').where('code', '==', result.diseaseCode).get()
+                .then((snapshot) => {
+                    console.log(snapshot.docs);
+                    if(snapshot.docs[0]){
+                        result.details = snapshot.docs[0].data();
+                    }
+                })
+            );
+        })
+
+        return Promise.all(promises);
+    }).then(() => {
+        res.send(results);
     }).catch((err) => {
         res.status(500).send(err.message);
     })
