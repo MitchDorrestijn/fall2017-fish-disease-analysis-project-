@@ -49,19 +49,35 @@ router.get('/aquaria/', isAuthenticated, (req, res) => {
 	});
 });
 
-router.get('/aquaria/', isAdmin, (req, res) => {
-	if(!req.query.user){
+router.get('/user/:user/aquaria/', isAdmin, (req, res) => {
+	if(!req.params.user){
 		return res.status(400).send('Please provide user: ?user=134aa32fq');
 	}
-	const user = db.collection('users').doc(req.query.user);
+
+	let aquaria = [];
+	const user = db.collection('users').doc(req.params.user);
+
 	db.collection('aquaria').where('user', '==', user).get()
 	.then((snapshot) => {
-		let aquaria = [];
+		let promises = [];
 		snapshot.forEach((doc) => {
-			aquaria.push(helperFunctions.flatData(doc));
+			let aquarium = helperFunctions.flatData(doc);
+			aquarium.entries = [];
+			promises.push(
+				doc.ref.collection('entries').orderBy('createdAt', 'desc').limit(1).get()
+				.then((entriesSnapshot) => {
+					entriesSnapshot.docs.forEach((doc) => {
+						aquarium.entries.push(doc.data());
+					})
+				})
+			);
+			aquaria.push(aquarium);
 		});
+		return Promise.all(promises);
+	}).then(() => {
 		res.send(aquaria);
-	}).catch((err) => {
+	})
+	.catch((err) => {
 		res.status(500).send(err.message);
 	});
 });
