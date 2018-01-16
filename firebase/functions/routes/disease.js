@@ -33,7 +33,8 @@ const model = {
         id: Joi.string().alphanum(),
         symptoms: Joi.array(),
         description: Joi.string(),
-        treatment: Joi.string()
+        treatment: Joi.string(),
+        code: Joi.string()
     })
 };
 
