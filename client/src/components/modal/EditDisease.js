@@ -7,6 +7,7 @@ export default class EditDisease extends Component {
 		super(props);
 		this.state = {
 			name: "",
+			code: "",
 			symptoms: "",
 			description: "",
 			treatment: "",
@@ -16,6 +17,7 @@ export default class EditDisease extends Component {
 	componentWillMount(){
 		this.setState({
 			name: this.props.customProps.entry.name,
+			code: this.props.customProps.entry.code,
 			symptoms: this.props.customProps.entry.symptoms.toString(),
 			description: this.props.customProps.entry.description,
 			treatment: this.props.customProps.entry.treatment
@@ -25,6 +27,7 @@ export default class EditDisease extends Component {
 		e.preventDefault();
 		const diseaseData = {
 			name: this.state.name,
+			code: this.state.code,
 			symptoms: this.state.symptoms.split(","),
 			description: this.state.description,
 			treatment: this.state.treatment
@@ -32,7 +35,7 @@ export default class EditDisease extends Component {
 		console.log (this.props.customProps.entry.id);
 		console.log (diseaseData);
 
-		if(diseaseData.name === "" || diseaseData.symptoms === "" || diseaseData.description === "" || diseaseData.treatment === ""){
+		if(diseaseData.name === "" || diseaseData.code === "" || diseaseData.symptoms === "" || diseaseData.description === "" || diseaseData.treatment === ""){
 			this.setState({error: "Fill in all fields!"});
 		} else {
 			let da = new DataAccess();
@@ -48,6 +51,9 @@ export default class EditDisease extends Component {
 	};
 	changeName = (e) => {
 		this.setState({name: e.target.value});
+	}
+	changeCode = (e) => {
+		this.setState({code: e.target.value});
 	}
 	changeSymptoms = (e) => {
 		this.setState({symptoms: e.target.value});
@@ -68,6 +74,10 @@ export default class EditDisease extends Component {
 						<FormGroup>
 							<Label for="diseasesName">Name:</Label>
 							<Input id="diseasesName" type="text" name="diseasesName" placeholder="Name of diseases" value={this.state.name} onChange={this.changeName} />
+						</FormGroup>
+						<FormGroup>
+							<Label for="diseasesCode">Code:</Label>
+							<Input id="diseasesCode" type="text" name="diseasesCode" placeholder="Code of diseases" value={this.state.code} onChange={this.changeCode} />
 						</FormGroup>
 						<FormGroup>
 							<Label for="diseasesSyntoms">Syntoms:</Label>

@@ -14,7 +14,6 @@ export default class AddFish extends React.Component {
 			dataToSendToDB: {},
 			fishImage: null,
 			error: "",
-			disabled: false,
 			currentAquarium: this.props.customProps.currentAquarium
 		}
 	}
@@ -23,30 +22,15 @@ export default class AddFish extends React.Component {
 	}
 	loadSpecies = () => {
 		let da = new DataAccess();
-		let fishSpecies = [];
 		da.getData ('/species', (err, res) => {
 			if (!err) {
 				for (let elem of res.message) {
-					fishSpecies.push({ value: elem.id, label: elem.name })
+
+					// console.log(this.props.customProps.fishInAquaria.fish.length);
+					this.setState({fishSpecies: [...this.state.fishSpecies, { value: elem.id, label: elem.name }]});
 				}
-				for(let i=0; i<this.props.customProps.fishInAquaria.fish.length; i++){
-					if(this.contains(fishSpecies, this.props.customProps.fishInAquaria.fish[i].species.name)){
-						fishSpecies.splice(fishSpecies[i], 1);
-						i--;
-					}
-				}
-				this.setState({fishSpecies: fishSpecies});
 			}
 		});
-	}
-	contains = (a, obj) => {
-    let i = a.length;
-    while (i--) {
-  		if (a[i].label === obj) {
-      	return true;
-       }
-    }
-    return false;
 	}
 	selectFishSpecies = (val) => {
 		let da = new DataAccess();
@@ -61,7 +45,6 @@ export default class AddFish extends React.Component {
 		this.setState({selectedFish: val, objectToSendToDB: selectedData});
 	}
 	addFish = () => {
-		this.setState({disabled: true});
 		let aquariaId =  this.state.currentAquarium;
 		if(this.state.objectToSendToDB){
 			let specieName = this.state.objectToSendToDB.fishName;
@@ -101,7 +84,7 @@ export default class AddFish extends React.Component {
 						</InputGroup>
 					</FormGroup>
 					<hr/>
-					<Button disabled={this.state.disabled} onClick={this.addFish} outline className="modalLink" color="secondary" block>Add fish</Button>
+					<Button onClick={this.addFish} outline className="modalLink" color="secondary" block>Add fish</Button>
 				</ModalBody>
 			</div>
 		);
