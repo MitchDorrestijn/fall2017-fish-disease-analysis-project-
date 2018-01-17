@@ -132,7 +132,7 @@ export default class ManageDiseases extends React.Component {
 	render(){
 		return (
 			<div>
-				<h2>Add / edit / remove fish diseases</h2>
+				<h2>Add / edit / remove diseases</h2>
 				<Form inline className="searchForm" onSubmit={this.getSearchTerm}>
 					<FormGroup>
 						<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
