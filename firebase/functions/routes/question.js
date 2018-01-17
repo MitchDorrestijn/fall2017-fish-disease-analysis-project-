@@ -70,13 +70,17 @@ const getExcelFile = (fileName, force) => {
 const p1 = getExcelFile('symptomenEnZiektes');
 const p2 = getExcelFile('Vraagziektekruisjes');
 
-// First download files, then call the shit.
-const loadingIsReady = Promise.all([p1, p2]).then(() => {
+const initAnalysis = () => {
     let config = AnalysisFactory._parseConfig('config.json');
     config.diseasesAndSymptoms.file = getExcelFileLocalPath('symptomenEnZiektes');
     config.questions.questionsAndFollowUpQuestions.file = getExcelFileLocalPath('Vraagziektekruisjes');
     config.questions.questionAnswersAndSymptoms.file = getExcelFileLocalPath('Vraagziektekruisjes');
     analysis = AnalysisFactory.getAnalysisWithCustomConfig(config);
+}
+
+// First download files, then call the shit.
+const loadingIsReady = Promise.all([p1, p2]).then(() => {
+    initAnalysis();
 }).catch((err) => {
     console.log(err);
 })
@@ -94,6 +98,7 @@ router.get('/questions/refresh', (req, res) => {
     const p2 = getExcelFile('Vraagziektekruisjes', true);
 
     Promise.all([p1, p2]).then(() => {
+        initAnalysis();
         res.send('Cache cleared');
     }).catch((err) => {
         res.status(400).send(err.message);
