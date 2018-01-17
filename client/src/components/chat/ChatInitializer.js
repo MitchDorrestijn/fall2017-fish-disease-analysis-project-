@@ -84,6 +84,7 @@ export default class ChatInitializer extends React.Component {
 								this.name = "Consultant";
 								
 								this.initializeDatabase();
+								this.showTodaysData(appointment);
 								this.startConnection();
 							}else{
 								this.props.showFeedback("danger", "This chat session is closed. It is not possible to start a connection while the session is closed. You have to reopen the session to start a connection.");
@@ -135,6 +136,34 @@ export default class ChatInitializer extends React.Component {
 			} else {
 				console.log(err.message);
 			}
+		});
+	}
+	
+	showTodaysData = (appointment) => {
+		//Laat de laatste entries zien van today's data van de gebruiker die de appointment heeft aangevraagd
+		let da = new DataAccess ();
+		da.getData ('/user/' + appointment.reservedBy + '/aquaria', (err, res) => {
+			if (!err) {
+				res.message.forEach((aquarium) => {
+					if(aquarium.entries.length !== 0){
+						const data = aquarium.entries[0];
+
+						let message = "Latest data from aquarium: " + aquarium.name + ". ";
+								
+						for (let key in data) {
+							if (data.hasOwnProperty(key)) {
+								if(key !== "Date" && key !== "createdAt"){
+									message += key + ": " + data[key] + ", ";
+								}
+							}
+						}
+						message = message.slice(0, -2);
+						this.addInfoMessage(message);
+					}
+				});
+			} else {
+				console.log(err.message);
+			};
 		});
 	}
 	
@@ -213,7 +242,7 @@ export default class ChatInitializer extends React.Component {
 	checkOnline = () => {
 		//Om de 5 seconde wordt gekeken of er een reactie is binnen gekomen op de vraag of de andere gebruiker nog steeds online is
 		this.interval = setInterval(() => {
-			//If true dan wordt de vraag opnieuw verstuurd, if false dan is de andere gebruiker niet meer op de chat pagina
+			//If true dan wordt de vraag opnieuw verstuurd, if false dan is de andere gebruiker niet meer op de chat pagina en wordt alles stopgezet
 			if(this.checkIfOnline){
 				this.sendMessage(this.userId, "checkOnline", "");
 				this.checkIfOnline = false;

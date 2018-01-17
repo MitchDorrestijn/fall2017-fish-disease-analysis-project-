@@ -18,7 +18,8 @@ export default class MessageSender extends React.Component {
 		}
 	}
 
-	getTextMessage = (e) => {
+	sendMessage = (e) => {
+		//Haal bericht op
 		e.preventDefault();
 		const messageEl = document.getElementById('messageToSend');
 		const message = messageEl.value;
@@ -105,7 +106,7 @@ export default class MessageSender extends React.Component {
 		return (
 				<Col className="footer fixed-bottom" sm="12" md="12">
 					<Col sm="12" md={{ size: 8, offset: 2 }}>
-						<Form onSubmit={(e) => this.getTextMessage(e)}>
+						<Form onSubmit={(e) => this.sendMessage(e)}>
 							<InputGroup>
 								<span className="removeImage" id="removeImage" title="Clear file" onClick={() => this.deleteImage()}><i className="fa fa-times "/></span>
 								<InputGroupAddon id="fileUploadButton" className="fileUpload-wrapper" title="Upload file">

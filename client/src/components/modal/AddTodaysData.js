@@ -14,6 +14,7 @@ class AddTodaysData extends React.Component {
 
 		const todaysData = {
 			Date: day + "-" + month + "-" + year,
+			createdAt: Date.now(),
 			Phosphate: document.getElementById("phosphate").value,
 			Nitrate: document.getElementById("nitrate").value,
 			Nitrite: document.getElementById("nitrite").value,

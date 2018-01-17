@@ -10,7 +10,7 @@ import EditDisease from '../../components/modal/EditDisease';
 import EditImageDisease from '../../components/modal/EditImageDisease';
 
 
-export default class ManageDiseases extends React.Component {
+export default class ManageDeseases extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -72,7 +72,7 @@ export default class ManageDiseases extends React.Component {
 				data.push(
 					<Tr key={parseInt(key,10)}>
 						<Td>{image}</Td>
-						<Td>{element.name}</Td>
+						<Td>[{element.code}] {element.name}</Td>
 						<Td><ul>{symptoms}</ul></Td>
 						<Td>{element.description}</Td>
 						<Td>{element.treatment}</Td>
@@ -147,7 +147,7 @@ export default class ManageDiseases extends React.Component {
 					<Thead>
 						<Tr>
 							<Th>Picture</Th>
-							<Th>Name</Th>
+							<Th>[Code] Name</Th>
 							<Th>Symptoms</Th>
 							<Th>Description</Th>
 							<Th>Treatment</Th>

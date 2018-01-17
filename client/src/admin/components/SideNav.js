@@ -6,9 +6,9 @@ import ContentContainer from '../../components/myAquarium/ContentContainer';
 import ManageAgenda from './ManageAgenda/ManageAgenda';
 import ManageFish from './ManageFish';
 import ManageNotifications from './ManageNotifications/ManageNotifications';
+import ManageUsers from './ManageUsers';
 import ManageTimeSlots from './ManageTimeSlots/ManageTimeSlots';
-import ManageAnalyse from './ManageAnalyse/ManageAnalyse';
-import ManageDesises from './ManageDesises';
+import ManageDiseases from './ManageDiseases';
 
 export default class SideNav extends React.Component {
 	render() {
@@ -20,7 +20,7 @@ export default class SideNav extends React.Component {
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/appointments">Appointments</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/timeslots">Timeslots</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/notifications">Notifications</SidebarLink>
-					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/analyse">Analyse</SidebarLink>
+					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/users">Users</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/exit">Exit</SidebarLink>
 				</Sidebar>
 				<ContentContainer extraClass="adminContentContainer" size="12">
@@ -28,7 +28,7 @@ export default class SideNav extends React.Component {
 						return <ManageFish {...props} openModal={this.props.openModal} />
 					}}/>
 					<Route exact path="/admin/diseases" render={(props) => {
-						return <ManageDesises {...props} openModal={this.props.openModal} />
+						return <ManageDiseases {...props} openModal={this.props.openModal} />
 					}}/>
 					<Route exact path="/admin/appointments" render={(props) => {
 						return <ManageAgenda {...props} openModal={this.props.openModal} />
@@ -39,7 +39,7 @@ export default class SideNav extends React.Component {
 					<Route exact path="/admin/notifications" render={(props) => {
 						return <ManageNotifications {...props} openModal={this.props.openModal} />
 					}}/>
-					<Route exact path="/admin/analyse" component={ManageAnalyse}/>
+					<Route exact path="/admin/users" component={ManageUsers}/>
 					<Route exact path="/admin/exit" render={() => <Redirect to="/"/>}/>
 				</ContentContainer>
 			</div>
