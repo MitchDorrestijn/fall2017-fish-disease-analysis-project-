@@ -13,13 +13,13 @@ export default class Diseases extends React.Component {
 	
 	componentDidMount = () => {
 		if(this.props.searchTerm !== ""){
-			let da = new DataAccess ();
+			let da = new DataAccess (true);
 			da.getData(`/diseases/search?term=` + this.props.searchTerm, (err, res) => {
 				if (!err) {
 					if(res.message.length > 0){
 						let blocks = [];
 						for(let i = 0; i < res.message.length; i++){					
-							blocks.push (<DiseaseBlock key={i} picture="schimmel3" title={res.message[i].name} info={res.message[i].description} symptoms={res.message[i].symptoms} treatment={res.message[i].treatment}/>);
+							blocks.push (<DiseaseBlock key={i} picture={res.message[i].imageUrl} title={res.message[i].name} info={res.message[i].description} symptoms={res.message[i].symptoms} treatment={res.message[i].treatment}/>);
 						}
 						this.setState({blocks: blocks});
 					}else{

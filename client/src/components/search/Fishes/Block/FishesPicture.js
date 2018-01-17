@@ -7,7 +7,13 @@ export default class FishesPicture extends Component {
 			<Col lg="3" className="no-gutter">
 				<div className="image-container">
 					<div className="image">
-						<img src={`/images/fish/${this.props.src}`} alt="icon"/><br/>
+					{
+						this.props.src ?
+							(<img className="resultPicture" src={this.props.src} alt="icon"/>)
+						:
+							(<p>No image</p>)
+					}
+					<br/>
 					</div>
 				</div>
 			</Col>

@@ -27,7 +27,6 @@ export default class ManageFish extends React.Component {
 		da.getData ('/species', (err, res) => {
 			if (!err) {
 				this.getData(res.message);
-				this.setState({userHasSearched: false, error: ""});
 			} else {
 				console.log("De error is: " + err.message);
 			}
@@ -123,9 +122,9 @@ export default class ManageFish extends React.Component {
 			<div>
 				<h2>Add / edit / remove fish</h2>
 				<Form inline className="searchForm" onSubmit={this.getSearchTerm}>
-        	<FormGroup>
-          	<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
-        	</FormGroup>
+					<FormGroup>
+						<Input type="text" name="searchTerm" placeholder="What do you wanna search?" onChange={this.handleSearchChange} />
+					</FormGroup>
 					<Button className="btn-admin">Search now</Button>
 					&nbsp; {this.state.userHasSearched && <Button className="btn-admin" onClick={this.loadSpecies}><i className="fa fa-arrow-circle-left"></i> Go back</Button>}
 				</Form>
@@ -133,17 +132,17 @@ export default class ManageFish extends React.Component {
 					{this.state.error}
 				</div>
 				<Table className="table">
-				  <Thead>
-				  	<Tr>
+					<Thead>
+						<Tr>
 							<Th>Picture</Th>
-	            <Th>Name</Th>
-	            <Th>Info</Th>
+							<Th>Name</Th>
+							<Th>Info</Th>
 							<Th>Additional</Th>
 							<Th>Edit</Th>
-		        </Tr>
-			    </Thead>
+						</Tr>
+					</Thead>
 				    <Tbody>
-							{this.state.data}
+						{this.state.data}
 				    </Tbody>
 				</Table>
 				<Button onClick={() => this.props.openModal(AddFishAdmin, {refreshPage: this.loadSpecies})} className="btn-admin">Add fish</Button>

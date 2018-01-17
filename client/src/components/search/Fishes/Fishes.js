@@ -13,7 +13,7 @@ export default class Fishes extends React.Component {
 	
 	componentDidMount = () => {
 		if(this.props.searchTerm !== ""){
-			let da = new DataAccess ();
+			let da = new DataAccess (true);
 			da.getData(`/species/search?term=` + this.props.searchTerm, (err, res) => {
 				if (!err) {
 					if(res.message.length > 0){
