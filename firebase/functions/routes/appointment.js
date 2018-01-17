@@ -40,7 +40,7 @@ router.get('/appointments/:id', isAuthenticated, (req, res) => {
 
 /**
  *  @api {DELETE} /appointment/:id Delete appointment
- *  @apiName delete an appointment
+ *  @apiName delete an appointment, also send an email to the client if status is not closed
  *  @apiGroup Appointments
  *
  *  @apiSuccess {String} Appointment deleted
@@ -51,9 +51,19 @@ router.get('/appointments/:id', isAuthenticated, (req, res) => {
  */
 router.delete('/appointments/:id', isAuthenticated, (req, res) => {
   const appointmentId = req.params.id;
-  db.collection('appointments').doc(appointmentId).delete()
-	.then(() => {
-	  res.status(204).send('Appointment is deleted');
+  db.collection('appointments').doc(appointmentId)
+	  .get().then((snapshot) => {
+	    const appointment = helperFunctions.flatData(snapshot);
+		admin.auth()
+		  .getUser(appointment.reservedBy)
+		  .then((userRecord) => {
+		    if (appointment.status) {
+		      // sendAppointmentCanceledMail(userRecord);
+			}
+			db.collection('appointments').doc(appointmentId).delete().then(() => {
+			  res.status(204).send('Appointment canceled');
+			})
+		  });
 	})
 	.catch((error) => {
 	  res.status(500).send(error.message);
@@ -153,19 +163,20 @@ router.post('/appointments/', isAuthenticated,
 	  .then((docSnapshot) => {
 		let appointmentAvailable = true;
 		docSnapshot.forEach((doc) => {
-		  if (appointmentAvailable && appointmentBody.timeslotId === helperFunctions.flatData(doc).timeslotId) {
+		  if (appointmentAvailable && appointmentBody.timeslotId ===
+			helperFunctions.flatData(doc).timeslotId) {
 			appointmentAvailable = false;
 			res.status(409).send('This timeslot is already in use');
 		  }
 		});
 		// Save appointment
-		if (appointmentAvailable){
+		if (appointmentAvailable) {
 		  db.collection('appointments')
 			.add(appointment)
 			.then(() => {
 			  res.status(201).send();
 			});
-		  }
+		}
 	  }).catch((error) => {
 	  res.status(500).send(error.message);
 	});
@@ -358,8 +369,16 @@ const sendAppointmentstatusMail = (user) => {
 };
 
 const sendAppointmentCanceledMail = (user) => {
-  mailer.mail(user.email, 'Appointment canceled Bassleer',
-	'Hello, We are sending you this email to inform you that your appointment has been canceled.');
+  mailer.mail(user.email, 'Afspraak geannuleerd Bassleer',
+	`Hallo,
+	 <br><br>
+	 De afspraak die u heeft bij een bassleer consultant is geannuleerd.
+	 <br><br>
+	 Met vriendelijke groet,
+	 <br><br>
+	 Het Bassleer team
+	`
+  );
 };
 
 const sendConsultNewAppointmentMail = (
