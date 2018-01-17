@@ -6,7 +6,6 @@ import ContentContainer from '../../components/myAquarium/ContentContainer';
 import ManageAgenda from './ManageAgenda/ManageAgenda';
 import ManageFish from './ManageFish';
 import ManageNotifications from './ManageNotifications/ManageNotifications';
-import ManageUsers from './ManageUsers';
 import ManageTimeSlots from './ManageTimeSlots/ManageTimeSlots';
 import ManageDiseases from './ManageDiseases';
 
@@ -39,7 +38,6 @@ export default class SideNav extends React.Component {
 					<Route exact path="/admin/notifications" render={(props) => {
 						return <ManageNotifications {...props} openModal={this.props.openModal} />
 					}}/>
-					<Route exact path="/admin/users" component={ManageUsers}/>
 					<Route exact path="/admin/exit" render={() => <Redirect to="/"/>}/>
 				</ContentContainer>
 			</div>
