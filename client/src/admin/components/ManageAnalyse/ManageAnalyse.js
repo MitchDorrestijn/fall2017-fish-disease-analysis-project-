@@ -95,6 +95,8 @@ export default class ManageAnalyse extends React.Component {
 				this.setState({errorExcel: [`Upload is ${progress}% done`, true]});
 			}, (error) => {
 				this.setState({errorExcel: [`${error.serverResponse}`, false]});
+			}, () => {
+				this.loadCurrentExcelsheet();
 			});
 		} else {
 			this.setState({errorExcel: ["Please upload a excel (.xlsx) file.", false]});
