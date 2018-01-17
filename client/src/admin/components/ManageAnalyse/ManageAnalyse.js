@@ -115,12 +115,12 @@ export default class ManageAnalyse extends React.Component {
 			<div>
 				<h2>Import new analyse sheets/images</h2>
 				<form>
-					<Card className="card">
+					<Card className="card">excelOldSymptomsDiseases
 						<p>Download old symptomenEnZiektes.xlsx: <a
-							href={this.state.excelOldQuestions}>here</a>
+							href={this.state.excelOldSymptomsDiseases}>here</a>
 						</p>
 						<p>Download old Vraagziektekruisjes.xlsx: <a
-							href={this.state.excelOldSymptomsDiseases}>here</a>
+							href={this.state.excelOldQuestions}>here</a>
 						</p>
 					</Card>
 					<Card>
