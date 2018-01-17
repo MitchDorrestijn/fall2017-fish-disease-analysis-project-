@@ -52,19 +52,19 @@ router.get('/appointments/:id', isAuthenticated, (req, res) => {
 router.delete('/appointments/:id', isAuthenticated, (req, res) => {
   const appointmentId = req.params.id;
   db.collection('appointments').doc(appointmentId)
-	  .get().then((snapshot) => {
-	    const appointment = helperFunctions.flatData(snapshot);
-		admin.auth()
-		  .getUser(appointment.reservedBy)
-		  .then((userRecord) => {
-		    if (appointment.status) {
-		      // sendAppointmentCanceledMail(userRecord);
-			}
-			db.collection('appointments').doc(appointmentId).delete().then(() => {
-			  res.status(204).send('Appointment canceled');
-			})
-		  });
-	})
+	.get().then((snapshot) => {
+	const appointment = helperFunctions.flatData(snapshot);
+	admin.auth()
+	  .getUser(appointment.reservedBy)
+	  .then((userRecord) => {
+		if (appointment.status) {
+		  // sendAppointmentCanceledMail(userRecord);
+		}
+		db.collection('appointments').doc(appointmentId).delete().then(() => {
+		  res.status(204).send('Appointment canceled');
+		});
+	  });
+  })
 	.catch((error) => {
 	  res.status(500).send(error.message);
 	});
@@ -143,21 +143,23 @@ router.post('/appointments/', isAuthenticated,
 	  //TODO: Now commented out for development
 	  // sendNewAppointmentMail(userRecord);
 	});
+	let timeSlot = {};
 	// Send to all consultants
 	db.collection('users')
 	  .where('isAdmin', '==', true)
 	  .get()
 	  .then((snapshot) => {
-		snapshot.forEach(doc => {
-		  db.collection('timeslots').doc(appointmentBody.timeslotId).get()
-			.then((timeslot) => {
+		db.collection('timeslots').doc(appointmentBody.timeslotId).get()
+		  .then((timeslot) => {
+			timeSlot = helperFunctions.flatData(timeslot);
+			snapshot.forEach(doc => {
 			  let communicationMethod;
 			  //TODO: Now commented out for development
-			  // sendConsultNewAppointmentMail(helperFunctions.flatData(doc), appointment.comment,communicationMethod, helperFunctions.flatData(timeslot));
+			  // sendConsultNewAppointmentMail(helperFunctions.flatData(doc), appointment.comment,communicationMethod, timeSlot);
 			});
-		});
+		  });
 	  });
-	//Check if this appointment is in use
+	//Check if this appointment is in use, this is for when two users create an appointment at the same time
 	const appointmentsRef = db.collection('appointments');
 	appointmentsRef.get()
 	  .then((docSnapshot) => {
@@ -173,8 +175,13 @@ router.post('/appointments/', isAuthenticated,
 		if (appointmentAvailable) {
 		  db.collection('appointments')
 			.add(appointment)
-			.then(() => {
-			  res.status(201).send();
+			.then((savedAppointment) => {
+			  // Adding appointment id to timeslot
+			  appointment.timeslotId.update({
+				appointmentId: savedAppointment.id
+			  }).then(() => {
+				res.status(201).send();
+			  });
 			});
 		}
 	  }).catch((error) => {
