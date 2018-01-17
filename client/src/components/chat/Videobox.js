@@ -33,7 +33,7 @@ export default class Videobox extends React.Component {
 			buttons.push(<Button key={3} id="startWebcam" onClick={() => this.props.startWebcam()} title="Start video call" className="btn-circle" color="success" disabled={!this.props.chatStatus}><i className="fa fa-phone"/></Button>);
 		}
 		if(this.props.adminPage){
-			buttons.push(<Button key={4} id="closeChat" onClick={() => this.props.closeChat()} title="Close chat" className="btn-circle" color="danger"><i className="fa fa-commenting-o"/></Button>);
+			buttons.push(<Button key={4} id="closeChat" onClick={() => this.props.closeChat()} title="Close chat" className="btn-circle" color="danger" disabled={!this.props.appointmentStatus}><i className="fa fa-commenting-o"/></Button>);
 		}
 
 		if(this.props.type === 'other'){
