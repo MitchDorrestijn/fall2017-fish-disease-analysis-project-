@@ -4,7 +4,9 @@ import Checkbox from './Checkbox';
 import ActionButton from '../base/ActionButton';
 import { UncontrolledCarousel, Row, Col } from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
-import FishesBlock from '../search/Fishes/Block/FishesBlock';
+import DiseaseBlock from '../search/Diseases/Block/DiseaseBlock';
+import { Redirect } from 'react-router';
+import projectName from '../../data/firebaseProject';
 
 export default class Analyse extends React.Component {
 	constructor(props){
@@ -17,6 +19,7 @@ export default class Analyse extends React.Component {
 			loaded: false,
 			showFollowUpBtn: true,
 			results: null,
+			redirect: false,
 			questions: [
 				// {
 				// 	name: "Dit is een vraag",
@@ -71,7 +74,7 @@ export default class Analyse extends React.Component {
 	}
 
 	componentWillMount(){
-		let da = new DataAccess();
+		let da = new DataAccess(true);
 		da.getData(`/questions/shallow/`, (err, res) => {
 			if(!err){
 				this.setState({questions: res.message}, () => {
@@ -90,7 +93,7 @@ export default class Analyse extends React.Component {
 		if(this.state.questions[questionNumber].pictures !== undefined){
 			for(let i=0; i<this.state.questions[questionNumber].pictures.length; i++){
 				//Create an image element if the question itself has images
-				pictures.push(<img key={i} src={this.state.questions[questionNumber].pictures[i]} alt={this.state.questions[questionNumber].pictures[i]} />);
+				pictures.push(<img key={i} src={this.state.questions[questionNumber].pictures[i]+"test"} alt={this.state.questions[questionNumber].pictures[i]} />);
 			}
 		}
 
@@ -125,15 +128,17 @@ export default class Analyse extends React.Component {
 
 			//Create <img> tags for every image
 			let answerPictures = object.pictures.map ((elem, i) => {
+				//elem = elem.replace(/ /g, "%20");
+				elem = encodeURIComponent(elem);
 				if(object.pictures.length > 1) {
 					return {
-						src: elem,
+						src: `https://firebasestorage.googleapis.com/v0/b/${projectName}.appspot.com/o/images%2Fanalyse%2F${elem}`,
 						key: i,
 						altText: '',
 	 					caption: ''
 					}
 				} else {
-					return <img key={i} src={elem}/>;
+					return <img key={i} src={`https://firebasestorage.googleapis.com/v0/b/${projectName}.appspot.com/o/images%2Fanalyse%2F${elem}`}/>;
 				}
 			});
 
@@ -195,7 +200,7 @@ export default class Analyse extends React.Component {
     		return {questionNumber: previousState.questionNumber + 1, answerForCurrentQuestion: null};
     	});
 		} else {
-			let da = new DataAccess();
+			let da = new DataAccess(true);
 			da.postData(`/questions/results`, {answers: this.state.allAnswers}, (err, res) => {
 				if(!err){
 					console.log('Tonen op het scherm:');
@@ -211,6 +216,7 @@ export default class Analyse extends React.Component {
 
 		//Uncheck all checkboxes
 		this.checkAll('answers', false);
+		window.scrollTo(0,0);
 	}
 
 
@@ -245,7 +251,7 @@ export default class Analyse extends React.Component {
 
 	//Starts a deep analyse by submitting all answers, the system will provide new questions.
 	startDeepAnalyse = () => {
-		let da = new DataAccess();
+		let da = new DataAccess(true);
 		da.postData(`/questions/deep/`, {answers: this.state.allAnswers}, (err, res) => {
 			if(!err){
 				console.log('Vervolgvragen:');
@@ -258,16 +264,20 @@ export default class Analyse extends React.Component {
 		});
 	}
 
-
-	displayResults = () => {
+	//Render the results a a DiseaseBlock
+	displayResults = (results) => {
 		let diseases = [];
-		for(var key in this.state.results) {
-			if(this.state.results.hasOwnProperty(key)) {
-				let {disease, score, diseaseCode} = this.state.results[key];
-				if(score > 0){
+		for(let key in results) {
+			if(results.hasOwnProperty(key)) {
+				let {disease, score, diseaseCode} = results[key];
+				if(results[key].details !== undefined){
+					const {imageUrl, description, treatment, symptoms} = results[key].details;
 					diseases.push(
-						// <p key={key}>Score: {score} | Ziekte: {disease} | Code: {diseaseCode}</p>
-						<FishesBlock key={diseaseCode} picture={disease} title={disease} info={disease} additional={score}/>
+						<DiseaseBlock key={diseaseCode} picture={imageUrl} title={score} info={description} symptoms={symptoms} treatment={treatment}/>
+					)
+				} else {
+					diseases.push(
+						<DiseaseBlock key={diseaseCode} title={score} />
 					)
 				}
 			}
@@ -279,55 +289,77 @@ export default class Analyse extends React.Component {
 		)
 	}
 
+	//Functions to separate diseases with and without score
+	getResultsWithoutScore = () => {
+		return this.state.results.filter((elem) => !elem.hasOwnProperty("score"));
+	}
 
+	getResultsWithScore = () => {
+		return this.state.results.filter((elem) => elem.hasOwnProperty("score"));
+	}
 
+	displayResultsWithScore = () => {
+		return this.displayResults(this.getResultsWithScore());
+	}
 
+	displayResultsWithoutScore = () => {
+		return this.displayResults(this.getResultsWithoutScore());
+	}
 
-
-
+	//Redirect updater
+	redirect = () => {
+		this.setState({redirect: true});
+	}
 
 
 
 
 	render(){
-		return(
-			<div className='analyse_wrapper'>
-			<ContentContainer size="12" widthClass='full'>
-				{this.state.showResults ?
-					<div className='search-results'>
-						{this.state.allAnswers.length === 0 ?
-							<h2>You did not answer any questions :(</h2> :
+		if(!this.state.redirect){
+			return(
+				<div className='analyse_wrapper'>
+				<ContentContainer size="12" widthClass='full'>
+					{this.state.showResults ?
+						<div className='search-results'>
+							{this.state.allAnswers.length === 0 ?
+								<h2>You did not answer any questions :(</h2> :
+								<div>
+									<h2>Based on your given answers you fish might have one of the following diseases:</h2>
+									{this.props.loggedIn ? <button onClick={this.redirect} className='btn btn-outline-primary btn-transparent request_btn'>Request a consult</button> : <button className='btn btn-outline-primary btn-transparent request_btn'>Login or register to request a consult</button>}
+									<h3>Ziektes die het meest overeen komen:{this.state.showFollowUpBtn && <button className='btn btn-outline-primary btn-transparent right_btn' disabled={this.state.allAnswers.length === 0} onClick={this.startDeepAnalyse}>Do a more detailed analysis</button>}</h3>
+									{this.displayResultsWithoutScore()}
+									<h3>Ziektes die uw vis ook kan hebben:</h3>
+									{this.displayResultsWithScore()}
+								</div>
+							}
+						</div> :
+						<div className='analyse_wrapper'>
+							{this.state.loaded &&
 							<div>
-								<h2>Based on your given answers you fish might have one of the following diseases:</h2>
-								{this.state.showFollowUpBtn && <button className='btn btn-outline-primary btn-transparent' disabled={this.state.allAnswers.length === 0} onClick={this.startDeepAnalyse}>Do a more detailed analysis</button>}
-								{this.displayResults()}
+								{this.renderQuestions(this.state.questionNumber)}
+								<hr />
+									<form name='answers' onChange={this.getAnswers}>
+										<ul>
+												{this.renderAnswers(this.state.questionNumber)}
+										</ul>
+									</form>
+									<ActionButton buttonText="Next question" onClickAction={this.incrementQuestionNumber} color="primary btn-transperant full-width"/>
 							</div>
 						}
-					</div> :
-					<div className='analyse_wrapper'>
-						{this.state.loaded &&
-						<div>
-							{this.renderQuestions(this.state.questionNumber)}
-							<hr />
-								<form name='answers' onChange={this.getAnswers}>
-									<ul>
-											{this.renderAnswers(this.state.questionNumber)}
-									</ul>
-								</form>
-								<ActionButton buttonText="Next question" onClickAction={this.incrementQuestionNumber} color="primary btn-transperant full-width"/>
 						</div>
 					}
-					</div>
-				}
-			</ContentContainer>
-			<div className='progress'>
-				<ul className='progress-wrapper'>
-					<h4>Your progress:</h4>
-					{this.state.allAnswers.length > 0 && this.renderProgress()}
-				</ul>
+				</ContentContainer>
+				<div className='progress'>
+					<ul className='progress-wrapper'>
+						<h4>Your progress:</h4>
+						{this.state.allAnswers.length > 0 && this.renderProgress()}
+					</ul>
+				</div>
 			</div>
-		</div>
-		);
+			)
+		} else {
+			return (<Redirect to="/myAquarium/requestConsult"/>);
+		}
 	}
 }
 

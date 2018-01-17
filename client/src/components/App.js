@@ -306,7 +306,7 @@ export default class App extends React.Component {
 														return <MyAquarium {...props} openModal={this.openModal} app={this.app}/>
 													}}/>
 													<Route path="/analyse" render={(props) => {
-														return <Analyse {...props} openModal={this.openModal} app={this.app}/>
+														return <Analyse {...props} openModal={this.openModal} app={this.app} loggedIn={this.state.loggedIn} />
 													}}/>
 													<Route path="/forgot-password" render={(props) => {
 														return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
