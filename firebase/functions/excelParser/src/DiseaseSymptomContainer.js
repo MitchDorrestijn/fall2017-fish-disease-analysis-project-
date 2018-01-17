@@ -8,10 +8,23 @@ module.exports = class DiseaseSymptomContainer {
 		this.diseaseSymptoms = DiseaseSymptomContainer._fillDiseaseSymptoms(fileParser, config);
 	}
 
+	static _getDiseasesList(fileParser, config) {
+		// Haal alle ziektes uit de excel sheet op totdat er een witregel komt
+		const {start} = config.diseases;
+		let result = [];
+
+		for (let i = start; fileParser.getField(0, i) !== undefined; i++) {
+			result.push(fileParser.getField(0, i));
+		}
+
+		return result;
+	}
+
 	static _fillDiseaseSymptoms(fileParser, config) {
-		const {start: diseasesStart, end: diseasesEnd} = config.diseases;
+		// Zet de symptomen en ziektes om in objecten.
+		const {start: diseasesStart} = config.diseases;
 		const {start: symptomsStart, end: symptomsEnd} = config.symptoms;
-		const diseasesList = fileParser.getColumn (0, diseasesStart, diseasesEnd);
+		const diseasesList = DiseaseSymptomContainer._getDiseasesList(fileParser, config);
 		const symptomsList = fileParser.getRow (0, symptomsStart, symptomsEnd);
 		let diseaseSymptoms = [];
 
@@ -42,12 +55,12 @@ module.exports = class DiseaseSymptomContainer {
 		return this.diseaseSymptoms.filter (elem => elem.getSymptom().getName() === name);
 	}
 
-	getByDiseaseAndSymptomNames(disease, symptom, minScore) {
+	getByDiseaseAndSymptomNames(disease, symptom) {
 		return this.diseaseSymptoms.filter (elem => {
 			return (
 				elem.getDisease().getName() === disease &&
 				elem.getSymptom().getName() === symptom
 			);
-		});
+		})[0];
 	}
 };

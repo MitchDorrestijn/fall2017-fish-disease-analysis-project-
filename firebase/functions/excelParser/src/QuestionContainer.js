@@ -19,6 +19,7 @@ module.exports = class QuestionContainer {
 	}
 
 	static _stripFollowUpDuplicates (questions) {
+		// Haal alle vervolgvragen uit de questionsArray die al voorkomen in de "root" van het object
 		let allFollowUpQuestionNames = [];
 
 		for (const question of questions) {
@@ -44,6 +45,7 @@ module.exports = class QuestionContainer {
 	}
 
 	static _addFollowUpQuestions(questions, fileParser, config) {
+		// Voeg vervolgvragen toe aan de bestaande vragenlijst
 		const {answersColumn} = config.questionsAndFollowUpQuestions;
 		const {followUpQuestionsRow} = config.questionsAndFollowUpQuestions;
 		const {start: questionsStart} = config.questionsAndFollowUpQuestions.questions;
@@ -52,6 +54,7 @@ module.exports = class QuestionContainer {
 		for (
 			let i = questionsStart + 1;
 			!(
+				// Kijk of er binnen twee lege vakken nog een nieuwe vraag komt
 				fileParser.getField(answersColumn, i) === undefined &&
 				fileParser.getField(answersColumn, i+1) === undefined &&
 				fileParser.getField(answersColumn, i+2) === undefined
@@ -69,7 +72,7 @@ module.exports = class QuestionContainer {
 									// Als het antwoord overeenkomt met het antwoord in deze sheet
 									for (let m = 0; m < questions.length; m++) {
 										// Push de vraag uit de hoofdvragen naar de followUpQuestions
-										if (questions[m].name === fileParser.getField(j, followUpQuestionsRow)) {
+										if (questions[m].getName() === fileParser.getField(j, followUpQuestionsRow)) {
 											questions[k].getAnswers()[l].addFollowUpQuestion(questions[m]);
 										}
 									}
@@ -85,7 +88,7 @@ module.exports = class QuestionContainer {
 	}
 
 	static _fillQuestions(fileParser, config) {
-		const {start: questionsStart, end: questionsEnd} = config.questionAnswersAndSymptoms.questions;
+		const {start: questionsStart} = config.questionAnswersAndSymptoms.questions;
 		let {start: symptomsStart, end: symptomsEnd} = config.questionAnswersAndSymptoms.symptoms;
 		let {start: diseasesStart} = config.questionAnswersAndSymptoms.diseases;
 		const {
@@ -188,6 +191,7 @@ module.exports = class QuestionContainer {
 	}
 
 	getQuestionByName(name) {
+		// Haal een specifieke vraag op adhv een naam, dit kan ook een vervolgvraag zijn
 		for (const question of this.questions) {
 			if (question.getName() === name) {
 				return question;
@@ -204,6 +208,7 @@ module.exports = class QuestionContainer {
 	}
 
 	getFollowUpQuestionsByName(question, answers) {
+		// Haal een vervolgvraag op die past bij een specifieke vraag en het bijbehorende antwoord
 		let result = [];
 
 		for (const storedQuestion of this.getAll()) {
