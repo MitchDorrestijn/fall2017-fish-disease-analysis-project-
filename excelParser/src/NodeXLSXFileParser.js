@@ -17,6 +17,7 @@ module.exports = class NodeXLSXFileParser {
 	static _limitArray(array, start, end) {
 		let startIndex = 0;
 		let endIndex = 0;
+		// start en end parameters kunnen ook tekst bevatten, in dat geval wordt er TOT die entry gelimit
 		for (let i = 0; i < array.length; i++) {
 			if (i === start || array[i] === start) startIndex = i;
 			if (i === end || array[i] === end) endIndex = i;
@@ -39,6 +40,7 @@ module.exports = class NodeXLSXFileParser {
 	}
 
 	getField(x, y) {
+		// Zorg dat een veld wat niet bestaat niet een exception gooit, maar gewoon undefined teruggeeft
 		try {
 			return NodeXLSXFileParser._stripNewLines(this.file[this.config.sheetNumber].data[y][x]);
 		} catch (e) {
