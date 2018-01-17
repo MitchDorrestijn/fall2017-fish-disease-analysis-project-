@@ -29,8 +29,8 @@ DWA project 2017
   * *4.4 Ontwikkelmethode,*
   * *4.5 Opleveren.*
 5. **Principles**
-  * *5.1 Code principles,*
-  * *5.2 Groeps principles*
+  * *5.1 Scrum,*
+  * *5.2 Code principles*
 6. **Software Architecture**
   * *6.1 System model,*
   * *6.2 Container model,*
@@ -59,7 +59,7 @@ Dhr.   Burgers,   onze   opdrachtgever,   wil   samen   met   dhr.   Bassleer   
 
 Dit   project   zal   worden   uitgevoerd   door   S.   Scheffer,   R.   Mulleman,   M.   Dorrestijn,   C.   Severein,   R. Meijer   en   J.   Weijland.   Zijnde   studenten   Hogeschool   van   Arnhem   en   Nijmegen   zijn   zij verantwoordelijk   voor   het   voltooien   van   het   project.
 
-Er zijn al meerdere ICA-teams die aan de visanalysetool hebben gewerkt. Hieronder twee CMD-teams die het concept hebben uitgewerkt en een HTML en CSS-design hebben geleverd en een ICT-team wat een
+Er zijn al meerdere ICA-teams die aan de visanalysetool hebben gewerkt. Twee CMD-teams die het concept hebben uitgewerkt en een HTML en CSS-design hebben geleverd en een ICT-team wat een
 databasestructuur heeft opgezet.
 
 Het   project   is   opgezet   als   opdracht   vanuit   de   HAN.   Dit   proces   wordt   begeleid   door   de   volgende docenten:   mevr.   Danes,   dhr.   Leer   en   dhr.   Holwerda.
@@ -173,64 +173,28 @@ De website moet vóór 19-01-2018 worden opgeleverd. Als deze deadline niet geha
 
 ## 5. Principles
 
-In dit hoofdstuk worden de software principles toegelicht. Software principles zijn regels waaraan ieder groepslid zich moet houden om elkaars code te kunnen begrijpen. Groepsprinciples zijn regels om ervoor te zorgen dat het project optimaal verloopt.
+In dit hoofdstuk worden de software principles toegelicht.
 
-#### 5.1 Code principles
-**Algemeen**
-1. Gebruik tabs, geen spaties,
-2. Altijd spaties rondom operators ( = + - * / ),
-3. Statements beëindigen met puntkomma’s,
-4. Waar mogelijk niet meer dan 120 karakters op een regel.
+#### 5.1 Scrum
 
-**Control structures**
-1. Spatie voor haakje openen,
-2. Normale string declaraties worden aangegeven met enkele quote(‘) ipv dubbele quote(“).
+In dit project wordt gebruik gemaakt van verschillende onderdelen uit scrum:
 
-**Benamingen**
-1. Alle namen starten met een letter uit het Nederlandse alfabet,
-2. Bij meerdere woorden aan elkaar wordt camelCasing gebruikt (met uitzondering van klassen).
+- Daily standup
+- Sprint reviews
+- Backlog
 
-**Functies**
-1. Camel casing (functionName),
-2. Accolade aan het einde van de eerste regel,
-3. Spatie voor accolades,
-4. Beëindigings accolade op nieuwe regel.
+Scrum is een projectmanagement methode gebaseerd op een agile software development. Dit zijn de principles geciteerd uit het agile manifesto:
 
-**Klassen**
-1. Namen van klassen maken gebruik van Pascal case (ClassName).
+- Individuals and interactions over processes and tools
+- Working software over comprehensive documentation
+- Customer collaboration over contract negotiation
+- Responding to change over following a plan
 
-**Variabelen**
-1. Maak variabelen altijd aan met const of let. Gebruik geen var.
 
-**Objecten**
-Objecten worden als volgt gedefineerd:
-```javascript
-const person = {
-	firstName: "John",
-	lastName: "Doe",
-	age: 50,
-	eyeColor: "blue"
-};
-```
 
-Wanneer het niet zeker is hoe de code gestyled moet worden, kijk dan naar dit document: 
-https://google.github.io/styleguide/jsguide.html
+#### 5.2 Code principles
 
-#### 5.2 Groeps principles
-
-1. Werktijden zijn van 8:45 tot 16:45,
-2. Er wordt gewerkt op de Hogeschool van Arnhem en Nijmegen,
-3. De dagelijkse scrum meeting vindt plaats om 9:30,
-4. Men heeft een half uur pauze van 12:00 uur tot 12:30 uur. Dit kan afwijken i.v.m. andere
-  afspraken op die dag,
-5. Men zet in de gezamenlijke kalender wanneer men niet of anders aanwezig is dan
-  eerder afgesproken,
-6. Elke teamgenoot mag niet meer dan twee items in progress hebben,
-7. Elke teamgenoot wordt geacht het Scrumbord bij te houden,
-8. Inhoudelijke meldingen worden gedaan via Slack in het daarvoor bestemde kanaal.
-9. Whatsapp wordt gebruikt voor informele of vlugge mededelingen.
-
-----
+Code styling is als een bijlagen toegevoegd.
 
 ## 6. Software architectuur
 Dit hoofdstuk laat een overzicht zien van onze software architectuur.
