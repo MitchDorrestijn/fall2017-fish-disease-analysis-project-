@@ -10,6 +10,7 @@ module.exports = class Analysis {
 		for (let i = 0; i < result.length; i++) {
 			for (let j = i+1; j < result.length; j++) {
 				if (property) {
+					// Controleer alleen of een specifieke property gelijk is
 					if (result[i][property] === result[j][property]) {
 						result.splice(j, 1);
 						j--;
@@ -57,7 +58,12 @@ module.exports = class Analysis {
 						symptomDiseaseSymptom.getDisease().getName() === result[i].getDisease().getName() &&
 						result[i].getScore() > 0
 					) {
-						result[i].addPoints(symptomDiseaseSymptom.getScore());
+						result[i].addPoints(
+							diseaseSymptomContainer.getByDiseaseAndSymptomNames(
+								symptomDiseaseSymptom.getDisease().getName(),
+								symptomDiseaseSymptom.getSymptom().getName()
+							).getScore()
+						);
 						found = true;
 					}
 				}

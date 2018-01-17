@@ -54,4 +54,13 @@ module.exports = class DiseaseSymptomContainer {
 	getBySymptomName(name) {
 		return this.diseaseSymptoms.filter (elem => elem.getSymptom().getName() === name);
 	}
+
+	getByDiseaseAndSymptomNames(disease, symptom) {
+		return this.diseaseSymptoms.filter (elem => {
+			return (
+				elem.getDisease().getName() === disease &&
+				elem.getSymptom().getName() === symptom
+			);
+		})[0];
+	}
 };
