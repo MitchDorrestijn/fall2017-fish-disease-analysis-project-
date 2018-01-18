@@ -95,7 +95,7 @@ export default class Analyse extends React.Component {
 			answers.push(
 				<div key={answers.length}>
 					<li>
-						<span className='checkbox_wrapper'>{object.name}<br /><Checkbox name='answer' value={object.name} disabled={false} value={object.name} /></span>
+						<span className='checkbox_wrapper'><Checkbox name='answer' value={object.name} disabled={false} value={object.name} />{object.name}</span>
 						{answerPictures.length > 0  ?
 							<div>
 								{answerPictures.length > 1 ? <UncontrolledCarousel items={answerPictures} /> : answerPictures}

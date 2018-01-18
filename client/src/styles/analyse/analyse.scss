@@ -56,7 +56,9 @@
 		}
 		.checkbox_wrapper {
 			margin-bottom: $defaultPadding*2;
-			min-height: 50px;
+			min-height: 80px;
+			max-height: 100px;
+			overflow: scroll;
 		}
 		.question_pictures {
 			margin: 0 3%;
