@@ -23,9 +23,6 @@ export default class MyAquarium extends React.Component {
 						<SidebarLink img="/images/myAquarium/graph-icon.png" target="/myAquarium/todaysData">
 							Today's data
 						</SidebarLink>
-						<SidebarLink img="/images/myAquarium/save-icon-wit.png" target="/myAquarium/savedAdvices">
-							Saved advices
-						</SidebarLink>
 						<SidebarLink img="/images/myAquarium/clock-icon.png" target="/myAquarium/notifications">
 							Notifications
 						</SidebarLink>
