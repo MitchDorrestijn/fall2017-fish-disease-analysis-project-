@@ -27,28 +27,30 @@ router.get('/opentimeslots/', isAuthenticated, (req, res) => {
 	.then((snapshot) => {
 	  let appointmentsTimeslots = [];
 	  snapshot.forEach((doc) => {
-		const flatData = helperFunctions.flatData(doc);
-		appointmentsTimeslots.push({
-		  id: flatData.timeslotId,
-		});
+			let flatData = helperFunctions.flatData(doc);
+			flatData.id = doc.id;
+			appointmentsTimeslots.push({
+				id: flatData.timeslotId,
+			});
 	  });
 	  return appointmentsTimeslots;
 	}).then((data) => {
 	db.collection('timeslots').get().then((snapshot) => {
 	  let timeslots = [];
 	  snapshot.forEach((doc) => {
-		let timeslot = helperFunctions.flatData(doc);
-		let appointmentCheck = true;
-		data.forEach((appointment) => {
-		  // Check if the appointment id equals the id of the timeslot
-		  if (appointment.id === timeslot.id) {
-			appointmentCheck = false;
-		  }
-		});
-		// Only push unique timeslots and appointments which meet the appointment check
-		if (timeslots.indexOf(timeslot) === -1 && appointmentCheck) {
-		  timeslots.push(timeslot);
-		}
+			let timeslot = helperFunctions.flatData(doc);
+			timeslot.id = doc.id;
+			let appointmentCheck = true;
+			data.forEach((appointment) => {
+				// Check if the appointment id equals the id of the timeslot
+				if (appointment.id === timeslot.id) {
+				appointmentCheck = false;
+				}
+			});
+			// Only push unique timeslots and appointments which meet the appointment check
+			if (timeslots.indexOf(timeslot) === -1 && appointmentCheck) {
+				timeslots.push(timeslot);
+			}
 	  });
 	  return res.status(200).send(timeslots);
 	});
@@ -69,7 +71,9 @@ router.get('/timeslots/', isAdmin, (req, res) => {
 	.then((snapshot) => {
 	  let timeslots = [];
 	  snapshot.forEach((doc) => {
-		timeslots.push(doc.data());
+			let o = doc.data();
+			o.id = doc.id;
+		  timeslots.push(o);
 	  });
 	  res.send(timeslots);
 	}).catch((err) => {
