@@ -312,7 +312,7 @@ router.delete('/aquaria/:id/species/:sid', isAuthenticated, (req, res) => {
 router.get('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const aquarium = db.collection('aquaria').doc(req.params.id);
 
-	db.collection('aquaria').doc(req.params.id).collection('entries').get()
+	db.collection('aquaria').doc(req.params.id).collection('entries').orderBy('createdAt', 'desc').get()
 	.then((snapshot) => {
 		if (snapshot.empty) {
 			return res.status(204).send('Nothing found');
