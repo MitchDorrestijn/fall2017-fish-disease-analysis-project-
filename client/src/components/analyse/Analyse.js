@@ -218,15 +218,15 @@ export default class Analyse extends React.Component {
 		let diseases = [];
 		for(let key in results) {
 			if(results.hasOwnProperty(key)) {
-				let {disease, score, diseaseCode} = results[key];
+				let {disease, diseaseCode} = results[key];
 				if(results[key].details !== undefined){
 					const {imageUrl, description, treatment, symptoms} = results[key].details;
 					diseases.push(
-						<DiseaseBlock key={diseaseCode} picture={imageUrl} title={score} info={description} symptoms={symptoms} treatment={treatment}/>
+						<DiseaseBlock key={diseaseCode} picture={imageUrl} title={disease} info={description} symptoms={symptoms} treatment={treatment}/>
 					)
 				} else {
 					diseases.push(
-						<DiseaseBlock key={diseaseCode} title={score} />
+						<DiseaseBlock key={diseaseCode} title={disease} />
 					)
 				}
 			}
