@@ -103,7 +103,7 @@ export default class MyFish extends React.Component {
 			}
 		} else {
 			if(this.state.currentAquarium !== ""){
-				return <p><span className="inline-text">You did not add any fish here, why don't you</span><a className="inline-btn" onClick={this.showAddFishModel} color="link">add one</a></p>
+				return <span onClick={this.showAddFishModel}>There are no fish in your aquarium yet.</span>
 			} else {
 				return <p>Please select an aquarium.</p>;
 			}
