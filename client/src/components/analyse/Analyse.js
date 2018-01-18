@@ -94,7 +94,7 @@ export default class Analyse extends React.Component {
 			//Prepare images and checkbox layout
 			answers.push(
 				<div key={answers.length}>
-					<li>
+					<li className="answer_wrapper">
 						<span className='checkbox_wrapper'><Checkbox name='answer' value={object.name} disabled={false} value={object.name} />{object.name}</span>
 						{answerPictures.length > 0  ?
 							<div>
