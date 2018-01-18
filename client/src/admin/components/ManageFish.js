@@ -26,7 +26,9 @@ export default class ManageFish extends React.Component {
 		let da = new DataAccess();
 		da.getData ('/species', (err, res) => {
 			if (!err) {
-				this.getData(res.message);
+				this.setState({userHasSearched: false, error: ""}, () => {
+					this.getData(res.message);
+				})
 			} else {
 				console.log("De error is: " + err.message);
 			}
