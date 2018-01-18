@@ -7,6 +7,19 @@
 
 .analyse_wrapper {
 	overflow: auto;
+	h2, button, h3 {
+		margin-left: ($defaultPadding*2) - ($defaultPadding/3);
+	}
+	h3 {
+		margin-top: $defaultPadding*2;
+	}
+	.right_btn {
+		margin-right: $defaultPadding*2;
+		float: right;
+	}
+	.request_btn {
+		margin-top: $defaultPadding;
+	}
 	.progress {
 		background: transparent;
 		padding: $defaultPadding;
@@ -59,7 +72,7 @@
 		}
 		.analyse_wrapper {
 			.full-width {
-				width: 98%;
+				width: 95%;
 			}
 			form {
 				overflow: auto;
