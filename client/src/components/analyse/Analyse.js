@@ -2,11 +2,10 @@ import React from 'react';
 import ContentContainer from '../myAquarium/ContentContainer';
 import Checkbox from './Checkbox';
 import ActionButton from '../base/ActionButton';
-import { UncontrolledCarousel, Row, Col } from 'reactstrap';
+import { UncontrolledCarousel } from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
 import DiseaseBlock from '../search/Diseases/Block/DiseaseBlock';
 import { Redirect } from 'react-router';
-import projectName from '../../data/firebaseProject';
 
 export default class Analyse extends React.Component {
 	constructor(props){
@@ -87,7 +86,7 @@ export default class Analyse extends React.Component {
 	 					caption: ''
 					}
 				} else {
-					return <img key={i} src={elem}/>;
+					return <img key={i} src={elem} alt=''/>;
 				}
 			});
 
@@ -95,7 +94,7 @@ export default class Analyse extends React.Component {
 			answers.push(
 				<div key={answers.length}>
 					<li className="answer_wrapper">
-						<span className='checkbox_wrapper'><Checkbox name='answer' value={object.name} disabled={false} value={object.name} />{object.name}</span>
+						<span className='checkbox_wrapper'><Checkbox name='answer' value={object.name} disabled={false} />{object.name}</span>
 						{answerPictures.length > 0  ?
 							<div>
 								{answerPictures.length > 1 ? <UncontrolledCarousel items={answerPictures} /> : answerPictures}
@@ -171,10 +170,10 @@ export default class Analyse extends React.Component {
 
 	//Checks or unchecks all checkboxes in a form
 	checkAll = (formname, checktoggle) => {
-		let checkboxes = new Array();
+		let checkboxes = [];
 		checkboxes = document[formname].getElementsByTagName('input');
 		for (let i=0; i<checkboxes.length; i++)  {
-			if (checkboxes[i].type == 'checkbox')   {
+			if (checkboxes[i].type === 'checkbox')   {
 				checkboxes[i].checked = checktoggle;
 			}
 		}

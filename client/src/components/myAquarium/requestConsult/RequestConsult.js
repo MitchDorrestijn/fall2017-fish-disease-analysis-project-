@@ -4,7 +4,6 @@ import ActionButton from '../../base/ActionButton';
 import * as firebase from 'firebase';
 import ShowChatLog from '../../modal/ShowChatLog';
 import DataAccess from '../../../scripts/DataAccess';
-import moment from 'moment';
 
 export default class AccountSettings extends React.Component {
 	constructor(props) {
@@ -23,7 +22,6 @@ export default class AccountSettings extends React.Component {
 		});
 	};
 	setAvailableDates = (data) => {
-	  console.log(data);
 		this.setState({
 			availableDates: data
 		});
@@ -141,7 +139,6 @@ export default class AccountSettings extends React.Component {
 		return options;
 	};
 	drawConsultsCards = () => {
-	  console.log(this.state.appointments);
 		let cards = [];
 		for (let key in this.state.appointments) {
 			if (cards.length === 0) {

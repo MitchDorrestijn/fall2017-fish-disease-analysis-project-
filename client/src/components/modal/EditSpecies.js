@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, ModalHeader, ModalBody, Input, Form, FormGroup, Label, FormText} from 'reactstrap';
+import {Button, ModalHeader, ModalBody, Input, Form, FormGroup, Label} from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
 
 export default class EditSpecies extends Component {

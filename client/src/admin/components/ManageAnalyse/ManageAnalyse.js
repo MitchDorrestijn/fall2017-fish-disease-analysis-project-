@@ -107,9 +107,8 @@ export default class ManageAnalyse extends React.Component {
 	checkErrorMessage = (Message) => {
 		if (Message[1] === true) {
 			return 'succes';
-		} else {
-			return 'error';
-		};
+		}
+		return 'error';
 	};
 
 	render(){

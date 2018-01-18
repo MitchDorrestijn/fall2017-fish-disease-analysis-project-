@@ -19,7 +19,7 @@ export default class UserService{
 			}
 		}
 
-		if(!body.password.length == 0){
+		if(!body.password.length === 0){
 			json.user.password = body.password;
 		}
 

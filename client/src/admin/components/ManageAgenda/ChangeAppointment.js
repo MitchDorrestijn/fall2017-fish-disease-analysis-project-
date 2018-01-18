@@ -102,7 +102,7 @@ export default class RemoveAppointment extends Component {
 	};
 
 	render() {
-		const {timeslot, comment, video} = this.state.data;
+		const {comment, video} = this.state.data;
 		const {toggleModal} = this.props;
 		return (
 			<div>

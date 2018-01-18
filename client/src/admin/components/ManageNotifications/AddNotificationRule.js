@@ -137,16 +137,15 @@ export default class AddNotificationRule extends Component {
 					</InputGroup>
 				</FormGroup>
 			);
-		} else {
-			return (
-				<FormGroup key='1'>
-					<Label>Compared</Label><br/>
-					<InputGroup>
-						<Input id={id} type='number' value={this.state.triggers[id].compared} onChange={this.changeCompared}/>
-					</InputGroup>
-				</FormGroup>
-			);
-		};
+		}
+		return (
+			<FormGroup key='1'>
+				<Label>Compared</Label><br/>
+				<InputGroup>
+					<Input id={id} type='number' value={this.state.triggers[id].compared} onChange={this.changeCompared}/>
+				</InputGroup>
+			</FormGroup>
+		);
 	};
 
 	//Add multiple options based on trigger triggerCount
@@ -209,7 +208,7 @@ export default class AddNotificationRule extends Component {
 					<Button onClick={this.increaseTriggerCount} outline className='modalLink' color='secondary' block>Add additional notification trigger</Button>
 					<hr/>
 					<FormGroup>
-						<Label>Notification message <a href="#" id="TooltipMessage">(more info)</a></Label><br/>
+						<Label>Notification message <span id="TooltipMessage">(more info)</span></Label><br/>
 						<Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipMessage" toggle={this.toggle}>
 							Placeholders: <br /><br />
 							{'{aquarium}: will show the concerned aquarium name'} <br /><br />

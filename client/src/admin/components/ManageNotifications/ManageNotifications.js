@@ -1,6 +1,6 @@
 import React from 'react';
 // import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
-import { Button, Form, FormGroup, Input, ButtonGroup, Table, thead, tbody, tr, th, td } from 'reactstrap';
+import { Button, ButtonGroup, Table, thead, tbody, tr, th, td } from 'reactstrap';
 import ActionButton from '../../../components/base/ActionButton';
 import addNotificationRule from './AddNotificationRule';
 import removeNotificationRule from './RemoveNotificationRule';
@@ -50,7 +50,7 @@ export default class ManageNotifications extends React.Component {
 	};
 
 	checkRowspanTable = (data, index) => {
-		if (index == 0) {
+		if (index === 0) {
 			return (data)
 		}
 	}

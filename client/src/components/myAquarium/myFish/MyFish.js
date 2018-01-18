@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '../../base/Card';
-import {CardText, CardTitle, CardSubtitle, Button} from 'reactstrap';
+import {CardText, CardTitle, CardSubtitle} from 'reactstrap';
 import ActionButton from '../../base/ActionButton';
 import {Link} from 'react-router-dom';
 import AddFish from '../../modal/AddFish';

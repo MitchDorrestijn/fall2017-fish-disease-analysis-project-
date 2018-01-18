@@ -50,9 +50,8 @@ export default class Notifications extends React.Component {
 	checkNotificationType = (type) => {
 		if (type === 'Urgent') {
 			return "danger-icon";
-		} else {
-			return "warning-icon";
-		};
+		}
+		return "warning-icon";
 	};
 	getNotifications = () => {
 		let notificationsRead = [];

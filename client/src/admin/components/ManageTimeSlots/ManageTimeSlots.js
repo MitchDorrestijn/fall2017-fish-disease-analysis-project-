@@ -6,7 +6,6 @@ import DataAccess from '../../../scripts/DataAccess';
 import RemoveTimeSlot from './RemoveTimeSlot';
 import ChangeTimeSlot from './ChangeTimeSlot';
 import AddTimeSlot from './AddTimeSlot';
-import addFishDesiseAdmin from '../../../components/modal/AddFishDiseaseAdmin';
 
 export default class ManageTimeSlot extends Component {
 	constructor(props) {
