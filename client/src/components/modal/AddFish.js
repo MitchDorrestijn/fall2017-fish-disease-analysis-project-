@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModalHeader, ModalBody, Button, FormGroup, Label, InputGroup} from 'reactstrap';
-import Error from './Error';
+//import Error from './Error';
 import 'react-select/dist/react-select.css';
 import Select from "react-select";
 import DataAccess from '../../scripts/DataAccess';
