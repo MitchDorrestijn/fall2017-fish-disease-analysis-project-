@@ -6,6 +6,7 @@ import { UncontrolledCarousel } from 'reactstrap';
 import DataAccess from '../../scripts/DataAccess';
 import DiseaseBlock from '../search/Diseases/Block/DiseaseBlock';
 import { Redirect } from 'react-router';
+import Login from '../modal/Login';
 
 export default class Analyse extends React.Component {
 	constructor(props){
@@ -258,7 +259,11 @@ export default class Analyse extends React.Component {
 	redirect = () => {
 		this.setState({redirect: true});
 	}
-
+	//Redirect to login
+	showLogin = (evt) => {
+		evt.preventDefault ();
+		this.props.openModal(Login);
+	};
 
 
 
@@ -270,10 +275,10 @@ export default class Analyse extends React.Component {
 					{this.state.showResults ?
 						<div className='search-results'>
 							{this.state.allAnswers.length === 0 ?
-								<h2>You did not answer any questions :(</h2> :
+								<h2>You did not answer any questions.</h2> :
 								<div>
 									<h2>Based on your given answers you fish might have one of the following diseases:</h2>
-									{this.props.loggedIn ? <button onClick={this.redirect} className='btn btn-outline-primary btn-transparent request_btn'>Request a consult</button> : <button className='btn btn-outline-primary btn-transparent request_btn'>Login or register to request a consult</button>}
+									{this.props.loggedIn ? <button onClick={this.redirect} className='btn btn-outline-primary btn-transparent request_btn'>Request a consult</button> : <button onClick={this.showLogin} className='btn btn-outline-primary btn-transparent request_btn'>Login or register to request a consult</button>}
 									<h3>Your fish is likely to suffer from:{this.state.showFollowUpBtn && <button className='btn btn-outline-primary btn-transparent right_btn' disabled={this.state.allAnswers.length === 0} onClick={this.startDeepAnalyse}>Do a more detailed analysis</button>}</h3>
 									{this.displayResultsWithoutScore()}
 									<h3>Your fish might also have:</h3>
