@@ -109,7 +109,7 @@ router.get('/timeslots/:id/', isAuthenticated, (req, res) => {
 	}
 	return res.send(helperFunctions.flatData(timeslotObject)).status(200);
   }).catch(err => {
-	res.status(400).send(err.message);
+	  res.status(400).send(err.message);
   });
 });
 
@@ -122,8 +122,7 @@ router.get('/timeslots/:id/', isAuthenticated, (req, res) => {
  *  @apiUse UserAuthenticated
  *  @apiUse ValidationError
  */
-router.post('/timeslots/', isAuthenticated,
-  validateModel('timeslot', ['duration', 'startDate']), (req, res) => {
+router.post('/timeslots/', isAuthenticated, validateModel('timeslot', ['duration', 'startDate']), (req, res) => {
 	if (!req.body) {
 	  return res.sendStatus(400);
 	}
@@ -137,15 +136,37 @@ router.post('/timeslots/', isAuthenticated,
 	db.collection('timeslots')
 	  .add(timeSlot)
 	  .then((newDoc) => {
-		return newDoc.get();
-	  })
-	  .then((document) => {
-		res.status(201).send();
+			return newDoc.get()
+		})
+		.then((newDoc) => {
+			return calculateEndDate(newDoc);
+		})
+	  .then(() => {
+			res.status(201).send();
 	  })
 	  .catch((error) => {
-		res.status(500).send(error.message);
+			res.status(500).send(error.message);
 	  });
-  });
+});
+
+const calculateEndDate = (doc) => {
+	// Get the timeslot document
+	const timeslot = doc.data();
+
+	const startDate = new Date(timeslot.startDate);
+	const duration = timeslot.duration;
+	// Add an "end timestamp" field
+	const endDate = new Date(startDate.getTime() + duration * 60000);
+
+	if (endDate !== timeslot.endDate){
+		// Write timestamp to the timestamp
+		return doc.ref.set({
+			endDate: endDate
+		}, {merge: true});
+	} else {
+		return Promise.resolve();
+	}
+};
 
 /**
  *  Admin
@@ -175,10 +196,14 @@ router.put('/timeslots/:id',
 	timeslot.startDate = new Date(timeslot.startDate);
 	db.collection('timeslots').doc(timeslotId).update(timeslot)
 	  .then((document) => {
-		res.status(203).send();
-	  })
+			return document.get();
+		}).then((document) => {
+			return calculateEndDate(document);
+	  }).then(() => {
+			res.status(203).send();
+		})
 	  .catch((error) => {
-		res.status(500).send(error.message);
+		  res.status(500).send(error.message);
 	  });
   });
 

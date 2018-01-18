@@ -197,30 +197,4 @@ exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete
 	return Promise.all([index.deleteObject(event.params.id), both.deleteObject(event.params.id)]);
 });
 
-const calculateEndDate = (event) => {
-	// Get the timeslot document
-	const timeslot = event.data.data();
-
-	const startDate = new Date(timeslot.startDate);
-	const duration = timeslot.duration;
-	// Add an "end timestamp" field
-	const endDate = new Date(startDate.getTime() + duration * 60000);
-
-	if (endDate !== timeslot.endDate){
-		// Write timestamp to the timestamp
-		return event.data.ref.set({
-			endDate: endDate
-		}, {merge: true});
-	}
-};
-
-
-exports.onTimeslotCreated = functions.firestore.document("timeslots/{id}").onCreate(event => {
-	return calculateEndDate(event);
-});
-
-exports.onTimeslotUpdated = functions.firestore.document("timeslots/{id}").onUpdate(event => {
-	return calculateEndDate(event);
-});
-
 
