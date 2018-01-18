@@ -79,7 +79,6 @@ export default class Analyse extends React.Component {
 
 			//Create <img> tags for every image
 			let answerPictures = object.pictures.map ((elem, i) => {
-				elem = encodeURIComponent(elem);
 				if(object.pictures.length > 1) {
 					return {
 						src: elem,

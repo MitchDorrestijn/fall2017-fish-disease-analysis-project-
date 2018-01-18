@@ -48,7 +48,7 @@ module.exports = class Answer {
 	}
 
 	getAllPromises() {
-		return this.buckets;
+		return this.promises;
 	}
 
 	getName() {
