@@ -88,17 +88,22 @@
 				li {
 					float: left;
 					width: 33.3%;
+					height: 320px;
 					text-align: center;
 					font-size: 18px;
 					margin-bottom: $defaultPadding*3;
 					img {
-						width: 100%;
-						display: block;
+						width: auto;
+						max-width: 100%;
+						max-height: 240px;
+						display: inline-block;
 						padding: $defaultPadding;
 						//margin: 0 0 $defaultPadding auto;
 					}
 					span {
 						display: block;
+						padding: 0;
+						margin: 0;
 					}
 				}
 			}
