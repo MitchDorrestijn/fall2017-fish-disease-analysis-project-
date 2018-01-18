@@ -20,56 +20,7 @@ export default class Analyse extends React.Component {
 			showFollowUpBtn: true,
 			results: null,
 			redirect: false,
-			questions: [
-				// {
-				// 	name: "Dit is een vraag",
-				// 	answers: [
-				// 		{
-				// 			name: "Antwoord 1",
-				// 			pictures: [
-				// 				"/images/fish/catfish.jpg",
-				// 				"/images/fish/goldfish.jpg"
-				// 			]
-				// 		},
-				// 		{
-				// 			name: "Antwoorw2"
-				// 		}
-				// 	]
-				// },
-				// {
-				// 	name: "Dit is vraag 2",
-				// 	pictures: [
-				// 		"/images/fish/catfish.jpg",
-				// 		"/images/fish/catfish.jpg"
-				// 	],
-				// 	answers: [
-				// 		{
-				// 			name: "Antwoord 3434",
-				// 			pictures: [
-				// 				"/images/fish/catfish.jpg",
-				// 				"/images/fish/catfish.jpg",
-				// 				"/images/fish/catfish.jpg",
-				// 				"/images/fish/catfish.jpg",
-				// 				"/images/fish/catfish.jpg",
-				// 				"/images/fish/catfish.jpg"
-				// 			]
-				// 		},
-				// 		{
-				// 			name: "Antwoorw2",
-				// 			pictures: [
-				// 				"/images/fish/catfish.jpg",
-				// 				"/images/fish/catfish.jpg"
-				// 			]
-				// 		},
-				// 		{
-				// 			name: "Antwoorw3",
-				// 			pictures: [
-				// 				"/images/fish/catfish.jpg"
-				// 			]
-				// 		}
-				// 	]
-				// }
-			]
+			questions: []
 		}
 	}
 
@@ -128,17 +79,16 @@ export default class Analyse extends React.Component {
 
 			//Create <img> tags for every image
 			let answerPictures = object.pictures.map ((elem, i) => {
-				//elem = elem.replace(/ /g, "%20");
 				elem = encodeURIComponent(elem);
 				if(object.pictures.length > 1) {
 					return {
-						src: `https://firebasestorage.googleapis.com/v0/b/${projectName}.appspot.com/o/images%2Fanalyse%2F${elem}`,
+						src: elem,
 						key: i,
 						altText: '',
 	 					caption: ''
 					}
 				} else {
-					return <img key={i} src={`https://firebasestorage.googleapis.com/v0/b/${projectName}.appspot.com/o/images%2Fanalyse%2F${elem}`}/>;
+					return <img key={i} src={elem}/>;
 				}
 			});
 
@@ -362,35 +312,3 @@ export default class Analyse extends React.Component {
 		}
 	}
 }
-
-
-
-
-
-
-// 	fixDieTabel = (answers) => {
-// 	let answerPicturesRow = [];
-// 	let answerOptionsRow = [];
-//
-// 	console.log(answers);
-//
-// 	answers.forEach (answer => {
-// 		let pictures;
-// 		if (answer.hasOwnProperty("pictures")) {
-// 			pictures = answer.pictures.map (elem => <img src={elem} alt={elem}/>);
-// 		} else {
-// 			pictures = null;
-// 		}
-// 		answerPicturesRow.push(<td>{pictures}</td>);
-// 		answerOptionsRow.push(<td>{answer.name}</td>);
-// 	});
-//
-// 	return (
-// 		<table style={{tableLayout: "fixed"}}>
-// 			<tbody>
-// 				<tr>{answerPicturesRow}</tr>
-// 				<tr>{answerOptionsRow}</tr>
-// 			</tbody>
-// 		</table>
-// 	);
-// };
