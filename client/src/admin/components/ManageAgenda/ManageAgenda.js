@@ -151,7 +151,6 @@ export default class ManageAgenda extends Component {
 							<Th>Person</Th>
 							<Th>Description</Th>
 							<Th>Status</Th>
-						  	<Th></Th>
 							<Th/>
 						</Tr>
 					</Thead>
