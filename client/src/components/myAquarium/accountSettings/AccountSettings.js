@@ -25,6 +25,7 @@ export default class AccountSettings extends React.Component {
 			accountErrorVisible: false,
 			errorLoginContent: '',
 			errorAccountContent: '',
+			success: null
 		};
 	}
 
@@ -99,9 +100,11 @@ export default class AccountSettings extends React.Component {
 		if (this.verifyInput(profile)) {
 			userService.updateUserData(user.uid, profile, (err, res) => {
 				if (!err) {
-					alert('Account has been updated');
+					this.setState({success: 'Account has been updated', errorAccountContent: ''});
 				} else {
-					this.showError('login', true, err.message);
+					this.setState({success: ''}, () => {
+						this.showError('login', true, err.message);
+					})
 				}
 			});
 		}
@@ -114,19 +117,25 @@ export default class AccountSettings extends React.Component {
 	 **/
 	verifyInput = (profile) => {
 		if (!profile.firstName || !profile.lastName || !profile.birthDate) {
-			this.showError('account', true, 'Please fill in all fields');
-			return false;
+			this.setState({success: ''}, () => {
+				this.showError('account', true, 'Please fill in all fields');
+				return false;
+			});
 		}
 		if (!profile.firstName || !profile.lastName || !profile.birthDate) {
-			this.showError('login', true, 'Please fill in all fields');
-			return false;
+			this.setState({success: ''}, () => {
+				this.showError('login', true, 'Please fill in all fields');
+				return false;
+			});
 		}
 		if (profile.password === profile.confirmPassword) {
 			this.cleanErrors();
 			return true;
 		} else {
-			this.showError('login', true, 'Password is not the same');
-			return false;
+			this.setState({success: ''}, () => {
+				this.showError('login', true, 'Password is not the same');
+				return false;
+			});
 		}
 	};
 
@@ -224,6 +233,9 @@ export default class AccountSettings extends React.Component {
 								<Error
 									errorContent={this.state.errorAccountContent}/> :
 								null
+							}
+							{this.state.success &&
+								<div class="alert alert-success fade show" role="alert">{this.state.success}</div>
 							}
 						</Col>
 						<Setting title="Name">
