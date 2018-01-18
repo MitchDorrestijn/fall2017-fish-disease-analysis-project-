@@ -579,7 +579,7 @@ export default class ChatInitializer extends React.Component {
 				<div id="chat-main" className="chat-wrapper">
 					<Container>
 						<Row>
-							<VideoboxMobile startWebcam={this.startWebcam} stopWebcam={this.stopWebcam} chatStatus={this.state.chatStatus} closeChat={this.closeChat} adminPage={this.props.adminPage} stream={this.stream} />
+							<VideoboxMobile startWebcam={this.startWebcam} stopWebcam={this.stopWebcam} chatStatus={this.state.chatStatus} appointmentStatus={this.state.appointmentStatus} closeChat={this.closeChat} adminPage={this.props.adminPage} stream={this.stream} />
 						</Row>
 						<Row className="inner-chat-wrapper">
 							<Col md="4" className="removeColumn">
