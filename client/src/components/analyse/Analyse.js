@@ -275,9 +275,9 @@ export default class Analyse extends React.Component {
 								<div>
 									<h2>Based on your given answers you fish might have one of the following diseases:</h2>
 									{this.props.loggedIn ? <button onClick={this.redirect} className='btn btn-outline-primary btn-transparent request_btn'>Request a consult</button> : <button className='btn btn-outline-primary btn-transparent request_btn'>Login or register to request a consult</button>}
-									<h3>Ziektes die het meest overeen komen:{this.state.showFollowUpBtn && <button className='btn btn-outline-primary btn-transparent right_btn' disabled={this.state.allAnswers.length === 0} onClick={this.startDeepAnalyse}>Do a more detailed analysis</button>}</h3>
+									<h3>Your fish is likely to suffer from:{this.state.showFollowUpBtn && <button className='btn btn-outline-primary btn-transparent right_btn' disabled={this.state.allAnswers.length === 0} onClick={this.startDeepAnalyse}>Do a more detailed analysis</button>}</h3>
 									{this.displayResultsWithoutScore()}
-									<h3>Ziektes die uw vis ook kan hebben:</h3>
+									<h3>Your fish might also have:</h3>
 									{this.displayResultsWithScore()}
 								</div>
 							}
