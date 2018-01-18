@@ -19,7 +19,7 @@ const model = {
 			email: Joi.string().email().required(), 
 			firstName: Joi.string().alphanum().min(3).required(), 
 			lastName: Joi.string().alphanum().min(3).required(),
-			country: Joi.string().alphanum().min(3).required(),
+			country: Joi.string().alphanum().min(1).required(),
 			password: Joi.string().min(6).required()
 		}), 
 	

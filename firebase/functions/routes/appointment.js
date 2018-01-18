@@ -93,6 +93,7 @@ router.get('/appointments/', isAuthenticated, (req, res) => {
 			db.collection('timeslots').doc(appointmentFlat.timeslotId).get()
 			  .then((timeslot) => {
 				appointmentFlat.timeslot = helperFunctions.flatData(timeslot);
+				appointmentFlat.timeSlot.id = timeslot.id;
 				appointments.push(appointmentFlat);
 				return appointments;
 			  })

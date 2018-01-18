@@ -51,7 +51,9 @@ router.get('/' + model.endpoint, isAuthenticated, (req, res) => {
     .then((snapshot) => {
         let array = [];
         snapshot.docs.forEach((doc) => {
-            array.push(doc.data());
+            let o =  doc.data();
+            o.id = doc.id;
+            array.push(o);
         })
         res.send(array);
     })

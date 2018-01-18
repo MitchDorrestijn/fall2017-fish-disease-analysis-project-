@@ -120,7 +120,7 @@ button.btn-admin {
 
 .card {
   background-color: $adminNavBackground;
-	padding: 15px 10px 0 10px;
-	margin: 60px 15px 10px 0;
+	padding: $defaultPadding 10px 0 10px;
+	margin: $defaultPadding $defaultPadding 10px 0;
 	border-radius: 0;
 	border-style: none;}
