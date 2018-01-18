@@ -10,7 +10,7 @@ export default class Fishes extends React.Component {
 			blocks: []
 		};
 	}
-	
+
 	componentDidMount = () => {
 		if(this.props.searchTerm !== ""){
 			let da = new DataAccess (true);
@@ -18,12 +18,12 @@ export default class Fishes extends React.Component {
 				if (!err) {
 					if(res.message.length > 0){
 						let blocks = [];
-						for(let i = 0; i < res.message.length; i++){					
-							blocks.push (<FishesBlock key={i} picture={res.message[i].picture} title={res.message[i].name} info={res.message[i].info} additional={res.message[i].additional}/>);
+						for(let i = 0; i < res.message.length; i++){
+							blocks.push (<FishesBlock key={i} picture={res.message[i].imageUrl} title={res.message[i].name} info={res.message[i].info} additional={res.message[i].additional}/>);
 						}
 						this.setState({blocks: blocks});
 					}else{
-						let blocks = [];				
+						let blocks = [];
 						blocks.push(<p key={0}>No results found</p>);
 						this.setState({blocks: blocks});
 					}
@@ -32,16 +32,16 @@ export default class Fishes extends React.Component {
 				}
 			});
 		}else{
-			let blocks = [];				
+			let blocks = [];
 			blocks.push(<p key={0}>No results found</p>);
 			this.setState({blocks: blocks});
 		}
 	}
-	
+
 	render() {
 		return (
 			<div className="search-results">
-				<h1 className="text-center">Fishes</h1>
+				<h1 className="text-center">Fish</h1>
 				<hr/>
 				<Row>
 					<Col xs="12">

@@ -81,6 +81,13 @@ export default class TodaysData extends React.Component {
 				};
 			});
 	};
+	//checks if aquarium is selected. If not it returns a <p> tag.
+	checkIfAquariumSelected = () => {
+		if (this.state.currentAquarium === null) {
+			return (<p>Please select an aquarium.</p>);
+		};
+		return null;
+	};
 	//fill table functions:
 	fillAquariumTable = (object) => {
 		let rows = [];
@@ -172,6 +179,7 @@ export default class TodaysData extends React.Component {
 						</div>
 					</Col>
 				</Row>
+				{this.checkIfAquariumSelected()}
 				<Row>
 					<Col>
 						<div className="container">

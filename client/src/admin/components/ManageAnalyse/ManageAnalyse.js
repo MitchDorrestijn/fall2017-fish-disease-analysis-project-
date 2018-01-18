@@ -114,7 +114,7 @@ export default class ManageAnalyse extends React.Component {
 	render(){
 		return (
 			<div>
-				<h2>Import new analyse sheets/images</h2>
+				<h2>Analysis</h2>
 				<form>
 					<Card className="card">
 						<p>Download old symptomenEnZiektes.xlsx: <a

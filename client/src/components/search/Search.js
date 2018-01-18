@@ -22,7 +22,7 @@ export default class Search extends React.Component {
 							All results
 						</SidebarLink>
 						<SidebarLink tab={true} img="/images/search/fishtank-icon.png" target={"/search/Fishes/" + search}>
-							Fishes
+							Fish
 						</SidebarLink>
 						<SidebarLink tab={true} img="/images/search/plus-icon.png" target={"/search/Diseases/" + search}>
 							Diseases

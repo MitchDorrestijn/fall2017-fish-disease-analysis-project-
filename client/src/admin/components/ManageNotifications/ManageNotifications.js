@@ -50,7 +50,7 @@ export default class ManageNotifications extends React.Component {
 	};
 
 	checkRowspanTable = (data, index) => {
-		if (index === 0) {
+		if (index === "0") {
 			return (data)
 		}
 	}
