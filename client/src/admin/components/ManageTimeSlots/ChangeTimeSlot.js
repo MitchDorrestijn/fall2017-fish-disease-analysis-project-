@@ -17,7 +17,7 @@ export default class ChangeTimeSlot extends Component {
 	componentWillMount() {
 		this.setState({
 			// we get timestamp from database, change so we can use it as a type date input field
-			startDate: this.props.customProps.entry.startDate,
+			startDate: Datetime.moment(this.props.customProps.entry.startDate),
 			duration: this.props.customProps.entry.duration,
 		});
 	}
@@ -34,7 +34,6 @@ export default class ChangeTimeSlot extends Component {
 			}
 		}
 		if (timeslotData.startDate && timeslotData.duration) {
-			console.log(new Date(timeslotData.startDate));
 			let da = new DataAccess();
 			da.putData(`/timeslots/${this.props.customProps.entry.id}`, {timeslot: timeslotData}, (err, res) => {
 				if (!err) {
@@ -69,7 +68,7 @@ export default class ChangeTimeSlot extends Component {
 					<p className="error">{this.state.error}</p>
 					<Form onSubmit={this.editTimeslot}>
 						<Label>Date:</Label>
-						<Datetime onChange={this.changeDate} defaultValue={Datetime.moment(this.state.startDate).format('MM/DD/YYYY h:mm A')} isValidDate={valid}/>
+						<Datetime onChange={this.changeDate} defaultValue={this.state.startDate.format('MM/DD/YYYY h:mm A')} isValidDate={valid}/>
 						<FormGroup>
 							<Label for="timeslotDuration">Duration in minutes:</Label>
 							<Input id="timeslotDuration" type="number" min="0" max="240" name="timeslotDuration"
