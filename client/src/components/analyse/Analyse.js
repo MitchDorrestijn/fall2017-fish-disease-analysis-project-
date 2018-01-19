@@ -206,7 +206,7 @@ export default class Analyse extends React.Component {
 				console.log('Vervolgvragen:');
 				console.log(res.message);
 				//Reset the states to show the new questions
-				this.setState({questions: res.message, showResults: false, allAnswers: [], questionNumber: 0, showFollowUpBtn: false});
+				this.setState({questions: res.message, showResults: false, questionNumber: 0, showFollowUpBtn: false});
 			} else {
 				console.log(err);
 			}
