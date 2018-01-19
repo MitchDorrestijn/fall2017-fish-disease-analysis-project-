@@ -303,15 +303,23 @@ In de [Create react app documentatie](https://github.com/facebookincubator/creat
 
 ###### Client
 
-Errors worden server-side teruggegeven vanuiteen http-request. Wanneer de status van een http-request niet in de 200->300 range ligt wordt een melding van de http-request weergegeven indienmogelijk.
+Errors worden server-side teruggegeven van uit een http-request. Wanneer de status van een http-request niet in de 200 tot 299 range ligt wordt een melding van de http-request weergegeven indien mogelijk.
 
 ###### Server
 
-Server side worden catches afgehandeld als eenserver operatie faalt. Wanneer dit gebeurd wordt een Error code gestuurd alsresponse. In de api-docs kunnen de responses gevonden worden.
+Server side worden catches afgehandeld als een server operatie faalt. Wanneer dit gebeurt wordt een Error code gestuurd als response. In de api-docs kunnen de responses gevonden worden. De server doet ook aan payload validatie d.m.v. het framework 'Joi'. Wanneer de payload niet voldoet aan het gespecificeerde model, dan krijgt de client een error terug met een omschrijving wat er precies verkeerd is.
 
 #### Security
 
-API's zijn alleen toegankelijk voor gebruikersdie geauthentiseerd zijn. Door middel van een unique authorisation token. Ditworden opgevangen in de middleware van de server.
+API's zijn alleen toegankelijk voor gebruikers die geauthentiseerd zijn. Gebruikers bewijzen hun autoriteit door middel van een unieke authorisation token. Dit wordt opgevangen in de middleware van de server.
+
+##### Autorisatie & authenticatie
+
+Er wordt gebruik gemaakt van de authenticatie-SDK van Firebase. Via deze SDK kan men met een mailadres en wachtwoord inloggen. De SDK zet dan een cookie. Aan de hand van deze cookie genereert Firebase een authenticatietoken. Deze wordt meegegeven als header bij elke request: `Authorisation: Token 89258923u5k.afawfaw.134124`. 
+
+De server valideert deze token. Wanneer de token geldig is, wordt er door middel van middleware `~/middleware/authenticate.js` een `user` object toegevoegd aan het `request` object van express. Dit `user` object staat gelijk aan de data die firebase haalt uit het document van collectie `users` met het id van de user. Deze data is terug te vinden in Firestore. Ondertussen kijkt de middleware of de user een admin is. Wanneer dit zo is, wordt er aan het `user` object ook nog `isAdmin = true` toegevoegd.
+
+Bij routes kan gekeken worden d.m.v. middleware of een user ingelogd is, of zelfs een admin is. Dit betreft de middlewares `~/middleware/isAuthenticated.js` en `~/middleware/isAdmin.js`. Deze twee middlewares doen precies wat de naam impliceert. Wanneer de user niet de benodigde bevoegdheid heeft, wordt er een response gestuurd met code `403: Unauthorized`.
 
 ----
 
