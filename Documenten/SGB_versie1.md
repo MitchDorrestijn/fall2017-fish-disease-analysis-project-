@@ -250,11 +250,11 @@ Een Node js server wordt ingezet waarop een react applicatie draait. Via https r
 
 #### External
 
-###### Firebase
+##### Firebase
 
 Er wordt in de applicatie gebruik gemaakt van de volgende firebase producten:
 
-###### [Real-time database](https://firebase.google.com/docs/database/)
+##### [Real-time database](https://firebase.google.com/docs/database/)
 
 Wordt gebruikt voor om de webrtc verbinding op te zetten.
 
@@ -286,17 +286,17 @@ Er wordt een verificatie token bijgehouden die kan worden geverifieerd.
 
 De Node.js server verbindt met een FCM server van google. Hierdoor kunnen notificaties worden gestuurd op smartphone en in de browsers.
 
-###### [Sendgrid](https://sendgrid.com/docs)
+##### [Sendgrid](https://sendgrid.com/docs)
 
 Sendgrid is een cloudbased mail systeem. De Node.js server verbindt met deze mail server.
 
-###### [WebRTC](https://webrtc.org/)
+##### [WebRTC](https://webrtc.org/)
 
 WebRTC is een API die er voor zorgt dat smartphones en browsers gebruik kunnen maken van Real-Time Communications (RTC) .
 
 Wordt gebruikt voor realtime video chat en tekst chat.
 
-###### [Algolia](https://www.algolia.com/doc/)
+##### [Algolia](https://www.algolia.com/doc/)
 
 Algolia is een API wat gebruikt wordt voor zoekfunctionaliteit. Op Algolia zijn zoek indexen ingesteld.
 
@@ -322,7 +322,7 @@ Errors worden server-side teruggegeven van uit een http-request. Wanneer de stat
 
 Server side worden catches afgehandeld als een server operatie faalt. Wanneer dit gebeurt wordt een Error code gestuurd als response. In de api-docs kunnen de responses gevonden worden. De server doet ook aan payload validatie d.m.v. het framework 'Joi'. Wanneer de payload niet voldoet aan het gespecificeerde model, dan krijgt de client een error terug met een omschrijving wat er precies verkeerd is.
 
-#### Security
+##### Security
 
 API's zijn alleen toegankelijk voor gebruikers die geauthentiseerd zijn. Gebruikers bewijzen hun autoriteit door middel van een unieke authorisation token. Dit wordt opgevangen in de middleware van de server.
 
@@ -459,7 +459,7 @@ Om de bestanden van Firebase online te zetten gebruik je:
 #### 11.3 Beheerssysteem/CMS.
 Het berheerssysteem, of control management system, kan worden gebruikt om gegevens op de site aan te passen. Het redelijk duidelijk te snappen, maar er is voor elke pagina een kopje gemaakt om het wat beter toe te lichten. Alle invoervelden moeten ingevuld worden in elke edit/add mogelijkheid van de pagina's. Word dit niet gedaan is dat geen ramp, de applicatie zal dan een error geven en de record nog niet aanmaken.
 
-###### Vissoorten beheren.
+##### Vissoorten beheren.
 De vissoorten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicaite:
 * Gebruikers kunnen zoeken naar vissoorten voor informatie hierover.
 * Gebruikers kunnen vissoorten aan hen aquarium toevoegen.
@@ -471,7 +471,7 @@ Onderin de pagina staat een knop genaamd "Add fish". Deze zorgt ervoor dat er ee
 Deze pagina bevat een zoekbalk. Waarmee de gebruiker snel kan navigeren binnen de pagina.
 ![CMS_Diseases](images/CMS_Diseases.png)
 
-###### Vis ziektes beheren.
+##### Vis ziektes beheren.
 De vis ziektes die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * Gebruikers kunnen zoeken naar ziektes voor informatie hierover.
 * Ziektes zijn de eindresultaten na een analyse.
@@ -483,7 +483,7 @@ Onderin de pagina staat een knop genaamd "Add fish disease". Deze zorgt ervoor d
 Deze pagina bevat een zoekbalk. Waarmee de gebruiker snel kan navigeren binnen de pagina.
 ![CMS_Species](images/CMS_Species.png)
 
-###### Afspraken beheren.
+##### Afspraken beheren.
 De afspraken die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * De request consult sectie voor de gebruikers in hun dashboard.
 * Chat functionaliteiten.
@@ -493,7 +493,7 @@ Er zijn drie verschillende koppen op deze pagina te vinden. De knop met het krui
 Appointments worden gemaakt door de normale geregistreerde gebruiker, door een open tijdslot te bezetten. Dit is de reden waarom de consultant geen appointments hoeft toe te voegen.
 ![CMS_Appointments](images/CMS_Appointments.png)
 
-###### Tijdsloten beheren.
+##### Tijdsloten beheren.
 De tijdsloten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * De request consult sectie voor de gebruikers in hun dashboard.
 
@@ -502,7 +502,7 @@ In de "edit" Column staan twee iccontjes waarop geklikt kan worden. Het kruisje 
 Onderin de pagina staat een knop genaamd "Add timeslot when you are available". Deze zorgt ervoor dat er een nieuwe tijdslot kan worden toegevoegd. Denk eraan dat doormiddel van de start-time en de duration de end time door de applicatie word berekent.
 ![CMS_Timeslots](images/CMS_Timeslots.png)
 
-###### Notificatie regels beheren.
+##### Notificatie regels beheren.
 De notification regels die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * Word gebruikt bij het triggeren van een notificatie nadat een gebruiker nieuwe data invoerd bij "todaysdata".
 
@@ -511,7 +511,7 @@ In de "edit" Column staan twee icoontjes waarop geklikt kan worden. Het kruisje 
 Onderin de pagina staat een knop genaamd "Add notification rule". Deze zorgt ervoor dat er een nieuwe tijdslot kan worden toegevoegd. Wanneer het invoerveld dan opkomt is er een mogelijkheid om meer dan één trigger voor de regel toe te voegen. Je kan ook triggers weghalen. De applicatie laat niet toe dat er minder dan één trigger aanwezig is.
 ![CMS_Notification](images/CMS_Notification.png)
 
-###### Analyse beheren.
+##### Analyse beheren.
 De analyse onderdelen die je kan beheren worden gebruikt op de volgende pagina's:
 * Word gebruikt bij het doorlopen van een snelle analyse.
 * word gebruikt bij het doorlopen van een nauwkeurige analyse.
