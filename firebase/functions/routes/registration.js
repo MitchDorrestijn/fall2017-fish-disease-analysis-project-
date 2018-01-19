@@ -109,7 +109,7 @@ router.get('/verify/:id/:token', (req, res) => {
 		});
 	})
 	.then(() => {
-		return res.redirect('/?verification=success');
+		return res.redirect('/verification/success');
 	})
 	.catch((error) => {
 		return res.status(400).send(error.message);
