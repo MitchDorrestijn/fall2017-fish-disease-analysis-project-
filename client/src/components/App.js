@@ -311,6 +311,9 @@ export default class App extends React.Component {
 													<Route path="/forgot-password" render={(props) => {
 														return <Homepage {...props} openModal={this.openModal} resetPassword={true}/>
 													}}/>
+													<Route exact path="/verification/success" render={(props) => {
+														return <Homepage {...props} openModal={this.openModal} showFeedback={this.showFeedback} verificationSuccess={true}/>
+													}}/>
 													<Route path="/search" component={Search}/>
 												</Switch>
 											</div>

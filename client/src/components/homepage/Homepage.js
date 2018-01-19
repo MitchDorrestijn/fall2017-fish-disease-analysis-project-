@@ -10,6 +10,9 @@ export default class Homepage extends React.Component {
 			if(this.props.resetPassword) {
 				this.props.openModal(ResetPassword);
 			}
+			if(this.props.verificationSuccess){
+				this.props.showFeedback("success", "Your account has been succesfully verificated");
+			}
 		}
 	
 		render(){

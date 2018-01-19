@@ -8,105 +8,114 @@ import ChangeTimeSlot from './ChangeTimeSlot';
 import AddTimeSlot from './AddTimeSlot';
 
 export default class ManageTimeSlot extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			tableEntries: []
-		};
+  constructor(props) {
+	super(props);
+	this.state = {
+	  tableEntries: []
+	};
+  }
+
+  parseDate = (date) => {
+	let parsedDate = new Date(date);
+	return parsedDate.toDateString();
+  };
+
+  parseTime = (date) => {
+	let parsedDate = new Date(date);
+	let hours = parsedDate.getHours();
+	let minutes = parsedDate.getMinutes();
+	if (minutes < 10) {
+	  minutes = '0' + minutes;
 	}
+	return `${hours}:${minutes}`;
+  };
 
-	parseDate = (date) => {
-		let parsedDate = new Date (date);
-		return parsedDate.toDateString();
-	};
+  sortAppointmentsByDate = (a, b) => {
+	let aDate = new Date(a.startDate);
+	let bDate = new Date(b.startDate);
+	if (aDate < bDate)
+	  return -1;
+	if (aDate > bDate)
+	  return 1;
+	return 0;
+  };
 
-	parseTime = (date) => {
-	  let parsedDate = new Date (date);
-	  let hours = parsedDate.getHours();
-	  let minutes = parsedDate.getMinutes();
-	  if (minutes < 10) {
-			minutes = '0' + minutes;
-		}
-		return `${hours}:${minutes}`;
-	};
+  componentWillMount() {
+	this.getTimeslots();
+  }
 
-	componentWillMount() {
-		this.getTimeslots();
-	}
+  cancelTimeSlot = (entry) => {
+	this.props.openModal(RemoveTimeSlot, {
+	  refreshPage: this.getTimeslots,
+	  entry: entry
+	});
+  };
 
-	cancelTimeSlot = (entry) => {
-		this.props.openModal(RemoveTimeSlot, {
-			refreshPage: this.getTimeslots,
-			entry: entry
+  changeTimeSlot = (entry) => {
+	this.props.openModal(ChangeTimeSlot, {
+	  refreshPage: this.getTimeslots,
+	  entry: entry
+	});
+  };
+
+  getTimeslots = () => {
+	// Hier moeten afspraken worden opgehaald en in "results" worden gezet
+	// Bij de onClickAction moet het id van de afspraak worden meegegeven
+	let results = [];
+	let da = new DataAccess();
+	da.getData('/timeslots', (err, res) => {
+	  if (!err) {
+		let resultsFromDB = res.message;
+		resultsFromDB.sort(this.sortAppointmentsByDate);
+		results = resultsFromDB.map((elem) => {
+		  return (
+			<Tr key={elem.id}>
+			  <Td>{this.parseDate(elem.startDate)}</Td>
+			  <Td>{this.parseTime(elem.startDate)}</Td>
+			  <Td>{this.parseTime(elem.endDate)}</Td>
+			  <Td>
+				<ButtonGroup>
+				  <ActionButton
+					buttonText={<span className="fa fa-edit"/>}
+					color="primary"
+					onClickAction={() => this.changeTimeSlot(elem)}/>
+				  <ActionButton
+					buttonText={<span className="fa fa-close"/>}
+					color="primary"
+					onClickAction={() => this.cancelTimeSlot(elem)}/>
+				</ButtonGroup>
+			  </Td>
+			</Tr>
+		  );
 		});
-	};
-
-	changeTimeSlot = (entry) => {
-		this.props.openModal(ChangeTimeSlot, {
-			refreshPage: this.getTimeslots,
-			entry: entry
+		this.setState({
+		  tableEntries: results
 		});
-	};
+	  }
+	});
+  };
 
-	getTimeslots = () => {
-
-		// Hier moeten afspraken worden opgehaald en in "results" worden gezet
-		// Bij de onClickAction moet het id van de afspraak worden meegegeven
-		let results = [];
-
-		let da = new DataAccess();
-
-		da.getData('/timeslots', (err, res) => {
-			if (!err) {
-				let resultsFromDB = res.message;
-				results = resultsFromDB.map ((elem) => {
-					return (
-						<Tr key={elem.id}>
-							<Td>{this.parseDate(elem.startDate)}</Td>
-							<Td>{this.parseTime(elem.startDate)}</Td>
-							<Td>{this.parseTime(elem.endDate)}</Td>
-							<Td>
-								<ButtonGroup>
-									<ActionButton
-										buttonText={<span className="fa fa-edit"/>}
-										color="primary"
-										onClickAction={() => this.changeTimeSlot(elem)}/>
-									<ActionButton
-										buttonText={<span className="fa fa-close"/>}
-										color="primary"
-										onClickAction={() => this.cancelTimeSlot(elem)}/>
-								</ButtonGroup>
-							</Td>
-						</Tr>
-					);
-				});
-				this.setState({
-					tableEntries: results
-				});
-			}
-		});
-	};
-
-	render() {
-		return (
-			<div className="manage-agenda">
-				<h1>Timeslots</h1>
-				<Table className="table timeslots-table">
-					<Thead>
-					<Tr>
-						<Th>Date</Th>
-						<Th>Start time</Th>
-						<Th>End time</Th>
-						<Th/>
-					</Tr>
-					</Thead>
-					<Tbody>{this.state.tableEntries}</Tbody>
-				</Table>
-			  <Button
-				onClick={() => this.props.openModal(AddTimeSlot, {refreshPage: this.getTimeslots})}
-				className="btn-admin">Add timeslot when you are available
-			  </Button>
-			</div>
-		);
-	}
+  render() {
+	return (
+	  <div className="manage-agenda">
+		<h1>Timeslots</h1>
+		<Table className="table timeslots-table">
+		  <Thead>
+		  <Tr>
+			<Th>Date</Th>
+			<Th>Start time</Th>
+			<Th>End time</Th>
+			<Th/>
+		  </Tr>
+		  </Thead>
+		  <Tbody>{this.state.tableEntries}</Tbody>
+		</Table>
+		<Button
+		  onClick={() => this.props.openModal(AddTimeSlot,
+			{refreshPage: this.getTimeslots})}
+		  className="btn-admin">Add timeslot when you are available
+		</Button>
+	  </div>
+	);
+  }
 }
