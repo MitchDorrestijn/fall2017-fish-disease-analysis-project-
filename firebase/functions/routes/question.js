@@ -132,7 +132,6 @@ router.post('/questions/results', (req, res) => {
             promises.push(
                 db.collection('diseases').where('code', '==', result.diseaseCode).get()
                 .then((snapshot) => {
-                    console.log(snapshot.docs);
                     if(snapshot.docs[0]){
                         result.details = snapshot.docs[0].data();
                     }

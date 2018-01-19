@@ -213,8 +213,6 @@ router.get('/diseases/search', (req, res) => {
     const index = client.initIndex(model.endpoint);
     const query = req.query.term;
 
-    console.log("d");
-
     if(!query){
         return res.status(400).send("Please provide '?term=searchterm' in url");
     }
@@ -224,7 +222,6 @@ router.get('/diseases/search', (req, res) => {
         query
     })
     .then(responses => {
-        console.log("response");
         res.send(responses.hits);
     });
 })
