@@ -34,6 +34,9 @@ body {
 .btn-outline-primary:not([disabled]):not(.disabled):active, .btn-outline-primary:not([disabled]):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {
 	background: $supportColor;
 }
+.btn-outline-primary:disabled {
+	color: $supportColor;
+}
 //HEADER STYLING
 h2 {
 	font-size: 40px;
