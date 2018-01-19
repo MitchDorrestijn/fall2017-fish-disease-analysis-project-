@@ -27,7 +27,8 @@ DWA project 2017
   * *4.2 Technologieën,*
   * *4.3 Design,*
   * *4.4 Ontwikkelmethode,*
-  * *4.5 Opleveren.*
+  * *4.5 Opleveren,*
+  * *4.6 Base64.*
 5. **Principles**
   * *5.1 Scrum,*
   * *5.2 Code principles*
@@ -38,7 +39,8 @@ DWA project 2017
   * *6.4 Component myaquarium model,*
   * *6.5 Component admin model,*
   * *6.6 Component chat model,*
-  * *6.7 Component express model.*
+  * *6.7 Component firebase/functions model,*
+  * *6.8 Component analyse model.*
 7. **External Interfaces**
 8. **Code**
 9. **Infrastructure Architecture**
@@ -50,7 +52,9 @@ DWA project 2017
 10. **Deployment**
 11. **Operation and Support**
    * *11.1 React,*
-   * *11.2 Firebase.*
+   * *11.2 Firebase,*
+   * *11.3 Beheerssysteem/CMS,*
+   * *11.4 Excel bestand bewerken.*
 
 ----
 
@@ -212,6 +216,8 @@ Hieronder staat het container model. Dit model geeft weer wat er werkend moet zi
 
 #### 6.3 Component main model.
 Het onderstaande component model geeft de functionaliteiten weer, soms worden deze functionaliteiten verder verdeelt in een los component diagram. Dit is het geval bij de components met een gekleurde rand eromheen. Het component model met dezelfde kleur schema zal de opdeling van dit component beter weergeven.
+
+We hebben voor een "tag" systeem gekozen inplaats van het verbinden van meerdere pijlen. Dit hebben we gedaan omdat het trekken van pijlen te onoverzichtelijk word als we de benodigde software functionaliteiten (Algolia en Sendgrid) en de benodigde systemen (NODE.js, Firebase, Firestore en Firebase cloud storage) met de componenten verbinden. De "tag" zijn de kleine vakjes onder/aan de componenten in de Main component, en sub component models.
 ![SA_main_model](images/SA_Comp_Main.png)
 
 #### 6.4 Component myaquarium model.
@@ -226,9 +232,13 @@ Een uitbreidende weergave van de "Admin" component in het "Component main model"
 Een uitbreidende weergave van de "Chat" component in het "Component main model".
 ![SA_chat_model](images/SA_Comp_Chat.png)
 
-#### 6.7 Component express model.
-Een uitbreidende weergave van de "Express" component in het "Component main model".
-![SA_express_model](images/SA_Comp_Express.png)
+#### 6.7 Component firebase/functions model.
+Een uitbreidende weergave van de "Firebase/functions" component in het "Component main model".
+![SA_firebase_model](images/SA_Comp_Firebase.png)
+
+#### 6.8 Component analyse model.
+Een uitbreidende weergave van de "Analysis" component in het "Component main model".
+![SA_analyse_model](images/SA_Comp_Analyse.png)
 
 ----
 
@@ -446,7 +456,7 @@ Om de bestanden van Firebase online te zetten gebruik je:
 
 ``` firebase deploy --only hosting,functions```
 
-#### 11.3 Beheerssysteem/CMS
+#### 11.3 Beheerssysteem/CMS.
 Het berheerssysteem, of control management system, kan worden gebruikt om gegevens op de site aan te passen. Het redelijk duidelijk te snappen, maar er is voor elke pagina een kopje gemaakt om het wat beter toe te lichten. Alle invoervelden moeten ingevuld worden in elke edit/add mogelijkheid van de pagina's. Word dit niet gedaan is dat geen ramp, de applicatie zal dan een error geven en de record nog niet aanmaken.
 
 ###### Vissoorten beheren.
@@ -510,3 +520,5 @@ De twee excel bestanden die nodig zijn voor de analyse kan je op deze pagina dow
 Je kan hier een nieuwere versie van de Excel bestanden uploaden. De naam moet hetzelfde zijn als het bestand staande op de Firebase storage, anders kan hij hem niet overschrijven.
 Er kunnen foto's in bulk naar de Firebase storage worden upgeload, Denk eraan dat de foto's dezelfde naam en extentie moeten hebben als aangegeven in het excel bestand.
 ![CMS_Analysis](images/CMS_Analysis.png)
+
+#### 11.4 Excel bestand bewerken.
