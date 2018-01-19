@@ -443,10 +443,10 @@ Om de bestanden van Firebase online te zetten gebruik je:
 
 ``` firebase deploy --only hosting,functions```
 
-## 11.3 Beheerssysteem/CMS
+#### 11.3 Beheerssysteem/CMS
 Het berheerssysteem, of control management system, kan worden gebruikt om gegevens op de site aan te passen. Het redelijk duidelijk te snappen, maar er is voor elke pagina een kopje gemaakt om het wat beter toe te lichten. Alle invoervelden moeten ingevuld worden in elke edit/add mogelijkheid van de pagina's. Word dit niet gedaan is dat geen ramp, de applicatie zal dan een error geven en de record nog niet aanmaken.
 
-### Vissoorten beheren.
+###### Vissoorten beheren.
 De vissoorten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicaite:
 * Gebruikers kunnen zoeken naar vissoorten voor informatie hierover.
 * Gebruikers kunnen vissoorten aan hen aquarium toevoegen.
@@ -456,9 +456,9 @@ In de "edit" column staan drie icoontjes waarop geklikt kan worden. Het kruisje 
 Onderin de pagina staat een knop genaamd "Add fish". Deze zorgt ervoor dat er een nieuwe vissoort kan worden toegevoegd. Na het aanmaken van een nieuwe vissoort is er nog geen afbeelding aan de record gevoegd.
 
 Deze pagina bevat een zoekbalk. Waarmee de gebruiker snel kan navigeren binnen de pagina.
-### foto
+![CMS_Diseases](images/CMS_Diseases.png)
 
-### Vis ziektes beheren.
+###### Vis ziektes beheren.
 De vis ziektes die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * Gebruikers kunnen zoeken naar ziektes voor informatie hierover.
 * Ziektes zijn de eindresultaten na een analyse.
@@ -468,9 +468,9 @@ In de "edit" column staan drie icoontjes waarop geklikt kan worden. Het kruisje 
 Onderin de pagina staat een knop genaamd "Add fish disease". Deze zorgt ervoor dat er een nieuwe vis ziekte kan worden toegevoegd. Na het aanmaken van een nieuwe vis ziekte is er nog geen afbeelding aan de record gevoegd.
 
 Deze pagina bevat een zoekbalk. Waarmee de gebruiker snel kan navigeren binnen de pagina.
-### foto
+![CMS_Species](images/CMS_Species.png)
 
-### Afspraken beheren.
+###### Afspraken beheren.
 De afspraken die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * De request consult sectie voor de gebruikers in hun dashboard.
 * Chat functionaliteiten.
@@ -478,23 +478,32 @@ De afspraken die je op deze pagina kan beheren worden gebruikt in de volgende on
 Er zijn drie verschillende koppen op deze pagina te vinden. De knop met het kruisje zorgt voor het verwijderen van een appointment, wanneer dit gebeurd word de ingeschreven gebruiker hiervan op de hoogte gesteld. De knop met de tekst "Chat room" geeft de consultant toegang tot de chat room van dat specifieke appointment. Nadat een de "status" veranderd naar closed, wat gebeurd als de consultant de chat room aflsuit, veranderd de knop "Chat room" naar een knop "Chatlog". Met deze knop kan je de chatlog van dit appointment inzien. Afbeeldingen en andere files die gedeeld zijn worden niet weergegeven.
 
 Appointments worden gemaakt door de normale geregistreerde gebruiker, door een open tijdslot te bezetten. Dit is de reden waarom de consultant geen appointments hoeft toe te voegen.
-### foto
+![CMS_Appointments](images/CMS_Appointments.png)
 
-### Tijdsloten beheren.
+###### Tijdsloten beheren.
 De tijdsloten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * De request consult sectie voor de gebruikers in hun dashboard.
 
 In de "edit" Column staan twee iccontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen.
 
 Onderin de pagina staat een knop genaamd "Add timeslot when you are available". Deze zorgt ervoor dat er een nieuwe tijdslot kan worden toegevoegd. Denk eraan dat doormiddel van de start-time en de duration de end time door de applicatie word berekent.
-### foto
+![CMS_Timeslots](images/CMS_Timeslots.png)
 
-### Notificatie regels beheren.
+###### Notificatie regels beheren.
 De notification regels die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * Word gebruikt bij het triggeren van een notificatie nadat een gebruiker nieuwe data invoerd bij "todaysdata".
 
 In de "edit" Column staan twee icoontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen.
 
 Onderin de pagina staat een knop genaamd "Add notification rule". Deze zorgt ervoor dat er een nieuwe tijdslot kan worden toegevoegd. Wanneer het invoerveld dan opkomt is er een mogelijkheid om meer dan één trigger voor de regel toe te voegen. Je kan ook triggers weghalen. De applicatie laat niet toe dat er minder dan één trigger aanwezig is.
-### foto
+![CMS_Notification](images/CMS_Notification.png)
 
+###### Analyse beheren.
+De analyse onderdelen die je kan beheren worden gebruikt op de volgende pagina's:
+* Word gebruikt bij het doorlopen van een snelle analyse.
+* word gebruikt bij het doorlopen van een nauwkeurige analyse.
+
+De twee excel bestanden die nodig zijn voor de analyse kan je op deze pagina downloaden. Dit is niet een lege template maar de laatste upgeloade versie hiervan.
+Je kan hier een nieuwere versie van de Excel bestanden uploaden. De naam moet hetzelfde zijn als het bestand staande op de Firebase storage, anders kan hij hem niet overschrijven.
+Er kunnen foto's in bulk naar de Firebase storage worden upgeload, Denk eraan dat de foto's dezelfde naam en extentie moeten hebben als aangegeven in het excel bestand.
+![CMS_Analysis](images/CMS_Analysis.png)
