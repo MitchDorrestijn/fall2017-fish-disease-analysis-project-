@@ -132,7 +132,6 @@ exports.onNotificationCreated = functions.firestore.document("notifications/{id}
 	}
 	return notification.user.collection("devices").get()
 	.then((snapshot) => {
-		console.log(snapshot.docs);
 		snapshot.docs.forEach((doc) => {
 			const device = doc.data()
 			notificator.push(device.id, payload)
@@ -196,5 +195,3 @@ exports.onSpeciesDeleted = functions.firestore.document("species/{id}").onDelete
 	
 	return Promise.all([index.deleteObject(event.params.id), both.deleteObject(event.params.id)]);
 });
-
-

@@ -3,7 +3,6 @@ module.exports = class Disease {
 		if (name.search(/\[[A-Za-z0-9]{1,}\] /g) !== -1) {
 			// Als er een koppelcode in de naam zit, strip deze van de naam en zet deze in een apart attribuut
 			this.code = name.split("[")[1].split("]")[0];
-			console.log (this.code);
 			let nameArray = name.split(" ");
 			nameArray.shift();
 			this.name = "";
@@ -13,7 +12,6 @@ module.exports = class Disease {
 					this.name += " ";
 				}
 			}
-			console.log (this.name);
 		} else {
 			this.name = name;
 		}

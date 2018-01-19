@@ -287,7 +287,6 @@ router.delete('/aquaria/:id/species/:sid', isAuthenticated, (req, res) => {
 	.where('user', '==', req.user.ref)
 	.where('species', '==', db.collection('species').doc(req.params.sid)).get()
 	.then((snapshot) => {
-		console.log(snapshot.docs);
 		return snapshot.docs[0].ref.delete();
 	})
 	.then(() => {
@@ -371,7 +370,6 @@ router.get('/aquaria/:id/entries/latest', isAuthenticated, (req, res) => {
  */
 router.post('/aquaria/:id/entries', isAuthenticated, (req, res) => {
 	const entry = req.body.entry;
-	console.log(req.params.id);
 
 	if(req.params.id == undefined){
 		return res.status(400).send('Id in endpoint is undefined.');
