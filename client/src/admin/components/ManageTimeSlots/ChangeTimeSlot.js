@@ -69,7 +69,7 @@ export default class ChangeTimeSlot extends Component {
 					<p className="error">{this.state.error}</p>
 					<Form onSubmit={this.editTimeslot}>
 						<Label>Date:</Label>
-						<Datetime onChange={this.changeDate} isValidDate={valid}/>
+						<Datetime onChange={this.changeDate} defaultValue={Datetime.moment(this.state.startDate).format('MM/DD/YYYY h:mm A')} isValidDate={valid}/>
 						<FormGroup>
 							<Label for="timeslotDuration">Duration in minutes:</Label>
 							<Input id="timeslotDuration" type="number" min="0" max="240" name="timeslotDuration"

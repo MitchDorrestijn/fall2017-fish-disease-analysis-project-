@@ -194,9 +194,10 @@ router.put('/timeslots/:id',
 	  return res.status(400).send('Input validation failed.');
 	}
 	timeslot.startDate = new Date(timeslot.startDate);
-	db.collection('timeslots').doc(timeslotId).update(timeslot)
+	const timeSlotRef = db.collection('timeslots').doc(timeslotId);
+	timeSlotRef.update(timeslot)
 	  .then((document) => {
-			return document.get();
+			return timeSlotRef.get();
 		}).then((document) => {
 			return calculateEndDate(document);
 	  }).then(() => {

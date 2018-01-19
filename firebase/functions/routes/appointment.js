@@ -58,7 +58,7 @@ router.delete('/appointments/:id', isAuthenticated, (req, res) => {
 	  .getUser(appointment.reservedBy)
 	  .then((userRecord) => {
 		if (appointment.status) {
-		  // sendAppointmentCanceledMail(userRecord);
+		  sendAppointmentCanceledMail(userRecord);
 		}
 		db.collection('appointments').doc(appointmentId).delete().then(() => {
 		  res.status(204).send('Appointment canceled');
@@ -142,7 +142,7 @@ router.post('/appointments/', isAuthenticated,
 	  .doc(appointmentBody.timeslotId);
 	admin.auth().getUser(req.user.uid).then((userRecord) => {
 	  //TODO: Now commented out for development
-	  // sendNewAppointmentMail(userRecord);
+	  sendNewAppointmentMail(userRecord);
 	});
 	let timeSlot = {};
 	// Send to all consultants
@@ -156,7 +156,7 @@ router.post('/appointments/', isAuthenticated,
 			snapshot.forEach(doc => {
 			  let communicationMethod;
 			  //TODO: Now commented out for development
-			  // sendConsultNewAppointmentMail(helperFunctions.flatData(doc), appointment.comment,communicationMethod, timeSlot);
+			  sendConsultNewAppointmentMail(helperFunctions.flatData(doc), appointment.comment,communicationMethod, timeSlot);
 			});
 		  });
 	  });
@@ -295,7 +295,7 @@ router.put('/admin/appointments/:appointmentId/', isAdmin,
 		  admin.auth()
 			.getUser(appointmentData.reservedBy)
 			.then((userRecord) => {
-			  // sendAppointmentstatusMail(userRecord);
+			  sendAppointmentstatusMail(userRecord);
 			});
 		});
 	}
