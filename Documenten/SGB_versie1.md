@@ -63,7 +63,7 @@ Dhr.   Burgers,   onze   opdrachtgever,   wil   samen   met   dhr.   Bassleer   
 
 Dit   project   zal   worden   uitgevoerd   door   S.   Scheffer,   R.   Mulleman,   M.   Dorrestijn,   C.   Severein,   R. Meijer   en   J.   Weijland.   Zijnde   studenten   Hogeschool   van   Arnhem   en   Nijmegen   zijn   zij verantwoordelijk   voor   het   voltooien   van   het   project.
 
-Er zijn al meerdere ICA-teams die aan de visanalysetool hebben gewerkt. Twee CMD-teams die het concept hebben uitgewerkt en een HTML en CSS-design hebben geleverd en een ICT-team wat een
+Er zijn al meerdere ICA-teams die aan de visanalysetool hebben gewerkt: twee CMD-teams die het concept hebben uitgewerkt en een HTML en CSS-design hebben geleverd en een ICT-team wat een
 databasestructuur heeft opgezet.
 
 Het   project   is   opgezet   als   opdracht   vanuit   de   HAN.   Dit   proces   wordt   begeleid   door   de   volgende docenten:   mevr.   Danes,   dhr.   Leer   en   dhr.   Holwerda.
@@ -75,14 +75,31 @@ Het   project   is   opgezet   als   opdracht   vanuit   de   HAN.   Dit   proce
 
 ----
 
-#### 2.1 Zoeken van informatie over visziektes.
+## 2. Functional overview
+De webapplicatie die wordt gemaakt zal ervoor moeten zorgen dat een gebruiker:
 
+- informatie kan vinden over de ziektes van hun vis,
+- zelfstandig een analyse kan doorlopen om te kijken welke ziekte hun vis zou kunnen hebben,
+- Aquarium gegevens invoeren en genotificeerd worden over mogelijke gevaren 
+- een afspraak kan maken met een consultant,
+- een gesprek kan voeren met deze consultant.
+
+De webapplicatie zal tevens een beheersysteem bevatten dit bevat de volgende functionaliteiten:
+
+- Beheer van vissen
+- Beheer van ziektes
+- Inzien van afspraken
+  - Chatlogs inzien
+  - Naar de chatroom navigeren
+- Aangeven op welke tijden een consultant aanwezig kan zijn
+- Notificaties regels aanpassen
+
+#### 2.1 Zoeken van informatie over visziektes.
 De gebruiker kan op de site van Bassleer een zoekterm invoeren in het zoekvenster en het systeem zal vervolgens de zoekresultaten laten zien. Hierna kan de gebruiker de zoekresultaten filteren op bijvoorbeeld vissen of ziekten.
 
 ![Search Result](.\images\search_result.PNG)
 
 #### 2.2 Analyse tool voor gebruikers met zieke vis(sen).
-
 Dit is een tool in de webapplicatie die ervoor zorgt dat de gebruiker met zieke vis(sen) een analyse kan maken zonder contact met een specialist. De analyse heeft een vorm van een activity diagram op de achtergrond. Dit betekent dat bepaalde vragen een antwoord van de vorige vraag als pre-conditie hebben.
 
 ![Analyse question](.\images\analyse_question.PNG)
@@ -96,40 +113,33 @@ Op het einde van de analyse wordt er een lijst getoond van ziektes die het meest
 ![Analyse Result](.\images\analyse_result.PNG)
 
 #### 2.3 Bijhouden van aquarium gegevens.
-
 Een gebruiker kan ook zijn aquariumgegevens bijhouden. Gegevens die we hieronder zoal zien zijn, vissen, tempratuur, iron en zuurstof. Aangezien verschillende vissen verschillende standaarden hebben voor deze waarden, is het van belang dat de gebruiker op de hoogte word gehouden van mogelijke gevaren. Dit wordt gedaan wanneer de gebruiker deze waarden invult of vissen aan zijn digitale aquarium toevoegt. Het systeem zal vervolgens nagaan of de waarden binnen acceptabele normen liggen. Zo niet, dan krijgt de gebruiker hier een notificatie van.
 
 ![Aquarium data](.\images\todays_data.PNG)
 
 #### 2.4 Beheersysteem/CMS.
-
 Informatie over vissen en ziektes en analysepunten kunnen worden beheerd in het CMS-gedeelte van de web-applicatie. In dit gedeelte kunnen alleen beheerders komen. Onder andere de volgende gegevens kunnen hier worden bewerkt:
-
-- Vis ziekten (symptomen, beschrijving, behandeling)
-- Vis soorten (leefomstandigheden, beschrijving)
-- Analyse vragen (pre-conditie, symptomen, afbeelding, post-conditie)
-- Notificatie regels (regels)
-- Consult afspraken (wie, wanneer, waarover, bezetting)
-- Consulten plannen (wanneer)
+* Vis ziekten (symptomen, beschrijving, behandeling)
+* Vis soorten (leefomstandigheden, beschrijving)
+* Analyse vragen (pre-conditie, symptomen, afbeelding, post-conditie)
+* Notificatie regels (regels)
+* Consult afspraken (wie, wanneer, waarover, bezetting)
+* Consulten plannen (wanneer)
 
 In het hoofdstuk 11.3 Operation and Support - Beheerssysteem/CMS staat meer uitleg over het administratie gedeelte.
-
 #### 2.5 Inschrijven voor een consult.
-
 Als de gebruiker een consult wilt, kan hij hiervoor een afspraak inplannen. De gebruiker kan bij het maken van een afspraak een kleine beschrijving toevoegen en de datum + tijd kiezen uit een lijst. Deze lijst wordt door de consultant in het beheersysteem samengesteld. Hij kan hier aangeven wanneer hij tijd heeft voor een gesprek. Wanneer de gebruiker zich heeft ingeschreven zal het systeem een mail sturen naar de consultant en de aanvraag verwerken in het systeem.
 
 ![user_register](.\images\user_register.PNG)
 
 #### 2.6 Het consult gesprek.
-
-Het uitvoeren van een consult gesprek gebeurt ook via de web-applicatie. De applicatie krijgt de mogelijkheid om een videochat te starten. Voor gebruikers die geen beschikking hebben over een microfoon, zal er een mogelijkheid zijn om met de consultant te chatten d.m.v. tekst. Ook kunnen de gebruiker en de consultant afbeeldingen naar elkaar sturen.	
+Het uitvoeren van een consult gesprek gebeurt ook via de web-applicatie. De applicatie krijgt de mogelijkheid om een videochat te starten. Voor gebruikers die geen beschikking hebben over een microfoon, zal er een mogelijkheid zijn om met de consultant te chatten d.m.v. tekst. Ook kunnen de gebruiker en de consultant afbeeldingen naar elkaar sturen.
 
 ![Chat](.\images\chat.PNG)
 
 ------
 
 ## 3. Quality Attributes
-
 Hier zullen de non-functionele aspecten worden verwoord.
 * De webapplicatie is beschikbaar voor alle gebruikers met een browser.
 * De webapplicatie ondersteunt de volgende browsers:
@@ -175,7 +185,7 @@ Het team is beperkt in het kiezen van een ontwikkelmethode, er wordt namelijk ve
 De website moet vóór 19-01-2018 worden opgeleverd. Als deze deadline niet gehaald wordt, kan moet het team vroegtijdig de Product Owner op de hoogte brengen.
 
 #### 4.6 Base64
-Een van de eisen die word gesteld aan de chat is dat je bestanden moet kunnen delen. Dit is mogelijk met foto's en video's, omdat deze bestanden direct worden weergeven in de chat. Andere bestanden moet een gebruiker downloaden om die te bekijken. Alleen wordt het downloaden van bestanden via een base64 string veelal niet ondersteund door browsers vanwege veiligheids problemen. Hierdoor kan deze user story niet worden geimplementeerd.
+Een van de eisen die word gesteld aan de chat is dat je bestanden moet kunnen delen. Dit is mogelijk met foto's en video's, omdat deze bestanden direct worden weergeven in de browser. Andere bestanden moet een gebruiker downloaden om te kunnen bekijken. Het downloaden van een base64 bestand is echter niet veilig en wordt hierdoor door veel browsers niet ondersteund. Hierdoor kan deze user story niet worden geimplementeerd.
 
 ----
 
@@ -191,7 +201,7 @@ In dit project wordt gebruik gemaakt van verschillende onderdelen uit scrum:
 - Sprint reviews
 - Backlog
 
-Scrum is een projectmanagement methode gebaseerd op een agile software development. Dit zijn de principles geciteerd uit het agile manifesto:
+Scrum is een projectmanagement methode gebaseerd op agile software development. Dit zijn de principles geciteerd uit het agile manifesto:
 
 - Individuals and interactions over processes and tools
 - Working software over comprehensive documentation
@@ -247,7 +257,7 @@ Een uitbreidende weergave van de "Analysis" component in het "Component main mod
 
 #### Internal
 
-Een Node js server wordt ingezet waarop een react applicatie draait. Via https requests naar een firebase server worden alle data interacties gehandeld.
+Een Node.js server wordt gebruikt incombinatie met een React applicatie. Via HTTPS naar een Firebase server wordt alle data interacties gehandeld.
 
 #### External
 
@@ -257,11 +267,11 @@ Er wordt in de applicatie gebruik gemaakt van de volgende firebase producten:
 
 ##### [Real-time database](https://firebase.google.com/docs/database/)
 
-Wordt gebruikt voor om de webrtc verbinding op te zetten.
+Wordt gebruikt voor de WebRTC verbinding.
 
 **[Cloud functions](https://firebase.google.com/docs/functions/)**
 
-Deze functies worden gebruikt als triggers voor:
+Deze worden gebruikt als REST APIs en als triggers voor:
 
 - Het bijhouden van de Algolia zoek indexes
 - Notificaties
@@ -269,39 +279,35 @@ Deze functies worden gebruikt als triggers voor:
 
 **[Cloud Firestore](https://firebase.google.com/docs/firestore/)**
 
-Cloud Firestore is een NoSql scalable cloud database
+Cloud Firestore is een NoSQL scalable cloud database.
 
-In deze database wordt alle data opgeslagen van de webapplicatie
+In deze database wordt alle data opgeslagen van de webapplicatie.
 
 **[Cloud Storage](https://cloud.google.com/storage/docs/)**
 
-Cloud storage wordt gebruikt om images te versturen tussen twee clients.
+Cloud Storage wordt gebruikt om afbeeldingen en Excel sheets op te slaan.
 
 **[Authentication](https://firebase.google.com/docs/auth/)**
 
-Er wordt gebruik gemaakt van authentication module voor email verificatie.
-
-Er wordt een verificatie token bijgehouden die kan worden geverifieerd.
+Er wordt gebruik gemaakt van de authentication module om in te loggen en voor email verificatie.
 
 **[Cloud messaging](https://firebase.google.com/docs/cloud-messaging/server)**
 
-De Node.js server verbindt met een FCM server van google. Hierdoor kunnen notificaties worden gestuurd op smartphone en in de browsers.
+De Node.js server staat in verbinding met een Cloud Messaging server van Google. Hiermee kunnen notificaties worden gestuurd naar smartphones en browsers.
 
 ##### [Sendgrid](https://sendgrid.com/docs)
 
-Sendgrid is een cloudbased mail systeem. De Node.js server verbindt met deze mail server.
+Sendgrid is een Cloud-based mailsysteem. De Node.js server staat hiermee in verbinding.
 
 ##### [WebRTC](https://webrtc.org/)
 
-WebRTC is een API die er voor zorgt dat smartphones en browsers gebruik kunnen maken van Real-Time Communications (RTC) .
-
-Wordt gebruikt voor realtime video chat en tekst chat.
+WebRTC is een protocol die er voor zorgt dat smartphones en browsers gebruik kunnen maken van Real-Time Communications (RTC) zoals tekst- en videochat.
 
 ##### [Algolia](https://www.algolia.com/doc/)
 
-Algolia is een API wat gebruikt wordt voor zoekfunctionaliteit. Op Algolia zijn zoek indexen ingesteld.
+Algolia is een API die wordt gebruikt voor zoekfunctionaliteit. Op Algolia zijn zoekindexen ingesteld.
 
-De Node.js server verbindt met de API van Algolia en krijgt zoekresultaten terug.
+De Node.js server staat in verbinding met de API van Algolia en krijgt zoekresultaten terug.
 
 ----
 
@@ -329,11 +335,11 @@ API's zijn alleen toegankelijk voor gebruikers die geauthentiseerd zijn. Gebruik
 
 ##### Autorisatie & authenticatie
 
-Er wordt gebruik gemaakt van de authenticatie-SDK van Firebase. Via deze SDK kan men met een mailadres en wachtwoord inloggen. De SDK zet dan een cookie. Aan de hand van deze cookie genereert Firebase een authenticatietoken. Deze wordt meegegeven als header bij elke request: `Authorisation: Token 89258923u5k.afawfaw.134124`. 
+Er wordt gebruik gemaakt van de authenticatie-SDK van Firebase. Via deze SDK kan men met een mailadres en wachtwoord inloggen. De SDK stelt dan een cookie in. Aan de hand van deze cookie genereert Firebase een authenticatietoken. Deze wordt meegegeven als header bij elke request: `Authorisation: Token 89258923u5k.afawfaw.134124`.
 
-De server valideert deze token. Wanneer de token geldig is, wordt er door middel van middleware `~/middleware/authenticate.js` een `user` object toegevoegd aan het `request` object van express. Dit `user` object staat gelijk aan de data die firebase haalt uit het document van collectie `users` met het id van de user. Deze data is terug te vinden in Firestore. Ondertussen kijkt de middleware of de user een admin is. Wanneer dit zo is, wordt er aan het `user` object ook nog `isAdmin = true` toegevoegd.
+De server valideert deze token. Wanneer de token geldig is, wordt er door middel van middleware `~/middleware/authenticate.js` een `user` object toegevoegd aan het `request` object van Express. Dit `user` object staat gelijk aan de data die firebase haalt uit het document van collectie `users` met het id van de user. Deze data is terug te vinden in Firestore. Ondertussen kijkt de middleware of de user een admin is. Wanneer dit zo is, wordt er aan het `user` object ook nog `isAdmin = true` toegevoegd.
 
-Bij routes kan gekeken worden d.m.v. middleware of een user ingelogd is, of zelfs een admin is. Dit betreft de middlewares `~/middleware/isAuthenticated.js` en `~/middleware/isAdmin.js`. Deze twee middlewares doen precies wat de naam impliceert. Wanneer de user niet de benodigde bevoegdheid heeft, wordt er een response gestuurd met code `403: Unauthorized`.
+Bij routes kan dmv middleware gekeken worden of een user ingelogd is, of ook een admin is. Dit betreft de middlewares `~/middleware/isAuthenticated.js` en `~/middleware/isAdmin.js`. Deze twee middlewares doen precies wat de naam impliceert. Wanneer de user niet de benodigde bevoegdheden heeft, wordt er een response gestuurd met code `403: Unauthorized`.
 
 ----
 
@@ -364,18 +370,18 @@ Een STUN server stelt NAT-clients (computers achter een firewall) in staat om te
 (Bron: https://www.3cx.nl/voip-sip/stun-server/)
 
 #### 9.5 Sidenotes
-Op het moment worden er geen back-ups gemaakt van de data op firebase, dit kan dhr. Bassleer of dhr. Burgers zelf regelen door de volgende link te volgen:
+Op het moment worden er geen back-ups gemaakt van de data op Firebase. Dit zou dhr. Bassleer of dhr. Burgers zelf kunnen regelen met de volgende link:
 https://firebase.google.com/docs/database/backups
 
-De aangeleverde foto's/video's in de database zijn gemaakt en van dhr. Bassleer, hij wilt niet dat deze voor gebruikt voor persoonlijke doeleinden.
+De aangeleverde foto's/video's in de database zijn eigendom van dhr. Bassleer. Hij wil niet dat deze gebruikt worden voor persoonlijke doeleinden.
 
 ----
 
 ## 10. Deployment
-Dit hoofdstuk zal uitleggen welke stack er gebruikt wordt om het product te draaien.
+Dit hoofdstuk beschrijft welke stack er gebruikt wordt om het product te draaien.
 
 #### 10.1 Software
-De omgeving van productie zijn de servers van Firebase. Firebase draait op Google App Engine. De volgende producten worden gebruikt bij deployment:
+De productieomgeving draait op de servers van Firebase. Firebase draait op de Google App Engine. De volgende producten worden gebruikt bij deployment:
 - Firebase Cloud Functions (NodeJS omgeving, Node v6.11.5.),
 - Firebase Firestore (NoSQL database),
 - Firebase Cloud Messaging (Push Notifications service),
@@ -388,10 +394,10 @@ De omgeving van productie zijn de servers van Firebase. Firebase draait op Googl
 Het is niet nodig om dit project te builden.
 
 #### 10.3 Deploy
-Om het project te deployen naar de servers van Firebase, navigeer naar de map /functions, en type "firebase deploy". Mocht je alleen bepaalde facetten willen deployen, doe dan firebase deploy --only functions[,firestore,...].
+Om het project te deployen naar de servers van Firebase, navigeer naar de map /functions, en typ "firebase deploy" in een commandline. Mocht je alleen bepaalde facetten willen deployen, gebruik dan firebase deploy --only functions[,firestore,...].
 
 #### 10.4 API Keys & andere configuratie
-Om de applicatie te kunnen draaien, heb je de volgende API-Keys nodig:
+Om de applicatie te kunnen draaien, heb je de volgende API-keys nodig:
 - Firebase Admin. Deze "key" lever je aan in de vorm van een serviceAccount.
 - Firebase Storage. Hiervoor is geen key nodig, wel enige configuratie.
 - Algolia. De keys die nodig zijn om deze service te gebruiken, zijn de "access key" en de "admin key".
@@ -402,7 +408,7 @@ De applicatie maakt gebruik van Cloud Functions Triggers. Deze draaien niet loka
 Om deze triggers te activeren, moet men de applicatie deployen naar de live server. Dit kan met `firebase deploy --only functions`. Aangezien Firestore altijd live draait, werken de triggers ook alleen op de live server. Mocht je de server lokaal draaien, dan worden de triggers niet aangeroepen wanneer in Firestore een read of write uitgevoerd wordt.
 
 ##### 10.4.1 Firebase Admin
-Om hiervan de keys te krijgen, dien je deze(https://firebase.google.com/docs/admin/setup#add_firebase_to_your_app) stappen te volgen. Als het goed is heb je nu een .json bestand gedownload (standaard naam; private_key.json). Dit is de zogenaamde service file. Plaats deze file in de root van het Cloud Functions-project, in dit geval in de map ~/firebase/functions. Zorg ervoor dat dit bestand 'geinclude' wordt in de `index.js`. De include-functie staat op het moment van schrijven op regel 5 van index.js:
+Om hiervan de keys te krijgen, dien je deze(https://firebase.google.com/docs/admin/setup#add_firebase_to_your_app) stappen te volgen. Als het goed is heb je nu een .json bestand gedownload (standaard naam: private_key.json). Dit is de zogenaamde service file. Plaats deze file in de root van het Cloud Functions-project, in dit geval in de map ~/firebase/functions. Zorg ervoor dat dit bestand 'geinclude' wordt in de `index.js`. De include-functie staat op het moment van schrijven op regel 5 van index.js:
 ```const serviceAccount = require("./private-key.json");```
 Firebase Admin zou nu moeten draaien. Mocht je er niet uitkomen, dan kan je altijd navigeren naar je "Project Settings", tabje "Firebase Admin SDK". Hier staat uitgelegd wat je moet doen om je SDK toe te voegen.
 
@@ -419,7 +425,7 @@ admin.initializeApp({
 Wat er op de plek van de sterretjes moet komen te staan, is te vinden in de console onder de tab "storage".
 
 ##### 10.4.3 Algolia
-Om Algolia werkend te krijgen, moet je 2 keys verkrijgen: de "access key" en de "admin key". Deze zijn eenvoudig te verkrijgen wanneer je je hebt geregistreerd bij Algolia. Zie de documentatie van Algolia om erachter te komen hoe dat moet. Wanneer je deze keys hebt, dien je de keys te vervangen die zijn gedefinieerd op regel 20 en 21 in `index.js`.
+Om Algolia werkend te krijgen, moet je 2 keys verkrijgen: de "access key" en de "admin key". Deze zijn eenvoudig te verkrijgen wanneer je bent geregistreerd bij Algolia. Zie de documentatie van Algolia om erachter te komen hoe dat moet. Wanneer je deze keys hebt, dien je de keys te vervangen die zijn gedefinieerd op regel 20 en 21 in `index.js`.
 
 ##### 10.4.4 SendGrid
 Om SendGrid werkend te krijgen, heb je 1 key nodig. Deze kan je verkrijgen door je te registeren op sendgrid.com. Zie de documentatie van SendGrid om erachter te komen hoe deze key te verkrijgen is. Wanneer je deze hebt ontvangen, vervang dan de key de te vinden is op regel 2 in `mailer/mailer.js`.
@@ -458,68 +464,66 @@ Om de bestanden van Firebase online te zetten gebruik je:
 ``` firebase deploy --only hosting,functions```
 
 #### 11.3 Beheerssysteem/CMS.
-Het berheerssysteem, of control management system, kan worden gebruikt om gegevens op de site aan te passen. Het redelijk duidelijk te snappen, maar er is voor elke pagina een kopje gemaakt om het wat beter toe te lichten. Alle invoervelden moeten ingevuld worden in elke edit/add mogelijkheid van de pagina's. Word dit niet gedaan is dat geen ramp, de applicatie zal dan een error geven en de record nog niet aanmaken.
+Het beheersysteem, of Content Management System wordt gebruikt om gegevens op de site aan te passen.
 
 ##### Vissoorten beheren.
-De vissoorten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicaite:
-* Gebruikers kunnen zoeken naar vissoorten voor informatie hierover.
-* Gebruikers kunnen vissoorten aan hen aquarium toevoegen.
+De vissoorten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
+* Gebruikers kunnen zoeken informatie over vissoorten.
+* Gebruikers kunnen vissoorten aan hun aquarium toevoegen.
 
-In de "edit" column staan drie icoontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen, buiten de afbeelding om. Het icoontje met het schilderijtje geeft de gebruiker de mogelijkheid een afbeelding toe te voegen/te wijzigen van de record.
+In de "edit" kolom staan drie knoppen. Het kruisje geeft de gebruiker de mogelijkheid om de vissoort te verwijderen. De knop met het vierkant en de pen geeft de gebruiker de mogelijkheid om de vissoort te wijzigen. De knop met het schilderijtje geeft de gebruiker de mogelijkheid een afbeelding van een vissoort toe te voegen of te wijzigen.
 
-Onderin de pagina staat een knop genaamd "Add fish". Deze zorgt ervoor dat er een nieuwe vissoort kan worden toegevoegd. Na het aanmaken van een nieuwe vissoort is er nog geen afbeelding aan de record gevoegd.
+Onderin de pagina staat een knop "Add fish". Hiermee kan er een nieuwe vissoort worden toegevoegd. Na het aanmaken van een nieuwe vissoort is er nog geen afbeelding aan toegevoegd.
 
-Deze pagina bevat een zoekbalk. Waarmee de gebruiker snel kan navigeren binnen de pagina.
+De pagina bevat tevens een zoekbalk waarmee de gebruiker snel kan navigeren binnen de pagina.
 ![CMS_Diseases](images/CMS_Diseases.png)
 
 ##### Vis ziektes beheren.
-De vis ziektes die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
-* Gebruikers kunnen zoeken naar ziektes voor informatie hierover.
-* Ziektes zijn de eindresultaten na een analyse.
+De visziektes die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
+* Gebruikers kunnen zoeken naar informatie over visziektes.
+* Informatie over visziektes wordt weergeven aan het eind van een analyse.
 
-In de "edit" column staan drie icoontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen, buiten de afbeelding om. Het icoontje met het schilderijtje geeft de gebruiker de mogelijkheid een afbeelding toe te voegen/te wijzigen van de record.
+De knoppen in de edit kolom dienen hetzelfde doel als bij vissoorten.
 
-Onderin de pagina staat een knop genaamd "Add fish disease". Deze zorgt ervoor dat er een nieuwe vis ziekte kan worden toegevoegd. Na het aanmaken van een nieuwe vis ziekte is er nog geen afbeelding aan de record gevoegd.
+Onderin de pagina staat een knop genaamd "Add fish disease". Hiermee kan een nieuwe visziekte worden toegevoegd.
 
-Deze pagina bevat een zoekbalk. Waarmee de gebruiker snel kan navigeren binnen de pagina.
+Deze pagina bevat een zoekbalk waarmee de gebruiker snel kan navigeren binnen de pagina.
 ![CMS_Species](images/CMS_Species.png)
 
 ##### Afspraken beheren.
 De afspraken die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
-* De request consult sectie voor de gebruikers in hun dashboard.
+* De "Request Consult" pagina voor de gebruikers in hun dashboard.
 * Chat functionaliteiten.
 
-Er zijn drie verschillende koppen op deze pagina te vinden. De knop met het kruisje zorgt voor het verwijderen van een appointment, wanneer dit gebeurd word de ingeschreven gebruiker hiervan op de hoogte gesteld. De knop met de tekst "Chat room" geeft de consultant toegang tot de chat room van dat specifieke appointment. Nadat een de "status" veranderd naar closed, wat gebeurd als de consultant de chat room aflsuit, veranderd de knop "Chat room" naar een knop "Chatlog". Met deze knop kan je de chatlog van dit appointment inzien. Afbeeldingen en andere files die gedeeld zijn worden niet weergegeven.
+Er zijn drie verschillende koppen op deze pagina te vinden. Met de knop met het kruisje kan een afpsraak worden verwijderd. Wanneer dit gebeurt, wordt de ingeschreven gebruiker hiervan op de hoogte gesteld. De knop met de tekst "Chat room" geeft de consultant toegang tot de chat room van die afspraak. De status verandert naar "closed" als de consultant een gespreek in chat room aflsuit. De knop "Chat room" verandert dan naar "Chat log". Met deze knop kan je de chatlog van dit appointment inzien. Afbeeldingen en andere gedeelde bestanden worden niet getoond.
 
-Appointments worden gemaakt door de normale geregistreerde gebruiker, door een open tijdslot te bezetten. Dit is de reden waarom de consultant geen appointments hoeft toe te voegen.
+Afspraken worden gemaakt door een normaal geregistreerde gebruiker door een open tijdslot te bezetten. De consultant hoeft zo dus zelf geen afspraken toe te voegen.
 ![CMS_Appointments](images/CMS_Appointments.png)
 
 ##### Tijdsloten beheren.
 De tijdsloten die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
 * De request consult sectie voor de gebruikers in hun dashboard.
 
-In de "edit" Column staan twee iccontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen.
+In de "edit" kolom staan twee knoppen. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om het tijdslot te verwijderen. Met de knop met het vierkant en de pen kan de gebruiker het tijdslot wijzigen.
 
-Onderin de pagina staat een knop genaamd "Add timeslot when you are available". Deze zorgt ervoor dat er een nieuwe tijdslot kan worden toegevoegd. Denk eraan dat doormiddel van de start-time en de duration de end time door de applicatie word berekent.
+Onderaan de pagina staat een knop genaamd "Add timeslot when you are available". Hiermee kan er een nieuw tijdslot worden toegevoegd.
 ![CMS_Timeslots](images/CMS_Timeslots.png)
 
 ##### Notificatie regels beheren.
-De notification regels die je op deze pagina kan beheren worden gebruikt in de volgende onderdelen van de applicatie:
-* Word gebruikt bij het triggeren van een notificatie nadat een gebruiker nieuwe data invoerd bij "todaysdata".
+De notificatieregels die je op deze pagina kan beheren worden gebruikt voor het triggeren van een notificatie nadat een gebruiker nieuwe data invoerd bij "Today's data".
 
-In de "edit" Column staan twee icoontjes waarop geklikt kan worden. Het kruisje in dit veld geeft de gebruiker de mogelijkheid om de record te verwijderen, er word eerst om bevestiging gevraagt. Het icoontje met de vierkant en de pen geeft de gebruiker de mogelijkheid om de record te wijzigen.
+De knoppen in de edit kolom dienen hetzelfde doel als bij tijdsloten.
 
-Onderin de pagina staat een knop genaamd "Add notification rule". Deze zorgt ervoor dat er een nieuwe tijdslot kan worden toegevoegd. Wanneer het invoerveld dan opkomt is er een mogelijkheid om meer dan één trigger voor de regel toe te voegen. Je kan ook triggers weghalen. De applicatie laat niet toe dat er minder dan één trigger aanwezig is.
+Onderaan de pagina staat een knop genaamd "Add notification rule". Hiermee kan een nieuw tijdslot worden toegevoegd. Het is mogelijk meerdere triggers per regel toe te voegen. Triggers kunnen ook individueel worden verwijderd. Er moet minstens één trigger aanwezig zijn.
 ![CMS_Notification](images/CMS_Notification.png)
 
 ##### Analyse beheren.
-De analyse onderdelen die je kan beheren worden gebruikt op de volgende pagina's:
-* Word gebruikt bij het doorlopen van een snelle analyse.
-* word gebruikt bij het doorlopen van een nauwkeurige analyse.
+De analyse onderdelen die je kan beheren worden gebruikt bij:
+* het doorlopen van een snelle analyse.
+* het doorlopen van een nauwkeurige analyse.
 
-De twee excel bestanden die nodig zijn voor de analyse kan je op deze pagina downloaden. Dit is niet een lege template maar de laatste upgeloade versie hiervan.
-Je kan hier een nieuwere versie van de Excel bestanden uploaden. De naam moet hetzelfde zijn als het bestand staande op de Firebase storage, anders kan hij hem niet overschrijven.
-Er kunnen foto's in bulk naar de Firebase storage worden upgeload, Denk eraan dat de foto's dezelfde naam en extentie moeten hebben als aangegeven in het excel bestand.
+De twee reeds ingevulde Excel bestanden die nodig zijn voor de analyse zijn op deze pagina te downloaden. Je kunt deze vervangen door een nieuwere versie van de Excel bestanden uploaden. De naam moet wel hetzelfde zijn als het bestand op de Firebase storage.
+Er kunnen meerdere foto's tegelijkertijd worden upgeload. De foto's moeten dezelfde naam en extentie hebben als aangegeven in het Excel bestand.
 ![CMS_Analysis](images/CMS_Analysis.png)
 
 #### 11.4 Excel bestand bewerken.
