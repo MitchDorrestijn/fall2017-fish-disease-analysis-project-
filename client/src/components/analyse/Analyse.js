@@ -244,7 +244,7 @@ export default class Analyse extends React.Component {
 	}
 
 	getResultsWithScore = () => {
-		return this.state.results.filter((elem) => elem.hasOwnProperty("score"));
+		return this.state.results.filter((elem) => elem.hasOwnProperty("score")).slice(0,3);
 	}
 
 	displayResultsWithScore = () => {
