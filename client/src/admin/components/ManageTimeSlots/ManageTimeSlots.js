@@ -6,7 +6,6 @@ import DataAccess from '../../../scripts/DataAccess';
 import RemoveTimeSlot from './RemoveTimeSlot';
 import ChangeTimeSlot from './ChangeTimeSlot';
 import AddTimeSlot from './AddTimeSlot';
-import * as moment from 'moment';
 
 export default class ManageTimeSlot extends Component {
 	constructor(props) {
@@ -22,9 +21,13 @@ export default class ManageTimeSlot extends Component {
 	};
 
 	parseTime = (date) => {
-		// let parsedDate = new Date (date);
-		let hours = moment().format();
-		return moment(date).format('HH:MM');
+	  let parsedDate = new Date (date);
+	  let hours = parsedDate.getHours();
+	  let minutes = parsedDate.getMinutes();
+	  if (minutes < 10) {
+			minutes = '0' + minutes;
+		}
+		return `${hours}:${minutes}`;
 	};
 
 	componentWillMount() {
