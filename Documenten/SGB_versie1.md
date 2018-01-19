@@ -522,3 +522,11 @@ Er kunnen foto's in bulk naar de Firebase storage worden upgeload, Denk eraan da
 ![CMS_Analysis](images/CMS_Analysis.png)
 
 #### 11.4 Excel bestand bewerken.
+Voor de indeling van de Excelsheets verwijzen wij naar de meegeleverde Excelsheets voor de structuur. De structuur wijst zichzelf daar wel. Let echter wel op de volgende dingen:
+* Meerdere vragen met dezelfde naam zijn niet toegestaan.
+* Meerdere antwoorden met dezelfde naam binnen een vraag zijn niet toegestaan.
+* Er dient altijd één witregel tussen de antwoorden van een vraag en de volgende vraag worden behouden.
+* Een vervolgvraag mag niet verwijzen naar een andere vervolgvraag (dus er zijn altijd maar twee lagen vragen).
+* Koppelcodes bij ziektes mogen alleen alfanumerieke karakters bevatten (hoofdletters, kleine letters en cijfers, dus geen spaties e.d.).
+* Een "x" is het enige geldige teken voor het koppelen van antwoorden aan symptomen.
+* Een "OK" is het enige geldige teken voor het koppelen van antwoorden aan vervolgvragen.

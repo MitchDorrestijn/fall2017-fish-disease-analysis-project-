@@ -14,7 +14,9 @@ router.get('/notifications', isAuthenticated, (req, res) => {
     .then((snapshot) => {
         var notifications = [];
         snapshot.forEach((doc) => {
-            notifications.push(doc.data());
+            let d = doc.data();
+            d.id = doc.id;
+            notifications.push(d);
         })
         res.send(notifications);
     })
@@ -57,7 +59,9 @@ router.get('/notifications/rules', isAdmin, (req, res) => {
     .then((snapshot) => {
         let arr = []
         snapshot.docs.forEach((doc) => {
-            arr.push(doc.data())
+            let d = doc.data();
+            d.id = doc.id;
+            arr.push(d)
         })
         res.status(200).send(arr);
     })
