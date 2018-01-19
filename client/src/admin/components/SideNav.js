@@ -20,7 +20,7 @@ export default class SideNav extends React.Component {
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/appointments">Appointments</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/timeslots">Timeslots</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/notifications">Notifications</SidebarLink>
-					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/analyse">Analyse</SidebarLink>
+					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/analyse">Analysis</SidebarLink>
 					<SidebarLink img="/images/myAquarium/fishtank-icon.png" target="/admin/exit">Exit</SidebarLink>
 				</Sidebar>
 				<ContentContainer extraClass="adminContentContainer" size="12">

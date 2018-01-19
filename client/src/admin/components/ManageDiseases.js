@@ -158,7 +158,7 @@ export default class ManageDiseases extends React.Component {
 						{this.state.data}
 				    </Tbody>
 				</Table>
-				<Button onClick={() => this.props.openModal(addFishDesiseAdmin, {refreshPage: this.loadCurrentDiseases})} className="btn-admin">Add fish diseases</Button>
+				<Button onClick={() => this.props.openModal(addFishDesiseAdmin, {refreshPage: this.loadCurrentDiseases})} className="btn-admin">Add disease</Button>
 			</div>
 		);
 	}

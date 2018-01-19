@@ -52,7 +52,7 @@ export default class AddFishADesiseAdmin extends React.Component {
 	render() {
 		return (
 			<div>
-				<ModalHeader toggle={() => this.props.toggleModal()}>Add fish desise</ModalHeader>
+				<ModalHeader toggle={() => this.props.toggleModal()}>Add deisease</ModalHeader>
 				<ModalBody>
 					<p className="error">{this.state.error}</p>
 					<Form onSubmit={this.addFishDesise}>
