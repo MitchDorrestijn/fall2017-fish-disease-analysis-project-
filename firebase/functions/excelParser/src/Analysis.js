@@ -212,6 +212,6 @@ module.exports = class Analysis {
 			}
 		}
 
-		return Analysis._removeArrayDoubles(result);
+		return Analysis._removeArrayDoubles(result, "name");
 	}
 };
