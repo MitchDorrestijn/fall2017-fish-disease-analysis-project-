@@ -169,7 +169,7 @@ Het team is beperkt in het kiezen van een ontwikkelmethode, er wordt namelijk ve
 #### 4.5 Opleveren
 De website moet vóór 19-01-2018 worden opgeleverd. Als deze deadline niet gehaald wordt, kan moet het team vroegtijdig de Product Owner op de hoogte brengen.
 
-### 4.6 Base64
+#### 4.6 Base64
 Een van de eisen die word gesteld aan de chat was dat je bestanden moet kunnen delen. Dit is mogelijk met foto's en video's, omdat deze bestanden direct worden weergeven in de chat. Andere bestanden moet een gebruiker downloaden om die te bekijken. Alleen wordt het downloaden van bestanden via een base64 string veelal niet ondersteund door browsers vanwege veiligheids problemen. Hierdoor kan deze user story niet worden geimplementeerd.
 
 ----
