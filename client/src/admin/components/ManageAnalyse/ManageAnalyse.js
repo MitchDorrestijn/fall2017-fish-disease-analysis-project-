@@ -80,7 +80,7 @@ export default class ManageAnalyse extends React.Component {
 
 	//Upload a singel Excel file to the storage, if the file exist then it will update it
 	uploadExcel = () => {
-		if ((/\.xlsx$/i).test(this.state.excelSheetNew.value)){
+		if (this.state.excelSheetNew.files[0].name === 'symptomenEnZiektes.xlsx' || this.state.excelSheetNew.files[0].name === 'Vraagziektekruisjes.xlsx') {
 			// Put the file in new let
 			let file = this.state.excelSheetNew.files[0];
 			// Create a root reference of our firebase storage
@@ -99,7 +99,7 @@ export default class ManageAnalyse extends React.Component {
 				this.loadCurrentExcelsheet();
 			});
 		} else {
-			this.setState({errorExcel: ["Please upload a excel (.xlsx) file.", false]});
+			this.setState({errorExcel: ["Please upload symptomenEnZiektes.xlsx or Vraagziektekruisjes.xlsx no other files allowed.", false]});
 		};
 	};
 
