@@ -74,6 +74,8 @@ export default class ManageAgenda extends Component {
 		let da = new DataAccess();
 
 		da.getData('/admin/appointments', (err, res) => {
+		  console.log(res);
+		  console.log(err);
 			if (!err) {
 				let resultsFromDB = res.message;
 				resultsFromDB.sort (this.sortAppointmentsByDate);
