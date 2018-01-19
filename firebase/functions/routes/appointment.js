@@ -58,11 +58,36 @@ router.delete('/appointments/:id', isAuthenticated, (req, res) => {
 	  .getUser(appointment.reservedBy)
 	  .then((userRecord) => {
 		if (appointment.status) {
-		  sendAppointmentCanceledMail(userRecord);
+		  // sendAppointmentCanceledMail(userRecord);
 		}
-		db.collection('appointments').doc(appointmentId).delete().then(() => {
-		  res.status(204).send('Appointment canceled');
-		});
+		const timeslotRef = db.collection('timeslots').doc(appointment.timeslotId);
+		timeslotRef.get()
+		  .then((timeslot) => {
+			//check if date has passed
+			if (new Date() > helperFunctions.flatData(timeslot).endDate) {
+			  //delete timeslot
+			  timeslotRef.delete().then(() => {
+				db.collection('appointments')
+				  .doc(appointmentId)
+				  .delete()
+				  .then(() => {
+					res.status(204).send('Timeslot deleted and appointment canceled');
+				  });
+			  });
+			} else {
+			  //remove timeslot.appointmentId
+			  timeslotRef.update({
+				appointmentId: admin.firestore.FieldValue.delete()
+			  }).then(() => {
+				db.collection('appointments')
+				  .doc(appointmentId)
+				  .delete()
+				  .then(() => {
+					res.status(204).send('Appointment canceled');
+				  });
+			  });
+			}
+		  });
 	  });
   })
 	.catch((error) => {
@@ -156,7 +181,8 @@ router.post('/appointments/', isAuthenticated,
 			snapshot.forEach(doc => {
 			  let communicationMethod;
 			  //TODO: Now commented out for development
-			  sendConsultNewAppointmentMail(helperFunctions.flatData(doc), appointment.comment,communicationMethod, timeSlot);
+			  sendConsultNewAppointmentMail(helperFunctions.flatData(doc),
+				appointment.comment, communicationMethod, timeSlot);
 			});
 		  });
 	  });
